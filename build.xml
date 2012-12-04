@@ -2,6 +2,7 @@
     
     <!-- Properties -->
     
+	<proptery environment="env" />
     <property name="build.dir"           value="build"/>
 	<property name="common.dir"			 value="common" />
 	<property name="client.dir"			 value="client" />
@@ -20,18 +21,21 @@
     <property name="mcp.version"         value="723"/>
     <property name="forge.version"       value="6.4.1.408"/>
     <property name="eplus.version"       value="1.11"/>
-    <property name="eplus.version.full"  value="${eplus.version}.${build.number}"/>
     
-    <echo message="Starting build for ${eplus.version.full}"/>
-
     <!-- Targets -->
     
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
 	
+	<target name="version-not-provided" unless="env.BUILD_NUMBER>
+		<buildnumber/>
+	</target>
 	
-    <target name="setup">
+    <target name="setup" depends="version-not-provided">
+		<property name="eplus.version.full"  value="${eplus.version}.${build.number}"/>
+      
+	     <echo message="Starting build for ${eplus.version.full}"/>
 	
 		<get dest="${download.dir}">
 			<url url="http://dl.dropbox.com/u/21347544/FreshMCP.zip"/>
@@ -45,7 +49,7 @@
 		</unzip>
 
 		<!-- Set build number -->
-		<buildnumber file="${resource.dir}/build.number"/>
+		<buildnumber/>
 
         <!-- Copy BC source -->
         <copy todir="${clientsrc.dir}">
@@ -83,6 +87,7 @@
         <copy todir="${classes.dir}">
             <fileset dir="${resource.dir}">
                 <exclude name="build.xml"/>
+				<exclude name="build.number"/>
         	</fileset>
         </copy>
 
