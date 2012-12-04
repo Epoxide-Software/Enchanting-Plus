@@ -1,97 +1,107 @@
-<project name="EPLUS" basedir="./" default="main">
-	<property environment="env" />
-	
-	<property name="build.dir"           value="build"/>
-	<property name="common.dir"          value="common"/>
-	<property name="client.dir"			 value="client"/>
-	<property name="resources.dir"		 value="resources"/>
+<project name="Enchanting Plus" basedir="./" default="main">
+    
+    <!-- Properties -->
+    
+    <property name="build.dir"           value="build"/>
+	<property name="common.dir"			 value="common" />
+	<property name="client.dir"			 value="client" />
+	<property name="resource.dir"		 value="resources" />
+	<property name="download.dir"		 value="download" />
+    
+    <property name="classes.dir"         value="${build.dir}/classes"/>
+    <property name="jar.dir"             value="${build.dir}/dist"/>
+          
+    <property name="mcp.dir"             value="${build.dir}/mcp"/>
+    <property name="forge.dir"           value="${mcp.dir}/forge"/>
+      
+    <property name="clientsrc.dir"       value="${mcp.dir}/src/minecraft"/>
+          
+	<property name="mc.version"			 value="1.4.5"/>
+    <property name="mcp.version"         value="723"/>
+    <property name="forge.version"       value="6.4.1.408"/>
+    <property name="eplus.version"       value="1.11"/>
+    <property name="eplus.version.full"  value="${eplus.version}.${build.number}"/>
+    
+    <echo message="Starting build for ${eplus.version.full}"/>
 
-	<property name="download.dir"        value="download"/>
-	<property name="files.minecraft.dir" value="jars"/>
-
-	<property name="classes.dir"         value="${build.dir}/classes"/>
-	<property name="jar.dir"             value="${build.dir}/dist"/>
-	<property name="mcp.dir"			 value="${build.dir}/mcp" />
-	
-	<property name="mcpsrc.dir"          value="${mcp.dir}/src/minecraft"/>
-	
-	<property name="mc.version"			 value="1_4_5"/>
-	<property name="eplus.version"		 value="1.11"/>
+    <!-- Targets -->
+    
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
 	
 	
+    <target name="setup">
 	
-	<mkdir dir="${download.dir}" />
-	
-	<target name="clean">
-		<delete dir="${build.dir}" />
-	</target>
-	
-	<target name="initialize-version" depends="version-provided,version-not-provided">
-		<property name="eplus.version.full"     value="${eplus.version}.${build.number}"/>
-		<echo message="Starting build for ${eplus.version.full}"/>
-	</target>
-
-	<target name="version-not-provided" unless="env.BUILD_NUMBER">
-		<buildnumber/>
-	</target>
-
-	<target name="version-provided" if="env.BUILD_NUMBER">
-		<property name="build.number" value="${env.BUILD_NUMBER}"/>
-	</target>
-
-	<target name="download-files" depends="download-mcp"/>
-	
-	<target name="download-mcp" unless="mcp-exists" >
-		<getMethod url="http://dl.dropbox.com/u/21347544/FreshMCP.zip"
-				   responseDataFile="${download.dir}/FreshMCP.zip">
-		</getMethod>
-	</target>
-	
-	<target name="setup" depends="initialize-version">	
-	
+		<get dest="${download.dir}">
+			<url url="http://dl.dropbox.com/u/21347544/FreshMCP.zip"/>
+		</get>
+        
+		<!-- Setup MCP -->
 		<unzip dest="${mcp.dir}">
 			<fileset dir="${download.dir}">
-				<include name="FreshMCP.zip"/>
+				<include name="FreshMCP.zip" />
 			</fileset>
 		</unzip>
-	
-		<copy todir="${mcpsrc.dir}">
-			<fileset dir="${client.dir}">
-			</fileset>
-			<fileset dir="${common.dir}">
-			</fileset>
-			<filterset>
-				<filter token="VERSION" value="${eplus.version}" />
-				<filter token="BUILD_NUMBER" value="${build.number}" />
-			</filterset>
-		</copy>
-	</target>
-	
-	<target name="compile" depends="setup">
 
-		<exec dir="${mcp.dir}" executable="python">
-			<arg value="runtime/recompile.py" />
-		</exec>
+		<!-- Set build number -->
+		<buildnumber file="${resource.dir}/build.number"/>
 
-		<exec dir="${mcp.dir}" executable="python">
-			<arg value="runtime/reobfuscate.py" />
-		</exec>
+        <!-- Copy BC source -->
+        <copy todir="${clientsrc.dir}">
+            <fileset dir="${client.dir}"></fileset>
+			<fileset dir="${common.dir}"></fileset>
+            </fileset>
+            <filterset>
+                <filter token="VERSION" value="${eplus.version.full}" />
+           		<filter token="BUILD_NUMBER" value="${build.number}" />
+            </filterset>
+        </copy>
+        
+    </target>
+    
+    <target name="compile" depends="setup">
+        
+        <!-- Recompile -->
+        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+            <arg line="/c recompile.bat"/>
+        </exec>
+        
+        <exec dir="${mcp.dir}" executable="sh" osfamily="unix">
+            <arg value="recompile.sh" />
+        </exec>
+        
+        <!-- Reobf -->
+        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+            <arg line="/c reobfuscate.bat"/>
+        </exec>
+        
+        <exec dir="${mcp.dir}" executable="sh" osfamily="unix">
+            <arg value="reobfuscate.sh" />
+        </exec>
+        
+        <!-- Copy BC classes -->
+		<mkdir dir="${classes.dir}/eplus"/>
+        <copy todir="${classes.dir}/eplus">
+            <fileset dir="${mcp.dir}/reobf/minecraft/eplus"/>
+        </copy>
+        
+        <!-- Copy resources -->
+        <copy todir="${classes.dir}">
+            <fileset dir="${resources.dir}">
+                <exclude name="build.xml"/>
+        	</fileset>
+        </copy>
 
-		<mkdir dir="${classes.dir}/eplus" />
-		<copy todir="${classes.dir}/eplus">
-			<fileset dir="${mcp.dir}/reobf/minecraft/eplus"/>
-		</copy>
-		
-		<copy todir="${classes.dir}">
-			<fileset dir="${resources.dir}"/>
-		</copy>
+        
+    </target>
+    
+    <target name="package" depends="compile">
+        
+        <jar destfile="${jar.dir}/EnchantingPlus-${eplus.version.full}.jar" basedir="${classes.dir}"/>
+        
+    </target>
+    
+    <target name="main" depends="clean,package"/>
 
-	</target>
-
-	<target name="package" depends="compile">
-		<jar destfile="${jar.dir}/EnchantingPlus-${eplus.version.full}.jar" basedir="${classes.dir}"/>
-	</target>
-
-	<target name="main" depends="initialize-version,download-files,clean,package"/>
-	
 </project>
