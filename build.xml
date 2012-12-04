@@ -28,7 +28,7 @@
         <delete dir="${build.dir}"/>
     </target>
 	
-	<target name="version-not-provided" unless="env.BUILD_NUMBER>
+	<target name="version-not-provided" unless="env.BUILD_NUMBER">
 		<buildnumber/>
 	</target>
 	
