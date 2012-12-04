@@ -63,13 +63,13 @@
         
         <!-- Recompile -->
         
-        <exec dir="${mcp.dir}" executable="py" osfamily="unix">
+        <exec dir="${mcp.dir}" executable="python" osfamily="unix">
             <arg value="runtime/recompile.py" />
         </exec>
         
         <!-- Reobf -->
         
-        <exec dir="${mcp.dir}" executable="py" osfamily="unix">
+        <exec dir="${mcp.dir}" executable="python" osfamily="unix">
             <arg value="runtime/reobfuscate.py" />
         </exec>
         
