@@ -51,7 +51,6 @@
         <copy todir="${clientsrc.dir}">
             <fileset dir="${client.dir}"></fileset>
 			<fileset dir="${common.dir}"></fileset>
-            </fileset>
             <filterset>
                 <filter token="VERSION" value="${eplus.version.full}" />
            		<filter token="BUILD_NUMBER" value="${build.number}" />
