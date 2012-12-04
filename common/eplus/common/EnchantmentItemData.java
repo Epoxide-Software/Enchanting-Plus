@@ -1,0 +1,20 @@
+package eplus.common;
+
+import net.minecraft.src.Enchantment;
+import net.minecraft.src.EnchantmentData;
+
+public class EnchantmentItemData extends EnchantmentData
+{
+    public int shelves;
+
+    public EnchantmentItemData(Enchantment var1, int var2, int var3)
+    {
+        super(var1, var2);
+        shelves = var3;
+    }
+
+    public EnchantmentItemData(EnchantmentData var1, int var2)
+    {
+        this(var1.enchantmentobj, var1.enchantmentLevel, var2);
+    }
+}

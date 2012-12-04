@@ -1,0 +1,18 @@
+[
+{
+  "modid": "eplus",
+  "name": "Enchanting Plus",
+  "description": "Replaces the enchanting system with an optional custom one",
+  "url": "http://www.minecraftforum.net/topic/973916-",
+  "version": "",
+  "updateUrl": "",
+  "authors": [
+    "xkyouchoux", "odininon"
+  ],
+  "credits": "Created by xkyouchoux.",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":""
+}
+]

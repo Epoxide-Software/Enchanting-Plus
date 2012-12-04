@@ -1,0 +1,134 @@
+<project name="EPLUS" basedir="./" default="main">
+	<property environment="env" />
+	
+	<property name="build.dir"           value="build"/>
+	<property name="common.dir"          value="common"/>
+	<property name="client.dir"			 value="client"/>
+	<property name="resources.dir"		 value="resources"/>
+
+	<property name="download.dir"        value="download"/>
+	<property name="files.minecraft.dir" value="jars"/>
+
+	<property name="classes.dir"         value="${build.dir}/classes"/>
+	<property name="jar.dir"             value="${build.dir}/dist"/>
+	<property name="mcp.dir"			 value="${build.dir}/mcp" />
+	
+	<property name="mcpsrc.dir"          value="${mcp.dir}/src/minecraft"/>
+	
+	<property name="mc.version"			 value="1_4_5"/>
+	<property name="eplus.version"		 value="1.11"/>
+	
+	
+	
+	<available property="mcp-exists" file="${download.dir}/FreshMCP.zip"/>
+	<condition property="should-download-ant-contrib">
+		<or>
+			<available file="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
+			<available file="${download.dir}/minecraftforge-src-${forge.version}.zip"/>
+		</or>
+	</condition>
+	
+	<mkdir dir="${download.dir}" />
+	
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+	
+	<target name="initialize-version" depends="version-provided,version-not-provided">
+		<property name="eplus.version.full"     value="${eplus.version}.${build.number}"/>
+		<echo message="Starting build for ${eplus.version.full}"/>
+	</target>
+
+	<target name="version-not-provided" unless="env.BUILD_NUMBER">
+		<buildnumber/>
+	</target>
+
+	<target name="version-provided" if="env.BUILD_NUMBER">
+		<property name="build.number" value="${env.BUILD_NUMBER}"/>
+	</target>
+
+	<target name="download-files" depends="download-mcp"/>
+	
+	<target name="download-ant-contrib" unless="should-download-ant-contrib">
+		<echo message="Getting: ant-contrib"/>
+		<mkdir dir="${download.dir}/tmp"/>
+
+		<get src="http://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.zip/download" dest="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip"/>
+		<get src="http://archive.apache.org/dist/commons/codec/binaries/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp/commons-codec-1.6-bin.zip"/>
+
+		<unzip src="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip" dest="${download.dir}"/>
+		<unzip src="${download.dir}/tmp/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp"/>
+
+		<move todir="${download.dir}/ant-contrib/lib">
+			<fileset file="${download.dir}/tmp/commons-codec-1.6/commons-codec-1.6.jar"/>
+		</move>
+
+		<delete dir="${download.dir}/ant-contrib/docs"/>
+		<delete dir="${download.dir}/tmp"/>
+	</target>
+
+	<target name="download-mcp" depends="download-ant-contrib" unless="mcp-exists" >
+
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<pathelement location="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
+				<fileset dir="${download.dir}/ant-contrib/lib">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</taskdef>
+
+		<getMethod url="http://dl.dropbox.com/u/33489746/FreshMCP.zip"
+				   responseDataFile="${download.dir}/FreshMCP.zip">
+			<header name="User-Agent" value="Ant-${ant.version}/${ant.java.version}"/>
+		</getMethod>
+	</target>
+	
+	<target name="setup" depends="initialize-version">	
+	
+		<unzip dest="${mcp.dir}">
+			<fileset dir="${download.dir}">
+				<include name="FreshMCP.zip"/>
+			</fileset>
+		</unzip>
+	
+		<copy todir="${mcpsrc.dir}">
+			<fileset dir="${client.dir}">
+			</fileset>
+			<fileset dir="${common.dir}">
+			</fileset>
+			<filterset>
+				<filter token="VERSION" value="${bc.version}" />
+				<filter token="BUILD_NUMBER" value="${build.number}" />
+			</filterset>
+		</copy>
+	</target>
+	
+	<target name="compile" depends="setup">
+
+		<exec dir="${mcp.dir}" executable="python">
+			<arg value="runtime/recompile.py" />
+		</exec>
+
+		<exec dir="${mcp.dir}" executable="python">
+			<arg value="runtime/reobfuscate.py" />
+		</exec>
+
+		<mkdir dir="${classes.dir}/eplus" />
+		<copy todir="${classes.dir}/eplus">
+			<fileset dir="${mcp.dir}/reobf/minecraft/eplus"/>
+		</copy>
+		
+		<copy todir="${classes.dir}">
+			<fileset dir="${resources.dir}"/>
+		</copy>
+
+	</target>
+
+	<target name="package" depends="compile">
+		<jar destfile="${jar.dir}/EnchantingPlus-${eplus.version.full}.jar" basedir="${classes.dir}"/>
+	</target>
+
+	<target name="main" depends="initialize-version,download-files,clean,package"/>
+	
+</project>
