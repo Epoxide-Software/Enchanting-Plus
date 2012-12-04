@@ -20,13 +20,6 @@
 	
 	
 	
-	<condition property="should-download-ant-contrib">
-		<or>
-			<available file="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
-			<available file="${download.dir}/minecraftforge-src-${forge.version}.zip"/>
-		</or>
-	</condition>
-	
 	<mkdir dir="${download.dir}" />
 	
 	<target name="clean">
@@ -48,38 +41,9 @@
 
 	<target name="download-files" depends="download-mcp"/>
 	
-	<target name="download-ant-contrib" unless="should-download-ant-contrib">
-		<echo message="Getting: ant-contrib"/>
-		<mkdir dir="${download.dir}/tmp"/>
-
-		<get src="http://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.zip/download" dest="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip"/>
-		<get src="http://archive.apache.org/dist/commons/codec/binaries/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp/commons-codec-1.6-bin.zip"/>
-
-		<unzip src="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip" dest="${download.dir}"/>
-		<unzip src="${download.dir}/tmp/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp"/>
-
-		<move todir="${download.dir}/ant-contrib/lib">
-			<fileset file="${download.dir}/tmp/commons-codec-1.6/commons-codec-1.6.jar"/>
-		</move>
-
-		<delete dir="${download.dir}/ant-contrib/docs"/>
-		<delete dir="${download.dir}/tmp"/>
-	</target>
-
-	<target name="download-mcp" depends="download-ant-contrib" unless="mcp-exists" >
-
-		<taskdef resource="net/sf/antcontrib/antlib.xml">
-			<classpath>
-				<pathelement location="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
-				<fileset dir="${download.dir}/ant-contrib/lib">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
-		</taskdef>
-
+	<target name="download-mcp" unless="mcp-exists" >
 		<getMethod url="http://dl.dropbox.com/u/21347544/FreshMCP.zip"
 				   responseDataFile="${download.dir}/FreshMCP.zip">
-			<header name="User-Agent" value="Ant-${ant.version}/${ant.java.version}"/>
 		</getMethod>
 	</target>
 	
