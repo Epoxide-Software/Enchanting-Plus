@@ -81,7 +81,7 @@
         
         <!-- Copy resources -->
         <copy todir="${classes.dir}">
-            <fileset dir="${resources.dir}">
+            <fileset dir="${resource.dir}">
                 <exclude name="build.xml"/>
         	</fileset>
         </copy>
