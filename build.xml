@@ -2,7 +2,7 @@
     
     <!-- Properties -->
     
-	<proptery environment="env" />
+	<property environment="env" />
     <property name="build.dir"           value="build"/>
 	<property name="common.dir"			 value="common" />
 	<property name="client.dir"			 value="client" />
