@@ -21,6 +21,8 @@
     <property name="mcp.version"         value="725"/>
     <property name="forge.version"       value="6.5.0.472"/>
     <property name="eplus.version"       value="1.12"/>
+	
+	<available property="mcp-exists" 	 file ="${download.dir}/mcp_1_4_6.zip"/>
     
     <!-- Targets -->
     
@@ -40,8 +42,10 @@
 		<property name="eplus.version.full"  value="${eplus.version}.${build.number}"/>
       
 	     <echo message="Starting build for ${eplus.version.full}"/>
-	
-		<get dest="${download.dir}/">
+		
+		<mkdir dir ="${download.dir}"/>
+		
+		<get dest="${download.dir}">
 			<url url="http://dl.dropbox.com/u/21347544/mcp_1_4_6.zip"/>
 		</get>
         
