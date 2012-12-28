@@ -41,7 +41,7 @@
       
 	     <echo message="Starting build for ${eplus.version.full}"/>
 	
-		<get dest="${download.dir}">
+		<get dest="${download.dir}/">
 			<url url="http://dl.dropbox.com/u/21347544/mcp_1_4_6.zip"/>
 		</get>
         
