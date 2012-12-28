@@ -1,12 +1,11 @@
 package eplus.client;
 
-import cpw.mods.fml.common.IScheduledTickHandler;
-import cpw.mods.fml.common.TickType;
 import java.util.EnumSet;
 
+import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.IScheduledTickHandler;
+import cpw.mods.fml.common.TickType;
 import eplus.common.Version;
-
-import net.minecraft.src.EntityPlayer;
 
 public class LatestVersionMessage implements IScheduledTickHandler
 {

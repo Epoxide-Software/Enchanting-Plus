@@ -1,13 +1,11 @@
 package eplus.common.packet;
 
 import java.io.DataInputStream;
-import java.util.ArrayList;
 
-import net.minecraft.src.Container;
-import net.minecraft.src.Enchantment;
-import net.minecraft.src.EnchantmentData;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.Slot;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import eplus.common.ContainerEnchanting;
 
 public class PacketEnchant extends PacketBase

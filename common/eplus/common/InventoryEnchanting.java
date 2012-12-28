@@ -1,6 +1,6 @@
 package eplus.common;
 
-import net.minecraft.src.InventoryBasic;
+import net.minecraft.inventory.InventoryBasic;
 
 public class InventoryEnchanting extends InventoryBasic
 {

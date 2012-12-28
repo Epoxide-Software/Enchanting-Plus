@@ -1,6 +1,6 @@
 package eplus.client;
 
-import net.minecraft.src.GuiScreen;
+import net.minecraft.client.gui.GuiScreen;
 
 public class GuiEnchantingTutorial extends GuiScreen
 {

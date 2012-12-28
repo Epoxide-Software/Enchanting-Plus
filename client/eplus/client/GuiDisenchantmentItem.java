@@ -1,8 +1,8 @@
 package eplus.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Enchantment;
-import net.minecraft.src.Gui;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.enchantment.Enchantment;
 
 import org.lwjgl.opengl.GL11;
 

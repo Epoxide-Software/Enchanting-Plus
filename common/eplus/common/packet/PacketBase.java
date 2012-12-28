@@ -4,8 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Packet250CustomPayload;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.packet.Packet250CustomPayload;
 
 public abstract class PacketBase
 {

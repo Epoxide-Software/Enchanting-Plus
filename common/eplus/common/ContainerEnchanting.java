@@ -3,21 +3,20 @@ package eplus.common;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.Container;
-import net.minecraft.src.Enchantment;
-import net.minecraft.src.EnchantmentData;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.InventoryPlayer;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.NBTTagList;
-import net.minecraft.src.Packet103SetSlot;
-import net.minecraft.src.Packet250CustomPayload;
-import net.minecraft.src.Slot;
-import net.minecraft.src.World;
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.packet.Packet103SetSlot;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.world.World;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -393,7 +392,7 @@ public class ContainerEnchanting extends Container
                 } else if (var4.size() > 0 && var5.size() > 0) {
                     for (EnchantmentItemData var6 : var4) {
                         for (EnchantmentItemData var7 : var5) {
-                            if (!var7.enchantmentobj.canEnchantItem(var1) || !var6.enchantmentobj.canApplyTogether(var7.enchantmentobj)
+                            if (!var7.enchantmentobj.canApplyAtEnchantingTable(var1) || !var6.enchantmentobj.canApplyTogether(var7.enchantmentobj)
                                     || !var7.enchantmentobj.canApplyTogether(var6.enchantmentobj)) {
                                 var3 = false;
                             }
@@ -401,7 +400,7 @@ public class ContainerEnchanting extends Container
                     }
                 } else if (var4.size() == 0 && var5.size() > 0) {
                     for (EnchantmentItemData var6 : var5) {
-                        if (!var6.enchantmentobj.canEnchantItem(var1)) {
+                        if (!var6.enchantmentobj.canApplyAtEnchantingTable(var1)) {
                             var3 = false;
                         }
                     }
@@ -429,7 +428,7 @@ public class ContainerEnchanting extends Container
                         var3 = false;
                     }
                 }
-                if (var2.canEnchantItem(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
+                if (var2.canApplyAtEnchantingTable(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
                     guiEnchantmentPlus.possibleEnchantments.add(var2);
                 }
             }

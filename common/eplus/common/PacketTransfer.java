@@ -2,9 +2,8 @@ package eplus.common;
 
 import java.io.DataInputStream;
 
-import net.minecraft.src.Container;
-import net.minecraft.src.EntityPlayerMP;
-
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import eplus.common.packet.PacketBase;
 
 public class PacketTransfer extends PacketBase

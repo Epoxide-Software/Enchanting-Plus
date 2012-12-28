@@ -1,7 +1,7 @@
 package eplus.common;
 
-import net.minecraft.src.Enchantment;
-import net.minecraft.src.EnchantmentData;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 
 public class EnchantmentItemData extends EnchantmentData
 {

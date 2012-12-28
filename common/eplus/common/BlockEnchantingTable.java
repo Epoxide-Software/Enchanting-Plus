@@ -1,10 +1,10 @@
 package eplus.common;
 
-import net.minecraft.src.BlockEnchantmentTable;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntityEnchantmentTable;
-import net.minecraft.src.World;
+import net.minecraft.block.BlockEnchantmentTable;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityEnchantmentTable;
+import net.minecraft.world.World;
 
 public class BlockEnchantingTable extends BlockEnchantmentTable
 {

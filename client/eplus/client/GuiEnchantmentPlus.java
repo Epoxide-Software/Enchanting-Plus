@@ -4,16 +4,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
 
-import net.minecraft.src.Enchantment;
-import net.minecraft.src.EnchantmentData;
-import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.GuiContainer;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.Packet250CustomPayload;
-import net.minecraft.src.Slot;
-import net.minecraft.src.World;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.world.World;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;

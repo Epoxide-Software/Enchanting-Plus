@@ -1,7 +1,7 @@
 package eplus.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Gui;
+import net.minecraft.client.gui.Gui;
 
 import org.lwjgl.opengl.GL11;
 

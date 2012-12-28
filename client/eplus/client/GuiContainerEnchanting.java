@@ -3,9 +3,9 @@ package eplus.client;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
-import net.minecraft.src.Container;
-import net.minecraft.src.EnchantmentData;
-import net.minecraft.src.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.inventory.Container;
 
 import org.lwjgl.opengl.GL11;
 
