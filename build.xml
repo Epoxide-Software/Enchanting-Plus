@@ -48,7 +48,7 @@
 		<!-- Setup MCP -->
 		<unzip dest="${mcp.dir}">
 			<fileset dir="${download.dir}">
-				<include name="FreshMCP.zip" />
+				<include name="mcp_1_4_6.zip" />
 			</fileset>
 		</unzip>
 
