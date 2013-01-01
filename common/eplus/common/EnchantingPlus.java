@@ -72,7 +72,7 @@ public class EnchantingPlus
         Block.blocksList[var2] = null;
         Item.itemsList[var2] = null;
         table = new BlockEnchantingTable(var2).setHardness(5.0F).setResistance(2000.0F).setBlockName("enchantmentTable");
-        GameRegistry.registerBlock(table);
+        GameRegistry.registerBlock(table, "enchantmentTable");
     }
 
     @ServerStopping
