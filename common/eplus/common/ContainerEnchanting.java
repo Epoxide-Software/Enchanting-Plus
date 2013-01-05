@@ -392,7 +392,7 @@ public class ContainerEnchanting extends Container
                 } else if (var4.size() > 0 && var5.size() > 0) {
                     for (EnchantmentItemData var6 : var4) {
                         for (EnchantmentItemData var7 : var5) {
-                            if (!var7.enchantmentobj.canApplyAtEnchantingTable(var1) || !var6.enchantmentobj.canApplyTogether(var7.enchantmentobj)
+                            if (!var7.enchantmentobj.func_92037_a(var1) || !var6.enchantmentobj.canApplyTogether(var7.enchantmentobj)
                                     || !var7.enchantmentobj.canApplyTogether(var6.enchantmentobj)) {
                                 var3 = false;
                             }
@@ -400,7 +400,7 @@ public class ContainerEnchanting extends Container
                     }
                 } else if (var4.size() == 0 && var5.size() > 0) {
                     for (EnchantmentItemData var6 : var5) {
-                        if (!var6.enchantmentobj.canApplyAtEnchantingTable(var1)) {
+                        if (!var6.enchantmentobj.func_92037_a(var1)) {
                             var3 = false;
                         }
                     }
@@ -428,7 +428,7 @@ public class ContainerEnchanting extends Container
                         var3 = false;
                     }
                 }
-                if (var2.canApplyAtEnchantingTable(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
+                if (var2.func_92037_a(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
                     guiEnchantmentPlus.possibleEnchantments.add(var2);
                 }
             }

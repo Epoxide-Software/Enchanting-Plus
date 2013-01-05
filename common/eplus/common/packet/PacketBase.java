@@ -7,8 +7,7 @@ import java.io.DataOutputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public abstract class PacketBase
-{
+public abstract class PacketBase {
     public EntityPlayer player;
 
     public abstract void handlePacket(DataInputStream var1) throws Exception;
@@ -16,21 +15,17 @@ public abstract class PacketBase
     public static Packet250CustomPayload createPacket(int var1, byte[] var2)
     {
         Packet250CustomPayload var3 = null;
-        try
-        {
+        try {
             ByteArrayOutputStream var4 = new ByteArrayOutputStream();
             DataOutputStream var5 = new DataOutputStream(var4);
             var5.writeInt(var1);
-            for (byte var6 : var2)
-            {
+            for (byte var6 : var2) {
                 var5.writeByte(var6);
             }
             var3 = new Packet250CustomPayload("eplus", var4.toByteArray());
             var4.close();
             var5.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return var3;
