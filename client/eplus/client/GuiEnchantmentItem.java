@@ -56,7 +56,7 @@ public class GuiEnchantmentItem extends Gui
         {
             sliderScroll = 0;
         }
-        int var4 = var1.renderEngine.getTexture("/icons.png");
+        int var4 = var1.renderEngine.getTexture("/eplus/icons.png");
         var1.renderEngine.bindTexture(var4);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         byte var5 = 0;

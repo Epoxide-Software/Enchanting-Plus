@@ -51,7 +51,7 @@ public class GuiDisenchantmentItem extends Gui {
 		}
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		int var4 = var1.renderEngine.getTexture("/icons.png");
+		int var4 = var1.renderEngine.getTexture("/eplus/icons.png");
 		var1.renderEngine.bindTexture(var4);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		byte var5 = 0;

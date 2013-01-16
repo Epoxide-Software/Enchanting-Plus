@@ -4,85 +4,98 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Properties;
 import java.util.logging.Level;
 
-public class Version
-{
+public class Version {
+
     public static final String VERSION = "@VERSION@";
     public static final String BUILD_NUMBER = "@BUILD_NUMBER@";
-    private static final String REMOTE_VERSION_FILE = "http://odin.aesireanempire.com/version.php";
+    private static final String REMOTE_VERSION_FILE = "https://raw.github.com/odininon/EnchantingPlus/tree/1.4.6/resources/version";
     public static EnumUpdateState currentVersion = EnumUpdateState.CURRENT;
-    public static final int FORGE_VERSION_MAJOR = 4;
-    public static final int FORGE_VERSION_MINOR = 0;
-    public static final int FORGE_VERSION_PATCH = 0;
 
     private static boolean updated;
     private static boolean versionCheckCompleted;
     private static String recommendedVersion;
+    private static String currentModVersion;
 
-    public static String getRecommendedVersion() {
+    public static String getRecommendedVersion()
+    {
         return recommendedVersion;
     }
 
-    public static void versionCheck() {
+    public static void versionCheck()
+    {
+
+        Properties props = new Properties();
         try {
-            String location = REMOTE_VERSION_FILE;
-            HttpURLConnection conn = null;
-            while ((location != null) && (!location.isEmpty())) {
-                URL url = new URL(location);
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("User-Agent",
-                        "Mozilla/5.0 (Windows; U; Windows NT 6.0; ru; rv:1.9.0.11) Gecko/2009060215 Firefox/3.0.11 (.NET CLR 3.5.30729)");
-                conn.connect();
-                location = conn.getHeaderField("Location");
+            URL url = new URL(REMOTE_VERSION_FILE);
+
+            InputStreamReader inputStreamReader = new InputStreamReader(url.openStream());
+
+            if (inputStreamReader != null) {
+                props.load(inputStreamReader);
+                String major = props.getProperty("eplus.major.number");
+                String minor = props.getProperty("eplus.minor.number");
+                String build = props.getProperty("eplus.build.number");
+                recommendedVersion = major + "." + minor + "." + build;
             }
+        } catch (Exception ex) {
+            Game.log(Level.WARNING, "Unable to read from remote version authority.", new Object[0]);
+            currentVersion = EnumUpdateState.CONNECTION_ERROR;
+            recommendedVersion = "0.0.0";
+            return;
+        }
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        InputStream inputStream = Version.class.getClassLoader().getResourceAsStream("version");
 
-            String line = null;
-            String mcVersion = getMinecraftVersion();
-            while ((line = reader.readLine()) != null) {
-                if ((line.startsWith(mcVersion)) && (line.contains("Eplus"))) {
-                    String[] tokens = line.split(":");
-                    recommendedVersion = tokens[2];
-
-                    if (line.endsWith(VERSION)) {
-                        FMLLog.finer("Enchanting Plus: Using the latest version for Minecraft " + mcVersion, new Object[0]);
-                        currentVersion = EnumUpdateState.CURRENT;
-                        updated = false;
-                        return;
-                    }
-                }
-
+        if (inputStream != null) {
+            try {
+                props.load(inputStream);
+                String major = props.getProperty("eplus.major.number");
+                String minor = props.getProperty("eplus.minor.number");
+                String build = props.getProperty("eplus.build.number");
+                currentModVersion = major + "." + minor + "." + build;
+            } catch (Exception ex) {
+                Game.log(Level.INFO, "Couldn't read current version", new Object[0]);
+                currentModVersion = "0.0.0";
             }
+        }
+
+        if (currentModVersion.equals(recommendedVersion)) {
+            Game.log(Level.INFO, "Using the latest version for Minecraft " + getMinecraftVersion(), new Object[0]);
+            currentVersion = EnumUpdateState.CURRENT;
+            updated = false;
+            return;
+        } else {
             Game.log(Level.INFO, "An updated version of Enchanting Plus is available: {0}", new Object[] { getRecommendedVersion() });
             currentVersion = EnumUpdateState.OUTDATED;
             updated = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            FMLLog.warning("Enchanting Plus: Unable to read from remote version authority.", new Object[0]);
-            currentVersion = EnumUpdateState.CONNECTION_ERROR;
         }
+
         versionCheckCompleted = true;
     }
 
-    public static String getMinecraftVersion() {
+    public static String getMinecraftVersion()
+    {
         return Loader.instance().getMinecraftModContainer().getVersion();
     }
 
-    public static enum EnumUpdateState
-    {
+    public static enum EnumUpdateState {
         CURRENT, OUTDATED, CONNECTION_ERROR;
     }
 
-    public static boolean hasUpdated() {
+    public static boolean hasUpdated()
+    {
         return updated;
     }
 
-    public static boolean isVersionCheckComplete() {
+    public static boolean isVersionCheckComplete()
+    {
         return versionCheckCompleted;
     }
 

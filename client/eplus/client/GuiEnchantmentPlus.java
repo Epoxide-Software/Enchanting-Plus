@@ -147,7 +147,7 @@ public class GuiEnchantmentPlus extends GuiContainer
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
-        int i = mc.renderEngine.getTexture("/enchant.png");
+        int i = mc.renderEngine.getTexture("/eplus/enchant.png");
         mc.renderEngine.bindTexture(i);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_LIGHTING);

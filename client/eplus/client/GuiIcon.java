@@ -55,7 +55,7 @@ public class GuiIcon extends Gui
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        int var4 = var1.renderEngine.getTexture("/enchant.png");
+        int var4 = var1.renderEngine.getTexture("/eplus/enchant.png");
         var1.renderEngine.bindTexture(var4);
         this.drawTexturedModalRect(xPos, yPos, 24 + index * 16, 238, width, height);
     }
