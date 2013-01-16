@@ -15,7 +15,7 @@ public class Version {
 
     public static final String VERSION = "@VERSION@";
     public static final String BUILD_NUMBER = "@BUILD_NUMBER@";
-    private static final String REMOTE_VERSION_FILE = "https://raw.github.com/odininon/EnchantingPlus/tree/1.4.6/resources/version";
+    private static final String REMOTE_VERSION_FILE = "https://raw.github.com/odininon/EnchantingPlus/1.4.6/resources/version";
     public static EnumUpdateState currentVersion = EnumUpdateState.CURRENT;
 
     private static boolean updated;
