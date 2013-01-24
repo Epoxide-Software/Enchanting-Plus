@@ -10,6 +10,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -24,8 +25,7 @@ import eplus.common.EnchantingPlus;
 import eplus.common.EnchantmentItemData;
 import eplus.common.packet.PacketBase;
 
-public class GuiEnchantmentPlus extends GuiContainer
-{
+public class GuiEnchantmentPlus extends GuiContainer {
 
     public ArrayList<GuiIcon> icons;
     public ArrayList<GuiEnchantmentItem> enchantmentItems;
@@ -45,8 +45,7 @@ public class GuiEnchantmentPlus extends GuiContainer
 
     public EntityClientPlayerMP player;
 
-    public GuiEnchantmentPlus(EntityPlayer player, World world, int x, int y, int z)
-    {
+    public GuiEnchantmentPlus(EntityPlayer player, World world, int x, int y, int z) {
         super(new ContainerEnchanting(player, world, x, y, z));
         this.player = (EntityClientPlayerMP) player;
         xSize = 209;
@@ -58,7 +57,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         disenchantmentItems = new ArrayList();
     }
 
-    public void drawScreen(int var1, int var2, float var3) {
+    public void drawScreen(int var1, int var2, float var3)
+    {
         int var4 = var1 - guiLeft;
         int var5 = var2 - guiTop;
         if (!clicked && Mouse.isButtonDown(0)) {
@@ -124,7 +124,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         super.drawScreen(var1, var2, var3);
     }
 
-    public void initGui() {
+    public void initGui()
+    {
         super.initGui();
         GuiIcon.startingX = guiLeft;
         GuiIcon.startingY = guiTop;
@@ -138,7 +139,7 @@ public class GuiEnchantmentPlus extends GuiContainer
         icons.add(new GuiIcon("Bookshelves", 6, 11, 8).setInfo("This shows the number of Bookshelves around the Enchantment Table."));
         if (EnchantingPlus.allowRepair)
             icons.add(new GuiIcon("Repair", 2, 11, 111).setButton().setInfo("This action allows you to repair a damaged enchanted item."));
-        if(EnchantingPlus.allowTransfer)
+        if (EnchantingPlus.allowTransfer)
             icons.add(new GuiIcon("Transfer", 3, 11, 128).setButton().setInfo("This action allows you to transfer enchantments from 1 item to another."));
         enchantmentItems.clear();
 
@@ -146,7 +147,8 @@ public class GuiEnchantmentPlus extends GuiContainer
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
+    {
         int i = mc.renderEngine.getTexture("/eplus/enchant.png");
         mc.renderEngine.bindTexture(i);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -180,7 +182,8 @@ public class GuiEnchantmentPlus extends GuiContainer
     }
 
     @Override
-    protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4) {
+    protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
+    {
         super.handleMouseClick(par1Slot, par2, par3, par4);
 
         if (par1Slot != null) {
@@ -188,7 +191,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         }
     }
 
-    public boolean setStack(ItemStack var2) {
+    public boolean setStack(ItemStack var2)
+    {
         if (!getContainer().canSetStack(var2)) {
             return false;
         }
@@ -202,12 +206,14 @@ public class GuiEnchantmentPlus extends GuiContainer
             return false;
         }
     }
-    
-    public void checkItems() {
+
+    public void checkItems()
+    {
         getContainer().checkItems(this);
     }
 
-    public void selectEnchantments() {
+    public void selectEnchantments()
+    {
         ArrayList var1 = new ArrayList();
         boolean var2[] = new boolean[enchantmentItems.size()];
 
@@ -253,7 +259,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         getIcon("Disenchant").enabled = var4 && getDisenchantmentCost() > 0;
     }
 
-    public GuiIcon getIcon(String s) {
+    public GuiIcon getIcon(String s)
+    {
         for (GuiIcon icon : icons) {
             if (icon.id.equals(s)) {
                 return icon;
@@ -262,10 +269,10 @@ public class GuiEnchantmentPlus extends GuiContainer
         return null;
     }
 
-    public void drawIconString(GuiIcon var1) {
+    public void drawIconString(GuiIcon var1)
+    {
         if (var1.id.equals("Enchant")) {
-            mc.fontRenderer.drawString(String.valueOf(getEnchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getEnchantmentCost()) ? 0xff0000
-                    : 0x800000);
+            mc.fontRenderer.drawString(String.valueOf(getEnchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getEnchantmentCost()) ? 0xff0000 : 0x800000);
         }
         if (var1.id.equals("Disenchant")) {
             mc.fontRenderer.drawString(String.valueOf(getDisenchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, 0x00ff00);
@@ -276,13 +283,13 @@ public class GuiEnchantmentPlus extends GuiContainer
         if (var1.id.equals("Repair")) {
             mc.fontRenderer.drawString(String.valueOf(getRepairCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getRepairCost()) ? 0xff0000 : 0x800000);
         }
-        if(var1.id.equals("Transfer"))
-        {
-                mc.fontRenderer.drawString(String.valueOf(getTransferCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getTransferCost()) ? 0xff0000 : 0x800000);
+        if (var1.id.equals("Transfer")) {
+            mc.fontRenderer.drawString(String.valueOf(getTransferCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getTransferCost()) ? 0xff0000 : 0x800000);
         }
     }
 
-    public boolean canPurchase(int var1) {
+    public boolean canPurchase(int var1)
+    {
         if (mc.playerController.isInCreativeMode()) {
             return true;
         } else {
@@ -290,7 +297,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         }
     }
 
-    public ArrayList<EnchantmentItemData> readItem(ItemStack var1) {
+    public ArrayList<EnchantmentItemData> readItem(ItemStack var1)
+    {
         if (var1 == null) {
             return new ArrayList();
         }
@@ -319,11 +327,13 @@ public class GuiEnchantmentPlus extends GuiContainer
         return list;
     }
 
-    public ContainerEnchanting getContainer() {
+    public ContainerEnchanting getContainer()
+    {
         return (ContainerEnchanting) inventorySlots;
     }
 
-    public void mouseClicked(int var1, int var2, int var3) {
+    public void mouseClicked(int var1, int var2, int var3)
+    {
         super.mouseClicked(var1, var2, var3);
         if (var3 == 0) {
             for (GuiEnchantmentItem item : enchantmentItems) {
@@ -344,7 +354,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         }
     }
 
-    public void handleMouseInput() {
+    public void handleMouseInput()
+    {
         super.handleMouseInput();
         int var1 = Mouse.getDWheel();
         int var2 = (Mouse.getEventX() * this.width / this.mc.displayWidth) - guiLeft;
@@ -402,10 +413,12 @@ public class GuiEnchantmentPlus extends GuiContainer
         }
     }
 
-    public void onGuiClosed() {
+    public void onGuiClosed()
+    {
     }
 
-    public boolean isMouseOverSection(boolean var1, int var2, int var3) {
+    public boolean isMouseOverSection(boolean var1, int var2, int var3)
+    {
         if (var1) {
             if (enchantmentItems.size() > 4) {
                 return var2 >= 35 && var2 <= 191 && var3 >= 16 && var3 <= 87;
@@ -421,7 +434,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         }
     }
 
-    public String getInfo(GuiIcon var1) {
+    public String getInfo(GuiIcon var1)
+    {
         if (var1 == null) {
             return "";
         }
@@ -436,7 +450,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         return var2;
     }
 
-    public void pressIcon(GuiIcon var1) {
+    public void pressIcon(GuiIcon var1)
+    {
         if (var1.id.equals("Enchant")) {
             ArrayList<EnchantmentData> var2 = new ArrayList();
             for (GuiEnchantmentItem var3 : enchantmentItems) {
@@ -531,10 +546,12 @@ public class GuiEnchantmentPlus extends GuiContainer
         checkItems();
     }
 
-    public void sync() {
+    public void sync()
+    {
     }
 
-    public void scrollEnchantment(float var1) {
+    public void scrollEnchantment(float var1)
+    {
         int var2 = enchantmentItems.size() - 4;
         int var3 = (int) Math.floor((double) (var1 * (float) var2));
         for (GuiEnchantmentItem item : enchantmentItems) {
@@ -547,7 +564,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         eIndex = var3;
     }
 
-    public void scrollDisenchantment(float var1) {
+    public void scrollDisenchantment(float var1)
+    {
         int var2 = disenchantmentItems.size() - 3;
         int var3 = (int) Math.floor((double) (var1 * (float) var2));
         for (GuiDisenchantmentItem item : disenchantmentItems) {
@@ -560,7 +578,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         dIndex = var3;
     }
 
-    public int getEnchantmentCost() {
+    public int getEnchantmentCost()
+    {
         ItemStack var2 = inventorySlots.getSlot(0).getStack();
         if (var2 == null) {
             return 0;
@@ -586,7 +605,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         return Math.max(1, var3);
     }
 
-    public int getDisenchantmentCost() {
+    public int getDisenchantmentCost()
+    {
         ItemStack var1 = inventorySlots.getSlot(0).getStack();
         if (var1 == null) {
             return 0;
@@ -613,7 +633,8 @@ public class GuiEnchantmentPlus extends GuiContainer
         return Math.max(1, var2 - (int) ((double) var2 * .1D));
     }
 
-    public int getRepairCost() {
+    public int getRepairCost()
+    {
         ItemStack var1 = inventorySlots.getSlot(0).getStack();
         if (var1 == null || !var1.isItemDamaged()) {
             return 0;
@@ -640,38 +661,35 @@ public class GuiEnchantmentPlus extends GuiContainer
         var2 += (int) ((double) var2 * var5);
         return Math.max(1, var2);
     }
-    
+
     public int getTransferCost()
     {
-            ItemStack var1 = inventorySlots.getSlot(1).getStack();
-            if(var1 == null)
-            {
-                    return 0;
-            }
-            int var2 = 0;
-            ArrayList<EnchantmentData> var3 = new ArrayList();
-            int aint[] = new int[Enchantment.enchantmentsList.length];
-            for(EnchantmentItemData var4 : readItem(var1))
-            {
-                    var3.add(var4);
-                    aint[var4.enchantmentobj.effectId] = var4.shelves;
-            }
-            if(var3.size() == 0)
-            {
-                    return 0;
-            }
-            for(EnchantmentData var4 : var3)
-    {
+        ItemStack var1 = inventorySlots.getSlot(1).getStack();
+        if (var1 == null) {
+            return 0;
+        }
+        int var2 = 0;
+        ArrayList<EnchantmentData> var3 = new ArrayList();
+        int aint[] = new int[Enchantment.enchantmentsList.length];
+        for (EnchantmentItemData var4 : readItem(var1)) {
+            var3.add(var4);
+            aint[var4.enchantmentobj.effectId] = var4.shelves;
+        }
+        if (var3.size() == 0) {
+            return 0;
+        }
+        for (EnchantmentData var4 : var3) {
             int var5 = getBaseCost(inventorySlots.getSlot(0).getStack(), var4);
-            double var6 = (double)aint[var4.enchantmentobj.effectId] / 64D;
-            var2 += var5 - (int)((double)var5 * var6);
+            double var6 = (double) aint[var4.enchantmentobj.effectId] / 64D;
+            var2 += var5 - (int) ((double) var5 * var6);
+        }
+        double var4 = (double) var1.getItem().getItemEnchantability() / 96D;
+        var2 -= (int) ((double) var2 * var4);
+        return Math.max(1, (int) ((double) var2 * .1D));
     }
-    double var4 = (double)var1.getItem().getItemEnchantability() / 96D;
-    var2 -= (int)((double)var2 * var4);
-    return Math.max(1, (int)((double)var2 * .1D));
-    }
-    
-    public int getBaseCost(ItemStack var1, EnchantmentData var2) {
+
+    public int getBaseCost(ItemStack var1, EnchantmentData var2)
+    {
         if (var1 == null) {
             return 0;
         }

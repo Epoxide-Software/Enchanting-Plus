@@ -14,6 +14,6 @@ public class InventoryEnchanting extends InventoryBasic
 
     public int getInventoryStackLimit()
     {
-        return 2;
+        return 1;
     }
 }

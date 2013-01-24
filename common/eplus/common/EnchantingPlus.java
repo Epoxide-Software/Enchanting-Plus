@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -21,8 +22,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = "eplus", name = "Enchanting Plus", useMetadata = true, version = Version.VERSION)
 @NetworkMod(channels = { "eplus" }, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
-public class EnchantingPlus
-{
+public class EnchantingPlus {
 
     public static final int PACKET_ID_CONFIG = 0;
     public static final int PACKET_ID_ENCHANT = 1;
@@ -34,7 +34,7 @@ public class EnchantingPlus
     public static boolean allowDisenchanting;
     public static boolean allowRepair;
     public static boolean allowTransfer;
-
+    public static boolean strictEnchant;
 
     @SidedProxy(clientSide = "eplus.client.ClientProxy", serverSide = "eplus.common.CommonProxy")
     public static CommonProxy proxy;
@@ -43,18 +43,34 @@ public class EnchantingPlus
     @Instance("eplus")
     public static EnchantingPlus instance;
 
-
     @PreInit
-    public void preInit(FMLPreInitializationEvent var1) {
+    public void preInit(FMLPreInitializationEvent var1)
+    {
         Configuration config = new Configuration(var1.getSuggestedConfigurationFile());
 
         try {
             config.load();
 
-            allowDisenchanting = config.get("general", "AllowDisenchanting", true).getBoolean(true);
-            useMod = config.get("general", "UseMod", true).getBoolean(true);
-            allowRepair = config.get("general", "AllowRepair", true).getBoolean(true);
-            allowTransfer = config.get("general", "AllowTransfer",true).getBoolean(true);
+            Property allowDisenchantingProp = config.get("general", "AllowDisenchanting", true);
+            allowDisenchantingProp.comment = "set to true if you want to allow disenchantment of items";
+            allowDisenchanting = allowDisenchantingProp.getBoolean(true);
+
+            Property useModProp = config.get("general", "UseMod", true);
+            useModProp.comment = "set to true if you want to use the mod enchantment interface instead of vanilla";
+            useMod = useModProp.getBoolean(true);
+
+            Property allowRepairProp = config.get("general", "AllowRepair", true);
+            allowRepairProp.comment = "set to true if you want to allow repair of enchanted items";
+            allowRepair = allowRepairProp.getBoolean(true);
+
+            Property allowTransferProp = config.get("general", "AllowTransfer", true);
+            allowTransferProp.comment = "set to true if you want to allow transfer of enchantments between items";
+            allowTransfer = allowTransferProp.getBoolean(true);
+
+            Property strictEnchantProp = config.get("general", "StrictEnchanting", true);
+            strictEnchantProp.comment = "set to false if you want to allow any item to recieve any enchantment. (warning may break the balance of the game)";
+            strictEnchant = strictEnchantProp.getBoolean(true);
+
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");
         } finally {
@@ -65,7 +81,8 @@ public class EnchantingPlus
     }
 
     @Init
-    public void init(FMLInitializationEvent var1) {
+    public void init(FMLInitializationEvent var1)
+    {
         NetworkRegistry.instance().registerGuiHandler(instance, proxy);
         proxy.init();
         int var2 = Block.enchantmentTable.blockID;
@@ -76,7 +93,8 @@ public class EnchantingPlus
     }
 
     @ServerStopping
-    public void onServerStopping(FMLServerStoppingEvent var1) {
+    public void onServerStopping(FMLServerStoppingEvent var1)
+    {
         // this.useMod = true;
         // this.allowDisenchanting = true;
     }

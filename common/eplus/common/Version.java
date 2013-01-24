@@ -46,6 +46,7 @@ public class Version {
             }
         } catch (Exception ex) {
             Game.log(Level.WARNING, "Unable to read from remote version authority.", new Object[0]);
+            ex.printStackTrace();
             currentVersion = EnumUpdateState.CONNECTION_ERROR;
             recommendedVersion = "0.0.0";
             return;
@@ -62,6 +63,7 @@ public class Version {
                 currentModVersion = major + "." + minor + "." + build;
             } catch (Exception ex) {
                 Game.log(Level.INFO, "Couldn't read current version", new Object[0]);
+                ex.printStackTrace();
                 currentModVersion = "0.0.0";
             }
         }
