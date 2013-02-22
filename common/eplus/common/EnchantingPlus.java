@@ -38,6 +38,9 @@ public class EnchantingPlus {
     public static boolean allowUpdateCheck; // created by Slash
     public static final int maxBookShelves = 15; // created by Slash
     public static int textureIndex = 2; // created by Slash
+    public static boolean hasLight = true; // created by Slash
+    public static boolean needBookShelves = true; // created by Slash
+    public static boolean hasParticles = true; // created by Slash
     
     @SidedProxy(clientSide = "eplus.client.ClientProxy", serverSide = "eplus.common.CommonProxy")
     public static CommonProxy proxy;
@@ -78,10 +81,22 @@ public class EnchantingPlus {
             allowUpdateCheckProp.comment = "set to true if you want to allow checking for updates"; // created by Slash
             allowUpdateCheck = allowUpdateCheckProp.getBoolean(true); // created by Slash
 
-            Property textureIndexCheckProp = config.get("general", "TextureIndex", 0); // created by Slash
+            Property textureIndexCheckProp = config.get("general", "TextureIndex", 2); // created by Slash
             textureIndexCheckProp.comment = "(0,1 or 2) index of texture to use"; // created by Slash
             textureIndex = textureIndexCheckProp.getInt(2); // created by Slash
             if (textureIndex < 0 | textureIndex > 2) textureIndex = 2;
+
+            Property allowhasLightProp = config.get("general", "hasLight", true); // created by Slash
+            allowhasLightProp.comment = "set to true if you want the Table shine like a torch"; // created by Slash
+            hasLight = allowhasLightProp.getBoolean(true); // created by Slash
+            
+            Property allowneedBookShelvesProp = config.get("general", "needBookShelves", true); // created by Slash
+            allowneedBookShelvesProp.comment = "set to true if you want the bookshelves around the table to be a must"; // created by Slash
+            needBookShelves = allowneedBookShelvesProp.getBoolean(true); // created by Slash
+
+            Property allowhasParticlesProp = config.get("general", "hasParticles", true); // created by Slash
+            allowhasParticlesProp.comment = "set to true if you want the table emitting particles (just for fun)"; // created by Slash
+            hasParticles = allowhasParticlesProp.getBoolean(true); // created by Slash
 
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");

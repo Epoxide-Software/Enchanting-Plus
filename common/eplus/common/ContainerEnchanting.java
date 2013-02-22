@@ -134,7 +134,7 @@ public class ContainerEnchanting extends Container {
             boolean var5 = var3.itemID == Item.field_92053_bW.itemID;
 
             if (!player.capabilities.isCreativeMode) {
-                player.addExperienceLevel(-var2);
+                player.addExperienceLevel(var2);
             }
 
             for (EnchantmentData var4 : var1) {
@@ -144,7 +144,7 @@ public class ContainerEnchanting extends Container {
             // book without any StoredEnchantments needs to be converted to a normal book ID
             if (var5) { // created by Slash
             	if (var3.getEnchantmentTagList() == null) {
-            		var3.itemID = Item.book.itemID;
+            		var3.itemID = Item.book.itemID;            		
             	}
             }
 
@@ -317,7 +317,7 @@ public class ContainerEnchanting extends Container {
                     return null;
                 }
             } else {
-                if (((Slot) this.inventorySlots.get(emptySlot)).getHasStack() || !((Slot) this.inventorySlots.get(emptySlot)).isItemValid(itemStack)) {
+                if (emptySlot == -1 || ((Slot) this.inventorySlots.get(emptySlot)).getHasStack() || !((Slot) this.inventorySlots.get(emptySlot)).isItemValid(itemStack)) {
                     return null;
                 }
 
@@ -505,26 +505,28 @@ public class ContainerEnchanting extends Container {
                 guiEnchantmentPlus.getIcon("Repair").enabled = guiEnchantmentPlus.canPurchase(guiEnchantmentPlus.getRepairCost());
             }
 
-            for (Enchantment var2 : Enchantment.enchantmentsList) {
-                boolean var3 = true;
-                if (var2 == null) {
-                    continue;
-                }
-                for (EnchantmentItemData var4 : guiEnchantmentPlus.readItem(var1)) {
-                    if (!var2.canApplyTogether(var4.enchantmentobj) || !var4.enchantmentobj.canApplyTogether(var2)) {
-                        var3 = false;
-                    }
-                }
-
-                if (var1.getItem().itemID == Item.book.itemID && var3) {
-                    guiEnchantmentPlus.possibleEnchantments.add(var2);
-                }
-
-                if (!EnchantingPlus.strictEnchant) {
-                    guiEnchantmentPlus.possibleEnchantments.add(var2);
-                } else if (var2.func_92037_a(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
-                    guiEnchantmentPlus.possibleEnchantments.add(var2);
-                }
+            if (var1.getItem().getItemEnchantability() > 0 | !EnchantingPlus.strictEnchant) { // this IF was created by Slash
+	            for (Enchantment var2 : Enchantment.enchantmentsList) {
+	                boolean var3 = true;
+	                if (var2 == null) {
+	                    continue;
+	                }
+	                for (EnchantmentItemData var4 : guiEnchantmentPlus.readItem(var1)) {
+	                    if (!var2.canApplyTogether(var4.enchantmentobj) || !var4.enchantmentobj.canApplyTogether(var2)) {
+	                        var3 = false;
+	                    }
+	                }
+	
+	                if (var1.getItem().itemID == Item.book.itemID && var3) {
+	                    guiEnchantmentPlus.possibleEnchantments.add(var2);
+	                }
+	
+	                if (!EnchantingPlus.strictEnchant) {
+	                    guiEnchantmentPlus.possibleEnchantments.add(var2);
+	                } else if (var2.func_92037_a(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
+	                	guiEnchantmentPlus.possibleEnchantments.add(var2); // modified by slash
+	                }
+	            }
             }
             for (int var3 = 0; var3 < guiEnchantmentPlus.possibleEnchantments.size(); var3++) {
                 guiEnchantmentPlus.enchantmentItems.add(new GuiEnchantmentItem(guiEnchantmentPlus.possibleEnchantments.get(var3), 35, 16 + var3 * 18));

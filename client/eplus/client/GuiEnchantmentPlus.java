@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
 
+import javax.jws.soap.SOAPBinding.Style;
+
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -130,7 +132,10 @@ public class GuiEnchantmentPlus extends GuiContainer {
                 item.draw = true;
             }
         }
+        
         super.drawScreen(var1, var2, var3);
+        drawPlayerXPLevel(player.experienceLevel); // created by Slash
+        
     }
 
     public void initGui()
@@ -284,15 +289,15 @@ public class GuiEnchantmentPlus extends GuiContainer {
             // when user click on slot 0 or slot 1, need to checkitems
             // when user click any other slot but with shift, need to checkitems only if slot1 is empty
         	if (par1Slot.slotNumber < 2) check = true; 
-        	if (par1Slot.slotNumber > 1 & par4 == 1) {
-        		if (!inventorySlots.getSlot(0).getHasStack())
+        	if (par1Slot.slotNumber > 1 & par4 == 1) { // trying to put something from inventory do slot 1 or 2
+        		if (!inventorySlots.getSlot(0).getHasStack() || !inventorySlots.getSlot(1).getHasStack())
         			check = true;
         	}
         } // by Slash
     	
         super.handleMouseClick(par1Slot, par2, par3, par4);
     	if (check) checkItems(); // modified by Slash
-
+    	
     }
 
     public boolean setStack(ItemStack var2)
@@ -362,7 +367,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
         getIcon("Enchant").enabled = var3 && canPurchase(getEnchantmentCost());
         //getIcon("Disenchant").enabled = var4 && getDisenchantmentCost() > 0;
         if (EnchantingPlus.allowDisenchanting) // modified by Slash
-        	getIcon("Disenchant").enabled = var4 && canPurchase(getDisenchantmentCost()); // modified by Slash
+        	getIcon("Disenchant").enabled = var4;
     }
 
     public GuiIcon getIcon(String s)
@@ -384,7 +389,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             result = "\u00a77Cost: " + (canPurchase(getEnchantmentCost()) ? yes : no) + String.valueOf(getEnchantmentCost());
         }
         if (var1.id.equals("Disenchant")) {
-        	result = "\u00a77Cost: " + (canPurchase(getEnchantmentCost()) ? yes : no) + String.valueOf(getDisenchantmentCost());
+        	result = "\u00a77Cost: " + yes + String.valueOf(getDisenchantmentCost());
         }
         if (var1.id.equals("Bookshelves")) {
         	result = "\u00a77Bookshelves: " + String.valueOf(getContainer().bookshelves) + " / " + String.valueOf(EnchantingPlus.maxBookShelves);
@@ -419,10 +424,18 @@ public class GuiEnchantmentPlus extends GuiContainer {
         }
     }*/
 
+    public void drawPlayerXPLevel(int var1) // created by Slash
+    {
+    	String text = "Player XP Level: " + String.valueOf(var1);
+    	mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 )+1, guiTop + 5+1, 0xFF000000);
+    	mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 ), guiTop + 5, 0xFF00FF00);
+    }
+    
     public boolean canPurchase(int var1)
     {
     	int maxLevel = (int)((float)getContainer().bookshelves / (float)EnchantingPlus.maxBookShelves * 30F); // created by Slash
     	if (getContainer().bookshelves>=EnchantingPlus.maxBookShelves) maxLevel = mc.thePlayer.experienceLevel; // created by Slash
+    	if (!EnchantingPlus.needBookShelves) maxLevel = var1 + 1; // created by Slash
     	
         if (mc.playerController.isInCreativeMode()) {
             return true;
