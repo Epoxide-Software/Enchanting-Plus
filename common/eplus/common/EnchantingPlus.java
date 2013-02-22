@@ -35,7 +35,10 @@ public class EnchantingPlus {
     public static boolean allowRepair;
     public static boolean allowTransfer;
     public static boolean strictEnchant;
-
+    public static boolean allowUpdateCheck; // created by Slash
+    public static final int maxBookShelves = 15; // created by Slash
+    public static int textureIndex = 2; // created by Slash
+    
     @SidedProxy(clientSide = "eplus.client.ClientProxy", serverSide = "eplus.common.CommonProxy")
     public static CommonProxy proxy;
 
@@ -71,13 +74,22 @@ public class EnchantingPlus {
             strictEnchantProp.comment = "set to false if you want to allow any item to recieve any enchantment. (warning may break the balance of the game)";
             strictEnchant = strictEnchantProp.getBoolean(true);
 
+            Property allowUpdateCheckProp = config.get("general", "AllowUpdateCheck", true); // created by Slash
+            allowUpdateCheckProp.comment = "set to true if you want to allow checking for updates"; // created by Slash
+            allowUpdateCheck = allowUpdateCheckProp.getBoolean(true); // created by Slash
+
+            Property textureIndexCheckProp = config.get("general", "TextureIndex", 0); // created by Slash
+            textureIndexCheckProp.comment = "(0,1 or 2) index of texture to use"; // created by Slash
+            textureIndex = textureIndexCheckProp.getInt(2); // created by Slash
+            if (textureIndex < 0 | textureIndex > 2) textureIndex = 2;
+
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");
         } finally {
             config.save();
         }
 
-        Version.versionCheck();
+        if (allowUpdateCheck) Version.versionCheck();  // modified by Slash
     }
 
     @Init
@@ -97,5 +109,12 @@ public class EnchantingPlus {
     {
         // this.useMod = true;
         // this.allowDisenchanting = true;
+    }
+    
+    public static String getTranslatedTextureIndex() {
+    	if (textureIndex == 0)
+    		return "";
+    	else
+    		return String.valueOf(textureIndex);
     }
 }

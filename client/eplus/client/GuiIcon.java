@@ -5,30 +5,21 @@ import net.minecraft.client.gui.Gui;
 
 import org.lwjgl.opengl.GL11;
 
+import eplus.common.EnchantingPlus;
+
 public class GuiIcon extends Gui
 {
     public String     id;
-
     public static int startingX;
-
     public static int startingY;
-
     public int        index;
-
     public int        xPos;
-
     public int        yPos;
-
     public int        width;
-
     public int        height;
-
     public boolean    draw;
-
     public boolean    enabled;
-
     public boolean    isButton;
-
     public String     info = "";
 
     public GuiIcon(String var1, int var2, int var3, int var4)
@@ -55,14 +46,14 @@ public class GuiIcon extends Gui
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        int var4 = var1.renderEngine.getTexture("/eplus/enchant.png");
+        int var4 = var1.renderEngine.getTexture("/eplus/enchant" + EnchantingPlus.getTranslatedTextureIndex() + ".png");
         var1.renderEngine.bindTexture(var4);
         this.drawTexturedModalRect(xPos, yPos, 24 + index * 16, 238, width, height);
     }
 
     public boolean isMouseOver(int var1, int var2)
     {
-        return draw && var1 >= xPos && var2 >= yPos && var1 < xPos + width && var2 < yPos + height;
+    	return draw && var1 >= xPos && var2 >= yPos && var1 < xPos + width && var2 < yPos + height;
     }
 
     public boolean canClick()

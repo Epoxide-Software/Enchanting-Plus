@@ -6,29 +6,20 @@ import net.minecraft.enchantment.Enchantment;
 
 import org.lwjgl.opengl.GL11;
 
+import eplus.common.EnchantingPlus;
+
 public class GuiDisenchantmentItem extends Gui {
 	public static int startingX;
-
 	public static int startingY;
-
 	public Enchantment type;
-
 	public int level;
-
 	public int hiddenLevel;
-
 	public int shelves;
-
 	public int xPos;
-
 	public int yPos;
-
 	public int width;
-
 	public int height;
-
 	public boolean draw;
-
 	public boolean enabled;
 
 	public GuiDisenchantmentItem(Enchantment var1, int var2, int var3,
@@ -51,7 +42,7 @@ public class GuiDisenchantmentItem extends Gui {
 		}
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		int var4 = var1.renderEngine.getTexture("/eplus/icons.png");
+		int var4 = var1.renderEngine.getTexture("/eplus/icons" + EnchantingPlus.getTranslatedTextureIndex() + ".png");
 		var1.renderEngine.bindTexture(var4);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		byte var5 = 0;

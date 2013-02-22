@@ -6,6 +6,8 @@ import net.minecraft.enchantment.Enchantment;
 
 import org.lwjgl.opengl.GL11;
 
+import eplus.common.EnchantingPlus;
+
 public class GuiEnchantmentItem extends Gui
 {
     public static int  startingX;
@@ -56,7 +58,7 @@ public class GuiEnchantmentItem extends Gui
         {
             sliderScroll = 0;
         }
-        int var4 = var1.renderEngine.getTexture("/eplus/icons.png");
+        int var4 = var1.renderEngine.getTexture("/eplus/icons" + EnchantingPlus.getTranslatedTextureIndex() + ".png");
         var1.renderEngine.bindTexture(var4);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         byte var5 = 0;

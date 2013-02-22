@@ -15,6 +15,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -87,14 +88,14 @@ public class ContainerEnchanting extends Container {
 
         if (!this.gameWorld.isRemote && var3 != null) {
 
-            boolean var5 = var3.itemID == Item.book.shiftedIndex;
+            boolean var5 = var3.itemID == Item.book.itemID;
 
             if (!player.capabilities.isCreativeMode) {
                 player.addExperienceLevel(-var2);
             }
 
             if (var5) {
-                var3.itemID = Item.field_92053_bW.shiftedIndex;
+                var3.itemID = Item.field_92053_bW.itemID;
             }
 
             for (EnchantmentData var4 : var1) {
@@ -119,7 +120,8 @@ public class ContainerEnchanting extends Container {
     public void putStackInSlot(int par1, ItemStack par2ItemStack)
     {
         super.putStackInSlot(par1, par2ItemStack);
-        checkItems(guiEnchantmentPlus);
+        if (par1 == 0 | par1 == 1) // modified by Slash
+        	checkItems(guiEnchantmentPlus);
     }
 
     public void doDisenchant(EntityPlayer player, EnchantmentData[] var1, int var2)
@@ -129,14 +131,21 @@ public class ContainerEnchanting extends Container {
 
         if (!this.gameWorld.isRemote && var3 != null) {
 
-            boolean var5 = var3.itemID == Item.field_92053_bW.shiftedIndex;
+            boolean var5 = var3.itemID == Item.field_92053_bW.itemID;
 
             if (!player.capabilities.isCreativeMode) {
-                player.addExperienceLevel(var2);
+                player.addExperienceLevel(-var2);
             }
 
             for (EnchantmentData var4 : var1) {
                 removeEnchantment(var4, var3);
+            }
+            
+            // book without any StoredEnchantments needs to be converted to a normal book ID
+            if (var5) { // created by Slash
+            	if (var3.getEnchantmentTagList() == null) {
+            		var3.itemID = Item.book.itemID;
+            	}
             }
 
         }
@@ -149,6 +158,7 @@ public class ContainerEnchanting extends Container {
         if (var2.stackTagCompound == null) {
             var2.setTagCompound(new NBTTagCompound());
         }
+        
         if (!var2.stackTagCompound.hasKey("ench")) {
             var2.stackTagCompound.setTag("ench", new NBTTagList("ench"));
         }
@@ -160,16 +170,32 @@ public class ContainerEnchanting extends Container {
         var3.appendTag(var4);
     }
 
+    // items have "ench", but books have "StoredEnchantment"
+    private String getEnchantmentSearchWord(ItemStack var2) { // created by Slash
+    	String enchantWord = "";
+    	
+    	if (var2.stackTagCompound != null) {
+    		if (var2.stackTagCompound.hasKey("ench")) enchantWord = "ench";
+    		if (var2.stackTagCompound.hasKey("StoredEnchantments")) enchantWord = "StoredEnchantments";
+    	}
+    	
+    	return enchantWord;
+    }
+    
     public void removeEnchantment(EnchantmentData var1, ItemStack var2)
     {
         if (var2.stackTagCompound == null) {
             return;
         }
-        if (!var2.stackTagCompound.hasKey("ench")) {
-            return;
-        }
+        
+        String wordSearch = getEnchantmentSearchWord(var2); // modified by Slash
+        if (wordSearch == "") return; // modified by Slash
+        
+        //if (!var2.stackTagCompound.hasKey("ench")) return  // modified by Slash
+
         NBTTagList var3 = new NBTTagList();
-        NBTTagList var4 = var2.stackTagCompound.getTagList("ench");
+        //NBTTagList var4 = var2.stackTagCompound.getTagList("ench");
+        NBTTagList var4 = var2.stackTagCompound.getTagList(wordSearch);
         for (int var5 = 0; var5 < var4.tagCount(); var5++) {
             NBTTagCompound var6 = (NBTTagCompound) var4.tagAt(var5);
             short var7 = var6.getShort("id");
@@ -179,10 +205,12 @@ public class ContainerEnchanting extends Container {
             }
         }
         if (var3.tagCount() > 0) {
-            var2.stackTagCompound.setTag("ench", var3);
+            //var2.stackTagCompound.setTag("ench", var3);
+        	var2.stackTagCompound.setTag(wordSearch, var3); // modified by Slash
         } else {
             HashMap var5 = ReflectionHelper.getPrivateValue(NBTTagCompound.class, var2.stackTagCompound, 0);
-            var5.remove("ench");
+            //var5.remove("ench");
+            var5.remove(wordSearch);
             ReflectionHelper.setPrivateValue(NBTTagCompound.class, var2.stackTagCompound, var5, 0);
         }
     }
@@ -266,44 +294,53 @@ public class ContainerEnchanting extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotNum)
     {
         ItemStack var2 = null;
-        Slot var3 = (Slot) this.inventorySlots.get(par1);
+        Slot itemSlot = (Slot) this.inventorySlots.get(slotNum);
+        int emptySlot = -1;
+        
+        if (! ((Slot) this.inventorySlots.get(0)).getHasStack() )
+        	emptySlot = 0;
+        else {
+        	if (! ((Slot) this.inventorySlots.get(1)).getHasStack() )
+        		emptySlot = 1;
+        }
+        
+        if (itemSlot != null && itemSlot.getHasStack()) {
+            ItemStack itemStack = itemSlot.getStack();
+            var2 = itemStack.copy();
 
-        if (var3 != null && var3.getHasStack()) {
-            ItemStack var4 = var3.getStack();
-            var2 = var4.copy();
-
-            if (par1 == 0) {
-                if (!this.mergeItemStack(var4, 1, 37, true)) {
+            if (slotNum == 0 | slotNum == 1) {
+                //if (!this.mergeItemStack(itemStack, 1, 37, true)) {
+            	if (!this.mergeItemStack(itemStack, 1, 38, true)) { // modified by Slash
                     return null;
                 }
             } else {
-                if (((Slot) this.inventorySlots.get(0)).getHasStack() || !((Slot) this.inventorySlots.get(0)).isItemValid(var4)) {
+                if (((Slot) this.inventorySlots.get(emptySlot)).getHasStack() || !((Slot) this.inventorySlots.get(emptySlot)).isItemValid(itemStack)) {
                     return null;
                 }
 
-                if (var4.hasTagCompound() && var4.stackSize == 1) {
-                    ((Slot) this.inventorySlots.get(0)).putStack(var4.copy());
-                    var4.stackSize = 0;
-                } else if (var4.stackSize >= 1) {
-                    ((Slot) this.inventorySlots.get(0)).putStack(new ItemStack(var4.itemID, 1, var4.getItemDamage()));
-                    --var4.stackSize;
+                if (itemStack.hasTagCompound() && itemStack.stackSize == 1) {
+                    ((Slot) this.inventorySlots.get(emptySlot)).putStack(itemStack.copy());
+                    itemStack.stackSize = 0;
+                } else if (itemStack.stackSize >= 1) {
+                    ((Slot) this.inventorySlots.get(emptySlot)).putStack(new ItemStack(itemStack.itemID, 1, itemStack.getItemDamage()));
+                    --itemStack.stackSize;
                 }
             }
 
-            if (var4.stackSize == 0) {
-                var3.putStack((ItemStack) null);
+            if (itemStack.stackSize == 0) {
+                itemSlot.putStack((ItemStack) null);
             } else {
-                var3.onSlotChanged();
+                itemSlot.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize) {
+            if (itemStack.stackSize == var2.stackSize) {
                 return null;
             }
 
-            var3.onPickupFromSlot(par1EntityPlayer, var4);
+            itemSlot.onPickupFromSlot(par1EntityPlayer, itemStack);
         }
 
         return var2;
@@ -364,9 +401,12 @@ public class ContainerEnchanting extends Container {
     public void transfer(ItemStack stack, ItemStack stack2, EntityPlayerMP playerEntity, int transferCost)
     {
 
-        ItemStack itemStack = (ItemStack) this.inventoryItemStacks.get(0);
-        ItemStack itemStack1 = (ItemStack) this.inventoryItemStacks.get(1);
+        //ItemStack itemStack = (ItemStack) this.inventoryItemStacks.get(0);
+        //ItemStack itemStack1 = (ItemStack) this.inventoryItemStacks.get(1);
 
+    	ItemStack itemStack = stack; // modified by Slash
+    	ItemStack itemStack1 = stack2; // modified by Slash
+    	
         if (!this.gameWorld.isRemote) {
             if (!player.capabilities.isCreativeMode) {
                 player.addExperienceLevel(-transferCost);
@@ -386,6 +426,9 @@ public class ContainerEnchanting extends Container {
             for (EnchantmentData data : list) {
                 addEnchantment(data, itemStack);
             }
+            
+            playerEntity.sendSlotContents(this, 0, itemStack); // modified by Slash
+            playerEntity.sendSlotContents(this, 1, itemStack1); // modified by Slash
         }
     }
 
@@ -403,7 +446,8 @@ public class ContainerEnchanting extends Container {
         guiEnchantmentPlus.enchantmentItems.clear();
         guiEnchantmentPlus.disenchantmentItems.clear();
         guiEnchantmentPlus.getIcon("Enchant").enabled = false;
-        guiEnchantmentPlus.getIcon("Disenchant").enabled = false;
+        if (EnchantingPlus.allowDisenchanting) // modified by Slash
+        	guiEnchantmentPlus.getIcon("Disenchant").enabled = false;
         if (EnchantingPlus.allowRepair)
             guiEnchantmentPlus.getIcon("Repair").enabled = false;
         if (EnchantingPlus.allowTransfer)
@@ -444,7 +488,7 @@ public class ContainerEnchanting extends Container {
                 }
             }
 
-            if (var1.itemID == Item.field_92053_bW.shiftedIndex) {
+            if (var1.itemID == Item.field_92053_bW.itemID) {
                 Map var20 = EnchantmentHelper.getEnchantments(var1);
                 Iterator var27 = var20.keySet().iterator();
 
@@ -457,7 +501,7 @@ public class ContainerEnchanting extends Container {
                 }
             }
 
-            if (var1.isItemDamaged() && var1.isItemEnchanted()) {
+            if (EnchantingPlus.allowRepair && var1.isItemDamaged() && var1.isItemEnchanted()) { // modified by Slash
                 guiEnchantmentPlus.getIcon("Repair").enabled = guiEnchantmentPlus.canPurchase(guiEnchantmentPlus.getRepairCost());
             }
 
@@ -472,7 +516,7 @@ public class ContainerEnchanting extends Container {
                     }
                 }
 
-                if (var1.getItem().shiftedIndex == Item.book.shiftedIndex && var3) {
+                if (var1.getItem().itemID == Item.book.itemID && var3) {
                     guiEnchantmentPlus.possibleEnchantments.add(var2);
                 }
 
@@ -493,4 +537,5 @@ public class ContainerEnchanting extends Container {
 
     }
 
+    
 }

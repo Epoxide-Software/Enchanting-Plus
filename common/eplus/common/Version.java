@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -15,7 +16,7 @@ public class Version {
 
     public static final String VERSION = "@VERSION@";
     public static final String BUILD_NUMBER = "@BUILD_NUMBER@";
-    private static final String REMOTE_VERSION_FILE = "https://raw.github.com/odininon/EnchantingPlus/1.4.6/resources/version";
+    private static final String REMOTE_VERSION_FILE = "https://raw.github.com/odininon/EnchantingPlus/master/resources/version";//"https://raw.github.com/odininon/EnchantingPlus/1.4.6/resources/version";
     public static EnumUpdateState currentVersion = EnumUpdateState.CURRENT;
 
     private static boolean updated;

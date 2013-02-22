@@ -3,9 +3,15 @@ package eplus.client;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.logging.Level;
 
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,11 +24,13 @@ import net.minecraft.world.World;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.common.ContainerEnchanting;
 import eplus.common.EnchantingPlus;
 import eplus.common.EnchantmentItemData;
+import eplus.common.Game;
 import eplus.common.packet.PacketBase;
 
 public class GuiEnchantmentPlus extends GuiContainer {
@@ -64,9 +72,9 @@ public class GuiEnchantmentPlus extends GuiContainer {
         if (!clicked && Mouse.isButtonDown(0)) {
             if (var4 >= 180 && var4 <= 192) {
                 if (var5 >= 16 && var5 <= 88 && enchantmentItems.size() > 4) {
-                    isEScrolling = true;
+                    isEScrolling = true; // up scroll
                 } else if (var5 >= 90 && var5 <= 144 && disenchantmentItems.size() > 3) {
-                    isDScrolling = true;
+                    isDScrolling = true; // down scroll
                 }
             }
             for (GuiEnchantmentItem item : enchantmentItems) {
@@ -104,6 +112,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             }
             scrollDisenchantment(dScroll);
         }
+        // slider adjust of each enchantment
         for (GuiEnchantmentItem item : enchantmentItems) {
             if (item.yPos < guiTop + 16 || item.yPos > guiTop + 87) {
                 item.draw = false;
@@ -134,13 +143,14 @@ public class GuiEnchantmentPlus extends GuiContainer {
         GuiDisenchantmentItem.startingX = guiLeft;
         GuiDisenchantmentItem.startingY = guiTop;
         icons.clear();
-        icons.add(new GuiIcon("Enchant", 0, 11, 77).setButton().setInfo("This action allows you to selectivly add Enchantments to a item."));
-        icons.add(new GuiIcon("Disenchant", 1, 11, 94).setButton().setInfo("This action allows you to selectivly remove Enchantments to a item."));
-        icons.add(new GuiIcon("Bookshelves", 6, 11, 8).setInfo("This shows the number of Bookshelves around the Enchantment Table."));
+        icons.add(new GuiIcon("Enchant", 0, 11, 77).setButton().setInfo("Add Enchantments"));
+        if (EnchantingPlus.allowDisenchanting) // modified by Slash
+        	icons.add(new GuiIcon("Disenchant", 1, 11, 94).setButton().setInfo("Remove Enchantments"));
+        icons.add(new GuiIcon("Bookshelves", 6, 11, 8).setInfo("Number of Bookshelves around the Enchantment Table."));
         if (EnchantingPlus.allowRepair)
-            icons.add(new GuiIcon("Repair", 2, 11, 111).setButton().setInfo("This action allows you to repair a damaged enchanted item."));
+            icons.add(new GuiIcon("Repair", 2, 11, 111).setButton().setInfo("Repair a damaged enchanted item."));
         if (EnchantingPlus.allowTransfer)
-            icons.add(new GuiIcon("Transfer", 3, 11, 128).setButton().setInfo("This action allows you to transfer enchantments from 1 item to another."));
+            icons.add(new GuiIcon("Transfer", 3, 11, 128).setButton().setInfo("Transfer enchantments from items"));
         enchantmentItems.clear();
 
         checkItems();
@@ -149,7 +159,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
-        int i = mc.renderEngine.getTexture("/eplus/enchant.png");
+        int i = mc.renderEngine.getTexture("/eplus/enchant" + EnchantingPlus.getTranslatedTextureIndex() + ".png");
         mc.renderEngine.bindTexture(i);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -164,31 +174,125 @@ public class GuiEnchantmentPlus extends GuiContainer {
         }
         for (GuiIcon icon : icons) {
             icon.draw(mc, var2, var3);
-            if (icon.isMouseOver(var2, var3)) {
+            /*if (icon.isMouseOver(var2, var3)) { // modified by Slash
                 drawIconString(icon);
-            }
+            }*/
         }
         // System.out.println((var2 - guiLeft)+"."+(var3 - guiTop));
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         for (GuiIcon icon : icons) {
             if (icon.isMouseOver(var2, var3)) {
-                drawGradientRect(guiLeft - 100, guiTop, guiLeft - 4, guiTop + ySize, -2130706433, -2130706433);
-                mc.fontRenderer.drawSplitString(getInfo(icon), guiLeft - 96, guiTop + 4, 92, 0x444444);
+                //drawGradientRect(guiLeft - 100, guiTop, guiLeft - 4, guiTop + ySize, -2130706433, -2130706433); // modified by Slash
+            	//mc.fontRenderer.drawSplitString(getInfo(icon), guiLeft - 96, guiTop + 4, 92, 0x444444); // modified by Slash
+            	drawTooltip(getStringLines(getInfo(icon)), var2, var3); // modified by Slash
             }
         }
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
+    
+    // created by Slash
+    protected void drawTooltip(ArrayList<String> var4, int x, int y)
+    {
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
 
+        if (!var4.isEmpty())
+        {
+            int var5 = 0;
+            int var6;
+            int var7;
+
+            for (var6 = 0; var6 < var4.size(); ++var6)
+            {
+                var7 = this.fontRenderer.getStringWidth((String)var4.get(var6));
+
+                if (var7 > var5)
+                {
+                    var5 = var7;
+                }
+            }
+
+            var6 = x + 12;
+            var7 = y - var4.size() * this.fontRenderer.FONT_HEIGHT; // modified by Slash
+            if (var7 < 12) var7 = 12; // modified by Slash
+            
+            int var9 = 8;
+
+            if (var4.size() > 1)
+            {
+                var9 += 2 + (var4.size() - 1) * 10;
+            }
+
+            if (this.guiTop + var7 + var9 + 6 > this.height)
+            {
+                var7 = this.height - var9 - this.guiTop - 6;
+            }
+
+            this.zLevel = 300.0F;
+            itemRenderer.zLevel = 300.0F;
+            int var10 = -267386864;
+            this.drawGradientRect(var6 - 3, var7 - 4, var6 + var5 + 3, var7 - 3, var10, var10);
+            this.drawGradientRect(var6 - 3, var7 + var9 + 3, var6 + var5 + 3, var7 + var9 + 4, var10, var10);
+            this.drawGradientRect(var6 - 3, var7 - 3, var6 + var5 + 3, var7 + var9 + 3, var10, var10);
+            this.drawGradientRect(var6 - 4, var7 - 3, var6 - 3, var7 + var9 + 3, var10, var10);
+            this.drawGradientRect(var6 + var5 + 3, var7 - 3, var6 + var5 + 4, var7 + var9 + 3, var10, var10);
+            int var11 = 1347420415;
+            int var12 = (var11 & 16711422) >> 1 | var11 & -16777216;
+            this.drawGradientRect(var6 - 3, var7 - 3 + 1, var6 - 3 + 1, var7 + var9 + 3 - 1, var11, var12);
+            this.drawGradientRect(var6 + var5 + 2, var7 - 3 + 1, var6 + var5 + 3, var7 + var9 + 3 - 1, var11, var12);
+            this.drawGradientRect(var6 - 3, var7 - 3, var6 + var5 + 3, var7 - 3 + 1, var11, var11);
+            this.drawGradientRect(var6 - 3, var7 + var9 + 2, var6 + var5 + 3, var7 + var9 + 3, var12, var12);
+
+            for (int var13 = 0; var13 < var4.size(); ++var13)
+            {
+                String var14 = (String)var4.get(var13);
+
+                if (var13 == 0)
+                {
+                    var14 = "\u00a73" + var14;
+                }
+                else
+                {
+                    var14 = "\u00a77" + var14;
+                }
+
+                this.fontRenderer.drawStringWithShadow(var14, var6, var7, -1);
+
+                if (var13 == 0)
+                {
+                    var7 += 2;
+                }
+
+                var7 += 10;
+            }
+
+            this.zLevel = 0.0F;
+            itemRenderer.zLevel = 0.0F;
+        }
+    }
+    
     @Override
     protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
-        super.handleMouseClick(par1Slot, par2, par3, par4);
-
+    	// created by Slash
+    	boolean check = false;
         if (par1Slot != null) {
-            checkItems();
-        }
+            // when user click on slot 0 or slot 1, need to checkitems
+            // when user click any other slot but with shift, need to checkitems only if slot1 is empty
+        	if (par1Slot.slotNumber < 2) check = true; 
+        	if (par1Slot.slotNumber > 1 & par4 == 1) {
+        		if (!inventorySlots.getSlot(0).getHasStack())
+        			check = true;
+        	}
+        } // by Slash
+    	
+        super.handleMouseClick(par1Slot, par2, par3, par4);
+    	if (check) checkItems(); // modified by Slash
+
     }
 
     public boolean setStack(ItemStack var2)
@@ -256,7 +360,9 @@ public class GuiEnchantmentPlus extends GuiContainer {
             }
         }
         getIcon("Enchant").enabled = var3 && canPurchase(getEnchantmentCost());
-        getIcon("Disenchant").enabled = var4 && getDisenchantmentCost() > 0;
+        //getIcon("Disenchant").enabled = var4 && getDisenchantmentCost() > 0;
+        if (EnchantingPlus.allowDisenchanting) // modified by Slash
+        	getIcon("Disenchant").enabled = var4 && canPurchase(getDisenchantmentCost()); // modified by Slash
     }
 
     public GuiIcon getIcon(String s)
@@ -269,13 +375,38 @@ public class GuiEnchantmentPlus extends GuiContainer {
         return null;
     }
 
+    private String getCostString(GuiIcon var1){
+    	String result = "";
+    	String no = "\u00a74"; // red
+    	String yes = "\u00a79"; // indigo
+    	
+        if (var1.id.equals("Enchant")) {
+            result = "\u00a77Cost: " + (canPurchase(getEnchantmentCost()) ? yes : no) + String.valueOf(getEnchantmentCost());
+        }
+        if (var1.id.equals("Disenchant")) {
+        	result = "\u00a77Cost: " + (canPurchase(getEnchantmentCost()) ? yes : no) + String.valueOf(getDisenchantmentCost());
+        }
+        if (var1.id.equals("Bookshelves")) {
+        	result = "\u00a77Bookshelves: " + String.valueOf(getContainer().bookshelves) + " / " + String.valueOf(EnchantingPlus.maxBookShelves);
+        }
+        if (var1.id.equals("Repair")) {
+        	result = "\u00a77Cost: " + (canPurchase(getRepairCost()) ? yes : no) + String.valueOf(getRepairCost());
+        }
+        if (var1.id.equals("Transfer")) {
+        	result = "\u00a77Cost: " + (canPurchase(getTransferCost()) ? yes : no) + String.valueOf(getTransferCost());
+        }
+        return result;
+    }
+    
+    /* modified by Slash
     public void drawIconString(GuiIcon var1)
     {
         if (var1.id.equals("Enchant")) {
             mc.fontRenderer.drawString(String.valueOf(getEnchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getEnchantmentCost()) ? 0xff0000 : 0x800000);
         }
         if (var1.id.equals("Disenchant")) {
-            mc.fontRenderer.drawString(String.valueOf(getDisenchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, 0x00ff00);
+        	mc.fontRenderer.drawString(String.valueOf(getDisenchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getEnchantmentCost()) ? 0xff0000 : 0x800000); // modified by Slash
+            //mc.fontRenderer.drawString(String.valueOf(getDisenchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, 0x00ff00);
         }
         if (var1.id.equals("Bookshelves")) {
             mc.fontRenderer.drawString(String.valueOf(getContainer().bookshelves), var1.xPos + 16 + 1, var1.yPos + 4, 0x00ff00);
@@ -286,14 +417,21 @@ public class GuiEnchantmentPlus extends GuiContainer {
         if (var1.id.equals("Transfer")) {
             mc.fontRenderer.drawString(String.valueOf(getTransferCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getTransferCost()) ? 0xff0000 : 0x800000);
         }
-    }
+    }*/
 
     public boolean canPurchase(int var1)
     {
+    	int maxLevel = (int)((float)getContainer().bookshelves / (float)EnchantingPlus.maxBookShelves * 30F); // created by Slash
+    	if (getContainer().bookshelves>=EnchantingPlus.maxBookShelves) maxLevel = mc.thePlayer.experienceLevel; // created by Slash
+    	
         if (mc.playerController.isInCreativeMode()) {
             return true;
         } else {
-            return mc.thePlayer.experienceLevel >= var1 && var1 > 0;
+            //return mc.thePlayer.experienceLevel >= var1 && var1 > 0; // modified by Slash
+        	if (mc.thePlayer.experienceLevel >= var1 && var1 > 0) {
+        		return var1 <= maxLevel;
+        	}
+        	return false;
         }
     }
 
@@ -434,6 +572,19 @@ public class GuiEnchantmentPlus extends GuiContainer {
         }
     }
 
+    // created by Slash
+    public ArrayList getStringLines(String text) {
+    	ArrayList<String> list = new ArrayList<String>();
+    	text += "\n";
+    	
+    	while (!text.isEmpty()) {
+    		list.add(text.substring(0, text.indexOf('\n')));
+    		text = text.substring(text.indexOf('\n')+1);
+    	}
+    	
+    	return list;
+    }
+    
     public String getInfo(GuiIcon var1)
     {
         if (var1 == null) {
@@ -445,8 +596,15 @@ public class GuiEnchantmentPlus extends GuiContainer {
         if (var1.isButton) {
             var2 += "Can use: " + var1.getTranslatedEnabled();
             var2 += "\n";
+            var2 += getCostString(var1);
+            var2 += "\n";
         }
-        var2 += var1.info;
+        else{
+            var2 += getCostString(var1);
+            var2 += "\n";
+        }
+        	
+        var2 += "\u00a77" + var1.info;
         return var2;
     }
 
@@ -483,7 +641,8 @@ public class GuiEnchantmentPlus extends GuiContainer {
 
             }
         }
-        if (var1.id.equals("Disenchant")) {
+        //if (var1.id.equals("Disenchant")) { // modified by Slash
+        if (var1.id.equals("Disenchant") && EnchantingPlus.allowDisenchanting) {
             ArrayList<EnchantmentData> var2 = new ArrayList();
             for (GuiDisenchantmentItem var3 : disenchantmentItems) {
                 if (var3.level > 0) {

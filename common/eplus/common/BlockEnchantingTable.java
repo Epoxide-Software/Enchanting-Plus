@@ -2,6 +2,7 @@ package eplus.common;
 
 import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.world.World;
@@ -30,7 +31,7 @@ public class BlockEnchantingTable extends BlockEnchantmentTable
         {
             if (EnchantingPlus.useMod)
             {
-                var5.openGui(EnchantingPlus.instance, 0, var1, var2, var3, var4);
+           		var5.openGui(EnchantingPlus.instance, 0, var1, var2, var3, var4);
             }
             else
             {

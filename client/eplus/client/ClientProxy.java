@@ -1,14 +1,19 @@
 package eplus.client;
 
+import com.google.common.eventbus.AllowConcurrentEvents;
+
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import eplus.common.CommonProxy;
+import eplus.common.EnchantingPlus;
 
 public class ClientProxy extends CommonProxy
 {
 
     @Override
     public void init() {
-        TickRegistry.registerScheduledTickHandler(new LatestVersionMessage(), Side.CLIENT);
+    	if (EnchantingPlus.allowUpdateCheck) {
+    		TickRegistry.registerScheduledTickHandler(new LatestVersionMessage(), Side.CLIENT);
+    	}
     }
 }
