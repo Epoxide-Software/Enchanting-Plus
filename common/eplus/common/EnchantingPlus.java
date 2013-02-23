@@ -1,5 +1,6 @@
 package eplus.common;
 
+import java.lang.reflect.Field;
 import java.util.logging.Level;
 
 import net.minecraft.block.Block;
@@ -41,6 +42,11 @@ public class EnchantingPlus {
     public static boolean hasLight = true; // created by Slash
     public static boolean needBookShelves = true; // created by Slash
     public static boolean hasParticles = true; // created by Slash
+
+    public static double enchantFactor;
+    public static double disenchantFactor;
+    public static double transferFactor;
+    public static double repairFactor;
     
     @SidedProxy(clientSide = "eplus.client.ClientProxy", serverSide = "eplus.common.CommonProxy")
     public static CommonProxy proxy;
@@ -98,6 +104,22 @@ public class EnchantingPlus {
             allowhasParticlesProp.comment = "set to true if you want the table emitting particles (just for fun)"; // created by Slash
             hasParticles = allowhasParticlesProp.getBoolean(true); // created by Slash
 
+            Property enchantFactorProp = config.get("Factors", "EnchantFactor", 1.0d);
+            enchantFactorProp.comment = "Change to set the factor at which the enchanting cost is multiplied by\nInput is from 0 - 10";
+            clamp(enchantFactorProp.getDouble(1.0d), 0.0d, 10.0d, "enchantFactor");
+
+            Property disenchantFactorProp = config.get("Factors", "DisenchantFactor", 1.0d);
+            disenchantFactorProp.comment = "Change to set the factor at which the disenchanting cost is multiplied by\nInput is from 0 - 10";
+            clamp(disenchantFactorProp.getDouble(1.0d), 0.0d, 10.0d, "disenchantFactor");
+
+            Property transferFactorProp = config.get("Factors", "TransferFactor", 1.0d);
+            transferFactorProp.comment = "Change to set the factor at which the transfer cost is multiplied by\nInput is from 0 - 10";
+            clamp(transferFactorProp.getDouble(1.0d), 0.0d, 10.0d, "transferFactor");
+
+            Property repairFactorProp = config.get("Factors", "RepairFactor", 1.0d);
+            repairFactorProp.comment = "Change to set the factor at which the repair cost is multiplied by\nInput is from 0 - 10";
+            clamp(repairFactorProp.getDouble(1.0d), 0.0d, 10.0d, "repairFactor");
+
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");
         } finally {
@@ -105,6 +127,24 @@ public class EnchantingPlus {
         }
 
         if (allowUpdateCheck) Version.versionCheck();  // modified by Slash
+    }
+
+    private void clamp(double value, double min, double max, String factorString) {
+        Class<?> clazz = instance.getClass();
+
+        try {
+            Field field = clazz.getField(factorString);
+
+            if(value < min ) {
+                field.setDouble(field, min);
+            }else if(value > max) {
+                field.setDouble(field, max);
+            }else {
+                field.setDouble(field, value);
+            }
+        } catch (Exception ex) {
+            Game.log(Level.INFO, "Failed to clamp {0}'s value {1}", new Object[]{ factorString, value });
+        }
     }
 
     @Init

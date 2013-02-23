@@ -768,7 +768,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             return 0;
         }
         for (EnchantmentData var4 : var1) {
-            int var5 = getBaseCost(inventorySlots.getSlot(0).getStack(), var4);
+            int var5 = (int) EnchantingPlus.enchantFactor * getBaseCost(inventorySlots.getSlot(0).getStack(), var4);
             double var6 = (double) getContainer().bookshelves / 64D;
             var3 += var5 - (int) ((double) var5 * var6);
         }
@@ -796,7 +796,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             return 0;
         }
         for (EnchantmentData var4 : var3) {
-            int var5 = getBaseCost(inventorySlots.getSlot(0).getStack(), var4);
+            int var5 = (int) EnchantingPlus.disenchantFactor * getBaseCost(inventorySlots.getSlot(0).getStack(), var4);
             double var6 = (double) aint[var4.enchantmentobj.effectId] / 64D;
             var2 += var5 - (int) ((double) var5 * var6);
         }
@@ -822,7 +822,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             return 1;
         }
         for (EnchantmentData var4 : var3) {
-            int var5 = getBaseCost(inventorySlots.getSlot(0).getStack(), var4);
+            int var5 = (int) EnchantingPlus.repairFactor * getBaseCost(inventorySlots.getSlot(0).getStack(), var4);
             double var6 = (double) aint[var4.enchantmentobj.effectId] / 64D;
             var2 += var5 - (int) ((double) var5 * var6);
         }
@@ -851,7 +851,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             return 0;
         }
         for (EnchantmentData var4 : var3) {
-            int var5 = getBaseCost(inventorySlots.getSlot(0).getStack(), var4);
+            int var5 = (int) EnchantingPlus.transferFactor * getBaseCost(inventorySlots.getSlot(0).getStack(), var4);
             double var6 = (double) aint[var4.enchantmentobj.effectId] / 64D;
             var2 += var5 - (int) ((double) var5 * var6);
         }
