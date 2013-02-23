@@ -126,7 +126,7 @@ public class EnchantingPlus {
             config.save();
         }
 
-        if (allowUpdateCheck) Version.versionCheck();  // modified by Slash
+        if (allowUpdateCheck) Version.check();  // modified by Slash
     }
 
     private void clamp(double value, double min, double max, String factorString) {

@@ -18,6 +18,9 @@ public class LatestVersionMessage implements IScheduledTickHandler
             if (Version.hasUpdated()) {
                 EntityPlayer player = (EntityPlayer) tickData[0];
                 player.sendChatToPlayer("An updated version of Enchanting Plus is available: " + Version.getRecommendedVersion());
+            } else if(Version.currentVersion == Version.EnumUpdateState.BETA) {
+                EntityPlayer player = (EntityPlayer) tickData[0];
+                player.sendChatToPlayer(String.format("§6[EPLUS]§f: Using the beta build: %s, please report all issues on the forms.", Version.getCurrentModVersion()));
             }
         }
     }

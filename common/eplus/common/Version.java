@@ -12,7 +12,8 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
 
-public class Version {
+public class Version implements Runnable {
+    public static Version instance = new Version();
 
     public static final String VERSION = "1.12.9";
     private static final String REMOTE_VERSION_FILE = "https://raw.github.com/odininon/EnchantingPlus/master/resources/version";//"https://raw.github.com/odininon/EnchantingPlus/1.4.6/resources/version";
@@ -26,6 +27,11 @@ public class Version {
     public static String getRecommendedVersion()
     {
         return recommendedVersion;
+    }
+
+    public static String getCurrentModVersion()
+    {
+        return currentModVersion;
     }
 
     public static void versionCheck()
@@ -68,18 +74,19 @@ public class Version {
             }
         }
 
-        if (currentModVersion.equals(recommendedVersion)) {
+        if (currentModVersion != null && currentModVersion.equals(recommendedVersion)) {
             Game.log(Level.INFO, "Using the latest version for Minecraft " + getMinecraftVersion(), new Object[0]);
             currentVersion = EnumUpdateState.CURRENT;
             updated = false;
-            return;
+        } else if (currentModVersion != null && ((Integer.parseInt(currentModVersion.substring(currentModVersion.lastIndexOf(".") + 1))) > (Integer.parseInt(recommendedVersion.substring(recommendedVersion.lastIndexOf(".") + 1))))) {
+            Game.log(Level.INFO, "Using the beta build {0}", new Object[] { currentModVersion });
+            currentVersion = EnumUpdateState.BETA;
+            updated = false;
         } else {
             Game.log(Level.INFO, "An updated version of Enchanting Plus is available: {0}", new Object[] { getRecommendedVersion() });
             currentVersion = EnumUpdateState.OUTDATED;
             updated = true;
         }
-
-        versionCheckCompleted = true;
     }
 
     public static String getMinecraftVersion()
@@ -87,8 +94,24 @@ public class Version {
         return Loader.instance().getMinecraftModContainer().getVersion();
     }
 
+    @Override
+    public void run() {
+        int count = 0;
+        currentVersion = null;
+
+        Game.log(Level.INFO, "Starting version check thread", new Object[]{0});
+
+        while (count < 3 && (currentVersion == null || currentVersion == EnumUpdateState.CONNECTION_ERROR)){
+            versionCheck();
+            count++;
+        }
+
+        Game.log(Level.INFO, "Version check complete with {0}", new Object[]{currentVersion.toString()});
+        versionCheckCompleted = true;
+    }
+
     public static enum EnumUpdateState {
-        CURRENT, OUTDATED, CONNECTION_ERROR;
+        CURRENT, OUTDATED, CONNECTION_ERROR, BETA
     }
 
     public static boolean hasUpdated()
@@ -101,4 +124,7 @@ public class Version {
         return versionCheckCompleted;
     }
 
+    public static void check() {
+        new Thread(instance).start();
+    }
 }
