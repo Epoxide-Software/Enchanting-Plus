@@ -95,13 +95,13 @@ public class ContainerEnchanting extends Container {
             }
 
             if (var5) {
-                var3.itemID = Item.field_92053_bW.itemID;
+                var3.itemID = Item.enchantedBook.itemID;
             }
 
             for (EnchantmentData var4 : var1) {
 
                 if (var5) {
-                    Item.field_92053_bW.func_92060_a(var3, var4);
+                    Item.enchantedBook.func_92115_a(var3, var4);
                 } else {
                     addEnchantment(var4, var3);
                 }
@@ -131,7 +131,7 @@ public class ContainerEnchanting extends Container {
 
         if (!this.gameWorld.isRemote && var3 != null) {
 
-            boolean var5 = var3.itemID == Item.field_92053_bW.itemID;
+            boolean var5 = var3.itemID == Item.enchantedBook.itemID;
 
             if (!player.capabilities.isCreativeMode) {
                 player.addExperienceLevel(var2);
@@ -466,14 +466,14 @@ public class ContainerEnchanting extends Container {
                 } else if (var4.size() > 0 && var5.size() > 0) {
                     for (EnchantmentItemData var6 : var4) {
                         for (EnchantmentItemData var7 : var5) {
-                            if (!var7.enchantmentobj.func_92037_a(var1) || !var6.enchantmentobj.canApplyTogether(var7.enchantmentobj) || !var7.enchantmentobj.canApplyTogether(var6.enchantmentobj)) {
+                            if (!var7.enchantmentobj.func_92089_a(var1) || !var6.enchantmentobj.canApplyTogether(var7.enchantmentobj) || !var7.enchantmentobj.canApplyTogether(var6.enchantmentobj)) {
                                 var3 = false;
                             }
                         }
                     }
                 } else if (var4.size() == 0 && var5.size() > 0) {
                     for (EnchantmentItemData var6 : var5) {
-                        if (!var6.enchantmentobj.func_92037_a(var1)) {
+                        if (!var6.enchantmentobj.func_92089_a(var1)) {
                             var3 = false;
                         }
                     }
@@ -488,7 +488,7 @@ public class ContainerEnchanting extends Container {
                 }
             }
 
-            if (var1.itemID == Item.field_92053_bW.itemID) {
+            if (var1.itemID == Item.enchantedBook.itemID) {
                 Map var20 = EnchantmentHelper.getEnchantments(var1);
                 Iterator var27 = var20.keySet().iterator();
 
@@ -523,7 +523,7 @@ public class ContainerEnchanting extends Container {
 	
 	                if (!EnchantingPlus.strictEnchant) {
 	                    guiEnchantmentPlus.possibleEnchantments.add(var2);
-	                } else if (var2.func_92037_a(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
+	                } else if (var2.func_92089_a(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
 	                	guiEnchantmentPlus.possibleEnchantments.add(var2); // modified by slash
 	                }
 	            }

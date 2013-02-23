@@ -1,7 +1,5 @@
 package eplus.client;
 
-import com.google.common.eventbus.AllowConcurrentEvents;
-
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import eplus.common.CommonProxy;
