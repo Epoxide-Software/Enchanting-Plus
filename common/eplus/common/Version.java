@@ -2,12 +2,14 @@ package eplus.common;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
+import net.minecraftforge.common.Property;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -23,10 +25,11 @@ public class Version implements Runnable {
     private static boolean versionCheckCompleted;
     private static String recommendedVersion;
     private static String currentModVersion;
+    private static String[] cachedChangelog;
 
     public static String getRecommendedVersion()
     {
-        return recommendedVersion;
+        return ((Integer.valueOf(recommendedVersion.substring(recommendedVersion.lastIndexOf(".") + 1 )) > (Integer.valueOf(currentModVersion.substring(currentModVersion.lastIndexOf(".") + 1 ))))) ? recommendedVersion : currentModVersion;
     }
 
     public static String getCurrentModVersion()
@@ -34,9 +37,48 @@ public class Version implements Runnable {
         return currentModVersion;
     }
 
+    public static boolean versionSeen() {
+        if(currentVersion == EnumUpdateState.BETA) {
+            return true;
+        }else if(!(currentVersion == EnumUpdateState.OUTDATED)) {
+            return false;
+        }
+
+        Property property = EnchantingPlus.config.get("version","SeenVersion", currentModVersion);
+        String seenVersion = property.value;
+
+        if(recommendedVersion == null || recommendedVersion.equals(seenVersion))
+            return false;
+
+        property.value = getRecommendedVersion();
+        EnchantingPlus.config.save();
+        return true;
+    }
+    public static String[] getChangelog(){
+        if (cachedChangelog == null) {
+            cachedChangelog = grabChangelog();
+        }
+         return cachedChangelog;
+    }
+
+    public static String[] grabChangelog(){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Version.class.getClassLoader().getResourceAsStream("changelog")));
+
+            String line = null;
+            ArrayList<String> changelog = new ArrayList<String>();
+            while((line = reader.readLine()) != null) {
+                changelog.add(line);
+            }
+            return changelog.toArray(new String[0]);
+        } catch (Exception ex) {
+
+        }
+        return new String[] { "Failure to load changelog."};
+    }
+
     public static void versionCheck()
     {
-
         Properties props = new Properties();
         try {
             URL url = new URL(REMOTE_VERSION_FILE);

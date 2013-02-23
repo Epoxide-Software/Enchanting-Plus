@@ -13,16 +13,26 @@ public class LatestVersionMessage implements IScheduledTickHandler
 
     @Override
     public void tickStart(EnumSet type, Object... tickData) {
-        if (!this.messageSent && Version.isVersionCheckComplete()) {
-            this.messageSent = true;
-            if (Version.hasUpdated()) {
-                EntityPlayer player = (EntityPlayer) tickData[0];
-                player.sendChatToPlayer("An updated version of Enchanting Plus is available: " + Version.getRecommendedVersion());
+        if(messageSent)
+            return;
+
+        EntityPlayer player = (EntityPlayer) tickData[0];
+
+        if(Version.versionSeen() && Version.isVersionCheckComplete()) {
+            if(Version.hasUpdated()){
+                player.sendChatToPlayer(String.format("[EPLUS]: An updated version is available: %s", Version.getRecommendedVersion()));
             } else if(Version.currentVersion == Version.EnumUpdateState.BETA) {
-                EntityPlayer player = (EntityPlayer) tickData[0];
-                player.sendChatToPlayer(String.format("§6[EPLUS]§f: Using the beta build: %s, please report all issues on the forms.", Version.getCurrentModVersion()));
+                player.sendChatToPlayer(String.format("[EPLUS]: Using the beta build: %s, please report all issues on the forms.", Version.getCurrentModVersion()));
+            }
+
+            player.sendChatToPlayer("[EPLUS] Changelog:");
+            for(String line : Version.grabChangelog()){
+                player.sendChatToPlayer("-" + line);
             }
         }
+
+        messageSent = true;
+
     }
 
     @Override
@@ -44,6 +54,6 @@ public class LatestVersionMessage implements IScheduledTickHandler
 
     @Override
     public int nextTickSpacing() {
-        return 300;
+        return 100;
     }
 }

@@ -55,10 +55,12 @@ public class EnchantingPlus {
     @Instance("eplus")
     public static EnchantingPlus instance;
 
+    public static Configuration config;
+
     @PreInit
     public void preInit(FMLPreInitializationEvent var1)
     {
-        Configuration config = new Configuration(var1.getSuggestedConfigurationFile());
+        config = new Configuration(var1.getSuggestedConfigurationFile());
 
         try {
             config.load();
