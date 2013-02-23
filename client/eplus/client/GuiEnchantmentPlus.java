@@ -428,7 +428,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
     {
     	String text = "Player XP Level: " + String.valueOf(var1);
     	mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 )+1, guiTop + 5+1, 0xFF000000);
-    	mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 ), guiTop + 5, 0xFF00FF00);
+    	//mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 ), guiTop + 5, 0xFF00FF00);
     }
     
     public boolean canPurchase(int var1)
