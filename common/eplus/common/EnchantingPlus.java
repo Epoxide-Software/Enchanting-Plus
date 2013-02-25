@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.logging.Level;
 
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import eplus.common.packet.ItemPocketEnchanter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
@@ -45,11 +47,12 @@ public class EnchantingPlus {
     public static double disenchantFactor;
     public static double transferFactor;
     public static double repairFactor;
+
+    public static int pocketId;
     
     @SidedProxy(clientSide = "eplus.client.ClientProxy", serverSide = "eplus.common.CommonProxy")
     public static CommonProxy proxy;
 
-    public static Block table;
     @Instance("eplus")
     public static EnchantingPlus instance;
 
@@ -120,6 +123,9 @@ public class EnchantingPlus {
             repairFactorProp.comment = "Change to set the factor at which the repair cost is multiplied by\nInput is from 0 - 10";
             clamp(repairFactorProp.getDouble(1.0d), 0.0d, 10.0d, "repairFactor");
 
+            Property pocketIDProp = config.getItem("Items","PocketEnchanter", 152);
+            pocketId = pocketIDProp.getInt();
+
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");
         } finally {
@@ -155,8 +161,12 @@ public class EnchantingPlus {
         int var2 = Block.enchantmentTable.blockID;
         Block.blocksList[var2] = null;
         Item.itemsList[var2] = null;
-        table = new BlockEnchantingTable(var2).setHardness(5.0F).setResistance(2000.0F).setBlockName("enchantmentTable");
+        Block table = new BlockEnchantingTable(var2).setHardness(5.0F).setResistance(2000.0F).setBlockName("enchantmentTable");
         GameRegistry.registerBlock(table, "enchantmentTable");
+
+        Item pocketEnchanter = new ItemPocketEnchanter(pocketId).setItemName("pocketEnchanter");
+        GameRegistry.registerItem(pocketEnchanter, "pocketEnchanter");
+        LanguageRegistry.instance().addStringLocalization("item.pocketEnchanter.name", "Pocket Enchanter");
     }
 
     @ServerStarting

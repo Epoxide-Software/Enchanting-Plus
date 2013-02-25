@@ -43,6 +43,12 @@ public class GuiEnchantmentPlus extends GuiContainer {
     public ArrayList<Enchantment> possibleEnchantments;
     public ArrayList<EnchantmentItemData> possibleDisenchantments;
 
+    public boolean allowDisenchanting = EnchantingPlus.allowDisenchanting;
+    public boolean allowRepair = EnchantingPlus.allowRepair;
+    public boolean allowTransfer = EnchantingPlus.allowTransfer;
+
+
+
     public float eScroll;
     public float dScroll;
 
@@ -149,12 +155,12 @@ public class GuiEnchantmentPlus extends GuiContainer {
         GuiDisenchantmentItem.startingY = guiTop;
         icons.clear();
         icons.add(new GuiIcon("Enchant", 0, 11, 77).setButton().setInfo("Add Enchantments"));
-        if (EnchantingPlus.allowDisenchanting) // modified by Slash
+        if (this.allowDisenchanting) // modified by Slash
         	icons.add(new GuiIcon("Disenchant", 1, 11, 94).setButton().setInfo("Remove Enchantments"));
         icons.add(new GuiIcon("Bookshelves", 6, 11, 8).setInfo("Number of Bookshelves around the Enchantment Table."));
-        if (EnchantingPlus.allowRepair)
+        if (this.allowRepair)
             icons.add(new GuiIcon("Repair", 2, 11, 111).setButton().setInfo("Repair a damaged enchanted item."));
-        if (EnchantingPlus.allowTransfer)
+        if (this.allowTransfer)
             icons.add(new GuiIcon("Transfer", 3, 11, 128).setButton().setInfo("Transfer enchantments from items"));
         enchantmentItems.clear();
 
@@ -366,7 +372,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
         }
         getIcon("Enchant").enabled = var3 && canPurchase(getEnchantmentCost());
         //getIcon("Disenchant").enabled = var4 && getDisenchantmentCost() > 0;
-        if (EnchantingPlus.allowDisenchanting) // modified by Slash
+        if (this.allowDisenchanting) // modified by Slash
         	getIcon("Disenchant").enabled = var4;
     }
 
@@ -655,7 +661,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             }
         }
         //if (var1.id.equals("Disenchant")) { // modified by Slash
-        if (var1.id.equals("Disenchant") && EnchantingPlus.allowDisenchanting) {
+        if (var1.id.equals("Disenchant") && this.allowDisenchanting) {
             ArrayList<EnchantmentData> var2 = new ArrayList();
             for (GuiDisenchantmentItem var3 : disenchantmentItems) {
                 if (var3.level > 0) {
@@ -686,7 +692,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             }
         }
 
-        if (var1.id.equals("Repair") && EnchantingPlus.allowRepair) {
+        if (var1.id.equals("Repair") && this.allowRepair) {
             try {
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 DataOutputStream data = new DataOutputStream(bytes);
@@ -700,7 +706,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
                 e.printStackTrace();
             }
         }
-        if (var1.id.equals("Transfer") && EnchantingPlus.allowTransfer) {
+        if (var1.id.equals("Transfer") && this.allowTransfer) {
             try {
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 DataOutputStream data = new DataOutputStream(bytes);

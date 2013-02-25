@@ -446,11 +446,11 @@ public class ContainerEnchanting extends Container {
         guiEnchantmentPlus.enchantmentItems.clear();
         guiEnchantmentPlus.disenchantmentItems.clear();
         guiEnchantmentPlus.getIcon("Enchant").enabled = false;
-        if (EnchantingPlus.allowDisenchanting) // modified by Slash
+        if (guiEnchantmentPlus.allowDisenchanting) // modified by Slash
         	guiEnchantmentPlus.getIcon("Disenchant").enabled = false;
-        if (EnchantingPlus.allowRepair)
+        if (guiEnchantmentPlus.allowRepair)
             guiEnchantmentPlus.getIcon("Repair").enabled = false;
-        if (EnchantingPlus.allowTransfer)
+        if (guiEnchantmentPlus.allowTransfer)
             guiEnchantmentPlus.getIcon("Transfer").enabled = false;
 
         ItemStack var1 = guiEnchantmentPlus.inventorySlots.getSlot(0).getStack();
