@@ -4,6 +4,7 @@ import commands
 import fnmatch
 import re
 import subprocess, shlex
+import argparse
 
 def cmdsplit(args):
     if os.sep == '\\':
@@ -11,7 +12,21 @@ def cmdsplit(args):
     return shlex.split(args)
 
 def main():
-    print("Obtaining changelog from git")
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v', '--verbose',  action='store_true', help='verbose mode')
+    parser.add_argument('--tags', nargs=2, metavar="tag", help='Sets the tags')
+    args = parser.parse_args()
+
+    if args.tags == None:
+        tag1 = "master"
+        tag2 = "beta"
+    else:
+        tag1 = args.tags[0]
+        tag2 = args.tags[1]
+        
+    if args.verbose:    
+        print("Obtaining changelog from git")
+        
     cmd = "git checkout beta"
     try:
         process = subprocess.Popen(cmdsplit(cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=-1)
@@ -19,7 +34,7 @@ def main():
     except OSError:
         print("Git not found")
 
-    cmd = "git log master..HEAD --pretty=format:%s"
+    cmd = 'git log ' + tag1 + '..' + tag2 + ' --pretty=format:%s'
     try:
         process = subprocess.Popen(cmdsplit(cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=-1)
         change, _ = process.communicate()
@@ -27,6 +42,9 @@ def main():
         print("Git not found")
         
     table = change.split('\n')
+
+    if args.verbose:
+        print(change)
 
     log = [  ]
 
