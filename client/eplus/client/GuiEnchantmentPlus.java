@@ -432,8 +432,13 @@ public class GuiEnchantmentPlus extends GuiContainer {
 
     public void drawPlayerXPLevel(int var1) // created by Slash
     {
+    	ArrayList<String> textLine = new ArrayList<String>();
     	String text = "Player XP Level: " + String.valueOf(var1);
-    	mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 )+1, guiTop + 5+1, 0xFF000000);
+    	textLine.add("\u00a7b" + text);
+    	drawTooltip(textLine, guiLeft + xSize/2 - mc.fontRenderer.getStringWidth(text)/2, guiTop-12);
+    	
+    	//String text = "Player XP Level: " + String.valueOf(var1);
+    	//mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 )+1, guiTop + 5+1, 0xFF000000);
     	//mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 ), guiTop + 5, 0xFF00FF00);
     }
     
