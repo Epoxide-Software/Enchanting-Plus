@@ -3,6 +3,7 @@
 /bin
 /build
 /download
+/temp
 /jars
 .project
 .classpath

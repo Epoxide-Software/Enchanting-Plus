@@ -8,90 +8,104 @@
 	<property name="client.dir"			 value="client" />
 	<property name="resource.dir"		 value="resources" />
 	<property name="download.dir"		 value="download" />
+
+    <property name="temp.dir"            value="temp" />
+    <property name="temp.mcp.dir"        value="${temp.dir}/mcp"/>
     
     <property name="classes.dir"         value="${build.dir}/classes"/>
     <property name="jar.dir"             value="${build.dir}/dist"/>
           
     <property name="mcp.dir"             value="${build.dir}/mcp"/>
-    <property name="forge.dir"           value="${mcp.dir}/forge"/>
       
     <property name="clientsrc.dir"       value="${mcp.dir}/src/minecraft"/>
-          
-	<property name="mc.version"			 value="1.4.6"/>
-    <property name="mcp.version"         value="725"/>
-    <property name="forge.version"       value="6.5.0.472"/>
-    <property name="eplus.version"       value="1.12"/>
-	
-	<available property="mcp-exists" 	 file ="${download.dir}/mcp_1_4_6.zip"/>
-    
-    <!-- Targets -->
-    
+
+    <property name="mcp-name"          value="mcp_527" />
+    <property name="mcp-download"      value="https://dl.dropbox.com/u/21347544/${mcp-name}.zip" />
+    <available property="mcp-exists"   file="${download.dir}/${mcp-name}.zip"/>
+    <available property="temp-mcp-dir" file="${temp.mcp.dir}"/>
+
+    <property name="eplus.version"       value="1.12.9"/>
+
     <target name="clean">
-        <delete dir="${build.dir}"/>
+        <delete dir="${build.dir}" />
     </target>
 	
 	<target name="version-not-provided" unless="env.BUILD_NUMBER">
 		<buildnumber/>
 	</target>
-	
-	<target name="version-provided" if="env.BUILD_NUMBER">
-		<property name="build.number" value="${env.BUILD_NUMBER}"/>
-	</target>
-	
-    <target name="setup" depends="version-provided,version-not-provided">
+
+    <target name="setup" depends="version-not-provided">
 		<property name="eplus.version.full"  value="${eplus.version}.${build.number}"/>
       
 	     <echo message="Starting build for ${eplus.version.full}"/>
 		
 		<mkdir dir ="${download.dir}"/>
-		
-		<get dest="${download.dir}">
-			<url url="http://dl.dropbox.com/u/21347544/mcp_1_4_6.zip"/>
-		</get>
-        
-		<!-- Setup MCP -->
-		<unzip dest="${mcp.dir}">
-			<fileset dir="${download.dir}">
-				<include name="mcp_1_4_6.zip" />
-			</fileset>
-		</unzip>
 
-		<!-- Set build number -->
+        <antcall target="downloadFiles"/>
+
+        <antcall target="unzip-files"/>
+
+
 		<buildnumber/>
 
-        <!-- Copy BC source -->
+    </target>
+
+    <target name="downloadFiles">
+        <antcall target="download-mcp"/>
+    </target>
+
+    <target name="download-mcp" unless="${mcp-exists}">
+        <get dest="${download.dir}">
+            <url url="${mcp-download}"/>
+        </get>
+        <delete dir="${temp.mcp.dir}"/>
+    </target>
+
+    <target name="unzip-files">
+        <antcall target="unzip-mcp" />
+    </target>
+
+    <target name="unzip-mcp">
+        <unzip dest="${build.dir}">
+            <fileset dir="${download.dir}">
+                <include name="${mcp-name}.zip" />
+            </fileset>
+        </unzip>
+
+        <!--
+        <exec dir="${temp.forge.dir}" executable="python">
+            <arg value="install.py"/>
+        </exec>
+        -->
+    </target>
+
+    <target name="compile" depends="setup">
+
         <copy todir="${clientsrc.dir}">
             <fileset dir="${client.dir}" />
-			<fileset dir="${common.dir}" />
+            <fileset dir="${common.dir}" />
             <filterset>
-                <filter token="VERSION" value="${eplus.version.full}" />
-           		<filter token="BUILD_NUMBER" value="${build.number}" />
+                <filter token="BUILD_NUMBER" value="${build.number}" />
             </filterset>
         </copy>
-        
-    </target>
-    
-    <target name="compile" depends="setup">
-        
-        <!-- Recompile -->
-        
-        <exec dir="${mcp.dir}" executable="python" osfamily="unix">
+
+        <exec dir="${mcp.dir}" executable="python">
             <arg value="runtime/recompile.py" />
         </exec>
-        
-        <!-- Reobf -->
-        
-        <exec dir="${mcp.dir}" executable="python" osfamily="unix">
+
+        <exec dir="${mcp.dir}" executable="python">
             <arg value="runtime/reobfuscate.py" />
         </exec>
-        
-        <!-- Copy BC classes -->
+
 		<mkdir dir="${classes.dir}/eplus"/>
         <copy todir="${classes.dir}/eplus">
             <fileset dir="${mcp.dir}/reobf/minecraft/eplus"/>
         </copy>
-        
-        <!-- Copy resources -->
+
+        <exec dir="" executable="python">
+            <arg value="changelog.py" />
+        </exec>
+
         <copy todir="${classes.dir}">
             <fileset dir="${resource.dir}">
                 <exclude name="build.xml"/>
@@ -104,7 +118,7 @@
     
     <target name="package" depends="compile">
         
-        <jar destfile="${jar.dir}/EnchantingPlus-${eplus.version.full}.jar" basedir="${classes.dir}"/>
+        <zip destfile="${jar.dir}/EnchantingPlus-${eplus.version.full}-beta.zip" basedir="${classes.dir}"/>
         
     </target>
     
