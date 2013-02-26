@@ -50,6 +50,7 @@ def main():
 
     for line in table:
         if line.startswith('#'): continue
+        if line.startswith('-'): continue
         log.append(line)
         
     file = open("./resources/changelog", 'wb')
