@@ -29,12 +29,16 @@
     <target name="clean">
         <delete dir="${build.dir}" />
     </target>
+
+    <target name="version-provided" if="env.BUILD_NUMBER">
+        <property name="build.number" value="${env.BUILD_NUMBER}"/>
+    </target>
 	
 	<target name="version-not-provided" unless="env.BUILD_NUMBER">
-		<buildnumber/>
+		<property name="build.number" value="unkown"/>
 	</target>
 
-    <target name="setup" depends="version-not-provided">
+    <target name="setup" depends="version-provided, version-not-provided">
 		<property name="eplus.version.full"  value="${eplus.version}.${build.number}"/>
       
 	     <echo message="Starting build for ${eplus.version.full}"/>
