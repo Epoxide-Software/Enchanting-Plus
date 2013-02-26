@@ -21,7 +21,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = "eplus", name = "Enchanting Plus", useMetadata = true, version = Version.VERSION)
+@Mod(modid = "eplus", name = "Enchanting Plus", useMetadata = true, version = Version.VERSION + "." + Version.BUILD)
 @NetworkMod(channels = { "eplus" }, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
 public class EnchantingPlus {
 

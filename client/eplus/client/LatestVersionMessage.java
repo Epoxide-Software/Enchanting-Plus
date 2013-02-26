@@ -23,11 +23,7 @@ public class LatestVersionMessage implements IScheduledTickHandler
                 player.sendChatToPlayer(String.format("[EPLUS]: An updated version is available: %s", Version.getRecommendedVersion()));
             } else if(Version.currentVersion == Version.EnumUpdateState.BETA) {
                 player.sendChatToPlayer(String.format("[EPLUS]: Using the beta build: %s, please report all issues on the forms.", Version.getCurrentModVersion()));
-            }
-
-            player.sendChatToPlayer("[EPLUS] Changelog:");
-            for(String line : Version.grabChangelog()){
-                player.sendChatToPlayer("-" + line);
+                player.sendChatToPlayer("Please use /eplus changlelog to see changes");
             }
         }
 

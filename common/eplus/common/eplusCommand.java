@@ -47,7 +47,7 @@ public class eplusCommand extends CommandBase {
     private void processChangelog(ICommandSender var1, String[] args) {
         var1.sendChatToPlayer("[EPLUS] Changelog:");
         for(String line : Version.grabChangelog()){
-            var1.sendChatToPlayer("-" + line);
+            var1.sendChatToPlayer(line);
         }
     }
 
