@@ -15,7 +15,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -126,13 +125,14 @@ public class ContainerEnchanting extends Container {
 
     public void doDisenchant(EntityPlayer player, EnchantmentData[] var1, int var2)
     {
-
         ItemStack var3 = (ItemStack) this.inventoryItemStacks.get(0);
 
         if (!this.gameWorld.isRemote && var3 != null) {
 
             boolean var5 = var3.itemID == Item.enchantedBook.itemID;
 
+            String wordSearch = getEnchantmentSearchWord(var3); // created by Slash
+            
             if (!player.capabilities.isCreativeMode) {
                 player.addExperienceLevel(var2);
             }
@@ -143,7 +143,8 @@ public class ContainerEnchanting extends Container {
             
             // book without any StoredEnchantments needs to be converted to a normal book ID
             if (var5) { // created by Slash
-            	if (var3.getEnchantmentTagList() == null) {
+            	//if (var3.getEnchantmentTagList() == null) { // modified by Slash
+            	if (var3.stackTagCompound == null || ((NBTTagList)var3.stackTagCompound.getTag(wordSearch) == null)) {
             		var3.itemID = Item.book.itemID;            		
             	}
             }
