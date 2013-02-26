@@ -49,8 +49,7 @@ def main():
     log = [  ]
 
     for line in table:
-        if line.startswith('#'): continue
-        if line.startswith('-'): continue
+        if not line.startswith('-'): continue
         log.append(line)
         
     file = open("./resources/changelog", 'wb')
