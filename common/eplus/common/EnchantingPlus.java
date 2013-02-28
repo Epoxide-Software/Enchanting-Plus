@@ -3,8 +3,12 @@ package eplus.common;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import eplus.common.packet.ItemPocketEnchanter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -173,6 +177,13 @@ public class EnchantingPlus {
     public void onServerStarting(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new eplusCommand());
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Mod.PostInit
+    public void postInit(FMLPostInitializationEvent event){
+
+        FMLClientHandler.instance().getClient().renderEngine.func_94152_c();
     }
     
     public static String getTranslatedTextureIndex() {

@@ -5,14 +5,20 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockEnchantmentTable;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnchantmentTable;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 public class BlockEnchantingTable extends BlockEnchantmentTable
 {
+    @SideOnly(Side.CLIENT)
+    private Icon field_94461_a;
+    @SideOnly(Side.CLIENT)
+    private Icon field_94460_b;
 
     protected BlockEnchantingTable(int par1)
     {
@@ -41,7 +47,7 @@ public class BlockEnchantingTable extends BlockEnchantmentTable
             }
             else
             {
-                var5.displayGUIEnchantment(var2, var3, var4);
+                var5.displayGUIEnchantment(var2, var3, var4, "");
             }
             return true;
         }
@@ -85,7 +91,18 @@ public class BlockEnchantingTable extends BlockEnchantmentTable
             par1World.spawnParticle("portal", var7, var9, var11, var13, var15, var17);
         }
     }
-    
-    
-    
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
+        return par1 == 0 ? this.field_94460_b : (par1 == 1 ? this.field_94461_a : this.field_94336_cN);
+    }
+
+    @Override
+    public void func_94332_a(IconRegister par1IconRegister)
+    {
+        this.field_94336_cN = par1IconRegister.func_94245_a("enchantment_side");
+        this.field_94461_a = par1IconRegister.func_94245_a("enchantment_top");
+        this.field_94460_b = par1IconRegister.func_94245_a("enchantment_bottom");
+    }
 }
