@@ -646,6 +646,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     DataOutputStream data = new DataOutputStream(bytes);
 
+                    data.write(getEnchantmentCost() / 128);
                     data.write(getEnchantmentCost());
                     data.write(var2.size());
 
@@ -678,6 +679,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     DataOutputStream data = new DataOutputStream(bytes);
 
+                    data.write(getDisenchantmentCost() / 128);
                     data.write(getDisenchantmentCost());
                     data.write(var2.size());
 
@@ -702,6 +704,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 DataOutputStream data = new DataOutputStream(bytes);
 
+                data.write(getRepairCost() / 128);
                 data.writeInt(getRepairCost());
 
                 Packet250CustomPayload packet = PacketBase.createPacket(3, bytes.toByteArray());
@@ -716,6 +719,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 DataOutputStream data = new DataOutputStream(bytes);
 
+                data.write(getTransferCost() / 128);
                 data.writeInt(getTransferCost());
 
                 Packet250CustomPayload packet = PacketBase.createPacket(4, bytes.toByteArray());

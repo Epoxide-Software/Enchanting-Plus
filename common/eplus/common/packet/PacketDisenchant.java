@@ -13,7 +13,16 @@ public class PacketDisenchant extends PacketBase {
     @Override
     public void handlePacket(DataInputStream dataInputStream) throws Exception
     {
+        int overflow = dataInputStream.read();
         int enchantmentCost = dataInputStream.readByte();
+
+        if(enchantmentCost < 0) {
+            enchantmentCost += 256 * overflow;
+        }
+        else {
+            enchantmentCost += 128 * overflow;
+        }
+
         int numberofEnchantmentsToadd = dataInputStream.readByte();
         EnchantmentData[] arrayorEnchantmentData = new EnchantmentData[numberofEnchantmentsToadd];
         for (int var5 = 0; var5 < numberofEnchantmentsToadd; var5++) {
