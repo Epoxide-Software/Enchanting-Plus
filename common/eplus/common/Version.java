@@ -2,6 +2,7 @@ package eplus.common;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
+import eplus.common.localization.LocalizationHelper;
 import net.minecraftforge.common.Property;
 
 import java.io.BufferedReader;
@@ -75,7 +76,7 @@ public class Version implements Runnable {
         } catch (Exception ex) {
 
         }
-        return new String[] { "Failure to load changelog."};
+        return new String[] {LocalizationHelper.getLocalString("version.fail.changelog")};
     }
 
     public static void versionCheck()

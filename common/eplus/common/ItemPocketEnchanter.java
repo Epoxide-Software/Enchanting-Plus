@@ -1,6 +1,7 @@
-package eplus.common.packet;
+package eplus.common;
 
 import eplus.common.EnchantingPlus;
+import eplus.common.localization.LocalizationHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -27,7 +28,7 @@ public class ItemPocketEnchanter extends Item {
 
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-        par3List.add("Enchanting on the go.");
+        par3List.add(LocalizationHelper.getLocalString("pocketEnchanter.info"));
     }
 
     @Override

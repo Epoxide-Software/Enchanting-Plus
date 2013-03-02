@@ -2,6 +2,7 @@ package eplus.client;
 
 import java.util.EnumSet;
 
+import eplus.common.localization.LocalizationHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
@@ -20,10 +21,10 @@ public class LatestVersionMessage implements IScheduledTickHandler
 
         if(Version.versionSeen() && Version.isVersionCheckComplete()) {
             if(Version.hasUpdated()){
-                player.sendChatToPlayer(String.format("[EPLUS]: An updated version is available: %s", Version.getRecommendedVersion()));
+                player.sendChatToPlayer(String.format("[EPLUS]: %s: %s", LocalizationHelper.getLocalString("version.update.available"), Version.getRecommendedVersion()));
             } else if(Version.currentVersion == Version.EnumUpdateState.BETA) {
-                player.sendChatToPlayer(String.format("[EPLUS]: Using the beta build: %s, please report all issues on the forms.", Version.getCurrentModVersion()));
-                player.sendChatToPlayer("Please use /eplus changlelog to see changes");
+                player.sendChatToPlayer(String.format("[EPLUS]: %s: %s, %s.", LocalizationHelper.getLocalString("version.beta.build"), Version.getCurrentModVersion(), LocalizationHelper.getLocalString("version.report.problems")));
+                player.sendChatToPlayer(String.format("[EPLUS]: %s: %s", LocalizationHelper.getLocalString("version.changelog.command"), "/eplus changelog"));
             }
         }
 

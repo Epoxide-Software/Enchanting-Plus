@@ -10,8 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -19,9 +17,26 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import eplus.common.localization.LocalizationHandler;
+import eplus.common.localization.LocalizationRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
+
+import java.io.File;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.util.logging.Level;
 
 @Mod(modid = "eplus", name = "Enchanting Plus", useMetadata = true, version = Version.VERSION + "." + Version.BUILD)
 @NetworkMod(channels = { "eplus" }, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
@@ -134,6 +149,9 @@ public class EnchantingPlus {
             config.save();
         }
 
+        LocalizationRegistry.Instance().addLocalizationFile("/eplus/lang/en_US.xml");
+        LocalizationHandler.addLanguages();
+
         if (allowUpdateCheck) Version.check();  // modified by Slash
     }
 
@@ -168,7 +186,6 @@ public class EnchantingPlus {
 
         Item pocketEnchanter = new ItemPocketEnchanter(pocketId).setItemName("pocketEnchanter");
         GameRegistry.registerItem(pocketEnchanter, "pocketEnchanter");
-        LanguageRegistry.instance().addStringLocalization("item.pocketEnchanter.name", "Pocket Enchanter");
         GameRegistry.addRecipe(new ItemStack(pocketEnchanter), "GEG"," B ", " B ", Character.valueOf('G'), Item.ghastTear, Character.valueOf('E'), Block.enchantmentTable, Character.valueOf('B'), Item.blazeRod);
     }
 

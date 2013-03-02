@@ -11,6 +11,7 @@ import java.util.logging.Level;
 
 import javax.jws.soap.SOAPBinding.Style;
 
+import eplus.common.localization.LocalizationHelper;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -34,6 +35,7 @@ import eplus.common.EnchantingPlus;
 import eplus.common.EnchantmentItemData;
 import eplus.common.Game;
 import eplus.common.packet.PacketBase;
+import sun.util.resources.LocaleNames_lt;
 
 public class GuiEnchantmentPlus extends GuiContainer {
 
@@ -154,14 +156,14 @@ public class GuiEnchantmentPlus extends GuiContainer {
         GuiDisenchantmentItem.startingX = guiLeft;
         GuiDisenchantmentItem.startingY = guiTop;
         icons.clear();
-        icons.add(new GuiIcon("Enchant", 0, 11, 77).setButton().setInfo("Add Enchantments"));
+        icons.add(new GuiIcon("Enchant", 0, 11, 77).setButton().setInfo(LocalizationHelper.getLocalString("gui.icon.enchant.description")));
         if (this.allowDisenchanting) // modified by Slash
-        	icons.add(new GuiIcon("Disenchant", 1, 11, 94).setButton().setInfo("Remove Enchantments"));
-        icons.add(new GuiIcon("Bookshelves", 6, 11, 8).setInfo("Number of Bookshelves around the Enchantment Table."));
+        	icons.add(new GuiIcon("Disenchant", 1, 11, 94).setButton().setInfo(LocalizationHelper.getLocalString("gui.icon.disenchant.description")));
+        icons.add(new GuiIcon("Bookshelves", 6, 11, 8).setInfo(LocalizationHelper.getLocalString("gui.icon.bookshelves.description")));
         if (this.allowRepair)
-            icons.add(new GuiIcon("Repair", 2, 11, 111).setButton().setInfo("Repair a damaged enchanted item."));
+            icons.add(new GuiIcon("Repair", 2, 11, 111).setButton().setInfo(LocalizationHelper.getLocalString("gui.icon.repair.description")));
         if (this.allowTransfer)
-            icons.add(new GuiIcon("Transfer", 3, 11, 128).setButton().setInfo("Transfer enchantments from items"));
+            icons.add(new GuiIcon("Transfer", 3, 11, 128).setButton().setInfo(LocalizationHelper.getLocalString("gui.icon.transfer.description")));
         enchantmentItems.clear();
 
         checkItems();
@@ -392,19 +394,19 @@ public class GuiEnchantmentPlus extends GuiContainer {
     	String yes = "\u00a79"; // indigo
     	
         if (var1.id.equals("Enchant")) {
-            result = "\u00a77Cost: " + (canPurchase(getEnchantmentCost()) ? yes : no) + String.valueOf(getEnchantmentCost());
+            result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(getEnchantmentCost()) ? yes : no) + String.valueOf(getEnchantmentCost());
         }
         if (var1.id.equals("Disenchant")) {
-        	result = "\u00a77Cost: " + yes + String.valueOf(getDisenchantmentCost());
+        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + yes + String.valueOf(getDisenchantmentCost());
         }
         if (var1.id.equals("Bookshelves")) {
-        	result = "\u00a77Bookshelves: " + String.valueOf(getContainer().bookshelves) + " / " + String.valueOf(EnchantingPlus.maxBookShelves);
+        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.bookshelves") + ": " + String.valueOf(getContainer().bookshelves) + " / " + String.valueOf(EnchantingPlus.maxBookShelves);
         }
         if (var1.id.equals("Repair")) {
-        	result = "\u00a77Cost: " + (canPurchase(getRepairCost()) ? yes : no) + String.valueOf(getRepairCost());
+        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(getRepairCost()) ? yes : no) + String.valueOf(getRepairCost());
         }
         if (var1.id.equals("Transfer")) {
-        	result = "\u00a77Cost: " + (canPurchase(getTransferCost()) ? yes : no) + String.valueOf(getTransferCost());
+        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(getTransferCost()) ? yes : no) + String.valueOf(getTransferCost());
         }
         return result;
     }
@@ -433,7 +435,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
     public void drawPlayerXPLevel(int var1) // created by Slash
     {
     	ArrayList<String> textLine = new ArrayList<String>();
-    	String text = "Player XP Level: " + String.valueOf(var1);
+    	String text = LocalizationHelper.getLocalString("gui.playerlevel")+ ": " + String.valueOf(var1);
     	textLine.add("\u00a7b" + text);
     	drawTooltip(textLine, guiLeft + xSize/2 - mc.fontRenderer.getStringWidth(text)/2, guiTop-12);
     	
@@ -615,10 +617,10 @@ public class GuiEnchantmentPlus extends GuiContainer {
             return "";
         }
         String var2 = "";
-        var2 += var1.id;
+        var2 += var1.translated();
         var2 += "\n";
         if (var1.isButton) {
-            var2 += "Can use: " + var1.getTranslatedEnabled();
+            var2 += LocalizationHelper.getLocalString("gui.canuse")+ ": " + var1.getTranslatedEnabled();
             var2 += "\n";
             var2 += getCostString(var1);
             var2 += "\n";
