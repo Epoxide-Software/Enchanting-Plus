@@ -1,5 +1,6 @@
 package eplus.client;
 
+import eplus.common.localization.LocalizationHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
@@ -65,11 +66,11 @@ public class GuiIcon extends Gui
     {
         if (enabled)
         {
-            return "Yes";
+            return LocalizationHelper.getLocalString("positive");
         }
         else
         {
-            return "No";
+            return LocalizationHelper.getLocalString("negative");
         }
     }
 
@@ -77,5 +78,9 @@ public class GuiIcon extends Gui
     {
         info = var1;
         return this;
+    }
+
+    public String translated() {
+        return LocalizationHelper.getLocalString("gui.icon." + id.toLowerCase());
     }
 }
