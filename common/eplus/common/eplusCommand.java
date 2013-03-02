@@ -35,10 +35,10 @@ public class eplusCommand extends CommandBase {
             } else if (commandName.equalsIgnoreCase("changelog")){
                 processChangelog(var1, args);
             } else {
-                throw new WrongUsageException("eplus [ texture | changelog ]", new Object[]{0});
+                throw new WrongUsageException("eplus [ texture | changelog ]", 0);
             }
         } else {
-            throw new WrongUsageException("eplus [ texture | changelog ]", new Object[]{0});
+            throw new WrongUsageException("eplus [ texture | changelog ]", 0);
         }
     }
 
@@ -54,9 +54,9 @@ public class eplusCommand extends CommandBase {
             int value = Integer.valueOf(args[0]);
 
             if (value < 0) {
-                throw new WrongUsageException("eplus texture [ 0 | 1 | 2 ]", new Object[]{0});
+                throw new WrongUsageException("eplus texture [ 0 | 1 | 2 ]", 0);
             } else if (value > 2) {
-                throw new WrongUsageException("eplus texture [ 0 | 1 | 2 ]", new Object[]{0});
+                throw new WrongUsageException("eplus texture [ 0 | 1 | 2 ]", 0);
             }
 
             Property property = EnchantingPlus.config.get("general", "TextureIndex", 2);
@@ -67,7 +67,7 @@ public class eplusCommand extends CommandBase {
             var1.sendChatToPlayer("[EPLUS] changed texture to " + value);
 
         } else {
-            throw new WrongUsageException("eplus texture [ 0 | 1 | 2 ]", new Object[]{0});
+            throw new WrongUsageException("eplus texture [ 0 | 1 | 2 ]", 0);
         }
     }
 
@@ -76,10 +76,10 @@ public class eplusCommand extends CommandBase {
 
         switch (args.length) {
             case 1:
-                return getListOfStringsMatchingLastWord(args, new String[]{"texture", "changelog"});
+                return getListOfStringsMatchingLastWord(args, "texture", "changelog");
             case 2:
                 if (args[0].equalsIgnoreCase("texture")) {
-                    return getListOfStringsMatchingLastWord(args, new String[]{"0", "1", "2"});
+                    return getListOfStringsMatchingLastWord(args, "0", "1", "2");
                 }
             default:
                 return null;

@@ -33,7 +33,6 @@ public class PacketEnchant extends PacketBase {
             arrayorEnchantmentData[var5] = new EnchantmentData(Enchantment.enchantmentsList[enchantmentID], enchantmentLevel);
         }
         if (player.openContainer instanceof ContainerEnchanting) {
-            EntityPlayerMP playerEntity = (EntityPlayerMP) player;
             Container container = player.openContainer;
             ((ContainerEnchanting) container).doEnchant(container.getSlot(0).getStack(), player, arrayorEnchantmentData, enchantmentCost, player.openContainer.windowId);
 

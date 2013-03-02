@@ -144,7 +144,7 @@ public class ContainerEnchanting extends Container {
             // book without any StoredEnchantments needs to be converted to a normal book ID
             if (var5) { // created by Slash
             	//if (var3.getEnchantmentTagList() == null) { // modified by Slash
-            	if (var3.stackTagCompound == null || ((NBTTagList)var3.stackTagCompound.getTag(wordSearch) == null)) {
+            	if (var3.stackTagCompound == null || (var3.stackTagCompound.getTag(wordSearch) == null)) {
             		var3.itemID = Item.book.itemID;            		
             	}
             }
@@ -190,7 +190,7 @@ public class ContainerEnchanting extends Container {
         }
         
         String wordSearch = getEnchantmentSearchWord(var2); // modified by Slash
-        if (wordSearch == "") return; // modified by Slash
+        if (wordSearch.equals("")) return; // modified by Slash
         
         //if (!var2.stackTagCompound.hasKey("ench")) return  // modified by Slash
 
@@ -332,7 +332,7 @@ public class ContainerEnchanting extends Container {
             }
 
             if (itemStack.stackSize == 0) {
-                itemSlot.putStack((ItemStack) null);
+                itemSlot.putStack(null);
             } else {
                 itemSlot.onSlotChanged();
             }
@@ -354,13 +354,7 @@ public class ContainerEnchanting extends Container {
         // {
         // return true;
         // }
-        if (getSlot(0).getStack() != null && getSlot(1).getStack() != null) {
-            return false;
-        } else if (!var2.getItem().isItemTool(var2)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(getSlot(0).getStack() != null && getSlot(1).getStack() != null) && var2.getItem().isItemTool(var2);
     }
 
     public void doEnchant(ItemStack stack, EntityPlayer player, EnchantmentData[] var1, int var2, int windowid)
@@ -484,19 +478,18 @@ public class ContainerEnchanting extends Container {
             }
             ArrayList<EnchantmentItemData> list = guiEnchantmentPlus.readItem(var1);
             if (list != null) {
-                for (int var2 = 0; var2 < list.size(); var2++) {
-                    guiEnchantmentPlus.possibleDisenchantments.add(list.get(var2));
+                for (EnchantmentItemData aList : list) {
+                    guiEnchantmentPlus.possibleDisenchantments.add(aList);
                 }
             }
 
             if (var1.itemID == Item.enchantedBook.itemID) {
                 Map var20 = EnchantmentHelper.getEnchantments(var1);
-                Iterator var27 = var20.keySet().iterator();
 
-                while (var27.hasNext()) {
-                    int id = ((Integer) var27.next()).intValue();
+                for (Object o : var20.keySet()) {
+                    int id = (Integer) o;
                     Enchantment enchan = Enchantment.enchantmentsList[id];
-                    int level = ((Integer) var20.get(Integer.valueOf(id))).intValue();
+                    int level = (Integer) var20.get(id);
 
                     guiEnchantmentPlus.possibleDisenchantments.add(new EnchantmentItemData(enchan, level, bookshelves));
                 }

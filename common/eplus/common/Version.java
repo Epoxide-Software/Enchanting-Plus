@@ -63,13 +63,13 @@ public class Version implements Runnable {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(Version.class.getClassLoader().getResourceAsStream("changelog")));
 
-            String line = null;
+            String line;
             ArrayList<String> changelog = new ArrayList<String>();
             while((line = reader.readLine()) != null) {
                 changelog.add(line);
             }
-            return changelog.toArray(new String[0]);
-        } catch (Exception ex) {
+            return changelog.toArray(new String[changelog.size()]);
+        } catch (Exception ignored) {
 
         }
         return new String[] {LocalizationHelper.getLocalString("version.fail.changelog")};
@@ -83,13 +83,11 @@ public class Version implements Runnable {
 
             InputStreamReader inputStreamReader = new InputStreamReader(url.openStream());
 
-            if (inputStreamReader != null) {
-                props.load(inputStreamReader);
-                String major = props.getProperty("eplus.major.number");
-                String minor = props.getProperty("eplus.minor.number");
-                String build = props.getProperty("eplus.build.number");
-                recommendedVersion = major + "." + minor + "." + build;
-            }
+            props.load(inputStreamReader);
+            String major = props.getProperty("eplus.major.number");
+            String minor = props.getProperty("eplus.minor.number");
+            String build = props.getProperty("eplus.build.number");
+            recommendedVersion = major + "." + minor + "." + build;
         } catch (Exception ex) {
             Game.log(Level.WARNING, "Unable to read from remote version authority.", new Object[0]);
             ex.printStackTrace();
