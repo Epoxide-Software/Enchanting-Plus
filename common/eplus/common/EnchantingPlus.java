@@ -8,6 +8,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import eplus.common.packet.ItemPocketEnchanter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.FMLLog;
@@ -167,6 +169,7 @@ public class EnchantingPlus {
         Item pocketEnchanter = new ItemPocketEnchanter(pocketId).setItemName("pocketEnchanter");
         GameRegistry.registerItem(pocketEnchanter, "pocketEnchanter");
         LanguageRegistry.instance().addStringLocalization("item.pocketEnchanter.name", "Pocket Enchanter");
+        GameRegistry.addRecipe(new ItemStack(pocketEnchanter), "GEG"," B ", " B ", Character.valueOf('G'), Item.ghastTear, Character.valueOf('E'), Block.enchantmentTable, Character.valueOf('B'), Item.blazeRod);
     }
 
     @ServerStarting
