@@ -38,9 +38,8 @@ public class GuiContainerEnchanting extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
-        int tex = mc.renderEngine.getTexture("/enchant.png");
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        mc.renderEngine.bindTexture(tex);
+        mc.renderEngine.func_98187_b("/enchant.png");
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
 

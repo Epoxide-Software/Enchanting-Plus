@@ -166,9 +166,8 @@ public class GuiEnchantmentPlus extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
-        int i = mc.renderEngine.getTexture("/eplus/enchant" + EnchantingPlus.getTranslatedTextureIndex() + ".png");
-        mc.renderEngine.bindTexture(i);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        mc.renderEngine.func_98187_b("/eplus/enchant" + EnchantingPlus.getTranslatedTextureIndex() + ".png");
         GL11.glDisable(GL11.GL_LIGHTING);
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         this.drawTexturedModalRect(guiLeft + 180, guiTop + 16 + (int) (57 * eScroll), 0 + enchantmentItems.size() > 4 ? 0 : 12, 238, 12, 15);
