@@ -1,12 +1,10 @@
 package eplus.client;
 
+import eplus.common.EnchantingPlus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.enchantment.Enchantment;
-
 import org.lwjgl.opengl.GL11;
-
-import eplus.common.EnchantingPlus;
 
 public class GuiDisenchantmentItem extends Gui {
 	public static int startingX;

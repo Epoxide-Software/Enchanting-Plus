@@ -1,12 +1,12 @@
 package eplus.common;
 
+import cpw.mods.fml.common.network.IGuiHandler;
+import eplus.client.GuiEnchantmentPlus;
 import eplus.client.GuiEnchantmentPlusPocket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
-import eplus.client.GuiEnchantmentPlus;
 
 public class CommonProxy implements IGuiHandler
 {

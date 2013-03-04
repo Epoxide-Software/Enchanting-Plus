@@ -1,17 +1,15 @@
 package eplus.client;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.inventory.Container;
-
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.common.EnchantingPlus;
 import eplus.common.packet.PacketBase;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.inventory.Container;
+import org.lwjgl.opengl.GL11;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 
 public class GuiContainerEnchanting extends GuiContainer
 {

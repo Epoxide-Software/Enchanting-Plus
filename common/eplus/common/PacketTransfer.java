@@ -1,10 +1,10 @@
 package eplus.common;
 
-import java.io.DataInputStream;
-
+import eplus.common.packet.PacketBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import eplus.common.packet.PacketBase;
+
+import java.io.DataInputStream;
 
 public class PacketTransfer extends PacketBase
 {

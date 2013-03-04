@@ -1,12 +1,10 @@
 package eplus.common;
 
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraftforge.common.Property;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 /**

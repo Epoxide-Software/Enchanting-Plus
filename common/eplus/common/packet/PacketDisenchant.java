@@ -1,12 +1,12 @@
 package eplus.common.packet;
 
-import java.io.DataInputStream;
-
+import eplus.common.ContainerEnchanting;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import eplus.common.ContainerEnchanting;
+
+import java.io.DataInputStream;
 
 public class PacketDisenchant extends PacketBase {
 

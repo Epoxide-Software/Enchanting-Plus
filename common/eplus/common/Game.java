@@ -1,9 +1,9 @@
 package eplus.common;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class Game
 {

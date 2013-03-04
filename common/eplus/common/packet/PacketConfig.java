@@ -1,8 +1,8 @@
 package eplus.common.packet;
 
-import java.io.DataInputStream;
-
 import eplus.common.EnchantingPlus;
+
+import java.io.DataInputStream;
 
 public class PacketConfig extends PacketBase
 {

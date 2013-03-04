@@ -1,10 +1,12 @@
 package eplus.common;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import eplus.client.GuiDisenchantmentItem;
+import eplus.client.GuiEnchantmentItem;
+import eplus.client.GuiEnchantmentPlus;
+import eplus.common.packet.PacketBase;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -21,13 +23,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import eplus.client.GuiDisenchantmentItem;
-import eplus.client.GuiEnchantmentItem;
-import eplus.client.GuiEnchantmentPlus;
-import eplus.common.packet.PacketBase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class ContainerEnchanting extends Container {
     public EntityPlayer player;

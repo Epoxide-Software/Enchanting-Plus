@@ -1,17 +1,11 @@
 package eplus.client;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.logging.Level;
-
-import javax.jws.soap.SOAPBinding.Style;
-
+import cpw.mods.fml.common.network.PacketDispatcher;
+import eplus.common.ContainerEnchanting;
+import eplus.common.EnchantingPlus;
+import eplus.common.EnchantmentItemData;
 import eplus.common.localization.LocalizationHelper;
+import eplus.common.packet.PacketBase;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -19,23 +13,17 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import eplus.common.ContainerEnchanting;
-import eplus.common.EnchantingPlus;
-import eplus.common.EnchantmentItemData;
-import eplus.common.Game;
-import eplus.common.packet.PacketBase;
-import sun.util.resources.LocaleNames_lt;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.util.ArrayList;
 
 public class GuiEnchantmentPlus extends GuiContainer {
 

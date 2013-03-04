@@ -1,12 +1,10 @@
 package eplus.client;
 
+import eplus.common.EnchantingPlus;
 import eplus.common.localization.LocalizationHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-
 import org.lwjgl.opengl.GL11;
-
-import eplus.common.EnchantingPlus;
 
 public class GuiIcon extends Gui
 {

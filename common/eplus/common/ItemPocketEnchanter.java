@@ -1,6 +1,5 @@
 package eplus.common;
 
-import eplus.common.EnchantingPlus;
 import eplus.common.localization.LocalizationHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
