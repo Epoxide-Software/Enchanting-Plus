@@ -51,6 +51,10 @@ public class GuiEnchantmentPlus extends GuiContainer {
 
     public EntityClientPlayerMP player;
 
+    private String textToDisplay = "";
+    private int textToDisplayX;
+    private int textToDisplayY;
+    
     public GuiEnchantmentPlus(EntityPlayer player, World world, int x, int y, int z) {
         super(new ContainerEnchanting(player, world, x, y, z));
         this.player = (EntityClientPlayerMP) player;
@@ -130,8 +134,10 @@ public class GuiEnchantmentPlus extends GuiContainer {
         }
         
         super.drawScreen(var1, var2, var3);
-        drawPlayerXPLevel(player.experienceLevel); // created by Slash
-        
+        if (textToDisplay != "") { // modified by Slash
+        	drawTooltip(getStringLines(textToDisplay), textToDisplayX, textToDisplayY); // modified by Slash
+        	textToDisplay = "";
+        }
     }
 
     public void initGui()
@@ -167,6 +173,9 @@ public class GuiEnchantmentPlus extends GuiContainer {
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         this.drawTexturedModalRect(guiLeft + 180, guiTop + 16 + (int) (57 * eScroll), 0 + enchantmentItems.size() > 4 ? 0 : 12, 238, 12, 15);
         this.drawTexturedModalRect(guiLeft + 180, guiTop + 90 + (int) (39 * dScroll), 0 + disenchantmentItems.size() > 3 ? 0 : 12, 238, 12, 15);
+        
+        drawPlayerXPLevel(player.experienceLevel); // created by Slash
+        
         for (GuiEnchantmentItem item : enchantmentItems) {
             item.draw(mc, var2, var3);
         }
@@ -186,7 +195,9 @@ public class GuiEnchantmentPlus extends GuiContainer {
             if (icon.isMouseOver(var2, var3)) {
                 //drawGradientRect(guiLeft - 100, guiTop, guiLeft - 4, guiTop + ySize, -2130706433, -2130706433); // modified by Slash
             	//mc.fontRenderer.drawSplitString(getInfo(icon), guiLeft - 96, guiTop + 4, 92, 0x444444); // modified by Slash
-            	drawTooltip(getStringLines(getInfo(icon)), var2, var3); // modified by Slash
+            	textToDisplay = getInfo(icon);
+            	textToDisplayX=var2;
+            	textToDisplayY=var3;
             }
         }
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -235,6 +246,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
 
             this.zLevel = 300.0F;
             itemRenderer.zLevel = 300.0F;
+            
             int var10 = -267386864;
             this.drawGradientRect(var6 - 3, var7 - 4, var6 + var5 + 3, var7 - 3, var10, var10);
             this.drawGradientRect(var6 - 3, var7 + var9 + 3, var6 + var5 + 3, var7 + var9 + 4, var10, var10);
@@ -422,14 +434,9 @@ public class GuiEnchantmentPlus extends GuiContainer {
 
     public void drawPlayerXPLevel(int var1) // created by Slash
     {
-    	ArrayList<String> textLine = new ArrayList<String>();
-    	String text = LocalizationHelper.getLocalString("gui.playerlevel")+ ": " + String.valueOf(var1);
-    	textLine.add("\u00a7b" + text);
-    	drawTooltip(textLine, guiLeft + xSize/2 - mc.fontRenderer.getStringWidth(text)/2, guiTop-12);
-    	
-    	//String text = "Player XP Level: " + String.valueOf(var1);
-    	//mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 )+1, guiTop + 5+1, 0xFF000000);
-    	//mc.fontRenderer.drawString(text, (guiLeft + xSize/2) - ( mc.fontRenderer.getStringWidth(text) / 2 ), guiTop + 5, 0xFF00FF00);
+    	String text = "\u00a7b" + LocalizationHelper.getLocalString("gui.playerlevel") + ": " + String.valueOf(var1);
+
+    	this.drawCreativeTabHoveringText(text,  (int)(guiLeft + xSize/2 - mc.fontRenderer.getStringWidth(text)/2), (int)(guiTop+12));
     }
     
     public boolean canPurchase(int var1)
