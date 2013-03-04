@@ -5,7 +5,6 @@ import java.util.logging.Level;
 
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import eplus.common.packet.ItemPocketEnchanter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,7 +37,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.logging.Level;
 
-@Mod(modid = "eplus", name = "Enchanting Plus", useMetadata = true, version = Version.VERSION + "." + Version.BUILD)
+@Mod(modid = "eplus", name = "Enchanting Plus", useMetadata = true)
 @NetworkMod(channels = { "eplus" }, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
 public class EnchantingPlus {
 
@@ -152,7 +151,10 @@ public class EnchantingPlus {
         LocalizationRegistry.Instance().addLocalizationFile("/eplus/lang/en_US.xml");
         LocalizationHandler.addLanguages();
 
+        Version.init(var1.getVersionProperties());
         if (allowUpdateCheck) Version.check();  // modified by Slash
+
+        var1.getModMetadata().version = Version.getCurrentModVersion();
     }
 
     private void clamp(double value, double min, double max, String factorString) {

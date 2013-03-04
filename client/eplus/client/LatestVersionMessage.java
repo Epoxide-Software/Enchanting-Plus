@@ -23,7 +23,7 @@ public class LatestVersionMessage implements IScheduledTickHandler
             if(Version.hasUpdated()){
                 player.sendChatToPlayer(String.format("[EPLUS]: %s: %s", LocalizationHelper.getLocalString("version.update.available"), Version.getRecommendedVersion()));
             } else if(Version.currentVersion == Version.EnumUpdateState.BETA) {
-                player.sendChatToPlayer(String.format("[EPLUS]: %s: %s, %s.", LocalizationHelper.getLocalString("version.beta.build"), Version.getCurrentModVersion(), LocalizationHelper.getLocalString("version.report.problems")));
+                player.sendChatToPlayer(String.format("[EPLUS]: %s", LocalizationHelper.getLocalString("version.beta.build").replace("@MOD_VERSION@",Version.getCurrentModVersion())));
                 player.sendChatToPlayer(String.format("[EPLUS]: %s: %s", LocalizationHelper.getLocalString("version.changelog.command"), "/eplus changelog"));
             }
         }

@@ -102,22 +102,6 @@ public class Version implements Runnable {
             return;
         }
 
-        InputStream inputStream = Version.class.getClassLoader().getResourceAsStream("version");
-
-        if (inputStream != null) {
-            try {
-                props.load(inputStream);
-                String major = props.getProperty("eplus.major.number");
-                String minor = props.getProperty("eplus.minor.number");
-                String build = props.getProperty("eplus.build.number");
-                currentModVersion = major + "." + minor + "." + build;
-            } catch (Exception ex) {
-                Game.log(Level.INFO, "Couldn't read current version", new Object[0]);
-                ex.printStackTrace();
-                currentModVersion = "0.0.0";
-            }
-        }
-
         if (currentModVersion != null && currentModVersion.equals(recommendedVersion)) {
             Game.log(Level.INFO, "Using the latest version for Minecraft " + getMinecraftVersion(), new Object[0]);
             currentVersion = EnumUpdateState.CURRENT;
@@ -131,6 +115,7 @@ public class Version implements Runnable {
             currentVersion = EnumUpdateState.OUTDATED;
             updated = true;
         }
+        props.clear();
     }
 
     public static String getMinecraftVersion()
@@ -152,6 +137,28 @@ public class Version implements Runnable {
 
         Game.log(Level.INFO, "Version check complete with {0}", new Object[]{currentVersion.toString()});
         versionCheckCompleted = true;
+    }
+
+    public static void init(Properties versionProperties) {
+        Properties props = new Properties();
+
+        InputStream inputStream = Version.class.getClassLoader().getResourceAsStream("version");
+
+        if (inputStream != null) {
+            try {
+                props.load(inputStream);
+                String major = props.getProperty("eplus.major.number");
+                String minor = props.getProperty("eplus.minor.number");
+                String build = props.getProperty("eplus.build.number");
+                currentModVersion = major + "." + minor + "." + build;
+            } catch (Exception ex) {
+                Game.log(Level.INFO, "Couldn't read current version", new Object[0]);
+                ex.printStackTrace();
+                currentModVersion = "0.0.0";
+            }
+        }
+
+        props.clear();
     }
 
     public static enum EnumUpdateState {

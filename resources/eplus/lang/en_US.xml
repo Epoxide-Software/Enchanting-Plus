@@ -6,8 +6,7 @@
     <entry key="pocketEnchanter.info">Enchanting on the go.</entry>
     <entry key="version.fail.changelog">Failure to load changelog</entry>
     <entry key="version.update.available">An updated version is available</entry>
-    <entry key="version.beta.build">Using a beta build</entry>
-    <entry key="version.report.problems">please report all issues on the forums</entry>
+    <entry key="version.beta.build">Using a beta build @MOD_VERSION@, please report all issues on the forums.</entry>
     <entry key="version.changelog.command">Please use follow command to see changes</entry>
     <entry key="positive">Yes</entry>
     <entry key="negative">No</entry>
