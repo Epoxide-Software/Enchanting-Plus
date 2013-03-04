@@ -1,56 +1,57 @@
 <project name="Enchanting Plus" basedir="./" default="main">
-    
+
     <!-- Properties -->
-    
-	<property environment="env" />
-    <property name="build.dir"           value="build"/>
-	<property name="common.dir"			 value="common" />
-	<property name="client.dir"			 value="client" />
-	<property name="resource.dir"		 value="resources" />
-	<property name="download.dir"		 value="download" />
 
-    <property name="temp.dir"            value="temp" />
-    <property name="temp.mcp.dir"        value="${temp.dir}/mcp"/>
-    
-    <property name="classes.dir"         value="${build.dir}/classes"/>
-    <property name="jar.dir"             value="${build.dir}/dist"/>
-          
-    <property name="mcp.dir"             value="${build.dir}/mcp"/>
-      
-    <property name="clientsrc.dir"       value="${mcp.dir}/src/minecraft"/>
+    <property environment="env"/>
+    <property name="build.dir" location="build"/>
+    <property name="common.dir" location="common"/>
+    <property name="client.dir" location="client"/>
+    <property name="resource.dir" location="resources"/>
+    <property name="download.dir" location="download"/>
 
-    <property name="mcp-name"          value="mcp_527" />
-    <property name="mcp-download"      value="https://dl.dropbox.com/u/21347544/${mcp-name}.zip" />
-    <available property="mcp-exists"   file="${download.dir}/${mcp-name}.zip"/>
+    <property name="temp.dir" location="temp"/>
+    <property name="temp.mcp.dir" location="${temp.dir}/mcp"/>
+
+    <property name="classes.dir" location="${build.dir}/classes"/>
+    <property name="jar.dir" location="${build.dir}/dist"/>
+
+    <property name="mcp.dir" location="${build.dir}/mcp"/>
+
+    <property name="clientsrc.dir" location="${mcp.dir}/src/minecraft"/>
+
+    <property name="mcp-name" value="mcp_527"/>
+    <property name="mcp-download" value="https://dl.dropbox.com/u/21347544/${mcp-name}.zip"/>
+    <available property="mcp-exists" file="${download.dir}/${mcp-name}.zip"/>
     <available property="temp-mcp-dir" file="${temp.mcp.dir}"/>
 
-    <property name="eplus.version"       value="1.12.9"/>
+    <property name="eplus.version" value="1.12.9"/>
+
+    <property name="fml.python.dir" location="${mcp.dir}/forge/fml/python"/>
+    <condition property="python.exe" value="${fml.python.dir}/python_fml" else="python">
+        <os family="Windows"/>
+    </condition>
+
 
     <target name="clean">
-        <delete dir="${build.dir}" />
+        <delete dir="${build.dir}"/>
     </target>
 
-    <target name="version-provided" if="env.BUILD_NUMBER">
-        <property name="build.number" value="${env.BUILD_NUMBER}"/>
+    <target name="setup-environment">
+        <condition property="build.number" value="${env.BUILD_NUMBER}" else="1">
+            <isset property="env.BUILD_NUMBER"/>
+        </condition>
     </target>
-	
-	<target name="version-not-provided" unless="env.BUILD_NUMBER">
-		<property name="build.number" value="unkown"/>
-	</target>
 
-    <target name="setup" depends="version-provided, version-not-provided">
-		<property name="eplus.version.full"  value="${eplus.version}.${build.number}"/>
-      
-	     <echo message="Starting build for ${eplus.version.full}"/>
-		
-		<mkdir dir ="${download.dir}"/>
+    <target name="setup" depends="setup-environment">
+        <property name="eplus.version.full" value="${eplus.version}.${build.number}"/>
+
+        <echo>Starting build for ${eplus.version.full}</echo>
+
+        <mkdir dir="${download.dir}"/>
 
         <antcall target="downloadFiles"/>
 
         <antcall target="unzip-files"/>
-
-
-		<buildnumber/>
 
     </target>
 
@@ -66,13 +67,13 @@
     </target>
 
     <target name="unzip-files">
-        <antcall target="unzip-mcp" />
+        <antcall target="unzip-mcp"/>
     </target>
 
     <target name="unzip-mcp">
         <unzip dest="${build.dir}">
             <fileset dir="${download.dir}">
-                <include name="${mcp-name}.zip" />
+                <include name="${mcp-name}.zip"/>
             </fileset>
         </unzip>
 
@@ -86,46 +87,46 @@
     <target name="compile" depends="setup">
 
         <copy todir="${clientsrc.dir}">
-            <fileset dir="${client.dir}" />
-            <fileset dir="${common.dir}" />
+            <fileset dir="${client.dir}"/>
+            <fileset dir="${common.dir}"/>
             <filterset>
-                <filter token="BUILD_NUMBER" value="${build.number}" />
+                <filter token="BUILD_NUMBER" value="${build.number}"/>
             </filterset>
         </copy>
 
-        <exec dir="${mcp.dir}" executable="python">
-            <arg value="runtime/recompile.py" />
+        <exec dir="${mcp.dir}" executable="${python.exe}">
+            <arg value="runtime/recompile.py"/>
         </exec>
 
-        <exec dir="${mcp.dir}" executable="python">
-            <arg value="runtime/reobfuscate.py" />
+        <exec dir="${mcp.dir}" executable="${python.exe}">
+            <arg value="runtime/reobfuscate.py"/>
         </exec>
 
-		<mkdir dir="${classes.dir}/eplus"/>
+        <mkdir dir="${classes.dir}/eplus"/>
         <copy todir="${classes.dir}/eplus">
             <fileset dir="${mcp.dir}/reobf/minecraft/eplus"/>
         </copy>
 
-        <exec dir="" executable="python">
-            <arg value="changelog.py" />
+        <exec dir="" executable="${python.exe}">
+            <arg value="changelog.py"/>
         </exec>
 
         <copy todir="${classes.dir}">
             <fileset dir="${resource.dir}">
                 <exclude name="build.xml"/>
-				<exclude name="build.number"/>
-        	</fileset>
+                <exclude name="build.number"/>
+            </fileset>
         </copy>
 
-        
+
     </target>
-    
+
     <target name="package" depends="compile">
-        
+
         <zip destfile="${jar.dir}/EnchantingPlus-${eplus.version.full}-beta.zip" basedir="${classes.dir}"/>
-        
+
     </target>
-    
+
     <target name="main" depends="clean,package"/>
 
 </project>
