@@ -1,5 +1,6 @@
 package eplus.common;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -8,11 +9,14 @@ import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import eplus.common.localization.LocalizationHandler;
 import eplus.common.localization.LocalizationRegistry;
 import net.minecraft.block.Block;
@@ -176,11 +180,11 @@ public class EnchantingPlus {
         int var2 = Block.enchantmentTable.blockID;
         Block.blocksList[var2] = null;
         Item.itemsList[var2] = null;
-        Block table = new BlockEnchantingTable(var2).setHardness(5.0F).setResistance(2000.0F).setBlockName("enchantmentTable");
+        Block table = new BlockEnchantingTable(var2).setHardness(5.0F).setResistance(2000.0F).setUnlocalizedName("enchantmentTable");
         GameRegistry.registerBlock(table, "enchantmentTable");
 
         if(allowPocketEnchanting) {
-            Item pocketEnchanter = new ItemPocketEnchanter(pocketId).setItemName("pocketEnchanter");
+            Item pocketEnchanter = new ItemPocketEnchanter(pocketId).setUnlocalizedName("pocketEnchanter");
             GameRegistry.registerItem(pocketEnchanter, "pocketEnchanter");
 
             GameRegistry.addRecipe(new ItemStack(pocketEnchanter), "GEG"," B ", " B ", Character.valueOf('G'), Item.ghastTear, Character.valueOf('E'), Block.enchantmentTable, Character.valueOf('B'), Item.blazeRod);
