@@ -141,7 +141,9 @@ public class EnchantingPlus {
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");
         } finally {
-            config.save();
+            if(config.hasChanged()){
+                config.save();
+            }
         }
 
         LocalizationRegistry.Instance().addLocalizationFile("/eplus/lang/pt_BR.xml");

@@ -44,7 +44,7 @@ public class eplusCommand extends CommandBase {
 
     private void processChangelog(ICommandSender var1, String[] args) {
         var1.sendChatToPlayer("[EPLUS] Changelog:");
-        for(String line : Version.grabChangelog()){
+        for(String line : Version.getChangelog()){
             var1.sendChatToPlayer(line);
         }
     }
@@ -60,8 +60,11 @@ public class eplusCommand extends CommandBase {
             }
 
             Property property = EnchantingPlus.config.get("general", "TextureIndex", 2);
-            property.value = String.valueOf(value);
-            EnchantingPlus.config.save();
+            property.set(value);
+
+            if(EnchantingPlus.config.hasChanged()){
+                EnchantingPlus.config.save();
+            }
             EnchantingPlus.textureIndex = value;
 
             var1.sendChatToPlayer("[EPLUS] changed texture to " + value);

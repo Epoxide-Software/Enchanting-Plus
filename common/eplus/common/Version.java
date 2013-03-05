@@ -43,13 +43,15 @@ public class Version implements Runnable {
         }
 
         Property property = EnchantingPlus.config.get("version","SeenVersion", currentModVersion);
-        String seenVersion = property.value;
+        String seenVersion = property.getString();
 
         if(recommendedVersion == null || recommendedVersion.equals(seenVersion))
             return false;
 
-        property.value = getRecommendedVersion();
-        EnchantingPlus.config.save();
+        property.set(getRecommendedVersion());
+        if(EnchantingPlus.config.hasChanged()) {
+            EnchantingPlus.config.save();
+        }
         return true;
     }
     public static String[] getChangelog(){
