@@ -87,7 +87,7 @@ public class Version implements Runnable {
                 props.load(inputStreamReader);
                 String major = props.getProperty("eplus.major.number");
                 String minor = props.getProperty("eplus.minor.number");
-                String build = props.getProperty("eplus.reference.number");
+                String build = props.getProperty("eplus.build.number");
                 recommendedVersion = major + "." + minor + "." + build;
             }
         } catch (Exception ex) {

@@ -140,6 +140,7 @@ public class EnchantingPlus {
             config.save();
         }
 
+        LocalizationRegistry.Instance().addLocalizationFile("/eplus/lang/pt_BR.xml");
         LocalizationRegistry.Instance().addLocalizationFile("/eplus/lang/en_US.xml");
         LocalizationHandler.addLanguages();
 
