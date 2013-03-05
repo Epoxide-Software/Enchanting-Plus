@@ -45,6 +45,7 @@ public class EnchantingPlus {
     public static boolean hasLight = true; // created by Slash
     public static boolean needBookShelves = true; // created by Slash
     public static boolean hasParticles = true; // created by Slash
+    public static boolean allowPocketEnchanting;
 
     public static double enchantFactor;
     public static double disenchantFactor;
@@ -126,6 +127,10 @@ public class EnchantingPlus {
             repairFactorProp.comment = "Change to set the factor at which the repair cost is multiplied by\nInput is from 0 - 10";
             clamp(repairFactorProp.getDouble(1.0d), 0.0d, 10.0d, "repairFactor");
 
+            Property enablePocket = config.get("Items", "EnablePocketEnchanter", true);
+            enablePocket.comment = "set to true if you want the pocket enchanter to be craftable.";
+            allowPocketEnchanting = enablePocket.getBoolean(true);
+
             Property pocketIDProp = config.getItem("Items","PocketEnchanter", 152);
             pocketId = pocketIDProp.getInt();
 
@@ -139,9 +144,9 @@ public class EnchantingPlus {
         LocalizationHandler.addLanguages();
 
         Version.init(var1.getVersionProperties());
-        if (allowUpdateCheck) Version.check();  // modified by Slash
-
+        if(allowUpdateCheck) Version.check();  // modified by Slash
         var1.getModMetadata().version = Version.getCurrentModVersion();
+
     }
 
     private void clamp(double value, double min, double max, String factorString) {
@@ -173,9 +178,12 @@ public class EnchantingPlus {
         Block table = new BlockEnchantingTable(var2).setHardness(5.0F).setResistance(2000.0F).setBlockName("enchantmentTable");
         GameRegistry.registerBlock(table, "enchantmentTable");
 
-        Item pocketEnchanter = new ItemPocketEnchanter(pocketId).setItemName("pocketEnchanter");
-        GameRegistry.registerItem(pocketEnchanter, "pocketEnchanter");
-        GameRegistry.addRecipe(new ItemStack(pocketEnchanter), "GEG"," B ", " B ", Character.valueOf('G'), Item.ghastTear, Character.valueOf('E'), Block.enchantmentTable, Character.valueOf('B'), Item.blazeRod);
+        if(allowPocketEnchanting) {
+            Item pocketEnchanter = new ItemPocketEnchanter(pocketId).setItemName("pocketEnchanter");
+            GameRegistry.registerItem(pocketEnchanter, "pocketEnchanter");
+
+            GameRegistry.addRecipe(new ItemStack(pocketEnchanter), "GEG"," B ", " B ", Character.valueOf('G'), Item.ghastTear, Character.valueOf('E'), Block.enchantmentTable, Character.valueOf('B'), Item.blazeRod);
+        }
     }
 
     @ServerStarting

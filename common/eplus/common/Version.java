@@ -5,7 +5,6 @@ import eplus.common.localization.LocalizationHelper;
 import net.minecraftforge.common.Property;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ public class Version implements Runnable {
                 props.load(inputStreamReader);
                 String major = props.getProperty("eplus.major.number");
                 String minor = props.getProperty("eplus.minor.number");
-                String build = props.getProperty("eplus.build.number");
+                String build = props.getProperty("eplus.reference.number");
                 recommendedVersion = major + "." + minor + "." + build;
             }
         } catch (Exception ex) {
@@ -137,25 +136,16 @@ public class Version implements Runnable {
     }
 
     public static void init(Properties versionProperties) {
-        Properties props = new Properties();
-
-        InputStream inputStream = Version.class.getClassLoader().getResourceAsStream("version");
-
-        if (inputStream != null) {
-            try {
-                props.load(inputStream);
-                String major = props.getProperty("eplus.major.number");
-                String minor = props.getProperty("eplus.minor.number");
-                String build = props.getProperty("eplus.build.number");
-                currentModVersion = major + "." + minor + "." + build;
-            } catch (Exception ex) {
-                Game.log(Level.INFO, "Couldn't read current version", new Object[0]);
-                ex.printStackTrace();
-                currentModVersion = "0.0.0";
-            }
+        Properties props = versionProperties;
+        if(props == null) {
+            currentModVersion = "0.0.0";
+            return;
         }
 
-        props.clear();
+        String major = props.getProperty("eplus.major.number");
+        String minor = props.getProperty("eplus.minor.number");
+        String build = props.getProperty("eplus.reference.number");
+        currentModVersion = major + "." + minor + "." + build;
     }
 
     public static enum EnumUpdateState {
