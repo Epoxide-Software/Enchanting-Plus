@@ -37,13 +37,15 @@
     </target>
 
     <target name="setup-environment">
-        <condition property="build.number" value="${env.BUILD_NUMBER}" else="1">
+        <condition property="build.number" value="${env.BUILD_NUMBER}" else="0">
             <isset property="env.BUILD_NUMBER"/>
         </condition>
     </target>
 
     <target name="setup" depends="setup-environment">
-        <property name="eplus.version.full" value="${eplus.version}.${build.number}"/>
+        <condition property="eplus.version.full" value="${eplus.version}" else="${eplus.version}.${build.number}">
+            <equals arg1="${build.number}" arg2="0" />
+        </condition>
 
         <echo>Starting build for ${eplus.version.full}</echo>
 
@@ -118,12 +120,14 @@
             </fileset>
         </copy>
 
-
     </target>
 
     <target name="package" depends="compile">
+        <condition property="eplus.jar.name" value="EnchantingPlus-${eplus.version.full}.zip" else="EnchantingPlus-${eplus.version.full}-beta.zip">
+            <equals arg1="${build.number}" arg2="0" />
+        </condition>
 
-        <zip destfile="${jar.dir}/EnchantingPlus-${eplus.version.full}-beta.zip" basedir="${classes.dir}"/>
+        <zip destfile="${jar.dir}/${eplus.jar.name}" basedir="${classes.dir}"/>
 
     </target>
 
