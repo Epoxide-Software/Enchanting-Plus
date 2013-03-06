@@ -56,6 +56,10 @@ public class EnchantingPlus {
     public static double transferFactor;
     public static double repairFactor;
 
+    public static boolean pocketAllowDisenchanting;
+    public static boolean pocketAllowRepair;
+    public static boolean pocketAllowTransfer;
+
     public static int pocketId;
     
     @SidedProxy(clientSide = "eplus.client.ClientProxy", serverSide = "eplus.common.CommonProxy")
@@ -131,12 +135,24 @@ public class EnchantingPlus {
             repairFactorProp.comment = "Change to set the factor at which the repair cost is multiplied by\nInput is from 0 - 10";
             clamp(repairFactorProp.getDouble(1.0d), 0.0d, 10.0d, "repairFactor");
 
-            Property enablePocket = config.get("Items", "EnablePocketEnchanter", true);
+            Property enablePocket = config.get("Pocket", "EnablePocketEnchanter", true);
             enablePocket.comment = "set to true if you want the pocket enchanter to be craftable.";
             allowPocketEnchanting = enablePocket.getBoolean(true);
 
             Property pocketIDProp = config.getItem("Items","PocketEnchanter", 152);
             pocketId = pocketIDProp.getInt();
+
+            Property portableAllowDisenchantingProp = config.get("Pocket", "AllowDisenchanting", true);
+            portableAllowDisenchantingProp.comment = "set to true if you want to allow pocket disenchantment of items";
+            pocketAllowDisenchanting = portableAllowDisenchantingProp.getBoolean(true);
+
+            Property pocketAllowRepairProp = config.get("Pocket", "AllowRepair", true);
+            pocketAllowRepairProp.comment = "set to true if you want to allow pocket repair of enchanted items";
+            pocketAllowRepair = pocketAllowRepairProp.getBoolean(true);
+
+            Property pocketAllowTransferProp = config.get("Pocket", "AllowTransfer", true);
+            pocketAllowTransferProp.comment = "set to true if you want to allow pocket transfer of enchantments between items";
+            pocketAllowTransfer = pocketAllowTransferProp.getBoolean(true);
 
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");
