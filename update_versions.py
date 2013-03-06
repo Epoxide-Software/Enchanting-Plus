@@ -6,7 +6,6 @@ import re
 import subprocess, shlex
 import argparse
 import shutil
-import changelog
 
 def cmdsplit(args):
     if os.sep == '\\':
@@ -53,9 +52,6 @@ def main(mcversion, modversion):
     file.close()
 
     shutil.copy2(filename, dropbox + "/" + filename)
-
-    sys.argv = ['sys.argv[0]']
-    changelog.main()
 
     if not os.path.isdir(dropbox + "/changelog"):
         os.mkdir(dropbox + "/changelog")
