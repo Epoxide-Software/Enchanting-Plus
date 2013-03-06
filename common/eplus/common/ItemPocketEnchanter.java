@@ -31,14 +31,10 @@ public class ItemPocketEnchanter extends Item {
     }
 
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int par7, float par8, float par9, float par10) {
-        if (world.isRemote) {
-            return true;
-        } else {
-            if (EnchantingPlus.useMod) {
-                player.openGui(EnchantingPlus.instance, 1, world, x, y, z);
-            }
-            return true;
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+        if (EnchantingPlus.useMod) {
+            player.openGui(EnchantingPlus.instance, 1, world, 0, 0, 0);
         }
+        return itemStack;
     }
 }
