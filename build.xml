@@ -123,11 +123,11 @@
     </target>
 
     <target name="package" depends="compile">
-        <condition property="eplus.jar.name" value="EnchantingPlus-${eplus.version.full}.zip" else="EnchantingPlus-${eplus.version.full}-beta.zip">
+        <condition property="eplus.jar.name" value="EnchantingPlus-${eplus.version.full}" else="EnchantingPlus-${eplus.version.full}-beta">
             <equals arg1="${build.number}" arg2="0" />
         </condition>
 
-        <zip destfile="${jar.dir}/${eplus.jar.name}" basedir="${classes.dir}"/>
+        <jar destfile="${jar.dir}/${eplus.jar.name}.jar" basedir="${classes.dir}"/>
 
     </target>
 
