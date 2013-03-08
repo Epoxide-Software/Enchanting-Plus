@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import eplus.common.localization.LocalizationHandler;
 import eplus.common.localization.LocalizationRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
@@ -69,6 +70,8 @@ public class EnchantingPlus {
     public static EnchantingPlus instance;
 
     public static Configuration config;
+
+    public static CreativeTabs eplusTab = new CreativeTabs("eplus");
 
     @PreInit
     public void preInit(FMLPreInitializationEvent var1)

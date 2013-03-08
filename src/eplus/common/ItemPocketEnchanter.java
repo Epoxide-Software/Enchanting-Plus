@@ -25,7 +25,7 @@ public class ItemPocketEnchanter extends Item {
 
     @Override
     public CreativeTabs getCreativeTab() {
-        return CreativeTabs.tabDecorations;
+        return EnchantingPlus.eplusTab;
     }
 
     @Override
