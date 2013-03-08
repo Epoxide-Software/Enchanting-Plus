@@ -61,10 +61,6 @@ public class EnchantingPlus {
     public static double transferFactor;
     public static double repairFactor;
 
-    public static boolean pocketAllowDisenchanting;
-    public static boolean pocketAllowRepair;
-    public static boolean pocketAllowTransfer;
-
     public static int pocketId;
     
     @SidedProxy(clientSide = "eplus.client.ClientProxy", serverSide = "eplus.common.CommonProxy")
