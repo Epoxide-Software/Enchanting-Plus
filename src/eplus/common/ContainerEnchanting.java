@@ -154,7 +154,7 @@ public class ContainerEnchanting extends Container {
             	if (var3.stackTagCompound == null || ((NBTTagList)var3.stackTagCompound.getTag(wordSearch) == null)) { // created by Slash
             		if (EnchantingPlus.allowDestroyItemOnDisenchanting){
             	        this.inventoryEnchanting.setInventorySlotContents(0, (ItemStack)null);
-            	        player.playSound("random.break", 0.8F, 0.8F + player.worldObj.rand.nextFloat() * 0.4F);
+            	        player.worldObj.playSoundAtEntity(player, "random.break", 0.8F, 0.8F + player.worldObj.rand.nextFloat() * 0.4F);
             		}
             	}
             }

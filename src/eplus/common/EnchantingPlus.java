@@ -147,15 +147,15 @@ public class EnchantingPlus {
             allowPocketEnchanting = enablePocket.getBoolean(true);
 
             // properties for pocketEnchanting created by Slash
-            Property allowPocketDisenchantingProp = config.get("general", "AllowPocketDisenchanting", true);
+            Property allowPocketDisenchantingProp = config.get("Pocket", "AllowPocketDisenchanting", true);
             allowPocketDisenchantingProp.comment = "set to true if you want to allow pocket disenchantment of items";
             allowPocketDisenchanting = allowPocketDisenchantingProp.getBoolean(allowDisenchanting);
             
-            Property allowPocketRepairProp = config.get("general", "AllowPocketRepair", true);
+            Property allowPocketRepairProp = config.get("Pocket", "AllowPocketRepair", true);
             allowPocketRepairProp.comment = "set to true if you want to allow pocket repair of enchanted items";
             allowPocketRepair = allowPocketRepairProp.getBoolean(allowRepair);
 
-            Property allowPocketTransferProp = config.get("general", "AllowPocketTransfer", true);
+            Property allowPocketTransferProp = config.get("Pocket", "AllowPocketTransfer", true);
             allowPocketTransferProp.comment = "set to true if you want to allow pocket transfer of enchantments between items";
             allowPocketTransfer = allowPocketTransferProp.getBoolean(allowTransfer);
             
@@ -165,18 +165,6 @@ public class EnchantingPlus {
             
             Property pocketIDProp = config.getItem("Items","PocketEnchanter", 152);
             pocketId = pocketIDProp.getInt();
-
-            Property portableAllowDisenchantingProp = config.get("Pocket", "AllowDisenchanting", true);
-            portableAllowDisenchantingProp.comment = "set to true if you want to allow pocket disenchantment of items";
-            pocketAllowDisenchanting = portableAllowDisenchantingProp.getBoolean(true);
-
-            Property pocketAllowRepairProp = config.get("Pocket", "AllowRepair", true);
-            pocketAllowRepairProp.comment = "set to true if you want to allow pocket repair of enchanted items";
-            pocketAllowRepair = pocketAllowRepairProp.getBoolean(true);
-
-            Property pocketAllowTransferProp = config.get("Pocket", "AllowTransfer", true);
-            pocketAllowTransferProp.comment = "set to true if you want to allow pocket transfer of enchantments between items";
-            pocketAllowTransfer = pocketAllowTransferProp.getBoolean(true);
 
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");
