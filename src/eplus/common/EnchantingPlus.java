@@ -51,6 +51,10 @@ public class EnchantingPlus {
     public static boolean needBookShelves = true; // created by Slash
     public static boolean hasParticles = true; // created by Slash
     public static boolean allowPocketEnchanting;
+    public static boolean allowPocketRepair; // created by Slash
+    public static boolean allowPocketTransfer; // created by Slash
+    public static boolean allowPocketDisenchanting; // created by Slash
+    public static boolean allowDestroyItemOnDisenchanting; // created by Slash
 
     public static double enchantFactor;
     public static double disenchantFactor;
@@ -142,6 +146,23 @@ public class EnchantingPlus {
             enablePocket.comment = "set to true if you want the pocket enchanter to be craftable.";
             allowPocketEnchanting = enablePocket.getBoolean(true);
 
+            // properties for pocketEnchanting created by Slash
+            Property allowPocketDisenchantingProp = config.get("general", "AllowPocketDisenchanting", true);
+            allowPocketDisenchantingProp.comment = "set to true if you want to allow pocket disenchantment of items";
+            allowPocketDisenchanting = allowPocketDisenchantingProp.getBoolean(allowDisenchanting);
+            
+            Property allowPocketRepairProp = config.get("general", "AllowPocketRepair", true);
+            allowPocketRepairProp.comment = "set to true if you want to allow pocket repair of enchanted items";
+            allowPocketRepair = allowPocketRepairProp.getBoolean(allowRepair);
+
+            Property allowPocketTransferProp = config.get("general", "AllowPocketTransfer", true);
+            allowPocketTransferProp.comment = "set to true if you want to allow pocket transfer of enchantments between items";
+            allowPocketTransfer = allowPocketTransferProp.getBoolean(allowTransfer);
+            
+            Property allowDestroyItemOnDisenchantingProp = config.get("general", "AllowDestroyItemOnDisenchanting", false);
+            allowDestroyItemOnDisenchantingProp.comment = "set to true if you want to allow destroy item on 100% disenchanting";
+            allowDestroyItemOnDisenchanting = allowDestroyItemOnDisenchantingProp.getBoolean(false);
+            
             Property pocketIDProp = config.getItem("Items","PocketEnchanter", 152);
             pocketId = pocketIDProp.getInt();
 
@@ -209,6 +230,7 @@ public class EnchantingPlus {
             GameRegistry.registerItem(pocketEnchanter, "pocketEnchanter");
 
             GameRegistry.addRecipe(new ItemStack(pocketEnchanter), "GEG"," B ", " B ", Character.valueOf('G'), Item.ghastTear, Character.valueOf('E'), Block.enchantmentTable, Character.valueOf('B'), Item.blazeRod);
+            
         }
     }
 

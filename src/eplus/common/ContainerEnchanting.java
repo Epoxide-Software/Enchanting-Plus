@@ -23,6 +23,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,6 +148,14 @@ public class ContainerEnchanting extends Container {
             	//if (var3.getEnchantmentTagList() == null) { // modified by Slash
             	if (var3.stackTagCompound == null || (var3.stackTagCompound.getTag(wordSearch) == null)) {
             		var3.itemID = Item.book.itemID;            		
+            	}
+            }
+            else {
+            	if (var3.stackTagCompound == null || ((NBTTagList)var3.stackTagCompound.getTag(wordSearch) == null)) { // created by Slash
+            		if (EnchantingPlus.allowDestroyItemOnDisenchanting){
+            	        this.inventoryEnchanting.setInventorySlotContents(0, (ItemStack)null);
+            	        player.playSound("random.break", 0.8F, 0.8F + player.worldObj.rand.nextFloat() * 0.4F);
+            		}
             	}
             }
 
@@ -395,9 +405,6 @@ public class ContainerEnchanting extends Container {
 
     public void transfer(ItemStack stack, ItemStack stack2, EntityPlayerMP playerEntity, int transferCost)
     {
-
-        //ItemStack itemStack = (ItemStack) this.inventoryItemStacks.get(0);
-        //ItemStack itemStack1 = (ItemStack) this.inventoryItemStacks.get(1);
 
     	ItemStack itemStack = stack; // modified by Slash
     	ItemStack itemStack1 = stack2; // modified by Slash

@@ -27,6 +27,17 @@ public class ConnectionHandler implements IConnectionHandler
             data.writeBoolean(EnchantingPlus.allowDisenchanting);
             data.writeBoolean(EnchantingPlus.allowRepair);
             data.writeBoolean(EnchantingPlus.allowTransfer);
+            data.writeBoolean(EnchantingPlus.allowDestroyItemOnDisenchanting);
+            data.writeBoolean(EnchantingPlus.allowPocketDisenchanting);
+            data.writeBoolean(EnchantingPlus.allowPocketRepair);
+            data.writeBoolean(EnchantingPlus.allowPocketTransfer);
+            data.writeBoolean(EnchantingPlus.needBookShelves);
+            data.writeBoolean(EnchantingPlus.strictEnchant);
+            data.writeDouble(EnchantingPlus.enchantFactor);
+            data.writeDouble(EnchantingPlus.disenchantFactor);
+            data.writeDouble(EnchantingPlus.repairFactor);
+            data.writeDouble(EnchantingPlus.transferFactor);
+            
             PacketDispatcher.sendPacketToPlayer(PacketBase.createPacket(EnchantingPlus.PACKET_ID_CONFIG, bytes.toByteArray()), player);
             bytes.close();
             data.close();

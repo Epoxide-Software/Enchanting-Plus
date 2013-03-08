@@ -134,7 +134,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
         }
         
         super.drawScreen(var1, var2, var3);
-        if (textToDisplay != "") { // modified by Slash
+        if (textToDisplay != "") {// modified by Slash
         	drawTooltip(getStringLines(textToDisplay), textToDisplayX, textToDisplayY); // modified by Slash
         	textToDisplay = "";
         }
@@ -410,27 +410,6 @@ public class GuiEnchantmentPlus extends GuiContainer {
         return result;
     }
     
-    /* modified by Slash
-    public void drawIconString(GuiIcon var1)
-    {
-        if (var1.id.equals("Enchant")) {
-            mc.fontRenderer.drawString(String.valueOf(getEnchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getEnchantmentCost()) ? 0xff0000 : 0x800000);
-        }
-        if (var1.id.equals("Disenchant")) {
-        	mc.fontRenderer.drawString(String.valueOf(getDisenchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getEnchantmentCost()) ? 0xff0000 : 0x800000); // modified by Slash
-            //mc.fontRenderer.drawString(String.valueOf(getDisenchantmentCost()), var1.xPos + 16 + 1, var1.yPos + 4, 0x00ff00);
-        }
-        if (var1.id.equals("Bookshelves")) {
-            mc.fontRenderer.drawString(String.valueOf(getContainer().bookshelves), var1.xPos + 16 + 1, var1.yPos + 4, 0x00ff00);
-        }
-        if (var1.id.equals("Repair")) {
-            mc.fontRenderer.drawString(String.valueOf(getRepairCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getRepairCost()) ? 0xff0000 : 0x800000);
-        }
-        if (var1.id.equals("Transfer")) {
-            mc.fontRenderer.drawString(String.valueOf(getTransferCost()), var1.xPos + 16 + 1, var1.yPos + 4, canPurchase(getTransferCost()) ? 0xff0000 : 0x800000);
-        }
-    }*/
-
     public void drawPlayerXPLevel(int var1) // created by Slash
     {
     	String text = "\u00a7b" + LocalizationHelper.getLocalString("gui.playerlevel") + ": " + String.valueOf(var1);

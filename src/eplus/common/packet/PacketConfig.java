@@ -14,6 +14,17 @@ public class PacketConfig extends PacketBase
         EnchantingPlus.allowDisenchanting = var1.readBoolean();
         EnchantingPlus.allowRepair = var1.readBoolean();
         EnchantingPlus.allowTransfer = var1.readBoolean();
+
+        EnchantingPlus.allowDestroyItemOnDisenchanting = var1.readBoolean(); // created by Slash
+        EnchantingPlus.allowPocketDisenchanting = var1.readBoolean(); // created by Slash
+        EnchantingPlus.allowPocketRepair = var1.readBoolean(); // created by Slash
+        EnchantingPlus.allowPocketTransfer = var1.readBoolean(); // created by Slash
+        EnchantingPlus.needBookShelves = var1.readBoolean(); // created by Slash
+        EnchantingPlus.strictEnchant = var1.readBoolean(); // created by Slash
+        EnchantingPlus.enchantFactor = var1.readDouble(); // created by Slash
+        EnchantingPlus.disenchantFactor = var1.readDouble(); // created by Slash
+        EnchantingPlus.repairFactor = var1.readDouble(); // created by Slash
+        EnchantingPlus.transferFactor = var1.readDouble(); // created by Slash
     }
 
 }
