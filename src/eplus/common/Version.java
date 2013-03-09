@@ -105,7 +105,7 @@ public class Version implements Runnable {
             Game.log(Level.INFO, "Using the latest version for Minecraft " + getMinecraftVersion(), new Object[0]);
             currentVersion = EnumUpdateState.CURRENT;
             updated = false;
-        } else if (currentModVersion != null && ((Integer.parseInt(currentModVersion.substring(currentModVersion.lastIndexOf(".") + 1))) > (Integer.parseInt(recommendedVersion.substring(recommendedVersion.lastIndexOf(".") + 1))))) {
+        } else if (recommendedVersion == null || (currentModVersion != null  && ((Integer.parseInt(currentModVersion.substring(currentModVersion.lastIndexOf(".") + 1))) > (Integer.parseInt(recommendedVersion.substring(recommendedVersion.lastIndexOf(".") + 1)))))) {
             Game.log(Level.INFO, "Using the beta build {0}", new Object[] { currentModVersion });
             currentVersion = EnumUpdateState.BETA;
             updated = false;
