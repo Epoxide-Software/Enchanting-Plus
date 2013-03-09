@@ -7,12 +7,23 @@ import subprocess, shlex
 import argparse
 import shutil
 
+mcp_home = sys.argv[1]
+mcp_dir = os.path.abspath(mcp_home)
+
+print(mcp_dir)
+sys.path.append(mcp_dir)
+
+from runtime.commands import Commands
+Commands._version_config = os.path.join(mcp_dir,Commands._version_config)
+
 def cmdsplit(args):
     if os.sep == '\\':
         args = args.replace('\\', '\\\\')
     return shlex.split(args)
 
-def main(mcversion, modversion):
+def main(modversion):
+    (mcpversion,mcversion,mcserverversion) = re.match("[.\w]+ \(data: ([.\w]+), client: ([.\w.]+), server: ([.\w.]+)\)",Commands.fullversion()).groups()
+
     name = 'eplus'
     filename = 'version'
 
@@ -59,5 +70,5 @@ def main(mcversion, modversion):
     
 if __name__ == '__main__':
     if len(sys.argv) == 3:
-        main(sys.argv[1], sys.argv[2])
+        main(sys.argv[2])
 

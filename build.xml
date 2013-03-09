@@ -4,8 +4,7 @@
 
     <property environment="env"/>
     <property name="build.dir" location="build"/>
-    <property name="common.dir" location="common"/>
-    <property name="client.dir" location="client"/>
+    <property name="src.dir" location="src"/>
     <property name="resource.dir" location="resources"/>
     <property name="download.dir" location="download"/>
 
@@ -24,7 +23,7 @@
     <available property="mcp-exists" file="${download.dir}/${mcp-name}.zip"/>
     <available property="temp-mcp-dir" file="${temp.mcp.dir}"/>
 
-    <property name="eplus.version" value="1.12.9"/>
+    <property name="eplus.version" value="1.31.1"/>
 
     <property name="fml.python.dir" location="${mcp.dir}/forge/fml/python"/>
     <condition property="python.exe" value="${fml.python.dir}/python_fml" else="python">
@@ -89,8 +88,7 @@
     <target name="compile" depends="setup">
 
         <copy todir="${clientsrc.dir}">
-            <fileset dir="${client.dir}"/>
-            <fileset dir="${common.dir}"/>
+            <fileset dir="${src.dir}"/>
             <filterset>
                 <filter token="BUILD_NUMBER" value="${build.number}"/>
             </filterset>
@@ -122,13 +120,27 @@
 
     </target>
 
+    <target name="update">
+        <condition property="releasebuild">
+            <equals arg1="${build.number}" arg2="0" />
+        </condition>
+    </target>
+
+    <target name="updateversion" if="${releasebuild}" depends="update">
+        <exec dir="" executable="${python.exe}">
+            <arg value="update_versions.py"/>
+            <arg value="${mcp.dir}" />
+            <arg value="${eplus.version}" />
+        </exec>
+    </target>
+
     <target name="package" depends="compile">
         <condition property="eplus.jar.name" value="EnchantingPlus-${eplus.version.full}" else="EnchantingPlus-${eplus.version.full}-beta">
             <equals arg1="${build.number}" arg2="0" />
         </condition>
 
         <jar destfile="${jar.dir}/${eplus.jar.name}.jar" basedir="${classes.dir}"/>
-
+        <antcall target="updateversion" />
     </target>
 
     <target name="main" depends="clean,package"/>
