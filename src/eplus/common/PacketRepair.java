@@ -27,7 +27,7 @@ public class PacketRepair extends PacketBase
             EntityPlayerMP playerEntity = (EntityPlayerMP) player;
             Container container = player.openContainer;
             
-            ((ContainerEnchanting)container).repair(container.getSlot(0).getStack(), playerEntity, repairCost);
+            ((ContainerEnchanting)container).repair(container.getSlot(0).getStack(), repairCost);
         }
     }
 

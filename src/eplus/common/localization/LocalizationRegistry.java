@@ -18,7 +18,7 @@ public class LocalizationRegistry {
 	/**
 	 * A list of localization files to be loaded
 	 */
-	private ArrayList<String> LocalizationFiles = new ArrayList<String>();
+	private final ArrayList<String> LocalizationFiles = new ArrayList<String>();
 
 	/**
 	 * 

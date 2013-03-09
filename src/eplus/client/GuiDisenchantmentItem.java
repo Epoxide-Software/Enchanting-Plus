@@ -9,16 +9,16 @@ import org.lwjgl.opengl.GL11;
 public class GuiDisenchantmentItem extends Gui {
 	public static int startingX;
 	public static int startingY;
-	public Enchantment type;
+	public final Enchantment type;
 	public int level;
-	public int hiddenLevel;
-	public int shelves;
-	public int xPos;
+	public final int hiddenLevel;
+	public final int shelves;
+	public final int xPos;
 	public int yPos;
-	public int width;
-	public int height;
+	public final int width;
+	public final int height;
 	public boolean draw;
-	public boolean enabled;
+	public final boolean enabled;
 
 	public GuiDisenchantmentItem(Enchantment var1, int var2, int var3,
 			int var4, int var5) {

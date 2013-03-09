@@ -5,7 +5,7 @@ import net.minecraft.enchantment.EnchantmentData;
 
 public class EnchantmentItemData extends EnchantmentData
 {
-    public int shelves;
+    public final int shelves;
 
     public EnchantmentItemData(Enchantment var1, int var2, int var3)
     {

@@ -12,7 +12,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 public class Version implements Runnable {
-    public static Version instance = new Version();
+    public static final Version instance = new Version();
 
     private static final String REMOTE_VERSION_FILE = "https://dl.dropbox.com/u/21347544/eplus/version";//"https://raw.github.com/odininon/EnchantingPlus/1.4.6/resources/version";
     public static EnumUpdateState currentVersion = EnumUpdateState.CURRENT;
@@ -138,15 +138,14 @@ public class Version implements Runnable {
     }
 
     public static void init(Properties versionProperties) {
-        Properties props = versionProperties;
-        if(props == null) {
+        if(versionProperties == null) {
             currentModVersion = "0.0.0";
             return;
         }
 
-        String major = props.getProperty("eplus.major.number");
-        String minor = props.getProperty("eplus.minor.number");
-        String build = props.getProperty("eplus.build.number");
+        String major = versionProperties.getProperty("eplus.major.number");
+        String minor = versionProperties.getProperty("eplus.minor.number");
+        String build = versionProperties.getProperty("eplus.build.number");
         currentModVersion = major + "." + minor + "." + build;
     }
 

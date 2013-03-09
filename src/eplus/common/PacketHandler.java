@@ -18,7 +18,7 @@ import java.io.DataInputStream;
 public class PacketHandler implements IPacketHandler
 {
 
-    public static PacketBase[] packets;
+    public static final PacketBase[] packets;
 
     @Override
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)

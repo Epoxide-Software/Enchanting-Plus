@@ -33,7 +33,7 @@ public class eplusCommand extends CommandBase {
             if (commandName.equalsIgnoreCase("texture")) {
                 processTexture(var1, args);
             } else if (commandName.equalsIgnoreCase("changelog")){
-                processChangelog(var1, args);
+                processChangelog(var1);
             } else {
                 throw new WrongUsageException("eplus [ texture | changelog ]", 0);
             }
@@ -42,7 +42,7 @@ public class eplusCommand extends CommandBase {
         }
     }
 
-    private void processChangelog(ICommandSender var1, String[] args) {
+    private void processChangelog(ICommandSender var1) {
         var1.sendChatToPlayer("[EPLUS] Changelog:");
         for(String line : Version.getChangelog()){
             var1.sendChatToPlayer(line);

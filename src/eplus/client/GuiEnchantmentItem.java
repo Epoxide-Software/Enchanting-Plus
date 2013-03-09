@@ -11,17 +11,17 @@ public class GuiEnchantmentItem extends Gui
     public static int  startingX;
     public static int  startingY;
 
-    public Enchantment type;
+    public final Enchantment type;
 
     public int         level;
-    public int         xPos;
+    public final int         xPos;
     public int         yPos;
-    public int         width;
-    public int         height;
+    public final int         width;
+    public final int         height;
 
     public boolean     draw;
     public boolean     enabled;
-    public boolean     isSlider;
+    public final boolean     isSlider;
     public boolean     sliding;
 
     public float       sliderScroll;

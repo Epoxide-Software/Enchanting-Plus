@@ -23,28 +23,25 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class ContainerEnchanting extends Container {
-    public EntityPlayer player;
+    public final EntityPlayer player;
 
     public static int bookshelves;
-    public int xPosition;
-    public int yPosition;
-    public int zPosition;
+    public final int xPosition;
+    public final int yPosition;
+    public final int zPosition;
     public int serverShelves;
 
-    public World gameWorld;
+    public final World gameWorld;
 
     GuiEnchantmentPlus guiEnchantmentPlus;
 
-    public InventoryEnchanting inventoryEnchanting;
+    public final InventoryEnchanting inventoryEnchanting;
 
     public ContainerEnchanting(EntityPlayer player, World world, int x, int y, int z) {
         super();
@@ -82,7 +79,7 @@ public class ContainerEnchanting extends Container {
         return true;
     }
 
-    public boolean doEnchant(EntityPlayer player, EnchantmentData[] var1, int var2, int windowid)
+    public void doEnchant(EntityPlayer player, EnchantmentData[] var1, int var2)
     {
 
         ItemStack var3 = (ItemStack) this.inventoryItemStacks.get(0);
@@ -111,9 +108,7 @@ public class ContainerEnchanting extends Container {
 
             ((EntityPlayerMP) player).sendSlotContents(this, 0, var3);
 
-            return true;
         } else {
-            return false;
         }
     }
 
@@ -151,9 +146,9 @@ public class ContainerEnchanting extends Container {
             	}
             }
             else {
-            	if (var3.stackTagCompound == null || ((NBTTagList)var3.stackTagCompound.getTag(wordSearch) == null)) { // created by Slash
+            	if (var3.stackTagCompound == null || (var3.stackTagCompound.getTag(wordSearch) == null)) { // created by Slash
             		if (EnchantingPlus.allowDestroyItemOnDisenchanting){
-            	        this.inventoryEnchanting.setInventorySlotContents(0, (ItemStack)null);
+            	        this.inventoryEnchanting.setInventorySlotContents(0, null);
             	        player.worldObj.playSoundAtEntity(player, "random.break", 0.8F, 0.8F + player.worldObj.rand.nextFloat() * 0.4F);
             		}
             	}
@@ -292,8 +287,8 @@ public class ContainerEnchanting extends Container {
     private void getServerBooks()
     {
         if (!gameWorld.isRemote) {
-            this.bookshelves = getTotalBookshelves();
-            Packet250CustomPayload packet = PacketBase.createPacket(99, new byte[] { (byte) this.bookshelves, (byte) 1 });
+            bookshelves = getTotalBookshelves();
+            Packet250CustomPayload packet = PacketBase.createPacket(99, new byte[] { (byte) bookshelves, (byte) 1 });
             PacketDispatcher.sendPacketToAllPlayers(packet);
 
         }
@@ -364,13 +359,13 @@ public class ContainerEnchanting extends Container {
         // {
         // return true;
         // }
-        return !(getSlot(0).getStack() != null && getSlot(1).getStack() != null) && var2.getItem().isItemTool(var2);
+        return getSlot(0).getStack() != null && getSlot(1).getStack() != null || !var2.getItem().isItemTool(var2);
     }
 
     public void doEnchant(ItemStack stack, EntityPlayer player, EnchantmentData[] var1, int var2, int windowid)
     {
         this.inventoryItemStacks.set(0, stack);
-        doEnchant(player, var1, var2, windowid);
+        doEnchant(player, var1, var2);
 
     }
 
@@ -381,7 +376,7 @@ public class ContainerEnchanting extends Container {
 
     }
 
-    public void repair(ItemStack itemStack, EntityPlayer playerEntity, int repairCost)
+    public void repair(ItemStack itemStack, int repairCost)
     {
         this.inventoryItemStacks.set(0, itemStack);
 
@@ -403,12 +398,8 @@ public class ContainerEnchanting extends Container {
 
     }
 
-    public void transfer(ItemStack stack, ItemStack stack2, EntityPlayerMP playerEntity, int transferCost)
+    public void transfer(ItemStack itemStack, ItemStack itemStack1, EntityPlayerMP playerEntity, int transferCost)
     {
-
-    	ItemStack itemStack = stack; // modified by Slash
-    	ItemStack itemStack1 = stack2; // modified by Slash
-    	
         if (!this.gameWorld.isRemote) {
             if (!player.capabilities.isCreativeMode) {
                 player.addExperienceLevel(-transferCost);

@@ -8,15 +8,15 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiIcon extends Gui
 {
-    public String     id;
+    public final String     id;
     public static int startingX;
     public static int startingY;
-    public int        index;
-    public int        xPos;
-    public int        yPos;
-    public int        width;
-    public int        height;
-    public boolean    draw;
+    public final int        index;
+    public final int        xPos;
+    public final int        yPos;
+    public final int        width;
+    public final int        height;
+    public final boolean    draw;
     public boolean    enabled;
     public boolean    isButton;
     public String     info = "";
