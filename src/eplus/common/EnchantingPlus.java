@@ -61,6 +61,8 @@ public class EnchantingPlus {
     public static double transferFactor;
     public static double repairFactor;
 
+    public static boolean unbreakingAll;
+
     public static int pocketId;
     
     @SidedProxy(clientSide = "eplus.client.ClientProxy", serverSide = "eplus.common.CommonProxy")
@@ -161,6 +163,10 @@ public class EnchantingPlus {
             
             Property pocketIDProp = config.getItem("Items","PocketEnchanter", 152);
             pocketId = pocketIDProp.getInt();
+
+            Property allowUnbreakingAll = config.get("general", "AllowUnbreakingall", false);
+            allowUnbreakingAll.comment = "set to true if you want to allow Unbreaking enchantment on all items";
+            unbreakingAll = allowUnbreakingAll.getBoolean(false);
 
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");

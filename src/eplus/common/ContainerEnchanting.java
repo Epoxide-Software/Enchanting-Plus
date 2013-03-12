@@ -497,7 +497,7 @@ public class ContainerEnchanting extends Container {
                 guiEnchantmentPlus.getIcon("Repair").enabled = guiEnchantmentPlus.canPurchase(guiEnchantmentPlus.getRepairCost());
             }
 
-            if (var1.getItem().getItemEnchantability() > 0 | !EnchantingPlus.strictEnchant) { // this IF was created by Slash
+            if (var1.getItem().getItemEnchantability() > 0 | !EnchantingPlus.strictEnchant || EnchantingPlus.unbreakingAll) { // this IF was created by Slash
 	            for (Enchantment var2 : Enchantment.enchantmentsList) {
 	                boolean var3 = true;
 	                if (var2 == null) {
@@ -515,6 +515,8 @@ public class ContainerEnchanting extends Container {
 	
 	                if (!EnchantingPlus.strictEnchant) {
 	                    guiEnchantmentPlus.possibleEnchantments.add(var2);
+                    } else if (EnchantingPlus.unbreakingAll && var2.equals(Enchantment.unbreaking))  {
+                        guiEnchantmentPlus.possibleEnchantments.add(var2);
 	                } else if (var2.func_92089_a(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
 	                	guiEnchantmentPlus.possibleEnchantments.add(var2); // modified by slash
 	                }
