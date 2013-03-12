@@ -18,7 +18,7 @@
 
     <property name="clientsrc.dir" location="${mcp.dir}/src/minecraft"/>
 
-    <property name="mcp-name" value="mcp_527"/>
+    <property name="mcp-name" value="mcp_569"/>
     <property name="mcp-download" value="https://dl.dropbox.com/u/21347544/${mcp-name}.zip"/>
     <available property="mcp-exists" file="${download.dir}/${mcp-name}.zip"/>
     <available property="temp-mcp-dir" file="${temp.mcp.dir}"/>
