@@ -36,6 +36,7 @@ public class ItemPocketEnchanter extends Item {
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
         if (EnchantingPlus.useMod) {
+            player.swingItem();
             player.openGui(EnchantingPlus.instance, 1, world, 0, 0, 0);
         }
         return itemStack;
@@ -45,5 +46,12 @@ public class ItemPocketEnchanter extends Item {
     @SideOnly(Side.CLIENT)
     public void func_94581_a(IconRegister par1IconRegister) {
         this.iconIndex = par1IconRegister.func_94245_a("eplus:pocketenchanter");
+    }
+
+    @SideOnly(Side.CLIENT) // created by Slash
+    @Override
+    public boolean hasEffect(ItemStack par1ItemStack)
+    {
+        return true;
     }
 }
