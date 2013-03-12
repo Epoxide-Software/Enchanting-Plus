@@ -6,6 +6,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.enchantment.Enchantment;
 import org.lwjgl.opengl.GL11;
 
+@SuppressWarnings("ALL")
 public class GuiDisenchantmentItem extends Gui {
 	public static int startingX;
 	public static int startingY;

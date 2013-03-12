@@ -2,6 +2,7 @@ package eplus.common;
 
 import net.minecraft.inventory.InventoryBasic;
 
+@SuppressWarnings("ALL")
 public class InventoryEnchanting extends InventoryBasic
 {
     final ContainerEnchanting container;

@@ -17,6 +17,7 @@ import java.util.List;
  * Date: 2/24/13
  * Time: 2:06 PM
  */
+@SuppressWarnings("ALL")
 public class ItemPocketEnchanter extends Item {
 
     public ItemPocketEnchanter(int par1) {

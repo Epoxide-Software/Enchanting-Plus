@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
 
+@SuppressWarnings("ALL")
 public class GuiEnchantmentPlus extends GuiContainer {
 
     public ArrayList<GuiIcon> icons;
@@ -116,21 +117,13 @@ public class GuiEnchantmentPlus extends GuiContainer {
         }
         // slider adjust of each enchantment
         for (GuiEnchantmentItem item : enchantmentItems) {
-            if (item.yPos < guiTop + 16 || item.yPos > guiTop + 87) {
-                item.draw = false;
-            } else {
-                item.draw = true;
-            }
+            item.draw = !(item.yPos < guiTop + 16 || item.yPos > guiTop + 87);
             if (item.sliding) {
                 item.scroll(var4 - 39);
             }
         }
         for (GuiDisenchantmentItem item : disenchantmentItems) {
-            if (item.yPos < guiTop + 90 || item.yPos > guiTop + 143) {
-                item.draw = false;
-            } else {
-                item.draw = true;
-            }
+            item.draw = !(item.yPos < guiTop + 90 || item.yPos > guiTop + 143);
         }
         
         super.drawScreen(var1, var2, var3);
@@ -309,7 +302,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
 
     public boolean setStack(ItemStack var2)
     {
-        if (!getContainer().canSetStack(var2)) {
+        if (getContainer().canSetStack(var2)) {
             return false;
         }
         if (inventorySlots.getSlot(0).getStack() == null) {

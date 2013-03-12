@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.EnumSet;
 
+@SuppressWarnings("ALL")
 public class LatestVersionMessage implements IScheduledTickHandler
 {
     private boolean messageSent;

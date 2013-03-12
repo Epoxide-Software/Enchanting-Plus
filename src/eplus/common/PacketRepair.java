@@ -24,10 +24,7 @@ public class PacketRepair extends PacketBase
         
         // TODO Auto-generated method stub
         if (player.openContainer instanceof ContainerEnchanting) {
-            EntityPlayerMP playerEntity = (EntityPlayerMP) player;
-            Container container = player.openContainer;
-            
-            ((ContainerEnchanting)container).repair(container.getSlot(0).getStack(), repairCost);
+            ((ContainerEnchanting)player.openContainer).repair(player.openContainer.getSlot(0).getStack(), repairCost);
         }
     }
 

@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import org.lwjgl.opengl.GL11;
 
+@SuppressWarnings("ALL")
 public class GuiIcon extends Gui
 {
     public final String     id;

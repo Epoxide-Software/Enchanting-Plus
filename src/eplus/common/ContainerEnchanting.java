@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("ALL")
 public class ContainerEnchanting extends Container {
     public final EntityPlayer player;
 
@@ -359,7 +360,7 @@ public class ContainerEnchanting extends Container {
         // {
         // return true;
         // }
-        return getSlot(0).getStack() != null && getSlot(1).getStack() != null || !var2.getItem().isItemTool(var2);
+        return getSlot(0).getStack() == null || getSlot(1).getStack() == null && var2.getItem().isItemTool(var2);
     }
 
     public void doEnchant(ItemStack stack, EntityPlayer player, EnchantmentData[] var1, int var2, int windowid)

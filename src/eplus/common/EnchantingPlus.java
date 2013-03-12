@@ -29,6 +29,7 @@ import net.minecraftforge.common.Property;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 
+@SuppressWarnings("ALL")
 @Mod(modid = "eplus", name = "Enchanting Plus")
 @NetworkMod(channels = { "eplus" }, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
 public class EnchantingPlus {
@@ -204,6 +205,7 @@ public class EnchantingPlus {
         }
     }
 
+    @SuppressWarnings("UnnecessaryBoxing")
     @Init
     public void init(FMLInitializationEvent var1)
     {
