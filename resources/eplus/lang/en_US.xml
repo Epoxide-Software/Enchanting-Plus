@@ -24,4 +24,5 @@
     <entry key="gui.icon.repair.description">Repair a damaged enchanted item</entry>
     <entry key="gui.icon.transfer">Transfer</entry>
     <entry key="gui.icon.transfer.description">Transfer enchantments from items</entry>
+    <entry key="itemGroup.eplus">Enchanting Plus</entry>
 </properties>

@@ -73,7 +73,7 @@ public class EnchantingPlus {
 
     public static Configuration config;
 
-    public static final CreativeTabs eplusTab = new CreativeTabs("eplus");
+    public static final EplusTab eplusTab = new EplusTab("eplus");
 
     @PreInit
     public void preInit(FMLPreInitializationEvent var1)
