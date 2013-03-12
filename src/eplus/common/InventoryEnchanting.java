@@ -8,7 +8,7 @@ public class InventoryEnchanting extends InventoryBasic
 
     public InventoryEnchanting(ContainerEnchanting containerEnchanting, String par2Str, int par3)
     {
-        super(par2Str, par3);
+        super(par2Str, false, par3);
         container = containerEnchanting;
     }
 

@@ -14,8 +14,8 @@ public class GuiEnchantmentPlusPocket extends GuiEnchantmentPlus {
     public GuiEnchantmentPlusPocket(EntityPlayer player, World world, int x, int y, int z) {
         super(player, world, x, y, z);
 
-        this.allowDisenchanting = EnchantingPlus.pocketAllowDisenchanting;
-        this.allowRepair = EnchantingPlus.pocketAllowRepair;
-        this.allowTransfer = EnchantingPlus.pocketAllowTransfer;
+        this.allowDisenchanting = EnchantingPlus.allowPocketDisenchanting;
+        this.allowRepair = EnchantingPlus.allowPocketRepair;
+        this.allowTransfer = EnchantingPlus.allowPocketTransfer;
     }
 }
