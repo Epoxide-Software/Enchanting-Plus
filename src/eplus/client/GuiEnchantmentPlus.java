@@ -1,13 +1,17 @@
 package eplus.client;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.common.ContainerEnchanting;
 import eplus.common.EnchantingPlus;
 import eplus.common.EnchantmentItemData;
+import eplus.common.ItemPocketEnchanter;
 import eplus.common.localization.LocalizationHelper;
 import eplus.common.packet.PacketBase;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -412,19 +416,16 @@ public class GuiEnchantmentPlus extends GuiContainer {
     
     public boolean canPurchase(int var1)
     {
-    	int maxLevel = (int)((float)getContainer().bookshelves / (float)EnchantingPlus.maxBookShelves * 30F); // created by Slash
+        Minecraft client = FMLClientHandler.instance().getClient();
+        PlayerControllerMP playerController = client.playerController;
+        EntityClientPlayerMP thePlayer = client.thePlayer;
+
+        int maxLevel = (int)((float)getContainer().bookshelves / (float)EnchantingPlus.maxBookShelves * 30F); // created by Slash
     	if (getContainer().bookshelves>=EnchantingPlus.maxBookShelves) maxLevel = mc.thePlayer.experienceLevel; // created by Slash
-    	if (!EnchantingPlus.needBookShelves) maxLevel = var1 + 1; // created by Slash
+    	if (!EnchantingPlus.needBookShelves || thePlayer.inventory.getCurrentItem().getItem() instanceof ItemPocketEnchanter)
+            maxLevel = var1 + 1; // created by Slash
     	
-        if (mc.playerController.isInCreativeMode()) {
-            return true;
-        } else {
-            //return mc.thePlayer.experienceLevel >= var1 && var1 > 0; // modified by Slash
-        	if (mc.thePlayer.experienceLevel >= var1 && var1 > 0) {
-        		return var1 <= maxLevel;
-        	}
-        	return false;
-        }
+        return playerController.isInCreativeMode() || thePlayer.experienceLevel >= var1 && var1 > 0 && var1 <= maxLevel;
     }
 
     public ArrayList<EnchantmentItemData> readItem(ItemStack var1)
