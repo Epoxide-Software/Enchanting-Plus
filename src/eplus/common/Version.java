@@ -6,6 +6,7 @@ import net.minecraftforge.common.Property;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -15,6 +16,8 @@ public class Version implements Runnable {
     public static final Version instance = new Version();
 
     private static final String REMOTE_VERSION_FILE = "https://dl.dropbox.com/u/21347544/eplus/version";//"https://raw.github.com/odininon/EnchantingPlus/1.4.6/resources/version";
+    private static final String REMOTE_CHANGELOG_FILE = "https://dl.dropbox.com/u/21347544/eplus/changelog/";
+
     public static EnumUpdateState currentVersion = EnumUpdateState.CURRENT;
 
     private static boolean updated;
@@ -60,18 +63,29 @@ public class Version implements Runnable {
     }
 
     public static String[] grabChangelog(){
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(Version.class.getClassLoader().getResourceAsStream("changelog")));
+        InputStreamReader streamReader;
+        BufferedReader reader;
 
+        try {
+            URL url = new URL(REMOTE_CHANGELOG_FILE + recommendedVersion);
+            streamReader = new InputStreamReader(url.openStream());
+        }
+        catch (Exception ex ){
+            streamReader = new InputStreamReader(Version.class.getClassLoader().getResourceAsStream("changelog"));
+        }
+
+        reader = new BufferedReader(streamReader);
+
+        try {
             String line;
             ArrayList<String> changelog = new ArrayList<String>();
             while((line = reader.readLine()) != null) {
                 changelog.add(line);
             }
             return changelog.toArray(new String[changelog.size()]);
-        } catch (Exception ignored) {
-
+        } catch (Exception ignored){
         }
+
         return new String[] {LocalizationHelper.getLocalString("version.fail.changelog")};
     }
 
@@ -97,7 +111,6 @@ public class Version implements Runnable {
             Game.log(Level.WARNING, "Unable to read from remote version authority.", new Object[0]);
             ex.printStackTrace();
             currentVersion = EnumUpdateState.CONNECTION_ERROR;
-            recommendedVersion = "0.0.0";
             return;
         }
 
