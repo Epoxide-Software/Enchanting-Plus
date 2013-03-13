@@ -162,7 +162,7 @@ public class EnchantingPlus {
             allowDestroyItemOnDisenchantingProp.comment = "set to true if you want to allow destroy item on 100% disenchanting";
             allowDestroyItemOnDisenchanting = allowDestroyItemOnDisenchantingProp.getBoolean(false);
             
-            Property pocketIDProp = config.getItem("Items","PocketEnchanter", 152);
+            Property pocketIDProp = config.getItem("Items","PocketEnchanter", 3845);
             pocketId = pocketIDProp.getInt();
 
             Property allowUnbreakingAll = config.get("general", "AllowUnbreakingall", false);
