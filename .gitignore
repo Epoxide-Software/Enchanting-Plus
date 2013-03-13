@@ -10,3 +10,5 @@
 .externalToolBuilders
 /build.number
 /resources/changelog
+/version
+tags.txt
