@@ -18,6 +18,8 @@ public class BlockEnchantingTable extends BlockEnchantmentTable
         super(par1);
         if (EnchantingPlus.hasLight) // created by Slash
         	this.setLightValue(1.0F);
+
+        this.setCreativeTab(EnchantingPlus.eplusTab);
     }
 
     @Override

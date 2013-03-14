@@ -23,7 +23,7 @@
     <available property="mcp-exists" file="${download.dir}/${mcp-name}.zip"/>
     <available property="temp-mcp-dir" file="${temp.mcp.dir}"/>
 
-    <property name="eplus.version" value="1.13.1"/>
+    <property name="eplus.version" value="1.13.2"/>
 
     <property name="fml.python.dir" location="${mcp.dir}/forge/fml/python"/>
     <condition property="python.exe" value="${fml.python.dir}/python_fml" else="python">

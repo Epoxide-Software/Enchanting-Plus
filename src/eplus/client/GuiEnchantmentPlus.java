@@ -422,7 +422,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
 
         int maxLevel = (int)((float)getContainer().bookshelves / (float)EnchantingPlus.maxBookShelves * 30F); // created by Slash
     	if (getContainer().bookshelves>=EnchantingPlus.maxBookShelves) maxLevel = mc.thePlayer.experienceLevel; // created by Slash
-    	if (!EnchantingPlus.needBookShelves || thePlayer.inventory.getCurrentItem().getItem() instanceof ItemPocketEnchanter)
+    	if (!EnchantingPlus.needBookShelves || thePlayer.inventory.getCurrentItem() != null &&  thePlayer.inventory.getCurrentItem().getItem() instanceof ItemPocketEnchanter)
             maxLevel = var1 + 1; // created by Slash
     	
         return playerController.isInCreativeMode() || thePlayer.experienceLevel >= var1 && var1 > 0 && var1 <= maxLevel;

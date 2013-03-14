@@ -3,7 +3,7 @@
     "modid": "eplus",
     "name": "Enchanting Plus",
     "description": "Replaces the enchanting system with an optional custom one!",
-    "version": "1.13.1",
+    "version": "1.13.2",
     "credits": "Maintained by GnR Slash",
     "logoFile": "/eplus/EnchantingLogo.png",
     "mcversion": "1.5",
@@ -13,7 +13,7 @@
     "parent":"",
     "screenshots": [],
     "dependencies": [
-    "mod_MinecraftForge"
-]
+        "mod_MinecraftForge"
+    ]
 }
 ]
