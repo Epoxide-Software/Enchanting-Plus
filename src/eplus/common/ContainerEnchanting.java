@@ -516,7 +516,7 @@ public class ContainerEnchanting extends Container {
 	
 	                if (!EnchantingPlus.strictEnchant) {
 	                    guiEnchantmentPlus.possibleEnchantments.add(var2);
-                    } else if (EnchantingPlus.unbreakingAll && var2.equals(Enchantment.unbreaking))  {
+                    } else if (EnchantingPlus.unbreakingAll && var2.equals(Enchantment.unbreaking) && var1.getItem().isItemTool(var1) && var1.getItem().getClass().getCanonicalName().startsWith("net.minecraft"))  {
                         guiEnchantmentPlus.possibleEnchantments.add(var2);
 	                } else if (var2.func_92089_a(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
 	                	guiEnchantmentPlus.possibleEnchantments.add(var2); // modified by slash
