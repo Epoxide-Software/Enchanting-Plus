@@ -150,7 +150,9 @@ public class GuiEnchantmentPlus extends GuiContainer {
         icons.add(new GuiIcon("Enchant", 0, 11, 77).setButton().setInfo(LocalizationHelper.getLocalString("gui.icon.enchant.description")));
         if (this.allowDisenchanting) // modified by Slash
         	icons.add(new GuiIcon("Disenchant", 1, 11, 94).setButton().setInfo(LocalizationHelper.getLocalString("gui.icon.disenchant.description")));
-        icons.add(new GuiIcon("Bookshelves", 6, 11, 8).setInfo(LocalizationHelper.getLocalString("gui.icon.bookshelves.description")));
+        if (!EnchantingPlus.guiStartedByPocket) // modified by Slash
+            icons.add(new GuiIcon("Bookshelves", 6, 11, 8).setInfo(LocalizationHelper.getLocalString("gui.icon.bookshelves.description")));
+
         if (this.allowRepair)
             icons.add(new GuiIcon("Repair", 2, 11, 111).setButton().setInfo(LocalizationHelper.getLocalString("gui.icon.repair.description")));
         if (this.allowTransfer)
@@ -421,10 +423,12 @@ public class GuiEnchantmentPlus extends GuiContainer {
         EntityClientPlayerMP thePlayer = client.thePlayer;
 
         int maxLevel = (int)((float)getContainer().bookshelves / (float)EnchantingPlus.maxBookShelves * 30F); // created by Slash
+
     	if (getContainer().bookshelves>=EnchantingPlus.maxBookShelves) maxLevel = mc.thePlayer.experienceLevel; // created by Slash
-    	if (!EnchantingPlus.needBookShelves || thePlayer.inventory.getCurrentItem() != null &&  thePlayer.inventory.getCurrentItem().getItem() instanceof ItemPocketEnchanter)
+
+    	if (EnchantingPlus.guiStartedByPocket || !EnchantingPlus.needBookShelves || thePlayer.inventory.getCurrentItem() != null &&  thePlayer.inventory.getCurrentItem().getItem() instanceof ItemPocketEnchanter)
             maxLevel = var1 + 1; // created by Slash
-    	
+
         return playerController.isInCreativeMode() || thePlayer.experienceLevel >= var1 && var1 > 0 && var1 <= maxLevel;
     }
 

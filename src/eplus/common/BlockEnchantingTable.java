@@ -30,6 +30,7 @@ public class BlockEnchantingTable extends BlockEnchantmentTable
 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int var6, float var7, float var8, float var9)
     {
+        EnchantingPlus.guiStartedByPocket = false; // created by Slash
         if (world.isRemote)
         {
             return true;

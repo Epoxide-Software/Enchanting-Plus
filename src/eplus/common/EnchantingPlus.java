@@ -63,6 +63,7 @@ public class EnchantingPlus {
     public static double repairFactor;
 
     public static boolean unbreakingAll;
+    public static boolean guiStartedByPocket; // created by Slash
 
     public static int pocketId;
     

@@ -38,6 +38,7 @@ public class ItemPocketEnchanter extends Item {
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
         if (EnchantingPlus.useMod) {
+            EnchantingPlus.guiStartedByPocket = true; // created by Slash
             player.swingItem();
             player.openGui(EnchantingPlus.instance, 1, world, (int)player.posX, (int)player.posY, (int)player.posZ);
         }
