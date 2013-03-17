@@ -177,6 +177,7 @@ public class EnchantingPlus {
             }
         }
 
+        LocalizationRegistry.Instance().addLocalizationFile("/eplus/lang/it_IT.xml");
         LocalizationRegistry.Instance().addLocalizationFile("/eplus/lang/pt_BR.xml");
         LocalizationRegistry.Instance().addLocalizationFile("/eplus/lang/en_US.xml");
         LocalizationHandler.addLanguages();
