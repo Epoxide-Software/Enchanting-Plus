@@ -52,10 +52,12 @@ public class ContainerEnchanting extends Container {
         this.yPosition = y;
         this.zPosition = z;
 
-        inventoryEnchanting = new InventoryEnchanting(this, "add", 2);
+        inventoryEnchanting = new InventoryEnchanting(this, "add", 3); // modified by Slash
 
         addSlotToContainer(new Slot(inventoryEnchanting, 0, 11, 31));
         addSlotToContainer(new Slot(inventoryEnchanting, 1, 11, 57));
+        addSlotToContainer(new Slot(inventoryEnchanting, 2, 181, 147)); // created by Slash
+
         bindPlayerInventory(player.inventory);
 
         getServerBooks();
@@ -109,16 +111,21 @@ public class ContainerEnchanting extends Container {
 
             ((EntityPlayerMP) player).sendSlotContents(this, 0, var3);
 
+            removeResource(); // created by Slash
         } else {
         }
+    }
+
+    private void removeResource() { // created by slash
+        this.getSlot(2).putStack((ItemStack)null);
     }
 
     @Override
     public void putStackInSlot(int par1, ItemStack par2ItemStack)
     {
         super.putStackInSlot(par1, par2ItemStack);
-        if (par1 == 0 | par1 == 1) // modified by Slash
-        	checkItems(guiEnchantmentPlus);
+        if ( par1 <= (inventoryEnchanting.getSizeInventory()-1)) // modified by Slash
+        	checkItems(par1 == 1,guiEnchantmentPlus);
     }
 
     public void doDisenchant(EntityPlayer player, EnchantmentData[] var1, int var2)
@@ -154,7 +161,7 @@ public class ContainerEnchanting extends Container {
             		}
             	}
             }
-
+            removeResource(); // created by Slash
         }
 
         PacketDispatcher.sendPacketToPlayer(new Packet103SetSlot(windowId, 0, (ItemStack) this.inventoryItemStacks.get(0)), (Player) player);
@@ -274,6 +281,7 @@ public class ContainerEnchanting extends Container {
 
         ItemStack itemStack1 = this.inventoryEnchanting.getStackInSlot(0);
         ItemStack itemStack2 = this.inventoryEnchanting.getStackInSlot(1);
+        ItemStack itemStack3 = this.inventoryEnchanting.getStackInSlot(2); // created by Slash
 
         if (itemStack1 != null) {
             par1EntityPlayer.dropPlayerItem(itemStack1);
@@ -283,6 +291,9 @@ public class ContainerEnchanting extends Container {
             par1EntityPlayer.dropPlayerItem(itemStack2);
         }
 
+        if (itemStack3 != null) { // created by Slash
+            par1EntityPlayer.dropPlayerItem(itemStack3);
+        }
     }
 
     private void getServerBooks()
@@ -394,7 +405,7 @@ public class ContainerEnchanting extends Container {
             var3.setItemDamage(0);
 
             this.inventoryItemStacks.set(0, itemStackCopy);
-
+            removeResource(); // created by Slash
         }
 
     }
@@ -423,22 +434,26 @@ public class ContainerEnchanting extends Container {
             
             playerEntity.sendSlotContents(this, 0, itemStack); // modified by Slash
             playerEntity.sendSlotContents(this, 1, itemStack1); // modified by Slash
+
+            removeResource(); // created by Slash
         }
     }
 
-    public void checkItems(GuiEnchantmentPlus guiEnchantmentPlus)
+    public void checkItems(boolean refill,GuiEnchantmentPlus guiEnchantmentPlus)  // modified by Slash
     {
 
         this.guiEnchantmentPlus = guiEnchantmentPlus;
 
-        guiEnchantmentPlus.eIndex = 0;
-        guiEnchantmentPlus.dIndex = 0;
-        guiEnchantmentPlus.eScroll = 0;
-        guiEnchantmentPlus.dScroll = 0;
-        guiEnchantmentPlus.possibleEnchantments.clear();
-        guiEnchantmentPlus.possibleDisenchantments.clear();
-        guiEnchantmentPlus.enchantmentItems.clear();
-        guiEnchantmentPlus.disenchantmentItems.clear();
+        if (refill) { // modified by Slash
+            guiEnchantmentPlus.eIndex = 0;
+            guiEnchantmentPlus.dIndex = 0;
+            guiEnchantmentPlus.eScroll = 0;
+            guiEnchantmentPlus.dScroll = 0;
+            guiEnchantmentPlus.possibleEnchantments.clear();
+            guiEnchantmentPlus.possibleDisenchantments.clear();
+            guiEnchantmentPlus.enchantmentItems.clear();
+            guiEnchantmentPlus.disenchantmentItems.clear();
+        }
         guiEnchantmentPlus.getIcon("Enchant").enabled = false;
         if (guiEnchantmentPlus.allowDisenchanting) // modified by Slash
         	guiEnchantmentPlus.getIcon("Disenchant").enabled = false;
@@ -449,86 +464,91 @@ public class ContainerEnchanting extends Container {
 
         ItemStack var1 = guiEnchantmentPlus.inventorySlots.getSlot(0).getStack();
 
+        boolean canTransfer = true;
         if (var1 != null) {
             ItemStack slot1 = guiEnchantmentPlus.inventorySlots.getSlot(1).getStack();
             if (slot1 != null) {
-                boolean var3 = true;
+
                 ArrayList<EnchantmentItemData> var4 = guiEnchantmentPlus.readItem(var1);
                 ArrayList<EnchantmentItemData> var5 = guiEnchantmentPlus.readItem(slot1);
                 if (var5.size() == 0) {
-                    var3 = false;
+                    canTransfer = false;
                 } else if (var4.size() > 0 && var5.size() > 0) {
                     for (EnchantmentItemData var6 : var4) {
                         for (EnchantmentItemData var7 : var5) {
                             if (!var7.enchantmentobj.func_92089_a(var1) || !var6.enchantmentobj.canApplyTogether(var7.enchantmentobj) || !var7.enchantmentobj.canApplyTogether(var6.enchantmentobj)) {
-                                var3 = false;
+                                canTransfer = false;
                             }
                         }
                     }
                 } else if (var4.size() == 0 && var5.size() > 0) {
                     for (EnchantmentItemData var6 : var5) {
                         if (!var6.enchantmentobj.func_92089_a(var1)) {
-                            var3 = false;
+                            canTransfer = false;
                         }
                     }
                 }
-                if (EnchantingPlus.allowTransfer)
-                    guiEnchantmentPlus.getIcon("Transfer").enabled = var3 && guiEnchantmentPlus.canPurchase(guiEnchantmentPlus.getTransferCost());
-            }
-            ArrayList<EnchantmentItemData> list = guiEnchantmentPlus.readItem(var1);
-            if (list != null) {
-                for (EnchantmentItemData aList : list) {
-                    guiEnchantmentPlus.possibleDisenchantments.add(aList);
-                }
             }
 
-            if (var1.itemID == Item.enchantedBook.itemID) {
-                Map var20 = EnchantmentHelper.getEnchantments(var1);
-
-                for (Object o : var20.keySet()) {
-                    int id = (Integer) o;
-                    Enchantment enchan = Enchantment.enchantmentsList[id];
-                    int level = (Integer) var20.get(id);
-
-                    guiEnchantmentPlus.possibleDisenchantments.add(new EnchantmentItemData(enchan, level, bookshelves));
-                }
-            }
-
+            if (EnchantingPlus.allowTransfer)
+                guiEnchantmentPlus.getIcon("Transfer").enabled = canTransfer && guiEnchantmentPlus.canPurchase("Transfer",guiEnchantmentPlus.getTransferCost());
             if (EnchantingPlus.allowRepair && var1.isItemDamaged() && var1.isItemEnchanted()) { // modified by Slash
-                guiEnchantmentPlus.getIcon("Repair").enabled = guiEnchantmentPlus.canPurchase(guiEnchantmentPlus.getRepairCost());
+                guiEnchantmentPlus.getIcon("Repair").enabled = guiEnchantmentPlus.canPurchase("Repair",guiEnchantmentPlus.getRepairCost());
             }
 
-            if (var1.getItem().getItemEnchantability() > 0 | !EnchantingPlus.strictEnchant || EnchantingPlus.unbreakingAll) { // this IF was created by Slash
-	            for (Enchantment var2 : Enchantment.enchantmentsList) {
-	                boolean var3 = true;
-	                if (var2 == null) {
-	                    continue;
-	                }
-	                for (EnchantmentItemData var4 : guiEnchantmentPlus.readItem(var1)) {
-	                    if (!var2.canApplyTogether(var4.enchantmentobj) || !var4.enchantmentobj.canApplyTogether(var2)) {
-	                        var3 = false;
-	                    }
-	                }
-	
-	                if (var1.getItem().itemID == Item.book.itemID && var3) {
-	                    guiEnchantmentPlus.possibleEnchantments.add(var2);
-	                }
-	
-	                if (!EnchantingPlus.strictEnchant) {
-	                    guiEnchantmentPlus.possibleEnchantments.add(var2);
-                    } else if (EnchantingPlus.unbreakingAll && var2.equals(Enchantment.unbreaking) && var1.getItem().isItemTool(var1) && var1.getItem().getClass().getCanonicalName().startsWith("net.minecraft"))  {
-                        guiEnchantmentPlus.possibleEnchantments.add(var2);
-	                } else if (var2.func_92089_a(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
-	                	guiEnchantmentPlus.possibleEnchantments.add(var2); // modified by slash
-	                }
-	            }
-            }
-            for (int var3 = 0; var3 < guiEnchantmentPlus.possibleEnchantments.size(); var3++) {
-                guiEnchantmentPlus.enchantmentItems.add(new GuiEnchantmentItem(guiEnchantmentPlus.possibleEnchantments.get(var3), 35, 16 + var3 * 18));
-            }
-            for (int var3 = 0; var3 < guiEnchantmentPlus.possibleDisenchantments.size(); var3++) {
-                guiEnchantmentPlus.disenchantmentItems.add(new GuiDisenchantmentItem(guiEnchantmentPlus.possibleDisenchantments.get(var3).enchantmentobj, guiEnchantmentPlus.possibleDisenchantments.get(var3).enchantmentLevel, 35, 90 + var3 * 18,
-                        guiEnchantmentPlus.possibleDisenchantments.get(var3).shelves));
+
+            if (refill) { // modified by Slash
+                ArrayList<EnchantmentItemData> list = guiEnchantmentPlus.readItem(var1);
+                if (list != null) {
+                    for (EnchantmentItemData aList : list) {
+                        guiEnchantmentPlus.possibleDisenchantments.add(aList);
+                    }
+                }
+
+                if (var1.itemID == Item.enchantedBook.itemID) {
+                    Map var20 = EnchantmentHelper.getEnchantments(var1);
+
+                    for (Object o : var20.keySet()) {
+                        int id = (Integer) o;
+                        Enchantment enchan = Enchantment.enchantmentsList[id];
+                        int level = (Integer) var20.get(id);
+
+                        guiEnchantmentPlus.possibleDisenchantments.add(new EnchantmentItemData(enchan, level, bookshelves));
+                    }
+                }
+
+                if (var1.getItem().getItemEnchantability() > 0 | !EnchantingPlus.strictEnchant || EnchantingPlus.unbreakingAll) { // this IF was created by Slash
+                    for (Enchantment var2 : Enchantment.enchantmentsList) {
+                        boolean var3 = true;
+                        if (var2 == null) {
+                            continue;
+                        }
+                        for (EnchantmentItemData var4 : guiEnchantmentPlus.readItem(var1)) {
+                            if (!var2.canApplyTogether(var4.enchantmentobj) || !var4.enchantmentobj.canApplyTogether(var2)) {
+                                var3 = false;
+                            }
+                        }
+
+                        if (var1.getItem().itemID == Item.book.itemID && var3) {
+                            guiEnchantmentPlus.possibleEnchantments.add(var2);
+                        }
+
+                        if (!EnchantingPlus.strictEnchant) {
+                            guiEnchantmentPlus.possibleEnchantments.add(var2);
+                        } else if (EnchantingPlus.unbreakingAll && var2.equals(Enchantment.unbreaking) && var1.getItem().isItemTool(var1) && var1.getItem().getClass().getCanonicalName().startsWith("net.minecraft"))  {
+                            guiEnchantmentPlus.possibleEnchantments.add(var2);
+                        } else if (var2.func_92089_a(var1) && var3 && (var1.isItemEnchantable() || var1.isItemEnchanted())) {
+                            guiEnchantmentPlus.possibleEnchantments.add(var2); // modified by slash
+                        }
+                    }
+                }
+                for (int var3 = 0; var3 < guiEnchantmentPlus.possibleEnchantments.size(); var3++) {
+                    guiEnchantmentPlus.enchantmentItems.add(new GuiEnchantmentItem(guiEnchantmentPlus.possibleEnchantments.get(var3), 35, 16 + var3 * 18));
+                }
+                for (int var3 = 0; var3 < guiEnchantmentPlus.possibleDisenchantments.size(); var3++) {
+                    guiEnchantmentPlus.disenchantmentItems.add(new GuiDisenchantmentItem(guiEnchantmentPlus.possibleDisenchantments.get(var3).enchantmentobj, guiEnchantmentPlus.possibleDisenchantments.get(var3).enchantmentLevel, 35, 90 + var3 * 18,
+                            guiEnchantmentPlus.possibleDisenchantments.get(var3).shelves));
+                }
             }
         }
 

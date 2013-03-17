@@ -13,6 +13,7 @@
     <entry key="gui.canuse">Can use</entry>
     <entry key="gui.cost">Cost</entry>
     <entry key="gui.bookshelves">Bookshelves</entry>
+    <entry key="gui.bookshelves.dontneed">Don't need bookshelves</entry>
     <entry key="gui.playerlevel">Player XP Level</entry>
     <entry key="gui.icon.enchant">Enchant</entry>
     <entry key="gui.icon.enchant.description">Add Enchantments</entry>

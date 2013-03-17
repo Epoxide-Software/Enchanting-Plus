@@ -17,10 +17,12 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumPlantType;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -159,7 +161,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             icons.add(new GuiIcon("Transfer", 3, 11, 128).setButton().setInfo(LocalizationHelper.getLocalString("gui.icon.transfer.description")));
         enchantmentItems.clear();
 
-        checkItems();
+        checkItems(true); // modified by Slash
     }
 
     @Override
@@ -292,9 +294,9 @@ public class GuiEnchantmentPlus extends GuiContainer {
     	// created by Slash
     	boolean check = false;
         if (par1Slot != null) {
-            // when user click on slot 0 or slot 1, need to checkitems
+            // when user click on slot 0,1 or slot 2, need to checkitems
             // when user click any other slot but with shift, need to checkitems only if slot1 is empty
-        	if (par1Slot.slotNumber < 2) check = true; 
+        	if (par1Slot.slotNumber < this.getContainer().inventoryEnchanting.getSizeInventory()) check = true;  // modified by Slash
         	if (par1Slot.slotNumber > 1 & par4 == 1) { // trying to put something from inventory do slot 1 or 2
         		if (!inventorySlots.getSlot(0).getHasStack() || !inventorySlots.getSlot(1).getHasStack())
         			check = true;
@@ -302,8 +304,8 @@ public class GuiEnchantmentPlus extends GuiContainer {
         } // by Slash
     	
         super.handleMouseClick(par1Slot, par2, par3, par4);
-    	if (check) checkItems(); // modified by Slash
-    	
+    	if (check) checkItems(par1Slot.slotNumber == 0); // modified by Slash
+
     }
 
     public boolean setStack(ItemStack var2)
@@ -317,14 +319,17 @@ public class GuiEnchantmentPlus extends GuiContainer {
         } else if (inventorySlots.getSlot(1).getStack() == null) {
             inventorySlots.getSlot(1).putStack(var2);
             return true;
+        } else if (inventorySlots.getSlot(2).getStack() == null) { // created by Slash
+            inventorySlots.getSlot(2).putStack(var2);
+            return true;
         } else {
             return false;
         }
     }
 
-    public void checkItems()
+    public void checkItems(boolean refill) // modified by Slash
     {
-        getContainer().checkItems(this);
+        getContainer().checkItems(refill,this); // modified by Slash
     }
 
     public void selectEnchantments()
@@ -370,10 +375,10 @@ public class GuiEnchantmentPlus extends GuiContainer {
                 var4 = true;
             }
         }
-        getIcon("Enchant").enabled = var3 && canPurchase(getEnchantmentCost());
+        getIcon("Enchant").enabled = var3 & canPurchase("Enchant",getEnchantmentCost());
         //getIcon("Disenchant").enabled = var4 && getDisenchantmentCost() > 0;
         if (this.allowDisenchanting) // modified by Slash
-        	getIcon("Disenchant").enabled = var4;
+        	getIcon("Disenchant").enabled = var4 & canPurchase("Disenchant",getDisenchantmentCost());
     }
 
     public GuiIcon getIcon(String s)
@@ -390,21 +395,24 @@ public class GuiEnchantmentPlus extends GuiContainer {
     	String result = "";
     	String no = "\u00a74"; // red
     	String yes = "\u00a79"; // indigo
-    	
+
         if (var1.id.equals("Enchant")) {
-            result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(getEnchantmentCost()) ? yes : no) + String.valueOf(getEnchantmentCost());
+            result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(var1.id,getEnchantmentCost()) ? yes : no) + String.valueOf(getEnchantmentCost());
         }
         if (var1.id.equals("Disenchant")) {
-        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + yes + String.valueOf(getDisenchantmentCost());
+        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(var1.id,getDisenchantmentCost()) ? yes : no) + String.valueOf(getDisenchantmentCost());
         }
         if (var1.id.equals("Bookshelves")) {
-        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.bookshelves") + ": " + String.valueOf(getContainer().bookshelves) + " / " + String.valueOf(EnchantingPlus.maxBookShelves);
+            if (EnchantingPlus.needBookShelves)
+        	    result = "\u00a77" + LocalizationHelper.getLocalString("gui.bookshelves") + ": " + String.valueOf(getContainer().bookshelves) + " / " + String.valueOf(EnchantingPlus.maxBookShelves);
+            else
+                result = "\u00a77" + LocalizationHelper.getLocalString("gui.bookshelves") + ": " + LocalizationHelper.getLocalString("gui.bookshelves.dontneed");
         }
         if (var1.id.equals("Repair")) {
-        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(getRepairCost()) ? yes : no) + String.valueOf(getRepairCost());
+        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(var1.id,getRepairCost()) ? yes : no) + String.valueOf(getRepairCost());
         }
         if (var1.id.equals("Transfer")) {
-        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(getTransferCost()) ? yes : no) + String.valueOf(getTransferCost());
+        	result = "\u00a77" + LocalizationHelper.getLocalString("gui.cost") + ": " + (canPurchase(var1.id,getTransferCost()) ? yes : no) + String.valueOf(getTransferCost());
         }
         return result;
     }
@@ -416,8 +424,32 @@ public class GuiEnchantmentPlus extends GuiContainer {
     	this.drawCreativeTabHoveringText(text,  (int)(guiLeft + xSize/2 - mc.fontRenderer.getStringWidth(text)/2), (int)(guiTop+12));
     }
     
-    public boolean canPurchase(int var1)
+    public boolean canPurchase(String Type, int var1)
     {
+        boolean itemToEnchant = false;
+        boolean itemToDisenchant = false;
+        boolean itemToRepair = false;
+        boolean itemToTransfer = false;
+
+        // created by Slash
+        // these are the necessary resources to use enchantments:
+        // to enchant: need 1 golden nugget per use
+        // to disenchant: need 1 emerald per use
+        // to repair: need 1 diamond per use
+        // to transfer: need 1 ghast tear per use
+        ItemStack slot2 = inventorySlots.getSlot(2).getStack();
+        if (slot2 != null) {
+            if (slot2.itemID == Item.goldNugget.itemID) itemToEnchant = true;
+            if (slot2.itemID == Item.emerald.itemID) itemToDisenchant = true;
+            if (slot2.itemID == Item.diamond.itemID) itemToRepair = true;
+            if (slot2.itemID == Item.ghastTear.itemID) itemToTransfer = true;
+        }
+
+        if (Type == "Enchant" & !itemToEnchant) return false;
+        if (Type == "Disenchant" & !itemToDisenchant) return false;
+        if (Type == "Repair" & !itemToRepair) return false;
+        if (Type == "Transfer" & !itemToTransfer) return false;
+
         Minecraft client = FMLClientHandler.instance().getClient();
         PlayerControllerMP playerController = client.playerController;
         EntityClientPlayerMP thePlayer = client.thePlayer;
@@ -429,7 +461,10 @@ public class GuiEnchantmentPlus extends GuiContainer {
     	if (EnchantingPlus.guiStartedByPocket || !EnchantingPlus.needBookShelves || thePlayer.inventory.getCurrentItem() != null &&  thePlayer.inventory.getCurrentItem().getItem() instanceof ItemPocketEnchanter)
             maxLevel = var1 + 1; // created by Slash
 
-        return playerController.isInCreativeMode() || thePlayer.experienceLevel >= var1 && var1 > 0 && var1 <= maxLevel;
+        if (inventorySlots.getSlot(1).getStack() != null && inventorySlots.getSlot(1).getStack().getItem().getItemEnchantability() <= 0)   // created by Slash
+            return false;
+        else
+            return playerController.isInCreativeMode() || thePlayer.experienceLevel >= var1 && var1 > 0 && var1 <= maxLevel;
     }
 
     public ArrayList<EnchantmentItemData> readItem(ItemStack var1)
@@ -703,7 +738,7 @@ public class GuiEnchantmentPlus extends GuiContainer {
             }
         }
         sync();
-        checkItems();
+        checkItems(true); // modified by Slash
     }
 
     public void sync()

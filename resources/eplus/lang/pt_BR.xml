@@ -13,6 +13,7 @@
     <entry key="gui.canuse">Pode usar</entry>
     <entry key="gui.cost">Custo</entry>
     <entry key="gui.bookshelves">Prateleira de livros</entry>
+    <entry key="gui.bookshelves.dontneed">Não precisa de Livros</entry>
     <entry key="gui.playerlevel">Experiência do jogador</entry>
     <entry key="gui.icon.enchant">Encantar</entry>
     <entry key="gui.icon.enchant.description">Adicionar encantamentos</entry>
