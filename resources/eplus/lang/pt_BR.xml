@@ -4,6 +4,7 @@
     <comment>Arquivo de localização Portuguese (BR)</comment>
     <entry key="item.pocketEnchanter.name">Encantador de bolso</entry>
     <entry key="pocketEnchanter.info">Encantador portátil.</entry>
+    <entry key="pocketEnchanter.unlock">Você precisa destravar este item primeiro!</entry>
     <entry key="version.fail.changelog">Falha ao ler log de novidades</entry>
     <entry key="version.update.available">Existe uma nova versão</entry>
     <entry key="version.beta.build">Usando versão de testes (beta) @MOD_VERSION@. Por favor, reporte qualquer problema no fórum.</entry>

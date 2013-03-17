@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.world.World;
@@ -30,6 +31,13 @@ public class BlockEnchantingTable extends BlockEnchantmentTable
 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int var6, float var7, float var8, float var9)
     {
+        if (!EnchantingPlus.unblockedTable) { // created by Slash
+            NBTTagCompound tag = entityPlayer.getEntityData();
+
+            if (tag.hasKey("eplus.unlocked"))
+                EnchantingPlus.unblockedTable = tag.getBoolean("eplus.unlocked");
+        }
+
         EnchantingPlus.guiStartedByPocket = false; // created by Slash
         if (world.isRemote)
         {
@@ -37,7 +45,7 @@ public class BlockEnchantingTable extends BlockEnchantmentTable
         }
         else
         {
-            if (EnchantingPlus.useMod)
+            if (EnchantingPlus.useMod & (EnchantingPlus.unblockedTable | !EnchantingPlus.needToUnlockFirst)) // modified by Slash
             {
            		entityPlayer.openGui(EnchantingPlus.instance, 0, world, x, y, z);
             }

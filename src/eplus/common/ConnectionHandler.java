@@ -38,7 +38,8 @@ public class ConnectionHandler implements IConnectionHandler
             data.writeDouble(EnchantingPlus.repairFactor);
             data.writeDouble(EnchantingPlus.transferFactor);
             data.writeBoolean(EnchantingPlus.unbreakingAll);
-            
+            data.writeBoolean(EnchantingPlus.needToUnlockFirst);
+
             PacketDispatcher.sendPacketToPlayer(PacketBase.createPacket(EnchantingPlus.PACKET_ID_CONFIG, bytes.toByteArray()), player);
             bytes.close();
             data.close();

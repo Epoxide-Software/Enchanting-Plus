@@ -56,6 +56,7 @@ public class EnchantingPlus {
     public static boolean allowPocketTransfer; // created by Slash
     public static boolean allowPocketDisenchanting; // created by Slash
     public static boolean allowDestroyItemOnDisenchanting; // created by Slash
+    public static boolean needToUnlockFirst; // created by Slash
 
     public static double enchantFactor;
     public static double disenchantFactor;
@@ -64,6 +65,7 @@ public class EnchantingPlus {
 
     public static boolean unbreakingAll;
     public static boolean guiStartedByPocket; // created by Slash
+    public static boolean unblockedTable; // created by Slash
 
     public static int pocketId;
     
@@ -169,6 +171,10 @@ public class EnchantingPlus {
             Property allowUnbreakingAll = config.get("general", "AllowUnbreakingall", false);
             allowUnbreakingAll.comment = "set to true if you want to allow Unbreaking enchantment on all items";
             unbreakingAll = allowUnbreakingAll.getBoolean(false);
+
+            Property needToUnlockFirstProp = config.get("general", "needToUnlockFirst", true); // created by Slash
+            needToUnlockFirstProp.comment = "set to true if you want to unlock the use of EnchantmentTable before start using";
+            needToUnlockFirst = needToUnlockFirstProp.getBoolean(true);
 
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Enchanting Plus failed to load configurations.");

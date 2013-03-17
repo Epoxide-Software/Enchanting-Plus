@@ -27,6 +27,7 @@ public class PacketConfig extends PacketBase
         EnchantingPlus.transferFactor = var1.readDouble(); // created by Slash
 
         EnchantingPlus.unbreakingAll = var1.readBoolean();
+        EnchantingPlus.needToUnlockFirst = var1.readBoolean(); // created by Slash
     }
 
 }

@@ -37,10 +37,13 @@ public class ItemPocketEnchanter extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-        if (EnchantingPlus.useMod) {
+        if (EnchantingPlus.useMod & (EnchantingPlus.unblockedTable | !EnchantingPlus.needToUnlockFirst)) {   // modified by Slash
             EnchantingPlus.guiStartedByPocket = true; // created by Slash
             player.swingItem();
             player.openGui(EnchantingPlus.instance, 1, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+        }
+        if (EnchantingPlus.useMod & (!EnchantingPlus.unblockedTable & EnchantingPlus.needToUnlockFirst)) { // created by Slash
+            player.sendChatToPlayer(LocalizationHelper.getLocalString("pocketEnchanter.unlock"));
         }
         return itemStack;
     }

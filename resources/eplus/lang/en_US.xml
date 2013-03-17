@@ -4,6 +4,7 @@
     <comment>English (US) localization file</comment>
     <entry key="item.pocketEnchanter.name">Pocket Enchanter</entry>
     <entry key="pocketEnchanter.info">Enchanting on the go.</entry>
+    <entry key="pocketEnchanter.unlock">You need to unlock this item first!</entry>
     <entry key="version.fail.changelog">Failure to load changelog</entry>
     <entry key="version.update.available">An updated version is available</entry>
     <entry key="version.beta.build">Using a beta build @MOD_VERSION@, please report all issues on the forums.</entry>
