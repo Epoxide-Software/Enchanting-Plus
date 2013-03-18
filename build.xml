@@ -100,6 +100,7 @@
 
         <exec dir="${mcp.dir}" executable="${python.exe}">
             <arg value="runtime/reobfuscate.py"/>
+            <arg value="--srgnames"/>
         </exec>
 
         <mkdir dir="${classes.dir}/eplus"/>
@@ -140,9 +141,9 @@
         </condition>
 
         <jar destfile="${jar.dir}/${eplus.jar.name}.jar" basedir="${classes.dir}"/>
-        <antcall target="updateversion" />
     </target>
 
     <target name="main" depends="clean,package"/>
+    <target name="release" depends="main, updateversion"/>
 
 </project>
