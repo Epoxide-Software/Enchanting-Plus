@@ -293,18 +293,26 @@ public class GuiEnchantmentPlus extends GuiContainer {
     {
     	// created by Slash
     	boolean check = false;
+        boolean refill = false;
         if (par1Slot != null) {
             // when user click on slot 0,1 or slot 2, need to checkitems
             // when user click any other slot but with shift, need to checkitems only if slot1 is empty
-        	if (par1Slot.slotNumber < this.getContainer().inventoryEnchanting.getSizeInventory()) check = true;  // modified by Slash
+        	if (par1Slot.slotNumber < this.getContainer().inventoryEnchanting.getSizeInventory())
+            {
+                check = true;  // modified by Slash
+                refill = (par1Slot.slotNumber == 0);
+            }
         	if (par1Slot.slotNumber > 1 & par4 == 1) { // trying to put something from inventory do slot 1 or 2
-        		if (!inventorySlots.getSlot(0).getHasStack() || !inventorySlots.getSlot(1).getHasStack())
-        			check = true;
+        		if (!inventorySlots.getSlot(0).getHasStack() || !inventorySlots.getSlot(1).getHasStack()) {
+                    check = true;
+                    refill = true;
+                }
+
         	}
         } // by Slash
     	
         super.handleMouseClick(par1Slot, par2, par3, par4);
-    	if (check) checkItems(par1Slot.slotNumber == 0); // modified by Slash
+    	if (check) checkItems(refill); // modified by Slash
 
     }
 
