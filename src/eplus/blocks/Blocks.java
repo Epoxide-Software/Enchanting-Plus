@@ -1,6 +1,7 @@
 package eplus.blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import eplus.EnchantingPlus;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -16,6 +17,8 @@ public class Blocks
 
     public static void init()
     {
+        EnchantingPlus.log.info("Initializing Blocks.");
+
         int blockID = Block.enchantmentTable.blockID;
         Block.blocksList[blockID] = null;
         Item.itemsList[blockID] = null;

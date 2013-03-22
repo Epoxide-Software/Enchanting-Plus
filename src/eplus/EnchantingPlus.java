@@ -1,5 +1,7 @@
 package eplus;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -13,6 +15,8 @@ import eplus.lib.References;
 import eplus.network.GuiHandler;
 import eplus.network.PacketHandler;
 import eplus.network.PlayerTracker;
+
+import java.util.logging.Logger;
 
 /**
  * Enchanting Plus
@@ -29,9 +33,12 @@ public class EnchantingPlus
     @Mod.Instance(References.MODID)
     public static EnchantingPlus INSTANCE;
 
+    public static Logger log = Logger.getLogger(References.MODID);
+
     @Mod.PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
+        log.setParent(FMLCommonHandler.instance().getFMLLogger());
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
     }
 

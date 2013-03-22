@@ -9,6 +9,6 @@ package eplus.lib;
 
 public class References
 {
-    public static final String MODNAME = "EnchantingPlus";
+    public static final String MODNAME = "Enchanting Plus";
     public static final String MODID = "eplus";
 }

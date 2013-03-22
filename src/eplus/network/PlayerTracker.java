@@ -1,6 +1,7 @@
 package eplus.network;
 
 import cpw.mods.fml.common.IPlayerTracker;
+import eplus.EnchantingPlus;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -12,6 +13,10 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerTracker implements IPlayerTracker
 {
+    {
+        EnchantingPlus.log.info("Initializing Player Tracker.");
+    }
+
     @Override
     public void onPlayerLogin(EntityPlayer player)
     {

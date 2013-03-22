@@ -1,6 +1,7 @@
 package eplus.network;
 
 import cpw.mods.fml.common.network.IGuiHandler;
+import eplus.EnchantingPlus;
 import eplus.gui.GuiModTable;
 import eplus.gui.GuiVanillaTable;
 import eplus.inventory.ContainerEnchantTable;
@@ -19,6 +20,10 @@ import net.minecraft.world.World;
  */
 public class GuiHandler implements IGuiHandler
 {
+    {
+        EnchantingPlus.log.info("Initializing GUI Handler.");
+    }
+
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
@@ -49,7 +54,7 @@ public class GuiHandler implements IGuiHandler
                 tileEntity = world.getBlockTileEntity(x, y, z);
                 if(tileEntity == null || !(tileEntity instanceof TileEnchantTable)) return null;
                 return new GuiVanillaTable(player.inventory, world, x, y, z, "");
-            default:return null;
+            default: return null;
         }
     }
 }

@@ -1,5 +1,6 @@
 package eplus.handlers;
 
+import eplus.EnchantingPlus;
 import eplus.lib.ConfigurationSettings;
 import net.minecraftforge.common.Configuration;
 
@@ -20,6 +21,8 @@ public class ConfigurationHandler
     {
         configuration = new Configuration(suggestedConfigurationFile, false);
 
+        EnchantingPlus.log.info("Initializing Configurations.");
+
         try
         {
             configuration.load();
@@ -35,7 +38,5 @@ public class ConfigurationHandler
             if (configuration.hasChanged())
                 configuration.save();
         }
-
-
     }
 }
