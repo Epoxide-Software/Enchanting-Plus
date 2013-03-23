@@ -12,11 +12,9 @@ import net.minecraft.item.Item;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class Blocks
-{
+public class Blocks {
 
-    public static void init()
-    {
+    public static void init() {
         EnchantingPlus.log.info("Initializing Blocks.");
 
         int blockID = Block.enchantmentTable.blockID;

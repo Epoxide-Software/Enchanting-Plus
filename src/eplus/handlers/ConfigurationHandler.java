@@ -13,28 +13,23 @@ import java.io.File;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class ConfigurationHandler
-{
+public class ConfigurationHandler {
     public static Configuration configuration;
 
-    public static void init(File suggestedConfigurationFile)
-    {
+    public static void init(File suggestedConfigurationFile) {
         configuration = new Configuration(suggestedConfigurationFile, false);
 
         EnchantingPlus.log.info("Initializing Configurations.");
 
-        try
-        {
+        try {
             configuration.load();
 
             ConfigurationSettings.useMod = configuration.get(Configuration.CATEGORY_GENERAL, "useMod", ConfigurationSettings.useModDefault, "Set to true to use custom Enchantment Table in place of Vanilla").getBoolean(ConfigurationSettings.useModDefault);
 
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
 
-        } finally
-        {
+        } finally {
             if (configuration.hasChanged())
                 configuration.save();
         }

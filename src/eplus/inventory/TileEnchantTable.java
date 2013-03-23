@@ -9,6 +9,5 @@ import net.minecraft.tileentity.TileEntityEnchantmentTable;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class TileEnchantTable  extends TileEntityEnchantmentTable
-{
+public class TileEnchantTable extends TileEntityEnchantmentTable {
 }

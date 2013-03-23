@@ -11,33 +11,28 @@ import net.minecraft.entity.player.EntityPlayer;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class PlayerTracker implements IPlayerTracker
-{
+public class PlayerTracker implements IPlayerTracker {
     {
         EnchantingPlus.log.info("Initializing Player Tracker.");
     }
 
     @Override
-    public void onPlayerLogin(EntityPlayer player)
-    {
+    public void onPlayerLogin(EntityPlayer player) {
 
     }
 
     @Override
-    public void onPlayerLogout(EntityPlayer player)
-    {
+    public void onPlayerLogout(EntityPlayer player) {
 
     }
 
     @Override
-    public void onPlayerChangedDimension(EntityPlayer player)
-    {
+    public void onPlayerChangedDimension(EntityPlayer player) {
 
     }
 
     @Override
-    public void onPlayerRespawn(EntityPlayer player)
-    {
+    public void onPlayerRespawn(EntityPlayer player) {
 
     }
 }
