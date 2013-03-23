@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 
 public class PlayerTracker implements IPlayerTracker {
-    {
+    static {
         EnchantingPlus.log.info("Initializing Player Tracker.");
     }
 

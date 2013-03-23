@@ -19,7 +19,7 @@ import net.minecraft.world.World;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 public class GuiHandler implements IGuiHandler {
-    {
+    static {
         EnchantingPlus.log.info("Initializing GUI Handler.");
     }
 

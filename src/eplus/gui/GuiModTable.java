@@ -7,6 +7,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,15 +24,20 @@ public class GuiModTable extends GuiContainer {
     private final ContainerEnchantTable container;
     private ArrayList<GuiItem> enchantmentArray = new ArrayList<GuiItem>();
     private ArrayList<GuiItem> disenchantmentArray = new ArrayList<GuiItem>();
+    private Map enchantments;
+    private Map disenchantments;
+    private boolean keydown = false;
+    private boolean keyup = false;
 
     class GuiItem extends Gui {
         private final Enchantment enchantment;
         private final int enchantmentLevel;
 
         private final int xPos;
-        private final int yPos;
+        public int yPos;
         private final int height;
         private final int width;
+        private boolean show = true;
 
         public GuiItem(int id, int level, int x, int y) {
             this.enchantment = Enchantment.enchantmentsList[id];
@@ -45,6 +51,8 @@ public class GuiModTable extends GuiContainer {
         }
 
         public void draw() {
+            if (!show) return;
+
             String name = enchantment.getTranslatedName(enchantmentLevel);
 
             if (enchantmentLevel == 0) {
@@ -55,10 +63,14 @@ public class GuiModTable extends GuiContainer {
                 }
             }
 
-            fontRenderer.drawString(name, (width) / 4, yPos + height / 2, 0x55aaff00);
-
+            fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
+            drawVerticalLine(xPos, yPos, xPos + width, 0xffffff);
 
             drawRect(xPos + 1, yPos + 1, xPos - 1 + width, yPos - 1 + height, 0x44aa55ff);
+        }
+
+        public void show(boolean b) {
+            this.show = b;
         }
     }
 
@@ -80,14 +92,63 @@ public class GuiModTable extends GuiContainer {
         Map enchantments = container.getEnchantments();
         Map disenchantments = container.getDisenchantments();
 
-        enchantmentArray = new ArrayList<GuiItem>();
-        disenchantmentArray = new ArrayList<GuiItem>();
+        if (this.enchantments != enchantments || this.disenchantments != disenchantments) {
+            this.enchantments = enchantments;
+            this.disenchantments = disenchantments;
 
-        convertMapToGuiItems(enchantments, enchantmentArray, 35 + guiLeft, 10);
-        convertMapToGuiItems(disenchantments, disenchantmentArray, 10, 50);
+            enchantmentArray = new ArrayList<GuiItem>();
+            disenchantmentArray = new ArrayList<GuiItem>();
 
-        for (GuiItem item : enchantmentArray) item.draw();
-        for (GuiItem item : disenchantmentArray) item.draw();
+            convertMapToGuiItems(enchantments, enchantmentArray, 35 + guiLeft, 15 + guiTop);
+            convertMapToGuiItems(disenchantments, disenchantmentArray, 10, 50);
+        }
+
+        if (keydown) {
+            keydown = !keydown;
+
+            if (enchantmentArray.get(enchantmentArray.size() - 1).yPos <= 15 + guiTop) return;
+
+
+            for (GuiItem item : enchantmentArray) {
+                item.yPos -= 18;
+            }
+
+        }
+
+        if (keyup) {
+            keyup = !keyup;
+            if (enchantmentArray.get(0).yPos >= 15 + guiTop) return;
+
+            for (GuiItem item : enchantmentArray) {
+                item.yPos += 18;
+            }
+        }
+
+        for (GuiItem item : enchantmentArray) {
+            if (item.yPos >= 15 + guiTop && item.yPos <= 69 + guiTop)
+                item.draw();
+        }
+        for (GuiItem item : disenchantmentArray) {
+            item.draw();
+        }
+    }
+
+    @Override
+    public void handleKeyboardInput() {
+        super.handleKeyboardInput();
+
+        if (Keyboard.getEventKeyState()) {
+            int i = Keyboard.getEventKey();
+            char c0 = Keyboard.getEventCharacter();
+
+            if (i == Keyboard.KEY_DOWN) {
+                keydown = !keydown;
+            }
+
+            if (i == Keyboard.KEY_UP) {
+                keyup = !keyup;
+            }
+        }
     }
 
     private void convertMapToGuiItems(Map map, ArrayList<GuiItem> guiItems, int x, int y) {

@@ -5,6 +5,7 @@ import eplus.lib.ConfigurationSettings;
 import net.minecraftforge.common.Configuration;
 
 import java.io.File;
+import java.util.logging.Level;
 
 /**
  * Enchanting Plus
@@ -28,7 +29,8 @@ public class ConfigurationHandler {
 
 
         } catch (Exception e) {
-
+            EnchantingPlus.log.info("Error Loading configuration");
+            EnchantingPlus.log.log(Level.INFO, "Cause by {0}", e.getLocalizedMessage());
         } finally {
             if (configuration.hasChanged())
                 configuration.save();

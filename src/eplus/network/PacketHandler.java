@@ -14,7 +14,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
  */
 
 public class PacketHandler implements IPacketHandler {
-    {
+    static {
         EnchantingPlus.log.info("Initializing Packet Handler.");
     }
 
