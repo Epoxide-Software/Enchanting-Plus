@@ -15,6 +15,7 @@ import eplus.lib.References;
 import eplus.network.GuiHandler;
 import eplus.network.PacketHandler;
 import eplus.network.PlayerTracker;
+import eplus.network.packets.BasePacket;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.logging.Logger;
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
  */
 
 @Mod(name = References.MODNAME, modid = References.MODID)
-@NetworkMod(channels = {References.MODID}, packetHandler = PacketHandler.class)
+@NetworkMod(channels = {BasePacket.CHANNEL}, packetHandler = PacketHandler.class)
 public class EnchantingPlus {
 
     @Mod.Instance(References.MODID)

@@ -100,13 +100,13 @@ public class GuiModTable extends GuiContainer {
             disenchantmentArray = new ArrayList<GuiItem>();
 
             convertMapToGuiItems(enchantments, enchantmentArray, 35 + guiLeft, 15 + guiTop);
-            convertMapToGuiItems(disenchantments, disenchantmentArray, 10, 50);
+            convertMapToGuiItems(disenchantments, disenchantmentArray, 35 + guiLeft, 90 + guiTop);
         }
 
         if (keydown) {
             keydown = !keydown;
 
-            if (enchantmentArray.get(enchantmentArray.size() - 1).yPos <= 15 + guiTop) return;
+            if (enchantmentArray.isEmpty() || enchantmentArray.get(enchantmentArray.size() - 1).yPos <= 15 + guiTop) return;
 
 
             for (GuiItem item : enchantmentArray) {
