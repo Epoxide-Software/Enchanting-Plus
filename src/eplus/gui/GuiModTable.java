@@ -1,9 +1,12 @@
 package eplus.gui;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.inventory.ContainerEnchantTable;
+import eplus.network.packets.EnchantPacket;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
@@ -28,51 +31,7 @@ public class GuiModTable extends GuiContainer {
     private Map disenchantments;
     private boolean keydown = false;
     private boolean keyup = false;
-
-    class GuiItem extends Gui {
-        private final Enchantment enchantment;
-        private final int enchantmentLevel;
-
-        private final int xPos;
-        public int yPos;
-        private final int height;
-        private final int width;
-        private boolean show = true;
-
-        public GuiItem(int id, int level, int x, int y) {
-            this.enchantment = Enchantment.enchantmentsList[id];
-            this.enchantmentLevel = level;
-            this.xPos = x;
-            this.yPos = y;
-
-            this.height = 18;
-            this.width = 144;
-
-        }
-
-        public void draw() {
-            if (!show) return;
-
-            String name = enchantment.getTranslatedName(enchantmentLevel);
-
-            if (enchantmentLevel == 0) {
-                if (name.lastIndexOf(" ") == -1) {
-                    name = enchantment.getName();
-                } else {
-                    name = name.substring(0, name.lastIndexOf(" "));
-                }
-            }
-
-            fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
-            drawVerticalLine(xPos, yPos, xPos + width, 0xffffff);
-
-            drawRect(xPos + 1, yPos + 1, xPos - 1 + width, yPos - 1 + height, 0x44aa55ff);
-        }
-
-        public void show(boolean b) {
-            this.show = b;
-        }
-    }
+    private boolean keyperiod = false;
 
     public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z) {
         super(new ContainerEnchantTable(inventory, world, x, y, z));
@@ -115,6 +74,16 @@ public class GuiModTable extends GuiContainer {
 
         }
 
+        if(keyperiod) {
+            keyperiod = !keyperiod;
+
+            ArrayList<EnchantmentData> datas = new ArrayList<EnchantmentData>();
+
+            datas.add(new EnchantmentData(Enchantment.efficiency.effectId, Enchantment.efficiency.getMaxLevel()));
+
+            PacketDispatcher.sendPacketToServer(new EnchantPacket(datas, 0).makePacket());
+        }
+
         if (keyup) {
             keyup = !keyup;
             if (enchantmentArray.get(0).yPos >= 15 + guiTop) return;
@@ -148,6 +117,9 @@ public class GuiModTable extends GuiContainer {
             if (i == Keyboard.KEY_UP) {
                 keyup = !keyup;
             }
+
+            if (i == Keyboard.KEY_PERIOD)
+                keyperiod = !keyperiod;
         }
     }
 
@@ -164,6 +136,50 @@ public class GuiModTable extends GuiContainer {
 
             i++;
             yPos = y + i * 18;
+        }
+    }
+
+    class GuiItem extends Gui {
+        private final Enchantment enchantment;
+        private final int enchantmentLevel;
+        private final int xPos;
+        private final int height;
+        private final int width;
+        public int yPos;
+        private boolean show = true;
+
+        public GuiItem(int id, int level, int x, int y) {
+            this.enchantment = Enchantment.enchantmentsList[id];
+            this.enchantmentLevel = level;
+            this.xPos = x;
+            this.yPos = y;
+
+            this.height = 18;
+            this.width = 144;
+
+        }
+
+        public void draw() {
+            if (!show) return;
+
+            String name = enchantment.getTranslatedName(enchantmentLevel);
+
+            if (enchantmentLevel == 0) {
+                if (name.lastIndexOf(" ") == -1) {
+                    name = enchantment.getName();
+                } else {
+                    name = name.substring(0, name.lastIndexOf(" "));
+                }
+            }
+
+            fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
+            drawVerticalLine(xPos, yPos, xPos + width, 0xffffff);
+
+            drawRect(xPos + 1, yPos + 1, xPos - 1 + width, yPos - 1 + height, 0x44aa55ff);
+        }
+
+        public void show(boolean b) {
+            this.show = b;
         }
     }
 }

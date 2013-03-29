@@ -1,6 +1,7 @@
 package eplus.inventory;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,6 +11,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -24,7 +26,6 @@ public class ContainerEnchantTable extends Container {
 
     public IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 2);
     public World worldObj;
-
     private Map disenchantments;
     private Map enchantments;
 
@@ -99,6 +100,22 @@ public class ContainerEnchantTable extends Container {
                 }
             }
         }
+    }
+
+    public void enchant(EntityPlayer player, ArrayList<EnchantmentData> arrayList, int cost) {
+        LinkedHashMap map = new LinkedHashMap();
+        ItemStack itemstack = (ItemStack) this.getSlot(0).getStack();
+
+        if (itemstack == null) return;
+
+        for (EnchantmentData data : arrayList) {
+            map.put(data.enchantmentobj.effectId, data.enchantmentLevel);
+        }
+
+        EnchantmentHelper.setEnchantments(map, itemstack);
+
+        if (!player.capabilities.isCreativeMode) player.addExperienceLevel(-cost);
+
     }
 }
 
