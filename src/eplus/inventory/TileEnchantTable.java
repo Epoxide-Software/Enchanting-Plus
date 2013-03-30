@@ -10,4 +10,6 @@ import net.minecraft.tileentity.TileEntityEnchantmentTable;
  */
 
 public class TileEnchantTable extends TileEntityEnchantmentTable {
+
+
 }

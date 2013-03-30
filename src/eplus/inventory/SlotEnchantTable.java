@@ -1,6 +1,7 @@
 package eplus.inventory;
 
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.ItemStack;
 
 /**
  * Enchanting Plus

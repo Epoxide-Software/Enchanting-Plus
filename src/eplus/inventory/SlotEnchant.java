@@ -2,6 +2,8 @@ package eplus.inventory;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 /**
  * Enchanting Plus
@@ -16,5 +18,15 @@ public class SlotEnchant extends Slot {
     public SlotEnchant(ContainerEnchantTable containerEnchantTable, IInventory tableInventory, int i, int i1, int i2) {
         super(tableInventory, i, i1, i2);
         this.container = containerEnchantTable;
+    }
+
+    @Override
+    public boolean isItemValid(ItemStack par1ItemStack) {
+        return par1ItemStack.isItemEnchantable() || par1ItemStack.isItemEnchanted() || par1ItemStack.getItem().itemID == Item.book.itemID;
+    }
+
+    @Override
+    public int getSlotStackLimit() {
+        return 1;
     }
 }

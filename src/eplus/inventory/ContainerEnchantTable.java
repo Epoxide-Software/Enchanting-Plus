@@ -7,6 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -93,7 +94,7 @@ public class ContainerEnchantTable extends Container {
             }
             if (itemStack.isItemEnchantable()) {
                 for (Enchantment obj : Enchantment.field_92090_c) {
-                    if (obj.func_92089_a(itemStack)) {
+                    if (obj.func_92089_a(itemStack) || itemStack.getItem().itemID == Item.book.itemID) {
                         this.enchantments.put(obj.effectId, 0);
                     }
                 }
@@ -109,9 +110,55 @@ public class ContainerEnchantTable extends Container {
                     if (obj.func_92089_a(itemStack) && add) {
                         this.enchantments.put(obj.effectId, 0);
                     }
+
+                    if (itemStack.getItem().itemID == Item.book.itemID && add) {
+                        this.enchantments.put(obj.effectId, 0);
+                    }
                 }
             }
         }
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+        ItemStack itemStack = null;
+        Slot slot = (Slot) this.inventorySlots.get(par2);
+
+        if (slot != null && slot.getHasStack()) {
+            ItemStack stack = slot.getStack();
+
+            ItemStack tempstack = stack.copy();
+            itemStack = stack.copy();
+            tempstack.stackSize = 1;
+
+            if (par2 != 0 && par2 != 1) {
+                Slot slot1 = (Slot) this.inventorySlots.get(0);
+                Slot slot2 = (Slot) this.inventorySlots.get(1);
+
+                if (!slot1.getHasStack() && slot1.isItemValid(tempstack) && mergeItemStack(tempstack, 0, 1, false)) {
+                    stack.stackSize--;
+                    itemStack = stack.copy();
+                } else if (!slot2.getHasStack() && slot2.isItemValid(tempstack) && mergeItemStack(tempstack, 1, 2, false)) {
+                    stack.stackSize--;
+                    itemStack = stack.copy();
+                }
+
+            } else if (!mergeItemStack(stack, 2, 38, false)) {
+                return null;
+            }
+
+            if (stack.stackSize == 0) {
+                slot.putStack(null);
+            } else {
+                slot.onSlotChanged();
+            }
+
+            if (itemStack.stackSize == stack.stackSize) {
+                return null;
+            }
+            slot.onPickupFromSlot(par1EntityPlayer, stack);
+        }
+        return itemStack;
     }
 
     public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
