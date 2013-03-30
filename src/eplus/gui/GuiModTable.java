@@ -4,10 +4,13 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.inventory.ContainerEnchantTable;
 import eplus.network.packets.DisenchantPacket;
 import eplus.network.packets.EnchantPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiSlider;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.settings.EnumOptions;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
@@ -46,7 +49,15 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
+    public void initGui() {
+        super.initGui();
+        this.buttonList.add(new GuiIcon(0, guiLeft + 9, guiTop + 77, 20, 20, "E"));
+        this.buttonList.add(new GuiIcon(1, guiLeft + 9, guiTop + 98, 20, 20, "D"));
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+
         mc.renderEngine.bindTexture("/mods/eplus/gui/enchant.png");
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
@@ -125,6 +136,22 @@ public class GuiModTable extends GuiContainer {
         }
     }
 
+    @Override
+    protected void actionPerformed(GuiButton par1GuiButton) {
+
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        map.put(Enchantment.efficiency.effectId, Enchantment.efficiency.getMaxLevel());
+
+        switch (par1GuiButton.id) {
+            case 0:
+                PacketDispatcher.sendPacketToServer(new EnchantPacket(map, 0).makePacket());
+                return;
+            case 1:
+                PacketDispatcher.sendPacketToServer(new DisenchantPacket(map, 0).makePacket());
+                return;
+        }
+    }
+
     private void convertMapToGuiItems(Map map, ArrayList<GuiItem> guiItems, int x, int y) {
 
         int i = 0;
@@ -182,6 +209,25 @@ public class GuiModTable extends GuiContainer {
 
         public void show(boolean b) {
             this.show = b;
+        }
+    }
+
+    class GuiSlide extends GuiSlider {
+
+        public GuiSlide(int par1, int par2, int par3, EnumOptions par4EnumOptions, String par5Str, float par6) {
+            super(par1, par2, par3, par4EnumOptions, par5Str, par6);
+        }
+    }
+
+    class GuiIcon extends GuiButton {
+
+        public GuiIcon(int par1, int par2, int par3, int par4, int par5, String par6Str) {
+            super(par1, par2, par3, par4, par5, par6Str);
+        }
+
+        @Override
+        public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
+            super.drawButton(par1Minecraft, par2, par3);
         }
     }
 }

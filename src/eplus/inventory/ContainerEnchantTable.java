@@ -1,7 +1,6 @@
 package eplus.inventory;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,7 +10,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -92,10 +90,23 @@ public class ContainerEnchantTable extends Container {
         if (itemStack != null) {
             if (itemStack.isItemEnchanted() || itemStack.hasTagCompound() && itemStack.stackTagCompound.hasKey("StoredEnchantments")) {
                 this.disenchantments = EnchantmentHelper.getEnchantments(itemStack);
-            } else if (itemStack.isItemEnchantable()) {
-
+            }
+            if (itemStack.isItemEnchantable()) {
                 for (Enchantment obj : Enchantment.field_92090_c) {
                     if (obj.func_92089_a(itemStack)) {
+                        this.enchantments.put(obj.effectId, 0);
+                    }
+                }
+            } else {
+                for (Enchantment obj : Enchantment.field_92090_c) {
+                    boolean add = true;
+                    for (Object enc : disenchantments.keySet()) {
+                        Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
+                        if (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)) {
+                            add = false;
+                        }
+                    }
+                    if (obj.func_92089_a(itemStack) && add) {
                         this.enchantments.put(obj.effectId, 0);
                     }
                 }
