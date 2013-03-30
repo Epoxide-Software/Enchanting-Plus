@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +81,6 @@ public class GuiModTable extends GuiContainer {
 
             if (enchantmentArray.isEmpty() || enchantmentArray.get(enchantmentArray.size() - 1).yPos <= 15 + guiTop) return;
 
-
             for (GuiItem item : enchantmentArray) {
                 item.yPos -= 18;
             }
@@ -107,12 +107,27 @@ public class GuiModTable extends GuiContainer {
         }
 
         for (GuiItem item : enchantmentArray) {
-            if (item.yPos >= 15 + guiTop && item.yPos <= 69 + guiTop)
-                item.draw();
-        }
-        for (GuiItem item : disenchantmentArray) {
+            if (item.yPos < guiTop + 15 || item.yPos >= guiTop + 87) {
+                item.show(false);
+            } else {
+                item.show(true);
+            }
             item.draw();
         }
+        for (GuiItem item : disenchantmentArray) {
+            if (item.yPos < guiTop + 90 || item.yPos >= guiTop + 140) {
+                item.show(false);
+            } else {
+                item.show(true);
+            }
+            item.draw();
+        }
+
+        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+
+        fontRenderer.drawString(String.format("Mouse x: %s, y: %s, wheel: %s", x, y, Mouse.getEventDWheel()), 10, 10, 0xffaaee);
     }
 
     @Override
@@ -138,16 +153,34 @@ public class GuiModTable extends GuiContainer {
 
     @Override
     protected void actionPerformed(GuiButton par1GuiButton) {
+        HashMap<Integer, Integer> enchants = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> disechants = new HashMap<Integer, Integer>();
 
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-        map.put(Enchantment.efficiency.effectId, Enchantment.efficiency.getMaxLevel());
+
+        for (GuiItem item : enchantmentArray) {
+            Integer id = (Integer) enchantments.get(item.enchantment.effectId);
+
+            if (item.enchantmentLevel > id) {
+                enchants.put(item.enchantment.effectId, item.enchantmentLevel);
+            }
+        }
+
+        for (GuiItem item : disenchantmentArray) {
+            Integer id = (Integer) disenchantments.get(item.enchantment.effectId);
+
+            if (item.enchantmentLevel < id) {
+                disechants.put(item.enchantment.effectId, item.enchantmentLevel);
+            }
+        }
 
         switch (par1GuiButton.id) {
             case 0:
-                PacketDispatcher.sendPacketToServer(new EnchantPacket(map, 0).makePacket());
+                if (enchants.size() > 0)
+                    PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, 0).makePacket());
                 return;
             case 1:
-                PacketDispatcher.sendPacketToServer(new DisenchantPacket(map, 0).makePacket());
+                if (disechants.size() > 0)
+                    PacketDispatcher.sendPacketToServer(new DisenchantPacket(disechants, 0).makePacket());
                 return;
         }
     }
@@ -168,13 +201,91 @@ public class GuiModTable extends GuiContainer {
         }
     }
 
+    @Override
+    public void handleMouseInput() {
+        super.handleMouseInput();
+
+        int eventDWheel = Mouse.getEventDWheel();
+        int mouseX = (Mouse.getEventX() * this.width / this.mc.displayWidth) - guiLeft;
+        int mouseY = (this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1) - guiTop;
+
+
+        if (eventDWheel != 0) {
+            if (mouseX >= 35 && mouseX <=  xSize - 32) {
+                if (mouseY >= 15 && mouseY <= 87) {
+                    if (eventDWheel > 0) {
+                        if (enchantmentArray.isEmpty() || enchantmentArray.get(enchantmentArray.size() - 1).yPos <= 87)
+                            return;
+
+                        for (GuiItem item : enchantmentArray) {
+                            item.yPos -= 18;
+                        }
+                    } else {
+                        if (enchantmentArray.get(0).yPos >= 15) return;
+
+                        for (GuiItem item : enchantmentArray) {
+                            item.yPos += 18;
+                        }
+                    }
+                } else if (mouseY >= 90 && mouseY <= 140) {
+                    if (eventDWheel > 0) {
+                        if (disenchantmentArray.isEmpty() || disenchantmentArray.get(disenchantmentArray.size() - 1).yPos <= 140)
+                            return;
+
+                        for (GuiItem item : disenchantmentArray) {
+                            item.yPos -= 18;
+                        }
+                    } else {
+                        if (disenchantmentArray.get(0).yPos >= 90) return;
+
+                        for (GuiItem item : disenchantmentArray) {
+                            item.yPos += 18;
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    protected void mouseClicked(int x, int y, int par3) {
+        super.mouseClicked(x, y, par3);
+
+        GuiItem itemFromPos = getItemFromPos(x, y);
+
+        if (itemFromPos != null) itemFromPos.handleClick(par3);
+    }
+
+    private GuiItem getItemFromPos(int x, int y) {
+        if (x < guiLeft + 35 || x > guiLeft + xSize - 32) return null;
+
+        for (GuiItem item : disenchantmentArray) {
+            if (!item.show) continue;
+            if (y >= item.yPos && y <= item.yPos + item.height) {
+                return item;
+            }
+        }
+
+        for (GuiItem item : enchantmentArray) {
+            if (!item.show) continue;
+            if (y >= item.yPos && y <= item.yPos + item.height) {
+                return item;
+            }
+        }
+
+
+        return null;
+    }
+
     class GuiItem extends Gui {
         private final Enchantment enchantment;
-        private final int enchantmentLevel;
         private final int xPos;
         private final int height;
         private final int width;
         public int yPos;
+        private int enchantmentLevel;
         private boolean show = true;
 
         public GuiItem(int id, int level, int x, int y) {
@@ -209,6 +320,16 @@ public class GuiModTable extends GuiContainer {
 
         public void show(boolean b) {
             this.show = b;
+        }
+
+        public void handleClick(int par3) {
+            if (par3 == 0) {
+                enchantmentLevel++;
+                if (enchantmentLevel > enchantment.getMaxLevel()) enchantmentLevel = enchantment.getMaxLevel();
+            } else if (par3 == 1) {
+                enchantmentLevel--;
+                if (enchantmentLevel < 0) enchantmentLevel = 0;
+            }
         }
     }
 

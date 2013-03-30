@@ -1,5 +1,6 @@
 package eplus.inventory;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -94,7 +96,7 @@ public class ContainerEnchantTable extends Container {
             }
             if (itemStack.isItemEnchantable()) {
                 for (Enchantment obj : Enchantment.field_92090_c) {
-                    if (obj.func_92089_a(itemStack) || itemStack.getItem().itemID == Item.book.itemID) {
+                    if (obj.func_92089_a(itemStack) || itemStack.getItem().itemID == Item.enchantedBook.itemID) {
                         this.enchantments.put(obj.effectId, 0);
                     }
                 }
@@ -166,9 +168,17 @@ public class ContainerEnchantTable extends Container {
 
         if (itemstack == null) return;
 
+        map.putAll(disenchantments);
+
         EnchantmentHelper.setEnchantments(map, itemstack);
 
         if (!player.capabilities.isCreativeMode) player.addExperienceLevel(-cost);
+
+        if (itemstack.getItem().itemID == Item.book.itemID) {
+            itemstack.itemID = Item.enchantedBook.itemID;
+        }
+
+        this.onCraftMatrixChanged(this.tableInventory);
 
     }
 
@@ -185,6 +195,12 @@ public class ContainerEnchantTable extends Container {
 
         if (!player.capabilities.isCreativeMode) player.addExperienceLevel(cost);
 
+        if (itemstack.getItem().itemID == Item.enchantedBook.itemID && Item.enchantedBook.func_92110_g(itemstack).tagCount() == 0) {
+            itemstack.itemID = Item.book.itemID;
+        }
+
+
+        this.onCraftMatrixChanged(this.tableInventory);
     }
 }
 
