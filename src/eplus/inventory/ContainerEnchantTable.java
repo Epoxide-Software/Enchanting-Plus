@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -102,19 +103,29 @@ public class ContainerEnchantTable extends Container {
         }
     }
 
-    public void enchant(EntityPlayer player, ArrayList<EnchantmentData> arrayList, int cost) {
-        LinkedHashMap map = new LinkedHashMap();
+    public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
         ItemStack itemstack = (ItemStack) this.getSlot(0).getStack();
 
         if (itemstack == null) return;
 
-        for (EnchantmentData data : arrayList) {
-            map.put(data.enchantmentobj.effectId, data.enchantmentLevel);
-        }
-
         EnchantmentHelper.setEnchantments(map, itemstack);
 
         if (!player.capabilities.isCreativeMode) player.addExperienceLevel(-cost);
+
+    }
+
+    public void disenchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
+        ItemStack itemstack = (ItemStack) this.getSlot(0).getStack();
+
+        if (itemstack == null) return;
+
+        for(Integer enchantmentId : map.keySet()) {
+            this.disenchantments.remove(enchantmentId);
+        }
+
+        EnchantmentHelper.setEnchantments(disenchantments, itemstack);
+
+        if (!player.capabilities.isCreativeMode) player.addExperienceLevel(cost);
 
     }
 }

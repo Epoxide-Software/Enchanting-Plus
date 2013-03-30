@@ -2,6 +2,7 @@ package eplus.gui;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.inventory.ContainerEnchantTable;
+import eplus.network.packets.DisenchantPacket;
 import eplus.network.packets.EnchantPacket;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -13,6 +14,7 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -77,11 +79,11 @@ public class GuiModTable extends GuiContainer {
         if(keyperiod) {
             keyperiod = !keyperiod;
 
-            ArrayList<EnchantmentData> datas = new ArrayList<EnchantmentData>();
+            HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 
-            datas.add(new EnchantmentData(Enchantment.efficiency.effectId, Enchantment.efficiency.getMaxLevel()));
+            map.put(Enchantment.efficiency.effectId, Enchantment.efficiency.getMaxLevel());
 
-            PacketDispatcher.sendPacketToServer(new EnchantPacket(datas, 0).makePacket());
+            PacketDispatcher.sendPacketToServer(new DisenchantPacket(map, 0).makePacket());
         }
 
         if (keyup) {

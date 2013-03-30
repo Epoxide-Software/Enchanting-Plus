@@ -4,10 +4,9 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import cpw.mods.fml.relauncher.Side;
 import eplus.inventory.ContainerEnchantTable;
-import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @user odininon
@@ -16,44 +15,45 @@ import java.util.ArrayList;
 
 public class EnchantPacket extends BasePacket {
 
-    private ArrayList<EnchantmentData> arrayList = new ArrayList<EnchantmentData>();
-    private int cost;
+    protected HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    protected int cost;
 
     public EnchantPacket() {}
 
-    public EnchantPacket(ArrayList<EnchantmentData> list, int cost) {
-        this.arrayList = list;
+    public EnchantPacket(HashMap<Integer, Integer> list, int cost) {
+        this.map = list;
         this.cost = cost;
     }
 
     @Override
     public void write(ByteArrayDataOutput output) {
         output.writeInt(cost);
-        output.writeInt(arrayList.size());
-        for(EnchantmentData enchantmentData : arrayList) {
-            output.writeInt(enchantmentData.enchantmentobj.effectId);
-            output.writeInt(enchantmentData.enchantmentLevel);
+        output.writeInt(map.size());
+
+        for(Integer enchantmentId : map.keySet()) {
+            output.writeInt(enchantmentId);
+            output.writeInt(map.get(enchantmentId));
         }
     }
 
     @Override
     public void read(ByteArrayDataInput input) {
-        ArrayList<EnchantmentData> temp = new ArrayList<EnchantmentData>();
+        HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
         this.cost = input.readInt();
 
         int size = input.readInt();
 
         for(int i = 0; i < size; i++){
-            temp.add(new EnchantmentData(input.readInt(), input.readInt()));
+            temp.put(input.readInt(), input.readInt());
         }
-        this.arrayList = temp;
+        this.map = temp;
     }
 
     @Override
     public void execute(EntityPlayer player, Side side) {
         if (side.isServer()) {
             if (player.openContainer instanceof ContainerEnchantTable) {
-                ((ContainerEnchantTable) player.openContainer).enchant(player, arrayList, cost);
+                ((ContainerEnchantTable) player.openContainer).enchant(player, map, cost);
                 player.openContainer.detectAndSendChanges();
             }
         }
