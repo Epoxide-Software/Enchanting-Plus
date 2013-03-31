@@ -9,8 +9,19 @@ import net.minecraft.nbt.NBTTagList;
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
+
+
+/**
+ * Helper class for book enchanting functions
+ */
 public class BookHelper {
 
+
+    /**
+     * Adds enchantments to book
+     * @param itemStack the book to be enchanted
+     * @param enchantmentData the EnchantmentData to add
+     */
     public static void addEnchantmentData(ItemStack itemStack, EnchantmentData enchantmentData) {
         NBTTagList nbttaglist = getTag(itemStack);
         boolean flag = true;
@@ -42,6 +53,11 @@ public class BookHelper {
         itemStack.getTagCompound().setTag("StoredEnchantments", nbttaglist);
     }
 
+    /**
+     * Gets stack compound of a enchanted book
+     * @param par1ItemStack the book to check
+     * @return the stack compound of the enchanted book
+     */
     public static NBTTagList getTag(ItemStack par1ItemStack) {
         return par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound.hasKey("StoredEnchantments") ? (NBTTagList) par1ItemStack.stackTagCompound.getTag("StoredEnchantments") : new NBTTagList();
     }

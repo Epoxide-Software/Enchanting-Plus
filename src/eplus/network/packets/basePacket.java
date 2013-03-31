@@ -28,6 +28,14 @@ public abstract class BasePacket {
         idMap = builder.build();
     }
 
+    /**
+     * Constructs the packet
+     *
+     * @param packetId id of the packet
+     * @return constructed packet
+     * @throws ProtocolException
+     * @throws ReflectiveOperationException
+     */
     public static BasePacket constructPacket(int packetId) throws ProtocolException, ReflectiveOperationException {
         Class<? extends BasePacket> clazz = idMap.get(Integer.valueOf(packetId));
         if (clazz == null) {
@@ -36,6 +44,48 @@ public abstract class BasePacket {
             return clazz.newInstance();
         }
     }
+
+    public final int getPacketId() {
+        if (idMap.inverse().containsKey(getClass())) {
+            return idMap.inverse().get(getClass()).intValue();
+        } else {
+            throw new RuntimeException("Packet " + getClass().getSimpleName() + " is missing a mapping!");
+        }
+    }
+
+    /**
+     * Writes all data to and finalizes the packet
+     *
+     * @return Finalized packet
+     */
+    public final Packet makePacket() {
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        output.writeByte(getPacketId());
+        write(output);
+        return PacketDispatcher.getPacket(CHANNEL, output.toByteArray());
+    }
+
+    /**
+     * Writes data to the packet
+     *
+     * @param output array being wrote to
+     */
+    public abstract void write(ByteArrayDataOutput output);
+
+    /**
+     * Reads data from the packet
+     *
+     * @param input array being read from
+     */
+    public abstract void read(ByteArrayDataInput input);
+
+    /**
+     * Executes any actions required when packet is received
+     *
+     * @param player the player requesting the action
+     * @param side   which side the packet is received (Client | Serve)
+     */
+    public abstract void execute(EntityPlayer player, Side side);
 
     public static class ProtocolException extends Exception {
         public ProtocolException() {
@@ -53,25 +103,4 @@ public abstract class BasePacket {
             super(cause);
         }
     }
-
-    public final int getPacketId() {
-        if(idMap.inverse().containsKey(getClass())) {
-            return idMap.inverse().get(getClass()).intValue();
-        } else {
-            throw new RuntimeException("Packet " + getClass().getSimpleName() + " is missing a mapping!");
-        }
-    }
-
-    public final Packet makePacket() {
-        ByteArrayDataOutput output = ByteStreams.newDataOutput();
-        output.writeByte(getPacketId());
-        write(output);
-        return PacketDispatcher.getPacket(CHANNEL, output.toByteArray());
-    }
-
-    public abstract void write(ByteArrayDataOutput output);
-
-    public abstract void read(ByteArrayDataInput input);
-
-    public abstract void execute(EntityPlayer player, Side side);
 }

@@ -68,11 +68,9 @@ public class GuiModTable extends GuiContainer {
             this.enchantments = enchantments;
             this.disenchantments = disenchantments;
 
-            enchantmentArray = new ArrayList<GuiItem>();
-            disenchantmentArray = new ArrayList<GuiItem>();
+            enchantmentArray = convertMapToGuiItems(enchantments, 35 + guiLeft, 15 + guiTop);
+            disenchantmentArray = convertMapToGuiItems(disenchantments, 35 + guiLeft, 90 + guiTop);
 
-            convertMapToGuiItems(enchantments, enchantmentArray, 35 + guiLeft, 15 + guiTop);
-            convertMapToGuiItems(disenchantments, disenchantmentArray, 35 + guiLeft, 90 + guiTop);
         }
 
         if (keydown) {
@@ -170,7 +168,15 @@ public class GuiModTable extends GuiContainer {
         }
     }
 
-    private void convertMapToGuiItems(Map map, ArrayList<GuiItem> guiItems, int x, int y) {
+    /**
+     * Converts map to arraylist of gui items
+     * @param map the map of enchantments to convert
+     * @param x starting x position
+     * @param y starting y position
+     * @return the arraylist of gui items
+     */
+    private ArrayList<GuiItem> convertMapToGuiItems(Map map, int x, int y) {
+        ArrayList<GuiItem> temp = new ArrayList<GuiItem>();
 
         int i = 0;
         int yPos = y;
@@ -179,11 +185,13 @@ public class GuiModTable extends GuiContainer {
             Integer enchantmentId = (Integer) obj;
             Integer enchantmentLevel = (Integer) map.get(obj);
 
-            guiItems.add(new GuiItem(enchantmentId, enchantmentLevel, x, yPos));
+            temp.add(new GuiItem(enchantmentId, enchantmentLevel, x, yPos));
 
             i++;
             yPos = y + i * 18;
         }
+
+        return temp;
     }
 
     @Override
@@ -254,6 +262,12 @@ public class GuiModTable extends GuiContainer {
         }
     }
 
+    /**
+     * Gets a GuiItem from mouse position
+     * @param x mouse x position
+     * @param y mouse y position
+     * @return the GuiItem found
+     */
     private GuiItem getItemFromPos(int x, int y) {
         if (x < guiLeft + 35 || x > guiLeft + xSize - 32) return null;
 
@@ -275,6 +289,9 @@ public class GuiModTable extends GuiContainer {
         return null;
     }
 
+    /**
+     * Class for the enchantments GUI representation
+     */
     class GuiItem extends Gui {
         private final Enchantment enchantment;
         private final int xPos;
@@ -295,6 +312,9 @@ public class GuiModTable extends GuiContainer {
 
         }
 
+        /**
+         * Draws the gui item
+         */
         public void draw() {
             if (!show) return;
 
@@ -314,15 +334,24 @@ public class GuiModTable extends GuiContainer {
             drawRect(xPos + 1, yPos + 1, xPos - 1 + width, yPos - 1 + height, 0x44aa55ff);
         }
 
+        /**
+         * Changes the show property
+         * @param b true to show | false to hide
+         */
         public void show(boolean b) {
             this.show = b;
         }
 
-        public void handleClick(int par3, boolean canIncrement) {
-            if (par3 == 0 && canIncrement) {
+        /**
+         * Handles the GuiItem being clicked
+         * @param mouseButton which mouse button clicked the item (0 - Left, 1 - Right)
+         * @param canIncrement can GuiItem increase it's level
+         */
+        public void handleClick(int mouseButton, boolean canIncrement) {
+            if (mouseButton == 0 && canIncrement) {
                 enchantmentLevel++;
                 if (enchantmentLevel > enchantment.getMaxLevel()) enchantmentLevel = enchantment.getMaxLevel();
-            } else if (par3 == 1) {
+            } else if (mouseButton == 1) {
                 enchantmentLevel--;
                 if (enchantmentLevel < 0) enchantmentLevel = 0;
             }

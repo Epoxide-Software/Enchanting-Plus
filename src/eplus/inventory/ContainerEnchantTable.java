@@ -81,6 +81,9 @@ public class ContainerEnchantTable extends Container {
         }
     }
 
+    /**
+     * Will read the enchantments on the items and ones the can be added to the items
+     */
     private void readItems() {
         ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         ItemStack itemStack1 = this.tableInventory.getStackInSlot(1);
@@ -161,6 +164,12 @@ public class ContainerEnchantTable extends Container {
         return itemStack;
     }
 
+    /**
+     * Enchants an item
+     * @param player player requesting the enchantment
+     * @param map the list of enchantments to add
+     * @param cost the cost of the operation
+     */
     public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
         ItemStack itemstack = (ItemStack) this.getSlot(0).getStack();
 
@@ -176,6 +185,12 @@ public class ContainerEnchantTable extends Container {
 
     }
 
+    /**
+     * Disenchants an item
+     * @param player player requesting the disenchantment
+     * @param map the list of enchantments to remove / change
+     * @param cost the cost of the operations
+     */
     public void disenchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
         ItemStack itemstack = (ItemStack) this.getSlot(0).getStack();
 

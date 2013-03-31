@@ -14,6 +14,10 @@ import net.minecraft.item.Item;
 
 public class Blocks {
 
+    /**
+     * Initializes all mod blocks
+     */
+
     public static void init() {
         EnchantingPlus.log.info("Initializing Blocks.");
 

@@ -14,19 +14,45 @@ import java.util.Map;
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
+
+/**
+ * Helper class with Enchanting functions
+ */
 public class EnchantHelper {
+
+    /**
+     * Checks to see if item is enchanted
+     * @param itemStack the item to check
+     * @return true if item is enchanted
+     */
     public static boolean isItemEnchanted(ItemStack itemStack) {
         return itemStack.hasTagCompound() && ((itemStack.itemID != Item.enchantedBook.itemID) ? itemStack.stackTagCompound.hasKey("ench") : itemStack.stackTagCompound.hasKey("StoredEnchantments"));
     }
 
+    /**
+     * checks to see if item is enchantable
+     * @param itemStack the item to check
+     * @return true if item can accept more enchantments
+     */
     public static boolean isItemEnchantable(ItemStack itemStack) {
         return (itemStack.itemID == Item.book.itemID) || itemStack.isItemEnchantable();
     }
 
+    /**
+     * Checks to see if an enchantment can enchant an item
+     * @param itemStack the item to check
+     * @param obj the enchantment to add
+     * @return true is item can accept the enchantment
+     */
     public static boolean canEnchantItem(ItemStack itemStack, Enchantment obj) {
         return (itemStack.itemID == Item.book.itemID) || obj.func_92089_a(itemStack);
     }
 
+    /**
+     * adds enchantments to an item
+     * @param map map of enchantments to add
+     * @param itemStack the item to add enchantments to
+     */
     public static void setEnchantments(Map map, ItemStack itemStack) {
         NBTTagList nbttaglist = new NBTTagList();
         Iterator iterator = map.keySet().iterator();
