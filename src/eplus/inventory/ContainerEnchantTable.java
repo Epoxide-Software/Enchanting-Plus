@@ -27,7 +27,7 @@ public class ContainerEnchantTable extends Container {
     public IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 2);
     public World worldObj;
     private Map disenchantments;
-    private Map enchantments;
+    private Map<Integer, Integer> enchantments;
 
     public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5) {
         this.worldObj = par2World;
@@ -59,7 +59,7 @@ public class ContainerEnchantTable extends Container {
         readItems();
     }
 
-    public Map getEnchantments() {
+    public Map<Integer, Integer> getEnchantments() {
         return enchantments;
     }
 
@@ -88,7 +88,7 @@ public class ContainerEnchantTable extends Container {
         ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         ItemStack itemStack1 = this.tableInventory.getStackInSlot(1);
 
-        this.enchantments = new LinkedHashMap();
+        this.enchantments = new LinkedHashMap<Integer, Integer>();
         this.disenchantments = new LinkedHashMap();
 
         if (itemStack != null) {

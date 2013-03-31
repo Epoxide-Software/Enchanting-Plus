@@ -55,18 +55,17 @@ public class EnchantHelper {
      */
     public static void setEnchantments(Map map, ItemStack itemStack) {
         NBTTagList nbttaglist = new NBTTagList();
-        Iterator iterator = map.keySet().iterator();
 
-        while (iterator.hasNext()) {
-            int i = ((Integer) iterator.next()).intValue();
+        for (Object o : map.keySet()) {
+            int i = (Integer) o;
             NBTTagCompound nbttagcompound = new NBTTagCompound();
             nbttagcompound.setShort("id", (short) i);
-            nbttagcompound.setShort("lvl", (short) ((Integer) map.get(Integer.valueOf(i))).intValue());
+            nbttagcompound.setShort("lvl", (short) ((Integer) map.get(i)).intValue());
             nbttaglist.appendTag(nbttagcompound);
 
             if (itemStack.itemID == Item.book.itemID || itemStack.itemID == Item.enchantedBook.itemID) {
-                Item.enchantedBook.func_92115_a(itemStack, new EnchantmentData(i, ((Integer) map.get(Integer.valueOf(i))).intValue()));
-                BookHelper.addEnchantmentData(itemStack, new EnchantmentData(i, ((Integer) map.get(Integer.valueOf(i))).intValue()));
+                Item.enchantedBook.func_92115_a(itemStack, new EnchantmentData(i, (Integer) map.get(i)));
+                BookHelper.addEnchantmentData(itemStack, new EnchantmentData(i, (Integer) map.get(i)));
                 itemStack.itemID = Item.enchantedBook.itemID;
             }
         }

@@ -122,7 +122,6 @@ public class GuiModTable extends GuiContainer {
 
         if (Keyboard.getEventKeyState()) {
             int i = Keyboard.getEventKey();
-            char c0 = Keyboard.getEventCharacter();
 
             if (i == Keyboard.KEY_DOWN) {
                 keydown = !keydown;

@@ -37,7 +37,7 @@ public abstract class BasePacket {
      * @throws ReflectiveOperationException
      */
     public static BasePacket constructPacket(int packetId) throws ProtocolException, ReflectiveOperationException {
-        Class<? extends BasePacket> clazz = idMap.get(Integer.valueOf(packetId));
+        Class<? extends BasePacket> clazz = idMap.get(packetId);
         if (clazz == null) {
             throw new ProtocolException("Unknown Packet Id!");
         } else {
@@ -47,7 +47,7 @@ public abstract class BasePacket {
 
     public final int getPacketId() {
         if (idMap.inverse().containsKey(getClass())) {
-            return idMap.inverse().get(getClass()).intValue();
+            return idMap.inverse().get(getClass());
         } else {
             throw new RuntimeException("Packet " + getClass().getSimpleName() + " is missing a mapping!");
         }
