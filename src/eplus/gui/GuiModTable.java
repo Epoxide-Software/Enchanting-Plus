@@ -37,7 +37,6 @@ public class GuiModTable extends GuiContainer {
     private Map disenchantments;
     private boolean keydown = false;
     private boolean keyup = false;
-    private boolean keyperiod = false;
 
     public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z) {
         super(new ContainerEnchantTable(inventory, world, x, y, z));
@@ -84,22 +83,11 @@ public class GuiModTable extends GuiContainer {
             for (GuiItem item : enchantmentArray) {
                 item.yPos -= 18;
             }
-
-        }
-
-        if(keyperiod) {
-            keyperiod = !keyperiod;
-
-            HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-
-            map.put(Enchantment.efficiency.effectId, Enchantment.efficiency.getMaxLevel());
-
-            PacketDispatcher.sendPacketToServer(new DisenchantPacket(map, 0).makePacket());
         }
 
         if (keyup) {
             keyup = !keyup;
-            if (enchantmentArray.get(0).yPos >= 15 + guiTop) return;
+            if (enchantmentArray.isEmpty() || enchantmentArray.get(0).yPos >= 15 + guiTop) return;
 
             for (GuiItem item : enchantmentArray) {
                 item.yPos += 18;
@@ -145,9 +133,6 @@ public class GuiModTable extends GuiContainer {
             if (i == Keyboard.KEY_UP) {
                 keyup = !keyup;
             }
-
-            if (i == Keyboard.KEY_PERIOD)
-                keyperiod = !keyperiod;
         }
     }
 
@@ -213,7 +198,7 @@ public class GuiModTable extends GuiContainer {
         if (eventDWheel != 0) {
             if (mouseX >= 35 && mouseX <=  xSize - 32) {
                 if (mouseY >= 15 && mouseY <= 87) {
-                    if (eventDWheel > 0) {
+                    if (eventDWheel < 0) {
                         if (enchantmentArray.isEmpty() || enchantmentArray.get(enchantmentArray.size() - 1).yPos <= 87)
                             return;
 
@@ -228,7 +213,7 @@ public class GuiModTable extends GuiContainer {
                         }
                     }
                 } else if (mouseY >= 90 && mouseY <= 140) {
-                    if (eventDWheel > 0) {
+                    if (eventDWheel < 0) {
                         if (disenchantmentArray.isEmpty() || disenchantmentArray.get(disenchantmentArray.size() - 1).yPos <= 140)
                             return;
 
@@ -255,7 +240,18 @@ public class GuiModTable extends GuiContainer {
 
         GuiItem itemFromPos = getItemFromPos(x, y);
 
-        if (itemFromPos != null) itemFromPos.handleClick(par3);
+        if (itemFromPos != null) {
+            for (GuiItem item : disenchantmentArray) {
+                if (item == itemFromPos) {
+                    itemFromPos.handleClick(par3, item.enchantmentLevel < (Integer) disenchantments.get(item.enchantment.effectId));
+                }
+            }
+            for (GuiItem item : enchantmentArray) {
+                if (item == itemFromPos) {
+                    itemFromPos.handleClick(par3, true);
+                }
+            }
+        }
     }
 
     private GuiItem getItemFromPos(int x, int y) {
@@ -322,8 +318,8 @@ public class GuiModTable extends GuiContainer {
             this.show = b;
         }
 
-        public void handleClick(int par3) {
-            if (par3 == 0) {
+        public void handleClick(int par3, boolean canIncrement) {
+            if (par3 == 0 && canIncrement) {
                 enchantmentLevel++;
                 if (enchantmentLevel > enchantment.getMaxLevel()) enchantmentLevel = enchantment.getMaxLevel();
             } else if (par3 == 1) {

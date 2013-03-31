@@ -22,7 +22,7 @@ public class SlotEnchant extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack par1ItemStack) {
-        return par1ItemStack.isItemEnchantable() || par1ItemStack.isItemEnchanted() || par1ItemStack.getItem().itemID == Item.book.itemID;
+        return par1ItemStack.isItemEnchantable() || par1ItemStack.isItemEnchanted() || par1ItemStack.itemID == Item.book.itemID || par1ItemStack.itemID == Item.enchantedBook.itemID;
     }
 
     @Override

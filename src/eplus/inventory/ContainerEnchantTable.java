@@ -1,6 +1,6 @@
 package eplus.inventory;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
+import eplus.helper.EnchantHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,9 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -91,30 +89,30 @@ public class ContainerEnchantTable extends Container {
         this.disenchantments = new LinkedHashMap();
 
         if (itemStack != null) {
-            if (itemStack.isItemEnchanted() || itemStack.hasTagCompound() && itemStack.stackTagCompound.hasKey("StoredEnchantments")) {
-                this.disenchantments = EnchantmentHelper.getEnchantments(itemStack);
-            }
-            if (itemStack.isItemEnchantable()) {
-                for (Enchantment obj : Enchantment.field_92090_c) {
-                    if (obj.func_92089_a(itemStack) || itemStack.getItem().itemID == Item.enchantedBook.itemID) {
-                        this.enchantments.put(obj.effectId, 0);
-                    }
-                }
+            if (itemStack1 != null) {
+
             } else {
-                for (Enchantment obj : Enchantment.field_92090_c) {
-                    boolean add = true;
-                    for (Object enc : disenchantments.keySet()) {
-                        Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
-                        if (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)) {
-                            add = false;
+                if (EnchantHelper.isItemEnchanted(itemStack)) {
+                    this.disenchantments = EnchantmentHelper.getEnchantments(itemStack);
+                }
+                if (EnchantHelper.isItemEnchantable(itemStack)) {
+                    for (Enchantment obj : Enchantment.field_92090_c) {
+                        if (EnchantHelper.canEnchantItem(itemStack, obj)) {
+                            this.enchantments.put(obj.effectId, 0);
                         }
                     }
-                    if (obj.func_92089_a(itemStack) && add) {
-                        this.enchantments.put(obj.effectId, 0);
-                    }
-
-                    if (itemStack.getItem().itemID == Item.book.itemID && add) {
-                        this.enchantments.put(obj.effectId, 0);
+                } else {
+                    for (Enchantment obj : Enchantment.field_92090_c) {
+                        boolean add = true;
+                        for (Object enc : disenchantments.keySet()) {
+                            Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
+                            if (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)) {
+                                add = false;
+                            }
+                        }
+                        if (EnchantHelper.canEnchantItem(itemStack, obj) && add) {
+                            this.enchantments.put(obj.effectId, 0);
+                        }
                     }
                 }
             }
@@ -170,13 +168,9 @@ public class ContainerEnchantTable extends Container {
 
         map.putAll(disenchantments);
 
-        EnchantmentHelper.setEnchantments(map, itemstack);
+        EnchantHelper.setEnchantments(map, itemstack);
 
         if (!player.capabilities.isCreativeMode) player.addExperienceLevel(-cost);
-
-        if (itemstack.getItem().itemID == Item.book.itemID) {
-            itemstack.itemID = Item.enchantedBook.itemID;
-        }
 
         this.onCraftMatrixChanged(this.tableInventory);
 
@@ -188,17 +182,16 @@ public class ContainerEnchantTable extends Container {
         if (itemstack == null) return;
 
         for(Integer enchantmentId : map.keySet()) {
-            this.disenchantments.remove(enchantmentId);
+            if (map.get(enchantmentId) != 0) {
+                this.disenchantments.put(enchantmentId, map.get(enchantmentId));
+            } else {
+                this.disenchantments.remove(enchantmentId);
+            }
         }
 
-        EnchantmentHelper.setEnchantments(disenchantments, itemstack);
+        EnchantHelper.setEnchantments(disenchantments, itemstack);
 
         if (!player.capabilities.isCreativeMode) player.addExperienceLevel(cost);
-
-        if (itemstack.getItem().itemID == Item.enchantedBook.itemID && Item.enchantedBook.func_92110_g(itemstack).tagCount() == 0) {
-            itemstack.itemID = Item.book.itemID;
-        }
-
 
         this.onCraftMatrixChanged(this.tableInventory);
     }

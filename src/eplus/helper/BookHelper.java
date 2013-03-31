@@ -1,0 +1,48 @@
+package eplus.helper;
+
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
+/**
+ * @user odininon
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ */
+public class BookHelper {
+
+    public static void addEnchantmentData(ItemStack itemStack, EnchantmentData enchantmentData) {
+        NBTTagList nbttaglist = getTag(itemStack);
+        boolean flag = true;
+
+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+            NBTTagCompound nbttagcompound = (NBTTagCompound) nbttaglist.tagAt(i);
+
+            if (nbttagcompound.getShort("id") == enchantmentData.enchantmentobj.effectId) {
+                if (nbttagcompound.getShort("lvl") != enchantmentData.enchantmentLevel) {
+                    nbttagcompound.setShort("lvl", (short) enchantmentData.enchantmentLevel);
+                }
+
+                flag = false;
+                break;
+            }
+        }
+
+        if (flag) {
+            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+            nbttagcompound1.setShort("id", (short) enchantmentData.enchantmentobj.effectId);
+            nbttagcompound1.setShort("lvl", (short) enchantmentData.enchantmentLevel);
+            nbttaglist.appendTag(nbttagcompound1);
+        }
+
+        if (!itemStack.hasTagCompound()) {
+            itemStack.setTagCompound(new NBTTagCompound());
+        }
+
+        itemStack.getTagCompound().setTag("StoredEnchantments", nbttaglist);
+    }
+
+    public static NBTTagList getTag(ItemStack par1ItemStack) {
+        return par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound.hasKey("StoredEnchantments") ? (NBTTagList) par1ItemStack.stackTagCompound.getTag("StoredEnchantments") : new NBTTagList();
+    }
+}
