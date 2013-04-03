@@ -37,6 +37,7 @@ public class GuiModTable extends GuiContainer {
     private Map disenchantments;
     private boolean keydown = false;
     private boolean keyup = false;
+    private boolean clicked = false;
 
     public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z) {
         super(new ContainerEnchantTable(inventory, world, x, y, z));
@@ -108,12 +109,6 @@ public class GuiModTable extends GuiContainer {
             }
             item.draw();
         }
-
-        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
-        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-
-
-        fontRenderer.drawString(String.format("Mouse x: %s, y: %s, wheel: %s", x, y, Mouse.getEventDWheel()), 10, 10, 0xffaaee);
     }
 
     @Override
@@ -201,7 +196,6 @@ public class GuiModTable extends GuiContainer {
         int mouseX = (Mouse.getEventX() * this.width / this.mc.displayWidth) - guiLeft;
         int mouseY = (this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1) - guiTop;
 
-
         if (eventDWheel != 0) {
             if (mouseX >= 35 && mouseX <=  xSize - 32) {
                 if (mouseY >= 15 && mouseY <= 87) {
@@ -250,12 +244,12 @@ public class GuiModTable extends GuiContainer {
         if (itemFromPos != null) {
             for (GuiItem item : disenchantmentArray) {
                 if (item == itemFromPos) {
-                    itemFromPos.handleClick(par3, item.enchantmentLevel < (Integer) disenchantments.get(item.enchantment.effectId));
+                    itemFromPos.handleClick(par3);
                 }
             }
             for (GuiItem item : enchantmentArray) {
                 if (item == itemFromPos) {
-                    itemFromPos.handleClick(par3, true);
+                    itemFromPos.handleClick(par3);
                 }
             }
         }
@@ -283,9 +277,55 @@ public class GuiModTable extends GuiContainer {
                 return item;
             }
         }
-
-
         return null;
+    }
+
+    @Override
+    public void drawScreen(int par1, int par2, float par3) {
+        super.drawScreen(par1, par2, par3);
+
+        int adjustedMouseX = par1 - guiLeft;
+        int adjustedMouseY = par2 - guiTop;
+
+        if (!clicked && Mouse.isButtonDown(0)) {
+            for (GuiItem item : enchantmentArray) {
+                if (getItemFromPos(par1, par2) == item) {
+                    item.dragging = true;
+                }
+            }
+            for (GuiItem item : disenchantmentArray) {
+                if (getItemFromPos(par1, par2) == item) {
+                    item.dragging = true;
+                }
+            }
+        }
+
+        if (!Mouse.isButtonDown(0)) {
+            for (GuiItem item : enchantmentArray) {
+                if (getItemFromPos(par1, par2) == item) {
+                    item.dragging = false;
+                }
+            }
+            for (GuiItem item : disenchantmentArray) {
+                if (getItemFromPos(par1, par2) == item) {
+                    item.dragging = false;
+                }
+            }
+        }
+
+        clicked = Mouse.isButtonDown(0);
+
+        for (GuiItem item : enchantmentArray) {
+            if (item.dragging) {
+                item.scroll(adjustedMouseX - 39);
+            }
+        }
+        for (GuiItem item : disenchantmentArray) {
+            if (item.dragging) {
+                item.scroll(adjustedMouseX - 39);
+            }
+        }
+
     }
 
     /**
@@ -298,13 +338,20 @@ public class GuiModTable extends GuiContainer {
         private final int width;
         public int yPos;
         private int enchantmentLevel;
+        private int privateLevel;
         private boolean show = true;
+        private float index;
+        private boolean dragging = false;
+        private int sliderX;
 
         public GuiItem(int id, int level, int x, int y) {
             this.enchantment = Enchantment.enchantmentsList[id];
             this.enchantmentLevel = level;
+            this.privateLevel = level;
             this.xPos = x;
             this.yPos = y;
+
+            this.sliderX = xPos + 1;
 
             this.height = 18;
             this.width = 144;
@@ -326,11 +373,22 @@ public class GuiModTable extends GuiContainer {
                     name = name.substring(0, name.lastIndexOf(" "));
                 }
             }
+            int indexX = (int) (xPos + 1 + width * (enchantmentLevel / (double) enchantment.getMaxLevel()));
 
+            drawRect(indexX, yPos + 1, indexX + 5, yPos - 1 + height, 0xff000000);
             fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
-            drawVerticalLine(xPos, yPos, xPos + width, 0xffffff);
+            drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aa55ff);
+        }
 
-            drawRect(xPos + 1, yPos + 1, xPos - 1 + width, yPos - 1 + height, 0x44aa55ff);
+        public void scroll(int xPos) {
+            index = xPos / (float) (width - 12);
+            enchantmentLevel = (int) Math.floor((double) enchantment.getMaxLevel() * index);
+
+            if (enchantmentLevel <= 0) enchantmentLevel = 0;
+
+            if (disenchantmentArray.contains(this) && enchantmentLevel > privateLevel) enchantmentLevel = privateLevel;
+
+            if (enchantmentLevel > enchantment.getMaxLevel()) enchantmentLevel = enchantment.getMaxLevel();
         }
 
         /**
@@ -344,16 +402,8 @@ public class GuiModTable extends GuiContainer {
         /**
          * Handles the GuiItem being clicked
          * @param mouseButton which mouse button clicked the item (0 - Left, 1 - Right)
-         * @param canIncrement can GuiItem increase it's level
          */
-        public void handleClick(int mouseButton, boolean canIncrement) {
-            if (mouseButton == 0 && canIncrement) {
-                enchantmentLevel++;
-                if (enchantmentLevel > enchantment.getMaxLevel()) enchantmentLevel = enchantment.getMaxLevel();
-            } else if (mouseButton == 1) {
-                enchantmentLevel--;
-                if (enchantmentLevel < 0) enchantmentLevel = 0;
-            }
+        public void handleClick(int mouseButton) {
         }
     }
 
