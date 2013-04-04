@@ -39,7 +39,7 @@ public class PacketHandler implements IPacketHandler {
                 ((EntityPlayerMP) player).playerNetServerHandler.kickPlayerFromServer("Protocol Exception!");
                 EnchantingPlus.log.warning(((EntityPlayer) player).username + " cause a Protocol Exception!");
             }
-        } catch (ReflectiveOperationException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException("Unexpected Reflection exception during Packet construction!", ex);
         }
     }

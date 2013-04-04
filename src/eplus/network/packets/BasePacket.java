@@ -34,9 +34,10 @@ public abstract class BasePacket {
      * @param packetId id of the packet
      * @return constructed packet
      * @throws ProtocolException
-     * @throws ReflectiveOperationException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
      */
-    public static BasePacket constructPacket(int packetId) throws ProtocolException, ReflectiveOperationException {
+    public static BasePacket constructPacket(int packetId) throws ProtocolException, IllegalAccessException, InstantiationException {
         Class<? extends BasePacket> clazz = idMap.get(packetId);
         if (clazz == null) {
             throw new ProtocolException("Unknown Packet Id!");
