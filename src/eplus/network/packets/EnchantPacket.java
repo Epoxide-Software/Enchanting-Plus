@@ -18,7 +18,8 @@ public class EnchantPacket extends BasePacket {
     protected HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
     protected int cost;
 
-    public EnchantPacket() {}
+    public EnchantPacket() {
+    }
 
     public EnchantPacket(HashMap<Integer, Integer> list, int cost) {
         this.map = list;
@@ -30,7 +31,7 @@ public class EnchantPacket extends BasePacket {
         output.writeInt(cost);
         output.writeInt(map.size());
 
-        for(Integer enchantmentId : map.keySet()) {
+        for (Integer enchantmentId : map.keySet()) {
             output.writeInt(enchantmentId);
             output.writeInt(map.get(enchantmentId));
         }
@@ -43,7 +44,7 @@ public class EnchantPacket extends BasePacket {
 
         int size = input.readInt();
 
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             temp.put(input.readInt(), input.readInt());
         }
         this.map = temp;

@@ -24,26 +24,24 @@ import java.util.Map;
 
 public class ContainerEnchantTable extends Container {
 
-    public IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 2);
+    public IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
     public World worldObj;
-    private Map disenchantments;
     private Map<Integer, Integer> enchantments;
 
     public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5) {
         this.worldObj = par2World;
 
         this.addSlotToContainer(new SlotEnchant(this, this.tableInventory, 0, 11, 31));
-        this.addSlotToContainer(new SlotEnchant(this, this.tableInventory, 1, 11, 57));
         int l;
 
         for (l = 0; l < 3; ++l) {
             for (int i1 = 0; i1 < 9; ++i1) {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, i1 + l * 9 + 9, 17 + i1 * 18, 147 + l * 18));
+                this.addSlotToContainer(new Slot(par1InventoryPlayer, i1 + l * 9 + 9, 17 + i1 * 18, 91 + l * 18));
             }
         }
 
         for (l = 0; l < 9; ++l) {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, l, 17 + l * 18, 205));
+            this.addSlotToContainer(new Slot(par1InventoryPlayer, l, 17 + l * 18, 149));
         }
     }
 
@@ -63,10 +61,6 @@ public class ContainerEnchantTable extends Container {
         return enchantments;
     }
 
-    public Map getDisenchantments() {
-        return disenchantments;
-    }
-
     @Override
     public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
         super.onCraftGuiClosed(par1EntityPlayer);
@@ -84,38 +78,33 @@ public class ContainerEnchantTable extends Container {
     /**
      * Will read the enchantments on the items and ones the can be added to the items
      */
+    @SuppressWarnings("unchecked")
     private void readItems() {
         ItemStack itemStack = this.tableInventory.getStackInSlot(0);
-        ItemStack itemStack1 = this.tableInventory.getStackInSlot(1);
 
         this.enchantments = new LinkedHashMap<Integer, Integer>();
-        this.disenchantments = new LinkedHashMap();
 
         if (itemStack != null) {
-            if (itemStack1 != null) {
-
-            } else {
-                if (EnchantHelper.isItemEnchanted(itemStack)) {
-                    this.disenchantments = EnchantmentHelper.getEnchantments(itemStack);
+            if (EnchantHelper.isItemEnchanted(itemStack)) {
+                this.enchantments.putAll(EnchantmentHelper.getEnchantments(itemStack));
+            }
+            if (EnchantHelper.isItemEnchantable(itemStack)) {
+                for (Enchantment obj : Enchantment.field_92090_c) {
+                    if (EnchantHelper.canEnchantItem(itemStack, obj)) {
+                        this.enchantments.put(obj.effectId, 0);
+                    }
                 }
-                if (EnchantHelper.isItemEnchantable(itemStack)) {
-                    for (Enchantment obj : Enchantment.field_92090_c) {
-                        if (EnchantHelper.canEnchantItem(itemStack, obj)) {
-                            this.enchantments.put(obj.effectId, 0);
+            } else {
+                for (Enchantment obj : Enchantment.field_92090_c) {
+                    boolean add = true;
+                    for (Object enc : enchantments.keySet()) {
+                        Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
+                        if (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)) {
+                            add = false;
                         }
                     }
-                } else {
-                    for (Enchantment obj : Enchantment.field_92090_c) {
-                        boolean add = true;
-                        for (Object enc : disenchantments.keySet()) {
-                            Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
-                            if (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)) {
-                                add = false;
-                            }
-                        }
-                        if (EnchantHelper.canEnchantItem(itemStack, obj) && add) {
-                            this.enchantments.put(obj.effectId, 0);
-                        }
+                    if (EnchantHelper.canEnchantItem(itemStack, obj) && add) {
+                        this.enchantments.put(obj.effectId, 0);
                     }
                 }
             }
@@ -134,19 +123,16 @@ public class ContainerEnchantTable extends Container {
             itemStack = stack.copy();
             tempstack.stackSize = 1;
 
-            if (par2 != 0 && par2 != 1) {
+            if (par2 != 0) {
                 Slot slot1 = (Slot) this.inventorySlots.get(0);
                 Slot slot2 = (Slot) this.inventorySlots.get(1);
 
                 if (!slot1.getHasStack() && slot1.isItemValid(tempstack) && mergeItemStack(tempstack, 0, 1, false)) {
                     stack.stackSize--;
                     itemStack = stack.copy();
-                } else if (!slot2.getHasStack() && slot2.isItemValid(tempstack) && mergeItemStack(tempstack, 1, 2, false)) {
-                    stack.stackSize--;
-                    itemStack = stack.copy();
                 }
 
-            } else if (!mergeItemStack(stack, 2, 38, false)) {
+            } else if (!mergeItemStack(stack, 1, 37, false)) {
                 return null;
             }
 
@@ -170,12 +156,28 @@ public class ContainerEnchantTable extends Container {
      * @param map the list of enchantments to add
      * @param cost the cost of the operation
      */
+    @SuppressWarnings("SuspiciousMethodCalls")
     public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
-        ItemStack itemstack = (ItemStack) this.getSlot(0).getStack();
-
+        ItemStack itemstack = this.getSlot(0).getStack();
         if (itemstack == null) return;
 
-        map.putAll(disenchantments);
+        for (Integer enchantId : enchantments.keySet()) {
+            Integer level = enchantments.get(enchantId);
+
+            if (level != 0)
+                if (!map.containsKey(enchantId))
+                    map.put(enchantId, level);
+        }
+
+        HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
+
+        for (Integer enchantId : map.keySet()) {
+            Integer level = map.get(enchantId);
+
+            if (level == 0)
+                temp.put(enchantId, level);
+        }
+        for (Object object : temp.keySet()) map.remove(object);
 
         EnchantHelper.setEnchantments(map, itemstack);
 
@@ -183,32 +185,6 @@ public class ContainerEnchantTable extends Container {
 
         this.onCraftMatrixChanged(this.tableInventory);
 
-    }
-
-    /**
-     * Disenchants an item
-     * @param player player requesting the disenchantment
-     * @param map the list of enchantments to remove / change
-     * @param cost the cost of the operations
-     */
-    public void disenchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
-        ItemStack itemstack = (ItemStack) this.getSlot(0).getStack();
-
-        if (itemstack == null) return;
-
-        for(Integer enchantmentId : map.keySet()) {
-            if (map.get(enchantmentId) != 0) {
-                this.disenchantments.put(enchantmentId, map.get(enchantmentId));
-            } else {
-                this.disenchantments.remove(enchantmentId);
-            }
-        }
-
-        EnchantHelper.setEnchantments(disenchantments, itemstack);
-
-        if (!player.capabilities.isCreativeMode) player.addExperienceLevel(cost);
-
-        this.onCraftMatrixChanged(this.tableInventory);
     }
 }
 

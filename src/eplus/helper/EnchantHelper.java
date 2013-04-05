@@ -22,6 +22,7 @@ public class EnchantHelper {
 
     /**
      * Checks to see if item is enchanted
+     *
      * @param itemStack the item to check
      * @return true if item is enchanted
      */
@@ -31,6 +32,7 @@ public class EnchantHelper {
 
     /**
      * checks to see if item is enchantable
+     *
      * @param itemStack the item to check
      * @return true if item can accept more enchantments
      */
@@ -40,8 +42,9 @@ public class EnchantHelper {
 
     /**
      * Checks to see if an enchantment can enchant an item
+     *
      * @param itemStack the item to check
-     * @param obj the enchantment to add
+     * @param obj       the enchantment to add
      * @return true is item can accept the enchantment
      */
     public static boolean canEnchantItem(ItemStack itemStack, Enchantment obj) {
@@ -50,7 +53,8 @@ public class EnchantHelper {
 
     /**
      * adds enchantments to an item
-     * @param map map of enchantments to add
+     *
+     * @param map       map of enchantments to add
      * @param itemStack the item to add enchantments to
      */
     public static void setEnchantments(Map map, ItemStack itemStack) {
