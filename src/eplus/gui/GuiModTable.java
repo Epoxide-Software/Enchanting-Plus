@@ -3,18 +3,16 @@ package eplus.gui;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.inventory.ContainerEnchantTable;
 import eplus.network.packets.EnchantPacket;
-import eplus.utils.MathHelper;
+import eplus.helper.MathHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiSlider;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.settings.EnumOptions;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -131,7 +129,7 @@ public class GuiModTable extends GuiContainer {
         int mouseY = (this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1) - guiTop;
 
         if (eventDWheel != 0) {
-            if (mouseX >= 35 && mouseX <=  xSize - 32) {
+            if ((mouseX >= 35 && mouseX <=  xSize - 32) || (mouseX >= 180 && mouseX <= 192)) {
                 if (mouseY >= 15 && mouseY <= 87) {
                     if (eventDWheel < 0) {
                         sliderIndex += .25;
@@ -172,7 +170,7 @@ public class GuiModTable extends GuiContainer {
             for (int i1 = 0; i1 < enchantmentArray.size(); i1++) {
                 GuiItem item2 = enchantmentArray.get(i1);
                 if (item == item2) continue;
-                enabled[i1] = (enabled[i1]) || (i != i1) && (!item.enchantment.canApplyTogether(item2.enchantment) || !item2.enchantment.canApplyTogether(item.enchantment));
+                enabled[i1] = (container.tableInventory.getStackInSlot(0).itemID == Item.book.itemID) || ((enabled[i1]) || (i != i1) && (!item.enchantment.canApplyTogether(item2.enchantment) || !item2.enchantment.canApplyTogether(item.enchantment)));
             }
         }
         for (int i = 0; i < enchantmentArray.size(); i++) {
@@ -250,7 +248,7 @@ public class GuiModTable extends GuiContainer {
                 }
             }
             if (adjustedMouseX <= 191 && adjustedMouseX >= 180) {
-                this.sliding = true;
+                if(enchantingPages != 0) this.sliding = true;
             }
         }
 
@@ -303,7 +301,7 @@ public class GuiModTable extends GuiContainer {
             this.sliderX = xPos + 1;
 
             this.height = 18;
-            this.width = 144;
+            this.width = 143;
         }
 
         /**
@@ -321,7 +319,7 @@ public class GuiModTable extends GuiContainer {
                     name = name.substring(0, name.lastIndexOf(" "));
                 }
             }
-            int indexX = (dragging) ? sliderX : (int) (xPos + 1 + (width - 7) * (enchantmentLevel / (double) enchantment.getMaxLevel()));
+            int indexX = (dragging) ? sliderX : (int) (xPos + 1 + (width - 6) * (enchantmentLevel / (double) enchantment.getMaxLevel()));
 
             drawRect(indexX, yPos + 1, indexX + 5, yPos - 1 + height, 0xff000000);
             fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
@@ -396,7 +394,7 @@ public class GuiModTable extends GuiContainer {
          * @param texture index of the Texture
          * @return the Icon with according changes
          */
-        public Object customTexture(int texture) {
+        public GuiIcon customTexture(int texture) {
             this.textureIndex = texture;
             this.customTexture = texture != 0;
             if (!customTexture) {
@@ -404,6 +402,12 @@ public class GuiModTable extends GuiContainer {
                 this.height = 20;
             }
 
+            return this;
+        }
+
+        public GuiIcon enabled(boolean enabled)
+        {
+            this.enabled = enabled;
             return this;
         }
     }

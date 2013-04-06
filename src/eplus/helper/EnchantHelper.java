@@ -68,8 +68,6 @@ public class EnchantHelper {
             nbttaglist.appendTag(nbttagcompound);
 
             if (itemStack.itemID == Item.book.itemID || itemStack.itemID == Item.enchantedBook.itemID) {
-                Item.enchantedBook.func_92115_a(itemStack, new EnchantmentData(i, (Integer) map.get(i)));
-                BookHelper.addEnchantmentData(itemStack, new EnchantmentData(i, (Integer) map.get(i)));
                 itemStack.itemID = Item.enchantedBook.itemID;
             }
         }
@@ -77,6 +75,8 @@ public class EnchantHelper {
         if (nbttaglist.tagCount() > 0) {
             if (itemStack.itemID != Item.enchantedBook.itemID) {
                 itemStack.setTagInfo("ench", nbttaglist);
+            } else {
+                itemStack.setTagInfo("StoredEnchantments", nbttaglist);
             }
         } else if (itemStack.hasTagCompound()) {
             if (itemStack.itemID != Item.enchantedBook.itemID) {
