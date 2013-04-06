@@ -3,6 +3,7 @@ package eplus.gui;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.inventory.ContainerEnchantTable;
 import eplus.network.packets.EnchantPacket;
+import eplus.utils.MathHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -33,9 +34,14 @@ public class GuiModTable extends GuiContainer {
     private final ContainerEnchantTable container;
     private ArrayList<GuiItem> enchantmentArray = new ArrayList<GuiItem>();
 
+    private double sliderIndex = 0;
+    private int enchantingPages = 0;
+    private double sliderY = 0;
+
     private Map enchantments;
 
     private boolean clicked = false;
+    private boolean sliding = false;
 
     public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z) {
         super(new ContainerEnchantTable(inventory, world, x, y, z));
@@ -128,18 +134,11 @@ public class GuiModTable extends GuiContainer {
             if (mouseX >= 35 && mouseX <=  xSize - 32) {
                 if (mouseY >= 15 && mouseY <= 87) {
                     if (eventDWheel < 0) {
-                        if (enchantmentArray.isEmpty() || enchantmentArray.get(enchantmentArray.size() - 1).yPos <= guiTop + 87)
-                            return;
-
-                        for (GuiItem item : enchantmentArray) {
-                            item.yPos -= 18;
-                        }
+                        sliderIndex += .25;
+                        if (sliderIndex >= enchantingPages) sliderIndex = enchantingPages;
                     } else {
-                        if (enchantmentArray.get(0).yPos >= guiTop + 15) return;
-
-                        for (GuiItem item : enchantmentArray) {
-                            item.yPos += 18;
-                        }
+                        sliderIndex -= .25;
+                        if (sliderIndex <= 0) sliderIndex = 0;
                     }
                 }
             }
@@ -156,6 +155,9 @@ public class GuiModTable extends GuiContainer {
             this.enchantments = enchantments;
 
             enchantmentArray = convertMapToGuiItems(enchantments, 35 + guiLeft, 15 + guiTop);
+
+            sliderIndex = enchantingPages = 0;
+            clicked = sliding = false;
         }
 
         boolean enabled[] = new boolean[enchantmentArray.size()];
@@ -177,6 +179,13 @@ public class GuiModTable extends GuiContainer {
             GuiItem item = enchantmentArray.get(i);
             item.disabled = enabled[i];
         }
+
+        enchantingPages = (enchantmentArray.size() / 4);
+
+        for (GuiItem item : enchantmentArray) {
+            item.yPos = item.startingYPos - (int) ((18 * 4) * sliderIndex);
+        }
+
     }
 
     @Override
@@ -217,12 +226,31 @@ public class GuiModTable extends GuiContainer {
         super.drawScreen(par1, par2, par3);
 
         int adjustedMouseX = par1 - guiLeft;
+        int adjustedMouseY = par2 - guiTop;
+
+        mc.renderEngine.bindTexture("/mods/eplus/gui/enchant.png");
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+
+        int tempY = adjustedMouseY - 16;
+        if (tempY <= 0) tempY = 0;
+        if (tempY >= 57) tempY = 57;
+        sliderIndex = (sliding) ? MathHelper.round((tempY / 57D), .25) : sliderIndex;
+
+        sliderY = (sliding) ? tempY : 57 * (sliderIndex / enchantingPages);
+
+        drawTexturedModalRect(guiLeft + 180, guiTop + 16 + (int) sliderY, 0, 182, 12, 15);
 
         if (!clicked && Mouse.isButtonDown(0)) {
             for (GuiItem item : enchantmentArray) {
                 if (getItemFromPos(par1, par2) == item) {
                     item.dragging = true;
                 }
+            }
+            if (adjustedMouseX <= 191 && adjustedMouseX >= 180) {
+                this.sliding = true;
             }
         }
 
@@ -232,13 +260,16 @@ public class GuiModTable extends GuiContainer {
                     item.dragging = false;
                 }
             }
+            if (adjustedMouseX <= 191 && adjustedMouseX >= 180) {
+                this.sliding = false;
+            }
         }
 
         clicked = Mouse.isButtonDown(0);
 
         for (GuiItem item : enchantmentArray) {
             if (item.dragging) {
-                item.scroll(adjustedMouseX - 39);
+                item.scroll(adjustedMouseX - 36);
             }
         }
     }
@@ -251,6 +282,8 @@ public class GuiModTable extends GuiContainer {
         private final int xPos;
         private final int height;
         private final int width;
+        public final int startingXPos;
+        public final int startingYPos;
         public int yPos;
         private int enchantmentLevel;
         private int privateLevel;
@@ -264,14 +297,13 @@ public class GuiModTable extends GuiContainer {
             this.enchantment = Enchantment.enchantmentsList[id];
             this.enchantmentLevel = level;
             this.privateLevel = level;
-            this.xPos = x;
-            this.yPos = y;
+            this.xPos = this.startingXPos = x;
+            this.yPos = this.startingYPos = y;
 
             this.sliderX = xPos + 1;
 
             this.height = 18;
             this.width = 144;
-
         }
 
         /**
@@ -289,7 +321,7 @@ public class GuiModTable extends GuiContainer {
                     name = name.substring(0, name.lastIndexOf(" "));
                 }
             }
-            int indexX = (int) (xPos + 1 + (width - 7) * (enchantmentLevel / (double) enchantment.getMaxLevel()));
+            int indexX = (dragging) ? sliderX : (int) (xPos + 1 + (width - 7) * (enchantmentLevel / (double) enchantment.getMaxLevel()));
 
             drawRect(indexX, yPos + 1, indexX + 5, yPos - 1 + height, 0xff000000);
             fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
@@ -300,8 +332,15 @@ public class GuiModTable extends GuiContainer {
             }
         }
 
+        /**
+         * Scrolls the item
+         * @param xPos the xPost of the mouse to scroll to
+         */
         public void scroll(int xPos) {
             if (disabled) return;
+            sliderX = xPos + guiLeft + 36;
+            if (sliderX <= guiLeft + 36) sliderX = guiLeft + 36;
+            if (sliderX >= guiLeft + 173) sliderX = guiLeft + 173;
 
             index = xPos / (float) (width - 12);
             enchantmentLevel = (int) Math.floor((double) enchantment.getMaxLevel() * index);
@@ -328,8 +367,6 @@ public class GuiModTable extends GuiContainer {
     }
 
     class GuiIcon extends GuiButton {
-
-
         private boolean customTexture;
         private int textureIndex;
 
@@ -354,6 +391,11 @@ public class GuiModTable extends GuiContainer {
             }
         }
 
+        /**
+         * Determines if GuiIcon has a customTexture
+         * @param texture index of the Texture
+         * @return the Icon with according changes
+         */
         public Object customTexture(int texture) {
             this.textureIndex = texture;
             this.customTexture = texture != 0;
