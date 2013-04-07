@@ -2,6 +2,7 @@ package eplus.inventory;
 
 import eplus.helper.EnchantHelper;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -185,6 +186,19 @@ public class ContainerEnchantTable extends Container {
 
         this.onCraftMatrixChanged(this.tableInventory);
 
+    }
+
+    public int enchantmentCost(int enchantmentId, int enchantmentLevel)
+    {
+        ItemStack itemStack = this.tableInventory.getStackInSlot(0);
+        Enchantment enchantment = Enchantment.enchantmentsList[enchantmentId];
+
+        int enchantability = itemStack.getItem().getItemEnchantability();
+        int maxLevel = enchantment.getMaxLevel();
+
+        int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel));
+        int adjustedCost = (int) ((averageCost * enchantmentLevel) / ((double) maxLevel * 6));
+        return Math.max(1,adjustedCost);
     }
 }
 

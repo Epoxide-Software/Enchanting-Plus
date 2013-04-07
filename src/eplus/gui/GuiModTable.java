@@ -40,6 +40,7 @@ public class GuiModTable extends GuiContainer {
 
     private boolean clicked = false;
     private boolean sliding = false;
+    private int totalCost = 0;
 
     public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z) {
         super(new ContainerEnchantTable(inventory, world, x, y, z));
@@ -178,10 +179,16 @@ public class GuiModTable extends GuiContainer {
             item.disabled = enabled[i];
         }
 
-        enchantingPages = (enchantmentArray.size() / 4);
+        this.enchantingPages = (enchantmentArray.size() / 4);
+        this.totalCost = 0;
 
         for (GuiItem item : enchantmentArray) {
             item.yPos = item.startingYPos - (int) ((18 * 4) * sliderIndex);
+
+            Integer level = (Integer) enchantments.get(item.enchantment.effectId);
+            if (item.enchantmentLevel != level && !item.disabled) {
+                this.totalCost += container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel);
+            }
         }
 
     }
@@ -270,6 +277,7 @@ public class GuiModTable extends GuiContainer {
                 item.scroll(adjustedMouseX - 36);
             }
         }
+        this.fontRenderer.drawString(String.format("Total Cost: %s", totalCost), 5,5, 0xffaa6600);
     }
 
     /**

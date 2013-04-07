@@ -1,6 +1,7 @@
 package eplus.network;
 
 import cpw.mods.fml.common.IPlayerTracker;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
 import net.minecraft.entity.player.EntityPlayer;
 
