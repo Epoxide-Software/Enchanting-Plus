@@ -1,6 +1,7 @@
 package eplus.gui;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import eplus.EnchantingPlus;
 import eplus.inventory.ContainerEnchantTable;
 import eplus.network.packets.EnchantPacket;
 import eplus.helper.MathHelper;
@@ -90,7 +91,7 @@ public class GuiModTable extends GuiContainer {
         switch (par1GuiButton.id) {
             case 0:
                 if (enchants.size() > 0)
-                    PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, 0).makePacket());
+                    PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, totalCost).makePacket());
                 return;
         }
     }
@@ -277,7 +278,6 @@ public class GuiModTable extends GuiContainer {
                 item.scroll(adjustedMouseX - 36);
             }
         }
-        this.fontRenderer.drawString(String.format("Total Cost: %s", totalCost), 5,5, 0xffaa6600);
     }
 
     /**

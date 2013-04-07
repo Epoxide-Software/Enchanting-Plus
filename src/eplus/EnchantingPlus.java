@@ -35,6 +35,7 @@ public class EnchantingPlus {
     public static EnchantingPlus INSTANCE;
 
     public static Logger log = Logger.getLogger(References.MODID);
+    public static boolean Debug = true;
 
     @Mod.PreInit
     public void preInit(FMLPreInitializationEvent event) {

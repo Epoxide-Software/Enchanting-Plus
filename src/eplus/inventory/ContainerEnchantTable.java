@@ -192,8 +192,6 @@ public class ContainerEnchantTable extends Container {
     {
         ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         Enchantment enchantment = Enchantment.enchantmentsList[enchantmentId];
-
-        int enchantability = itemStack.getItem().getItemEnchantability();
         int maxLevel = enchantment.getMaxLevel();
 
         int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel));
