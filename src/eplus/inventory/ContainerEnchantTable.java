@@ -229,8 +229,8 @@ public class ContainerEnchantTable extends Container {
         Enchantment enchantment = Enchantment.enchantmentsList[enchantmentId];
         int maxLevel = enchantment.getMaxLevel();
 
-        int averageCost = (enchantmentLevel == 0) ? (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2 : (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
-        int adjustedcost = (enchantmentLevel == 0) ? (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 5)) : (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 4));
+        int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
+        int adjustedcost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 5));
         return Math.min(-1, adjustedcost);
     }
 }
