@@ -10,6 +10,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -160,43 +161,77 @@ public class ContainerEnchantTable extends Container {
     @SuppressWarnings("SuspiciousMethodCalls")
     public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
         ItemStack itemstack = this.getSlot(0).getStack();
+        HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
+        int serverCost = 0;
+
         if (itemstack == null) return;
+        for (Integer enchantId : map.keySet()) {
+            Integer level = map.get(enchantId);
+            Integer startingLevel = enchantments.get(enchantId);
+
+            if (level > startingLevel) {
+                serverCost += enchantmentCost(enchantId, level, startingLevel);
+            } else if (level < startingLevel) {
+                serverCost += disenchantmentCost(enchantId, level, startingLevel);
+            }
+        }
+
+        if (cost != serverCost) return;
 
         for (Integer enchantId : enchantments.keySet()) {
             Integer level = enchantments.get(enchantId);
 
             if (level != 0)
-                if (!map.containsKey(enchantId))
+                if (!map.containsKey(enchantId)) {
                     map.put(enchantId, level);
+                }
         }
-
-        HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
 
         for (Integer enchantId : map.keySet()) {
             Integer level = map.get(enchantId);
 
-            if (level == 0)
+            if (level == 0) {
                 temp.put(enchantId, level);
+            }
         }
         for (Object object : temp.keySet()) map.remove(object);
 
-        EnchantHelper.setEnchantments(map, itemstack);
-
-        if (!player.capabilities.isCreativeMode) player.addExperienceLevel(-cost);
+        if (canPurchase(player, serverCost)) {
+            EnchantHelper.setEnchantments(map, itemstack);
+            if (!player.capabilities.isCreativeMode) player.addExperienceLevel(-cost);
+        }
 
         this.onCraftMatrixChanged(this.tableInventory);
 
     }
 
-    public int enchantmentCost(int enchantmentId, int enchantmentLevel)
+    public boolean canPurchase(EntityPlayer player, int cost)
+    {
+        return player.capabilities.isCreativeMode || player.experienceLevel >= cost;
+    }
+
+    public int enchantmentCost(int enchantmentId, int enchantmentLevel, Integer level)
     {
         ItemStack itemStack = this.tableInventory.getStackInSlot(0);
+        if (itemStack == null) return 0;
         Enchantment enchantment = Enchantment.enchantmentsList[enchantmentId];
         int maxLevel = enchantment.getMaxLevel();
 
-        int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel));
-        int adjustedCost = (int) ((averageCost * enchantmentLevel) / ((double) maxLevel * 6));
-        return Math.max(1,adjustedCost);
+        int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
+        int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 4));
+        return Math.max(1, adjustedCost);
+    }
+
+    public int disenchantmentCost(int enchantmentId, int enchantmentLevel, Integer level)
+    {
+        ItemStack itemStack = this.tableInventory.getStackInSlot(0);
+        if (itemStack == null) return 0;
+        Enchantment enchantment = Enchantment.enchantmentsList[enchantmentId];
+        int maxLevel = enchantment.getMaxLevel();
+
+        int averageCost = (enchantmentLevel == 0) ? (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2 : (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
+        int adjustedcost = (enchantmentLevel == 0) ? (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 5)) : (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 4));
+        return Math.min(-1, adjustedcost);
     }
 }
 

@@ -187,8 +187,10 @@ public class GuiModTable extends GuiContainer {
             item.yPos = item.startingYPos - (int) ((18 * 4) * sliderIndex);
 
             Integer level = (Integer) enchantments.get(item.enchantment.effectId);
-            if (item.enchantmentLevel != level && !item.disabled) {
-                this.totalCost += container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel);
+            if (item.enchantmentLevel > level && !item.disabled) {
+                this.totalCost += container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+            } else if (item.enchantmentLevel < level && !item.disabled) {
+                this.totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
             }
         }
 
@@ -278,6 +280,8 @@ public class GuiModTable extends GuiContainer {
                 item.scroll(adjustedMouseX - 36);
             }
         }
+        if (EnchantingPlus.Debug)
+            fontRenderer.drawString(String.format("Enchanting cost: %s", totalCost), 5, 5, 0xffaabbaa);
     }
 
     /**
