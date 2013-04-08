@@ -188,7 +188,13 @@ public class GuiModTable extends GuiContainer {
 
             Integer level = (Integer) enchantments.get(item.enchantment.effectId);
             if (item.enchantmentLevel > level && !item.disabled) {
-                this.totalCost += container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+                int temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+                while (!container.canPurchase(player, temp)) {
+                    item.enchantmentLevel--;
+                    item.dragging = false;
+                    temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+                }
+                totalCost = temp;
             } else if (item.enchantmentLevel < level && !item.disabled) {
                 this.totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
             }
