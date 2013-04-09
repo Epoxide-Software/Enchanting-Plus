@@ -1,8 +1,9 @@
 package eplus.inventory;
 
+import cpw.mods.fml.common.Mod;
 import eplus.helper.EnchantHelper;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,7 +11,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -27,11 +27,17 @@ import java.util.Map;
 public class ContainerEnchantTable extends Container {
 
     public IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
-    public World worldObj;
+    public final World worldObj;
+    private final int xPos;
+    private final int yPos;
+    private final int zPos;
     private Map<Integer, Integer> enchantments;
 
     public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5) {
         this.worldObj = par2World;
+        this.xPos = par3;
+        this.yPos = par4;
+        this.zPos = par5;
 
         this.addSlotToContainer(new SlotEnchant(this, this.tableInventory, 0, 11, 31));
         int l;
@@ -207,7 +213,7 @@ public class ContainerEnchantTable extends Container {
 
     public boolean canPurchase(EntityPlayer player, int cost)
     {
-        return player.capabilities.isCreativeMode || player.experienceLevel >= cost;
+        return player.capabilities.isCreativeMode || player.experienceLevel >= cost && cost <= bookCases();
     }
 
     public int enchantmentCost(int enchantmentId, int enchantmentLevel, Integer level)
@@ -232,6 +238,54 @@ public class ContainerEnchantTable extends Container {
         int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
         int adjustedcost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 5));
         return Math.min(-1, adjustedcost);
+    }
+
+    public int bookCases()
+    {
+        int temp = 0;
+        for (int j = -1; j <= 1; ++j)
+        {
+            for (int k = -1; k <= 1; ++k)
+            {
+                if ((j != 0 || k != 0) && this.worldObj.isAirBlock(this.xPos + k, this.yPos, this.zPos + j) && this.worldObj.isAirBlock(this.xPos + k, this.yPos + 1, this.zPos + j))
+                {
+                    if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos, this.zPos + j * 2) == Block.bookShelf.blockID)
+                    {
+                        ++temp;
+                    }
+
+                    if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos + 1, this.zPos + j * 2) == Block.bookShelf.blockID)
+                    {
+                        ++temp;
+                    }
+
+                    if (k != 0 && j != 0)
+                    {
+                        if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos, this.zPos + j) == Block.bookShelf.blockID)
+                        {
+                            ++temp;
+                        }
+
+                        if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos + 1, this.zPos + j) == Block.bookShelf.blockID)
+                        {
+                            ++temp;
+                        }
+
+                        if (this.worldObj.getBlockId(this.xPos + k, this.yPos, this.zPos + j * 2) == Block.bookShelf.blockID)
+                        {
+                            ++temp;
+                        }
+
+                        if (this.worldObj.getBlockId(this.xPos + k, this.yPos + 1, this.zPos + j * 2) == Block.bookShelf.blockID)
+                        {
+                            ++temp;
+                        }
+                    }
+                }
+            }
+        }
+
+        return temp;
     }
 }
 

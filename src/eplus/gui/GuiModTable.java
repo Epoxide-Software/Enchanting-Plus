@@ -189,10 +189,12 @@ public class GuiModTable extends GuiContainer {
             Integer level = (Integer) enchantments.get(item.enchantment.effectId);
             if (item.enchantmentLevel > level && !item.disabled) {
                 int temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
-                while (!container.canPurchase(player, temp)) {
-                    item.enchantmentLevel--;
+                if(!container.canPurchase(player, temp)) item.locked = true;
+                while (item.locked) {
                     item.dragging = false;
+                    item.enchantmentLevel--;
                     temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+                    if(container.canPurchase(player, temp)) item.locked = false;
                 }
                 totalCost = temp;
             } else if (item.enchantmentLevel < level && !item.disabled) {
@@ -286,8 +288,10 @@ public class GuiModTable extends GuiContainer {
                 item.scroll(adjustedMouseX - 36);
             }
         }
-        if (EnchantingPlus.Debug)
+        if (EnchantingPlus.Debug) {
             fontRenderer.drawString(String.format("Enchanting cost: %s", totalCost), 5, 5, 0xffaabbaa);
+            fontRenderer.drawString(String.format("Book case: %s", container.bookCases()), 5, 15, 0xffaabbaa);
+        }
     }
 
     /**
@@ -308,6 +312,7 @@ public class GuiModTable extends GuiContainer {
         private boolean dragging = false;
         private int sliderX;
         private boolean disabled;
+        public boolean locked = false;
 
         public GuiItem(int id, int level, int x, int y) {
             this.enchantment = Enchantment.enchantmentsList[id];
@@ -359,7 +364,15 @@ public class GuiModTable extends GuiContainer {
             if (sliderX >= guiLeft + 173) sliderX = guiLeft + 173;
 
             index = xPos / (float) (width - 12);
-            enchantmentLevel = (int) Math.floor((double) enchantment.getMaxLevel() * index);
+            int tempLevel = (int) Math.floor((double) enchantment.getMaxLevel() * index);
+            if(locked) {
+                if(tempLevel < enchantmentLevel) {
+                    enchantmentLevel = tempLevel;
+                    locked = false;
+                }
+            } else {
+                enchantmentLevel = tempLevel;
+            }
 
             if (enchantmentLevel <= 0) enchantmentLevel = 0;
 
