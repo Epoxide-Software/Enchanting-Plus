@@ -25,7 +25,8 @@ public class PacketHandler implements IPacketHandler {
     }
 
     @Override
-    public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
+    public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
+    {
         try {
             EntityPlayer entityPlayer = (EntityPlayer) player;
             ByteArrayDataInput input = ByteStreams.newDataInput(packet.data);

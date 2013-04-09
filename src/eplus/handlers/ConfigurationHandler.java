@@ -17,7 +17,8 @@ import java.util.logging.Level;
 public class ConfigurationHandler {
     public static Configuration configuration;
 
-    public static void init(File suggestedConfigurationFile) {
+    public static void init(File suggestedConfigurationFile)
+    {
         configuration = new Configuration(suggestedConfigurationFile, false);
 
         EnchantingPlus.log.info("Initializing Configurations.");

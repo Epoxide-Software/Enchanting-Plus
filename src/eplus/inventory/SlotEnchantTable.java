@@ -1,7 +1,6 @@
 package eplus.inventory;
 
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.ItemStack;
 
 /**
  * Enchanting Plus
@@ -13,14 +12,16 @@ import net.minecraft.item.ItemStack;
 public class SlotEnchantTable extends InventoryBasic {
     final ContainerEnchantTable container;
 
-    public SlotEnchantTable(ContainerEnchantTable containerEnchantTable, String par1Str, boolean par2, int par3) {
+    public SlotEnchantTable(ContainerEnchantTable containerEnchantTable, String par1Str, boolean par2, int par3)
+    {
         super(par1Str, par2, par3);
 
         this.container = containerEnchantTable;
     }
 
     @Override
-    public void onInventoryChanged() {
+    public void onInventoryChanged()
+    {
         super.onInventoryChanged();
         this.container.onCraftMatrixChanged(this);
     }

@@ -1,6 +1,5 @@
 package eplus.inventory;
 
-import cpw.mods.fml.common.Mod;
 import eplus.helper.EnchantHelper;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -33,7 +32,8 @@ public class ContainerEnchantTable extends Container {
     private final int zPos;
     private Map<Integer, Integer> enchantments;
 
-    public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5) {
+    public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5)
+    {
         this.worldObj = par2World;
         this.xPos = par3;
         this.yPos = par4;
@@ -54,23 +54,27 @@ public class ContainerEnchantTable extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer entityplayer) {
+    public boolean canInteractWith(EntityPlayer entityplayer)
+    {
         return true;
     }
 
     @Override
-    public void onCraftMatrixChanged(IInventory par1IInventory) {
+    public void onCraftMatrixChanged(IInventory par1IInventory)
+    {
         super.onCraftMatrixChanged(par1IInventory);
 
         readItems();
     }
 
-    public Map<Integer, Integer> getEnchantments() {
+    public Map<Integer, Integer> getEnchantments()
+    {
         return enchantments;
     }
 
     @Override
-    public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
+    public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
+    {
         super.onCraftGuiClosed(par1EntityPlayer);
 
         if (this.worldObj.isRemote) return;
@@ -87,7 +91,8 @@ public class ContainerEnchantTable extends Container {
      * Will read the enchantments on the items and ones the can be added to the items
      */
     @SuppressWarnings("unchecked")
-    private void readItems() {
+    private void readItems()
+    {
         ItemStack itemStack = this.tableInventory.getStackInSlot(0);
 
         this.enchantments = new LinkedHashMap<Integer, Integer>();
@@ -120,7 +125,8 @@ public class ContainerEnchantTable extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    {
         ItemStack itemStack = null;
         Slot slot = (Slot) this.inventorySlots.get(par2);
 
@@ -160,12 +166,14 @@ public class ContainerEnchantTable extends Container {
 
     /**
      * Enchants an item
+     *
      * @param player player requesting the enchantment
-     * @param map the list of enchantments to add
-     * @param cost the cost of the operation
+     * @param map    the list of enchantments to add
+     * @param cost   the cost of the operation
      */
     @SuppressWarnings("SuspiciousMethodCalls")
-    public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
+    public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost)
+    {
         ItemStack itemstack = this.getSlot(0).getStack();
         HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
         int serverCost = 0;
@@ -236,48 +244,38 @@ public class ContainerEnchantTable extends Container {
         int maxLevel = enchantment.getMaxLevel();
 
         int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
-        int adjustedcost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 5));
-        return Math.min(-1, adjustedcost);
+        int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 5));
+        return Math.min(-1, adjustedCost);
     }
 
     public int bookCases()
     {
         int temp = 0;
-        for (int j = -1; j <= 1; ++j)
-        {
-            for (int k = -1; k <= 1; ++k)
-            {
-                if ((j != 0 || k != 0) && this.worldObj.isAirBlock(this.xPos + k, this.yPos, this.zPos + j) && this.worldObj.isAirBlock(this.xPos + k, this.yPos + 1, this.zPos + j))
-                {
-                    if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos, this.zPos + j * 2) == Block.bookShelf.blockID)
-                    {
+        for (int j = -1; j <= 1; ++j) {
+            for (int k = -1; k <= 1; ++k) {
+                if ((j != 0 || k != 0) && this.worldObj.isAirBlock(this.xPos + k, this.yPos, this.zPos + j) && this.worldObj.isAirBlock(this.xPos + k, this.yPos + 1, this.zPos + j)) {
+                    if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos, this.zPos + j * 2) == Block.bookShelf.blockID) {
                         ++temp;
                     }
 
-                    if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos + 1, this.zPos + j * 2) == Block.bookShelf.blockID)
-                    {
+                    if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos + 1, this.zPos + j * 2) == Block.bookShelf.blockID) {
                         ++temp;
                     }
 
-                    if (k != 0 && j != 0)
-                    {
-                        if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos, this.zPos + j) == Block.bookShelf.blockID)
-                        {
+                    if (k != 0 && j != 0) {
+                        if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos, this.zPos + j) == Block.bookShelf.blockID) {
                             ++temp;
                         }
 
-                        if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos + 1, this.zPos + j) == Block.bookShelf.blockID)
-                        {
+                        if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos + 1, this.zPos + j) == Block.bookShelf.blockID) {
                             ++temp;
                         }
 
-                        if (this.worldObj.getBlockId(this.xPos + k, this.yPos, this.zPos + j * 2) == Block.bookShelf.blockID)
-                        {
+                        if (this.worldObj.getBlockId(this.xPos + k, this.yPos, this.zPos + j * 2) == Block.bookShelf.blockID) {
                             ++temp;
                         }
 
-                        if (this.worldObj.getBlockId(this.xPos + k, this.yPos + 1, this.zPos + j * 2) == Block.bookShelf.blockID)
-                        {
+                        if (this.worldObj.getBlockId(this.xPos + k, this.yPos + 1, this.zPos + j * 2) == Block.bookShelf.blockID) {
                             ++temp;
                         }
                     }
@@ -285,7 +283,7 @@ public class ContainerEnchantTable extends Container {
             }
         }
 
-        return temp;
+        return temp * 2;
     }
 }
 

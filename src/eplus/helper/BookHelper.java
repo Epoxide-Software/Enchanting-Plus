@@ -23,7 +23,8 @@ public class BookHelper {
      * @param itemStack       the book to be enchanted
      * @param enchantmentData the EnchantmentData to add
      */
-    public static void addEnchantmentData(ItemStack itemStack, EnchantmentData enchantmentData) {
+    public static void addEnchantmentData(ItemStack itemStack, EnchantmentData enchantmentData)
+    {
         NBTTagList nbttaglist = getTag(itemStack);
         boolean flag = true;
 
@@ -60,7 +61,8 @@ public class BookHelper {
      * @param par1ItemStack the book to check
      * @return the stack compound of the enchanted book
      */
-    public static NBTTagList getTag(ItemStack par1ItemStack) {
+    public static NBTTagList getTag(ItemStack par1ItemStack)
+    {
         return par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound.hasKey("StoredEnchantments") ? (NBTTagList) par1ItemStack.stackTagCompound.getTag("StoredEnchantments") : new NBTTagList();
     }
 }

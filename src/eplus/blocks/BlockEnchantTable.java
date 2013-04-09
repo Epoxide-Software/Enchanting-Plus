@@ -19,17 +19,20 @@ import net.minecraft.world.World;
 
 public class BlockEnchantTable extends BlockEnchantmentTable {
 
-    protected BlockEnchantTable(int par1) {
+    protected BlockEnchantTable(int par1)
+    {
         super(par1);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World par1World) {
+    public TileEntity createNewTileEntity(World par1World)
+    {
         return new TileEnchantTable();
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
+    {
         if (world.isRemote) return true;
 
         if (ConfigurationSettings.useMod) {

@@ -18,16 +18,19 @@ public class EnchantPacket extends BasePacket {
     protected HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
     protected int cost;
 
-    public EnchantPacket() {
+    public EnchantPacket()
+    {
     }
 
-    public EnchantPacket(HashMap<Integer, Integer> list, int cost) {
+    public EnchantPacket(HashMap<Integer, Integer> list, int cost)
+    {
         this.map = list;
         this.cost = cost;
     }
 
     @Override
-    public void write(ByteArrayDataOutput output) {
+    public void write(ByteArrayDataOutput output)
+    {
         output.writeInt(cost);
         output.writeInt(map.size());
 
@@ -38,7 +41,8 @@ public class EnchantPacket extends BasePacket {
     }
 
     @Override
-    public void read(ByteArrayDataInput input) {
+    public void read(ByteArrayDataInput input)
+    {
         HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
         this.cost = input.readInt();
 
@@ -51,7 +55,8 @@ public class EnchantPacket extends BasePacket {
     }
 
     @Override
-    public void execute(EntityPlayer player, Side side) {
+    public void execute(EntityPlayer player, Side side)
+    {
         if (side.isServer()) {
             if (player.openContainer instanceof ContainerEnchantTable) {
                 ((ContainerEnchantTable) player.openContainer).enchant(player, map, cost);

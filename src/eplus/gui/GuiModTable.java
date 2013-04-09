@@ -2,9 +2,9 @@ package eplus.gui;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
+import eplus.helper.MathHelper;
 import eplus.inventory.ContainerEnchantTable;
 import eplus.network.packets.EnchantPacket;
-import eplus.helper.MathHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -43,7 +43,8 @@ public class GuiModTable extends GuiContainer {
     private boolean sliding = false;
     private int totalCost = 0;
 
-    public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z) {
+    public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z)
+    {
         super(new ContainerEnchantTable(inventory, world, x, y, z));
         this.player = inventory.player;
 
@@ -55,13 +56,15 @@ public class GuiModTable extends GuiContainer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void initGui() {
+    public void initGui()
+    {
         super.initGui();
         this.buttonList.add(new GuiIcon(0, guiLeft + 9, guiTop + 55, "E").customTexture(0));
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+    protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
+    {
 
         mc.renderEngine.bindTexture("/mods/eplus/gui/enchant.png");
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -77,7 +80,8 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton) {
+    protected void actionPerformed(GuiButton par1GuiButton)
+    {
         HashMap<Integer, Integer> enchants = new HashMap<Integer, Integer>();
 
         for (GuiItem item : enchantmentArray) {
@@ -98,12 +102,14 @@ public class GuiModTable extends GuiContainer {
 
     /**
      * Converts map to arraylist of gui items
+     *
      * @param map the map of enchantments to convert
-     * @param x starting x position
-     * @param y starting y position
+     * @param x   starting x position
+     * @param y   starting y position
      * @return the arraylist of gui items
      */
-    private ArrayList<GuiItem> convertMapToGuiItems(Map map, int x, int y) {
+    private ArrayList<GuiItem> convertMapToGuiItems(Map map, int x, int y)
+    {
         ArrayList<GuiItem> temp = new ArrayList<GuiItem>();
 
         int i = 0;
@@ -123,7 +129,8 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    public void handleMouseInput() {
+    public void handleMouseInput()
+    {
         super.handleMouseInput();
 
         int eventDWheel = Mouse.getEventDWheel();
@@ -131,7 +138,7 @@ public class GuiModTable extends GuiContainer {
         int mouseY = (this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1) - guiTop;
 
         if (eventDWheel != 0) {
-            if ((mouseX >= 35 && mouseX <=  xSize - 32) || (mouseX >= 180 && mouseX <= 192)) {
+            if ((mouseX >= 35 && mouseX <= xSize - 32) || (mouseX >= 180 && mouseX <= 192)) {
                 if (mouseY >= 15 && mouseY <= 87) {
                     if (eventDWheel < 0) {
                         sliderIndex += .25;
@@ -146,7 +153,8 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    public void updateScreen() {
+    public void updateScreen()
+    {
         super.updateScreen();
 
         Map enchantments = container.getEnchantments();
@@ -189,12 +197,12 @@ public class GuiModTable extends GuiContainer {
             Integer level = (Integer) enchantments.get(item.enchantment.effectId);
             if (item.enchantmentLevel > level && !item.disabled) {
                 int temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
-                if(!container.canPurchase(player, temp)) item.locked = true;
+                if (!container.canPurchase(player, temp)) item.locked = true;
                 while (item.locked) {
                     item.dragging = false;
                     item.enchantmentLevel--;
                     temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
-                    if(container.canPurchase(player, temp)) item.locked = false;
+                    if (container.canPurchase(player, temp)) item.locked = false;
                 }
                 totalCost = temp;
             } else if (item.enchantmentLevel < level && !item.disabled) {
@@ -205,7 +213,8 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int par3) {
+    protected void mouseClicked(int x, int y, int par3)
+    {
         super.mouseClicked(x, y, par3);
 
         GuiItem itemFromPos = getItemFromPos(x, y);
@@ -221,11 +230,13 @@ public class GuiModTable extends GuiContainer {
 
     /**
      * Gets a GuiItem from mouse position
+     *
      * @param x mouse x position
      * @param y mouse y position
      * @return the GuiItem found
      */
-    private GuiItem getItemFromPos(int x, int y) {
+    private GuiItem getItemFromPos(int x, int y)
+    {
         if (x < guiLeft + 35 || x > guiLeft + xSize - 32) return null;
 
         for (GuiItem item : enchantmentArray) {
@@ -238,7 +249,8 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3) {
+    public void drawScreen(int par1, int par2, float par3)
+    {
         super.drawScreen(par1, par2, par3);
 
         int adjustedMouseX = par1 - guiLeft;
@@ -266,7 +278,7 @@ public class GuiModTable extends GuiContainer {
                 }
             }
             if (adjustedMouseX <= 191 && adjustedMouseX >= 180) {
-                if(enchantingPages != 0) this.sliding = true;
+                if (enchantingPages != 0) this.sliding = true;
             }
         }
 
@@ -314,7 +326,8 @@ public class GuiModTable extends GuiContainer {
         private boolean disabled;
         public boolean locked = false;
 
-        public GuiItem(int id, int level, int x, int y) {
+        public GuiItem(int id, int level, int x, int y)
+        {
             this.enchantment = Enchantment.enchantmentsList[id];
             this.enchantmentLevel = level;
             this.privateLevel = level;
@@ -330,7 +343,8 @@ public class GuiModTable extends GuiContainer {
         /**
          * Draws the gui item
          */
-        public void draw() {
+        public void draw()
+        {
             if (!show) return;
 
             String name = enchantment.getTranslatedName(enchantmentLevel);
@@ -355,9 +369,11 @@ public class GuiModTable extends GuiContainer {
 
         /**
          * Scrolls the item
+         *
          * @param xPos the xPost of the mouse to scroll to
          */
-        public void scroll(int xPos) {
+        public void scroll(int xPos)
+        {
             if (disabled) return;
             sliderX = xPos + guiLeft + 36;
             if (sliderX <= guiLeft + 36) sliderX = guiLeft + 36;
@@ -365,8 +381,8 @@ public class GuiModTable extends GuiContainer {
 
             index = xPos / (float) (width - 12);
             int tempLevel = (int) Math.floor((double) enchantment.getMaxLevel() * index);
-            if(locked) {
-                if(tempLevel < enchantmentLevel) {
+            if (locked) {
+                if (tempLevel < enchantmentLevel) {
                     enchantmentLevel = tempLevel;
                     locked = false;
                 }
@@ -381,17 +397,21 @@ public class GuiModTable extends GuiContainer {
 
         /**
          * Changes the show property
+         *
          * @param b true to show | false to hide
          */
-        public void show(boolean b) {
+        public void show(boolean b)
+        {
             this.show = b;
         }
 
         /**
          * Handles the GuiItem being clicked
+         *
          * @param mouseButton which mouse button clicked the item (0 - Left, 1 - Right)
          */
-        public void handleClick(int mouseButton) {
+        public void handleClick(int mouseButton)
+        {
         }
     }
 
@@ -399,16 +419,19 @@ public class GuiModTable extends GuiContainer {
         private boolean customTexture;
         private int textureIndex;
 
-        public GuiIcon(int id, int x, int y, String caption) {
+        public GuiIcon(int id, int x, int y, String caption)
+        {
             this(id, x, y, 16, 16, caption);
         }
 
-        public GuiIcon(int id, int x, int y, int width, int height, String caption) {
+        public GuiIcon(int id, int x, int y, int width, int height, String caption)
+        {
             super(id, x, y, width, height, caption);
         }
 
         @Override
-        public void drawButton(Minecraft mc, int x, int y) {
+        public void drawButton(Minecraft mc, int x, int y)
+        {
             if (!customTexture) {
                 super.drawButton(mc, x, y);
             } else {
@@ -422,10 +445,12 @@ public class GuiModTable extends GuiContainer {
 
         /**
          * Determines if GuiIcon has a customTexture
+         *
          * @param texture index of the Texture
          * @return the Icon with according changes
          */
-        public GuiIcon customTexture(int texture) {
+        public GuiIcon customTexture(int texture)
+        {
             this.textureIndex = texture;
             this.customTexture = texture != 0;
             if (!customTexture) {

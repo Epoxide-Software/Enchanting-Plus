@@ -38,13 +38,15 @@ public class EnchantingPlus {
     public static boolean Debug = true;
 
     @Mod.PreInit
-    public void preInit(FMLPreInitializationEvent event) {
+    public void preInit(FMLPreInitializationEvent event)
+    {
         log.setParent(FMLCommonHandler.instance().getFMLLogger());
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
     }
 
     @Mod.Init
-    public void init(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event)
+    {
         Blocks.init();
         GameRegistry.registerPlayerTracker(new PlayerTracker());
 
@@ -52,12 +54,14 @@ public class EnchantingPlus {
         NetworkRegistry.instance().registerGuiHandler(INSTANCE, new GuiHandler());
     }
 
-    private void registerTileEntity(Class<? extends TileEntity> tileEntity) {
+    private void registerTileEntity(Class<? extends TileEntity> tileEntity)
+    {
         GameRegistry.registerTileEntity(tileEntity, References.MODID + ":" + tileEntity.getSimpleName());
     }
 
     @Mod.PostInit
-    public void postInit(FMLPostInitializationEvent event) {
+    public void postInit(FMLPostInitializationEvent event)
+    {
 
     }
 }

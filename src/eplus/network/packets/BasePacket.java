@@ -36,7 +36,8 @@ public abstract class BasePacket {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public static BasePacket constructPacket(int packetId) throws ProtocolException, IllegalAccessException, InstantiationException {
+    public static BasePacket constructPacket(int packetId) throws ProtocolException, IllegalAccessException, InstantiationException
+    {
         Class<? extends BasePacket> clazz = idMap.get(packetId);
         if (clazz == null) {
             throw new ProtocolException("Unknown Packet Id!");
@@ -45,7 +46,8 @@ public abstract class BasePacket {
         }
     }
 
-    public final int getPacketId() {
+    public final int getPacketId()
+    {
         if (idMap.inverse().containsKey(getClass())) {
             return idMap.inverse().get(getClass());
         } else {
@@ -58,7 +60,8 @@ public abstract class BasePacket {
      *
      * @return Finalized packet
      */
-    public final Packet makePacket() {
+    public final Packet makePacket()
+    {
         ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeByte(getPacketId());
         write(output);
@@ -88,18 +91,22 @@ public abstract class BasePacket {
     public abstract void execute(EntityPlayer player, Side side);
 
     public static class ProtocolException extends Exception {
-        public ProtocolException() {
+        public ProtocolException()
+        {
         }
 
-        public ProtocolException(String message, Throwable cause) {
+        public ProtocolException(String message, Throwable cause)
+        {
             super(message, cause);
         }
 
-        public ProtocolException(String message) {
+        public ProtocolException(String message)
+        {
             super(message);
         }
 
-        public ProtocolException(Throwable cause) {
+        public ProtocolException(Throwable cause)
+        {
             super(cause);
         }
     }

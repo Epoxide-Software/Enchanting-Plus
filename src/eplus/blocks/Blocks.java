@@ -18,7 +18,8 @@ public class Blocks {
      * Initializes all mod blocks
      */
 
-    public static void init() {
+    public static void init()
+    {
         EnchantingPlus.log.info("Initializing Blocks.");
 
         int blockID = Block.enchantmentTable.blockID;
