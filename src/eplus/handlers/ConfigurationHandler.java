@@ -37,4 +37,22 @@ public class ConfigurationHandler {
                 configuration.save();
         }
     }
+
+    public static void set(String categoryName, String propertyName, String newValue)
+    {
+        configuration.load();
+        if (configuration.getCategoryNames().contains(categoryName)) {
+            if (configuration.getCategory(categoryName).containsKey(propertyName)) {
+                configuration.getCategory(categoryName).get(propertyName).set(newValue);
+            }
+        }
+
+        if(configuration.hasChanged()){
+            configuration.save();
+        }
+    }
+
+    public static void set(String propertyName, String newValue) {
+        set("general",propertyName,newValue);
+    }
 }

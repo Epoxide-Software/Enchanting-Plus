@@ -2,14 +2,12 @@ package eplus;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLFingerprintViolationEvent;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import eplus.blocks.Blocks;
+import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.References;
@@ -60,10 +58,14 @@ public class EnchantingPlus {
     }
 
     @Mod.PostInit
-    public void postInit(FMLPostInitializationEvent event)
-    {
+    public void postInit(FMLPostInitializationEvent event){}
 
+    @Mod.ServerStarting
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+        event.registerServerCommand(new EplusCommands());
     }
+
 
     @Mod.FingerprintWarning
     public void invalidFingerprint(FMLFingerprintViolationEvent event)

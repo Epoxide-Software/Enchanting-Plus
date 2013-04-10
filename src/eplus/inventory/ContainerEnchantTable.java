@@ -139,7 +139,6 @@ public class ContainerEnchantTable extends Container {
 
             if (par2 != 0) {
                 Slot slot1 = (Slot) this.inventorySlots.get(0);
-                Slot slot2 = (Slot) this.inventorySlots.get(1);
 
                 if (!slot1.getHasStack() && slot1.isItemValid(tempstack) && mergeItemStack(tempstack, 0, 1, false)) {
                     stack.stackSize--;
