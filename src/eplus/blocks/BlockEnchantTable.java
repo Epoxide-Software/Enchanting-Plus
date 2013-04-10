@@ -4,8 +4,10 @@ import eplus.EnchantingPlus;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.ConfigurationSettings;
 import eplus.lib.GuiIds;
+import eplus.lib.References;
 import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -35,7 +37,9 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
     {
         if (world.isRemote) return true;
 
-        if (ConfigurationSettings.useMod) {
+        NBTTagCompound tag = player.getEntityData();
+
+        if (tag.getBoolean(References.MODID + ":useMod")) {
             player.openGui(EnchantingPlus.INSTANCE, GuiIds.ModTable, world, x, y, z);
         } else {
             player.openGui(EnchantingPlus.INSTANCE, GuiIds.VanillaTable, world, x, y, z);

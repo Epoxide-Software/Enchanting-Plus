@@ -304,6 +304,12 @@ public class GuiModTable extends GuiContainer {
             fontRenderer.drawString(String.format("Enchanting cost: %s", totalCost), 5, 5, 0xffaabbaa);
             fontRenderer.drawString(String.format("Book case: %s", container.bookCases()), 5, 15, 0xffaabbaa);
         }
+        String displayText = String.format("Player XP Level: %s", player.experienceLevel);
+        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText),guiTop + fontRenderer.FONT_HEIGHT + 8);
+        displayText = String.format("Enchanting Cost: %s", totalCost);
+        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText),guiTop + (fontRenderer.FONT_HEIGHT + 10) * 2);
+        displayText = String.format("Book Cases: %s", container.bookCases());
+        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText),guiTop + (fontRenderer.FONT_HEIGHT + 10) * 3);
     }
 
     /**

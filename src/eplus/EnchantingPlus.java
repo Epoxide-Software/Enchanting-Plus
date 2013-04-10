@@ -12,9 +12,9 @@ import eplus.blocks.Blocks;
 import eplus.handlers.ConfigurationHandler;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.References;
+import eplus.network.ConnectionHandler;
 import eplus.network.GuiHandler;
 import eplus.network.PacketHandler;
-import eplus.network.PlayerTracker;
 import eplus.network.packets.BasePacket;
 import net.minecraft.tileentity.TileEntity;
 
@@ -28,14 +28,14 @@ import java.util.logging.Logger;
  */
 
 @Mod(name = References.MODNAME, modid = References.MODID)
-@NetworkMod(channels = {BasePacket.CHANNEL}, packetHandler = PacketHandler.class)
+@NetworkMod(channels = {BasePacket.CHANNEL}, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
 public class EnchantingPlus {
 
     @Mod.Instance(References.MODID)
     public static EnchantingPlus INSTANCE;
 
     public static Logger log = Logger.getLogger(References.MODID);
-    public static boolean Debug = true;
+    public static boolean Debug = false;
 
     @Mod.PreInit
     public void preInit(FMLPreInitializationEvent event)
@@ -48,7 +48,6 @@ public class EnchantingPlus {
     public void init(FMLInitializationEvent event)
     {
         Blocks.init();
-        GameRegistry.registerPlayerTracker(new PlayerTracker());
 
         registerTileEntity(TileEnchantTable.class);
         NetworkRegistry.instance().registerGuiHandler(INSTANCE, new GuiHandler());
