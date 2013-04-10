@@ -2,3 +2,4 @@ bin/
 mcp/
 build/
 build.properties
+keystore.ks

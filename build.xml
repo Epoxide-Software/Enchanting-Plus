@@ -45,6 +45,10 @@
     <target name="copy-src">
         <copy todir="${mcp.dir}/src/minecraft">
             <fileset dir="${src.dir}" />
+            <filterset>
+                <filter token="FINGERPRINT" value="${mod.fingerprint}" />
+                <filter token="VERSION" value="${project.version.full}" />
+        </filterset>
         </copy>
     </target>
 

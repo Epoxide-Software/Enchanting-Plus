@@ -2,6 +2,7 @@ package eplus;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLFingerprintViolationEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-@Mod(name = References.MODNAME, modid = References.MODID)
+@Mod(name = References.MODNAME, modid = References.MODID, certificateFingerprint = References.FINGERPRINT)
 @NetworkMod(channels = {BasePacket.CHANNEL}, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
 public class EnchantingPlus {
 
@@ -62,5 +63,11 @@ public class EnchantingPlus {
     public void postInit(FMLPostInitializationEvent event)
     {
 
+    }
+
+    @Mod.FingerprintWarning
+    public void invalidFingerprint(FMLFingerprintViolationEvent event)
+    {
+        log.severe(String.format("Received incorrect fingerprint Expected %s", event.expectedFingerprint));
     }
 }

@@ -10,4 +10,6 @@ package eplus.lib;
 public class References {
     public static final String MODNAME = "Enchanting Plus";
     public static final String MODID = "eplus";
+
+    public static final String FINGERPRINT = "@FINGERPRINT@";
 }
