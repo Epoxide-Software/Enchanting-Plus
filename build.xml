@@ -31,6 +31,7 @@
             <arg value="describe"/>
             <arg value="--tags"/>
             <arg value="--always"/>
+            <arg value="--abbrev=0"/>
             <arg value="HEAD"/>
         </exec>
         <condition property="project.version" value="${git.revision}" else="0.0.0">
