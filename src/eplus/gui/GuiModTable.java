@@ -273,7 +273,7 @@ public class GuiModTable extends GuiContainer {
 
         if (!clicked && Mouse.isButtonDown(0)) {
             for (GuiItem item : enchantmentArray) {
-                if (getItemFromPos(par1, par2) == item) {
+                if (getItemFromPos(par1, par2) == item && !item.disabled && !item.locked) {
                     item.dragging = true;
                 }
             }
