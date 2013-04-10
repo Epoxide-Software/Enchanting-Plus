@@ -1,0 +1,96 @@
+<project name="EnchantingPlus" default="main">
+    <property environment="env"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="src.dir" value="src"/>
+    <property name="resources.dir" value="resources"/>
+    <property name="mcp.dir" value="mcp"/>
+
+    <property name="mcp.version" value="1.5.1"/>
+
+    <available file="./.git" type="dir" property="git.present" />
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="initialize-version" depends="version-provided,version-not-provided,git.revision">
+        <property name="project.version.full" value="${project.version}.${build.number}"/>
+    </target>
+
+    <target name="version-not-provided" unless="build.number">
+        <property name="build.number" value="unknown"/>
+    </target>
+
+    <target name="version-provided" if="build.number">
+        <property name="build.number" value="${build.number}"/>
+    </target>
+
+    <target name="git.revision" if="git.present">
+        <exec executable="git" dir="src" outputproperty="git.revision" failifexecutionfails="false" errorproperty="">
+            <arg value="describe"/>
+            <arg value="--tags"/>
+            <arg value="--always"/>
+            <arg value="HEAD"/>
+        </exec>
+        <condition property="project.version" value="${git.revision}" else="0.0.0">
+            <and>
+                <isset property="git.revision"/>
+                <length string="${git.revision}" trim="yes" length="0" when="greater"/>
+            </and>
+        </condition>
+    </target>
+
+    <target name="copy-src">
+        <copy todir="${mcp.dir}/src/minecraft">
+            <fileset dir="${src.dir}" />
+        </copy>
+    </target>
+
+    <target name="compile" depends="initialize-version,copy-src">
+        <delete dir="${build.dir}/classes"/>
+        <mkdir dir="${build.dir}/classes"/>
+
+        <exec dir="${mcp.dir}/runtime" executable="python">
+            <arg value="recompile.py" />
+        </exec>
+
+        <exec dir="${mcp.dir}/runtime" executable="python">
+            <arg value="reobfuscate.py"/>
+            <arg value="--srgnames"/>
+        </exec>
+
+        <copy todir="${build.dir}/classes">
+            <fileset dir="${mcp.dir}/reobf/minecraft"/>
+        </copy>
+
+        <copy todir="${build.dir}/classes">
+            <fileset dir="${resources.dir}">
+                <exclude name="mcmod.info"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${build.dir}/classes">
+            <fileset file="${resources.dir}/mcmod.info"/>
+            <filterset>
+                <filter token="VERSION" value="${project.version.full}" />
+            </filterset>
+        </copy>
+
+        <delete dir="${mcp.dir}/src/minecraft/eplus"/>
+    </target>
+
+    <target name="package" depends="compile">
+        <delete dir="${build.dir}/jar"/>
+        <mkdir dir="${build.dir}/jar"/>
+        <jar destfile="${build.dir}/jar/${ant.project.name}-${mcp.version}-${project.version.full}.jar" basedir="${build.dir}/classes"/>
+    </target>
+
+    <target name="main" depends="package">
+        <buildnumber file="build.num"/>
+    </target>
+
+    <target name="test" depends="package" />
+
+
+</project>
