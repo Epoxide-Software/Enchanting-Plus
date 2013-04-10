@@ -2,6 +2,7 @@ package eplus;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -11,6 +12,7 @@ import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.References;
+import eplus.network.CommonProxy;
 import eplus.network.ConnectionHandler;
 import eplus.network.GuiHandler;
 import eplus.network.PacketHandler;
@@ -36,6 +38,9 @@ public class EnchantingPlus {
     public static Logger log = Logger.getLogger(References.MODID);
     public static boolean Debug = false;
 
+    @SidedProxy(clientSide = "eplus.network.ClientProxy", serverSide = "eplus.network.CommonProxy")
+    public static CommonProxy proxy;
+
     @Mod.PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -50,6 +55,7 @@ public class EnchantingPlus {
 
         registerTileEntity(TileEnchantTable.class);
         NetworkRegistry.instance().registerGuiHandler(INSTANCE, new GuiHandler());
+        proxy.registerTickHandlers();
     }
 
     private void registerTileEntity(Class<? extends TileEntity> tileEntity)
