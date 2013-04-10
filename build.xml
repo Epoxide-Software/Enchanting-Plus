@@ -1,11 +1,12 @@
 <project name="EnchantingPlus" default="main">
     <property environment="env"/>
 
+    <property file="build.properties" />
+
     <property name="build.dir" value="build"/>
     <property name="src.dir" value="src"/>
     <property name="resources.dir" value="resources"/>
     <property name="mcp.dir" value="mcp"/>
-
 
     <property name="mcp.version" value="1.5.1"/>
 
@@ -84,6 +85,8 @@
         <delete dir="${build.dir}/jar"/>
         <mkdir dir="${build.dir}/jar"/>
         <jar destfile="${build.dir}/jar/${ant.project.name}-${mcp.version}-${project.version.full}.jar" basedir="${build.dir}/classes"/>
+
+        <signjar jar="${build.dir}/jar/${ant.project.name}-${mcp.version}-${project.version.full}.jar" keystore="${keystore.location}" alias="${keystore.alias}" storepass="${keystore.password}" />
     </target>
 
     <target name="main">
