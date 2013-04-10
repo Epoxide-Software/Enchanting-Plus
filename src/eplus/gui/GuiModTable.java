@@ -198,7 +198,7 @@ public class GuiModTable extends GuiContainer {
             if (item.enchantmentLevel > level && !item.disabled) {
                 int temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
                 if (!container.canPurchase(player, temp)) item.locked = true;
-                while (item.locked) {
+                while (item.locked && item.enchantmentLevel > 0) {
                     item.dragging = false;
                     item.enchantmentLevel--;
                     temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
@@ -368,6 +368,8 @@ public class GuiModTable extends GuiContainer {
             fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
             if (disabled) {
                 drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aaffff);
+            } else if(locked) {
+                drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44ff0000);
             } else {
                 drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aa55ff);
             }

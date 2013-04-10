@@ -13,10 +13,12 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 
 /**
- * User: freyja
- * Date: 4/10/13
- * Time: 12:37 AM
+ * Enchanting Plus
+ *
+ * @user odininon
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
+
 public class ConfigPacket extends BasePacket {
 
     HashMap<String, String> configSettings = new HashMap<String, String>();

@@ -14,10 +14,12 @@ import net.minecraft.server.MinecraftServer;
 import java.util.HashMap;
 
 /**
- * User: freyja
- * Date: 4/10/13
- * Time: 12:28 AM
+ * Enchanting Plus
+ *
+ * @user odininon
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
+
 public class ConnectionHandler implements IConnectionHandler {
 
     @Override
