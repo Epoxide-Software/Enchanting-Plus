@@ -6,6 +6,7 @@
     <property name="resources.dir" value="resources"/>
     <property name="mcp.dir" value="mcp"/>
 
+
     <property name="mcp.version" value="1.5.1"/>
 
     <available file="./.git" type="dir" property="git.present" />
@@ -14,16 +15,14 @@
         <delete dir="${build.dir}"/>
     </target>
 
-    <target name="initialize-version" depends="version-provided,version-not-provided,git.revision">
+    <target name="initialize-version" depends="version-provided,git.revision">
         <property name="project.version.full" value="${project.version}.${build.number}"/>
     </target>
 
-    <target name="version-not-provided" unless="build.number">
-        <property name="build.number" value="unknown"/>
-    </target>
-
-    <target name="version-provided" if="build.number">
-        <property name="build.number" value="${build.number}"/>
+    <target name="version-provided">
+        <condition property="build.number" value="${build.number}" else="beta">
+            <isset property="test"/>
+        </condition>
     </target>
 
     <target name="git.revision" if="git.present">
@@ -87,11 +86,14 @@
         <jar destfile="${build.dir}/jar/${ant.project.name}-${mcp.version}-${project.version.full}.jar" basedir="${build.dir}/classes"/>
     </target>
 
-    <target name="main" depends="package">
+    <target name="main">
         <buildnumber file="build.num"/>
+        <antcall target="package"/>
     </target>
 
-    <target name="test" depends="package" />
+    <target name="test">
+        <antcall target="package"/>
+    </target>
 
 
 </project>
