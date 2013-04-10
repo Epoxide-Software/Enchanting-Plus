@@ -56,13 +56,20 @@
         <delete dir="${build.dir}/classes"/>
         <mkdir dir="${build.dir}/classes"/>
 
-        <exec dir="${mcp.dir}/runtime" executable="python">
-            <arg value="recompile.py" />
+        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+            <arg line="/c recompile.bat"/>
         </exec>
 
-        <exec dir="${mcp.dir}/runtime" executable="python">
-            <arg value="reobfuscate.py"/>
-            <arg value="--srgnames"/>
+        <exec dir="${mcp.dir}" executable="bash" osfamily="unix">
+            <arg line="recompile.sh" />
+        </exec>
+
+        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+            <arg line="/c reobfuscate_srg.bat"/>
+        </exec>
+
+        <exec dir="${mcp.dir}" executable="bash" osfamily="unix">
+            <arg line="reobfuscate_srg.sh"/>
         </exec>
 
         <copy todir="${build.dir}/classes">
