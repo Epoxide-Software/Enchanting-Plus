@@ -44,6 +44,7 @@ public class GuiModTable extends GuiContainer {
     private boolean clicked = false;
     private boolean sliding = false;
     private int totalCost = 0;
+    private boolean dirty = false;
 
     public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z)
     {
@@ -62,6 +63,8 @@ public class GuiModTable extends GuiContainer {
     {
         super.initGui();
         this.buttonList.add(new GuiIcon(0, guiLeft + 9, guiTop + 55, "E").customTexture(0));
+
+        this.dirty = true;
     }
 
     @Override
@@ -168,6 +171,21 @@ public class GuiModTable extends GuiContainer {
 
             sliderIndex = enchantingPages = 0;
             clicked = sliding = false;
+        }
+
+        if(dirty) {
+            ArrayList<GuiItem> temp = convertMapToGuiItems(enchantments, 35 + guiLeft, 15 + guiTop);
+
+            for(GuiItem item : enchantmentArray) {
+                for(GuiItem tempItem : temp) {
+                    if(item.enchantment == tempItem.enchantment) {
+                        item.startingXPos = item.xPos = tempItem.xPos;
+                        item.startingYPos = item.yPos = tempItem.yPos;
+                    }
+                }
+            }
+
+            dirty = false;
         }
 
         boolean enabled[] = new boolean[enchantmentArray.size()];
@@ -325,11 +343,11 @@ public class GuiModTable extends GuiContainer {
      */
     class GuiItem extends Gui {
         private final Enchantment enchantment;
-        private final int xPos;
+        private int xPos;
         private final int height;
         private final int width;
-        public final int startingXPos;
-        public final int startingYPos;
+        public int startingXPos;
+        public int startingYPos;
         public int yPos;
         private int enchantmentLevel;
         private int privateLevel;

@@ -96,32 +96,38 @@ public class ContainerEnchantTable extends Container {
     {
         ItemStack itemStack = this.tableInventory.getStackInSlot(0);
 
-        this.enchantments = new LinkedHashMap<Integer, Integer>();
+        HashMap<Integer, Integer> temp = new LinkedHashMap<Integer, Integer>();
 
         if (itemStack != null) {
             if (EnchantHelper.isItemEnchanted(itemStack)) {
-                this.enchantments.putAll(EnchantmentHelper.getEnchantments(itemStack));
+                temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
             }
             if (EnchantHelper.isItemEnchantable(itemStack)) {
                 for (Enchantment obj : Enchantment.enchantmentsList) {
                     if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj)) {
-                        this.enchantments.put(obj.effectId, 0);
+                        temp.put(obj.effectId, 0);
                     }
                 }
             } else {
                 for (Enchantment obj : Enchantment.enchantmentsList) {
                     boolean add = true;
-                    for (Object enc : enchantments.keySet()) {
+                    for (Object enc : temp.keySet()) {
                         Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
                         if (obj != null && (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj))) {
                             add = false;
                         }
                     }
                     if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && add) {
-                        this.enchantments.put(obj.effectId, 0);
+                        temp.put(obj.effectId, 0);
                     }
                 }
             }
+
+            if (this.enchantments != temp) {
+                this.enchantments = temp;
+            }
+        } else {
+            this.enchantments = temp;
         }
     }
 
