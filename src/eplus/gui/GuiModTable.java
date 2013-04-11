@@ -316,7 +316,7 @@ public class GuiModTable extends GuiContainer {
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText),guiTop + fontRenderer.FONT_HEIGHT + 8);
         displayText = String.format("Enchanting Cost: %s", totalCost);
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText),guiTop + (fontRenderer.FONT_HEIGHT + 10) * 2);
-        displayText = String.format("Book Cases: %s", container.bookCases());
+        displayText = String.format("Max Enchant Level: %s", container.bookCases());
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText),guiTop + (fontRenderer.FONT_HEIGHT + 10) * 3);
     }
 

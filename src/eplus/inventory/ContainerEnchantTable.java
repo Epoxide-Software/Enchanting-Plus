@@ -103,21 +103,21 @@ public class ContainerEnchantTable extends Container {
                 this.enchantments.putAll(EnchantmentHelper.getEnchantments(itemStack));
             }
             if (EnchantHelper.isItemEnchantable(itemStack)) {
-                for (Enchantment obj : Enchantment.field_92090_c) {
-                    if (EnchantHelper.canEnchantItem(itemStack, obj)) {
+                for (Enchantment obj : Enchantment.enchantmentsList) {
+                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj)) {
                         this.enchantments.put(obj.effectId, 0);
                     }
                 }
             } else {
-                for (Enchantment obj : Enchantment.field_92090_c) {
+                for (Enchantment obj : Enchantment.enchantmentsList) {
                     boolean add = true;
                     for (Object enc : enchantments.keySet()) {
                         Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
-                        if (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)) {
+                        if (obj != null && !obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)) {
                             add = false;
                         }
                     }
-                    if (EnchantHelper.canEnchantItem(itemStack, obj) && add) {
+                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && add) {
                         this.enchantments.put(obj.effectId, 0);
                     }
                 }
