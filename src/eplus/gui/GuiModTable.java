@@ -282,6 +282,12 @@ public class GuiModTable extends GuiContainer {
             }
         }
 
+        for (GuiItem item : enchantmentArray) {
+            if (item.dragging && getItemFromPos(par1, par2) != item) {
+                item.dragging = false;
+            }
+        }
+
         if (!Mouse.isButtonDown(0)) {
             for (GuiItem item : enchantmentArray) {
                 if (getItemFromPos(par1, par2) == item) {
