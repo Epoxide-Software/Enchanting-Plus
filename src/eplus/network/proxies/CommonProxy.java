@@ -1,4 +1,4 @@
-package eplus.network;
+package eplus.network.proxies;
 
 /**
  * @user odininon

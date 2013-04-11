@@ -1,8 +1,11 @@
-package eplus.network;
+package eplus.network.proxies;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import eplus.handlers.CapeTickHandler;
+import eplus.inventory.TileEnchantTable;
+import eplus.renders.TileEnchantRenderer;
 
 /**
  * @user odininon
@@ -13,5 +16,6 @@ public class ClientProxy extends CommonProxy {
     public void registerTickHandlers()
     {
         TickRegistry.registerTickHandler(new CapeTickHandler(), Side.CLIENT);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEnchantTable.class, new TileEnchantRenderer());
     }
 }

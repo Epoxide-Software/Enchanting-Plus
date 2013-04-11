@@ -26,19 +26,22 @@ import java.util.Map;
 
 public class ContainerEnchantTable extends Container {
 
-    public IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
     public final World worldObj;
     private final int xPos;
     private final int yPos;
     private final int zPos;
+    public IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
+    TileEnchantTable tileEnchantTable;
     private Map<Integer, Integer> enchantments;
 
-    public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5)
+    public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, TileEnchantTable tileEntity)
     {
         this.worldObj = par2World;
         this.xPos = par3;
         this.yPos = par4;
         this.zPos = par5;
+
+        this.tileEnchantTable = tileEntity;
 
         this.addSlotToContainer(new SlotEnchant(this, this.tableInventory, 0, 11, 31));
         int l;
@@ -52,6 +55,8 @@ public class ContainerEnchantTable extends Container {
         for (l = 0; l < 9; ++l) {
             this.addSlotToContainer(new Slot(par1InventoryPlayer, l, 17 + l * 18, 149));
         }
+
+        this.putStackInSlot(0, tileEntity.itemInTable);
     }
 
     @Override
@@ -64,6 +69,7 @@ public class ContainerEnchantTable extends Container {
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         super.onCraftMatrixChanged(par1IInventory);
+        tileEnchantTable.getWorldObj().markBlockForRenderUpdate(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord);
 
         readItems();
     }
@@ -78,14 +84,8 @@ public class ContainerEnchantTable extends Container {
     {
         super.onCraftGuiClosed(par1EntityPlayer);
 
-        if (this.worldObj.isRemote) return;
-
-        for (int i = 0; i < this.tableInventory.getSizeInventory(); i++) {
-            ItemStack stack = this.tableInventory.getStackInSlotOnClosing(i);
-
-            if (stack != null) par1EntityPlayer.dropPlayerItem(stack);
-
-        }
+        tileEnchantTable.itemInTable = tableInventory.getStackInSlot(0);
+        tileEnchantTable.getWorldObj().markBlockForRenderUpdate(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord);
     }
 
     /**
@@ -99,6 +99,7 @@ public class ContainerEnchantTable extends Container {
         HashMap<Integer, Integer> temp = new LinkedHashMap<Integer, Integer>();
 
         if (itemStack != null) {
+            tileEnchantTable.itemInTable = itemStack.copy();
             if (EnchantHelper.isItemEnchanted(itemStack)) {
                 temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
             }
@@ -239,10 +240,10 @@ public class ContainerEnchantTable extends Container {
 
         int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
         int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 4));
-        if(!ConfigurationSettings.bookShelves) {
+        if (!ConfigurationSettings.bookShelves) {
             int temp = adjustedCost * (60 / (bookCases() + 1));
-            temp /=  20;
-            if(temp > adjustedCost) {
+            temp /= 20;
+            if (temp > adjustedCost) {
                 adjustedCost = temp;
             }
         }
@@ -258,10 +259,10 @@ public class ContainerEnchantTable extends Container {
 
         int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
         int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 5));
-        if(!ConfigurationSettings.bookShelves) {
+        if (!ConfigurationSettings.bookShelves) {
             int temp = adjustedCost * (60 / (bookCases() + 1));
-            temp /=  20;
-            if(temp > adjustedCost) {
+            temp /= 20;
+            if (temp > adjustedCost) {
                 adjustedCost = temp;
             }
         }

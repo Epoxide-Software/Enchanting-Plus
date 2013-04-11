@@ -12,11 +12,9 @@ import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.References;
-import eplus.network.CommonProxy;
-import eplus.network.ConnectionHandler;
-import eplus.network.GuiHandler;
-import eplus.network.PacketHandler;
+import eplus.network.*;
 import eplus.network.packets.BasePacket;
+import eplus.network.proxies.CommonProxy;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.logging.Logger;
@@ -38,7 +36,7 @@ public class EnchantingPlus {
     public static Logger log = Logger.getLogger(References.MODID);
     public static boolean Debug = false;
 
-    @SidedProxy(clientSide = "eplus.network.ClientProxy", serverSide = "eplus.network.CommonProxy")
+    @SidedProxy(clientSide = "eplus.network.proxies.ClientProxy", serverSide = "eplus.network.proxies.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.PreInit
@@ -55,6 +53,7 @@ public class EnchantingPlus {
 
         registerTileEntity(TileEnchantTable.class);
         NetworkRegistry.instance().registerGuiHandler(INSTANCE, new GuiHandler());
+        GameRegistry.registerPlayerTracker(new PlayerTracker());
         proxy.registerTickHandlers();
     }
 

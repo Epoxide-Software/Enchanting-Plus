@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
 import eplus.helper.MathHelper;
 import eplus.inventory.ContainerEnchantTable;
+import eplus.inventory.TileEnchantTable;
 import eplus.lib.ConfigurationSettings;
 import eplus.network.packets.EnchantPacket;
 import net.minecraft.client.Minecraft;
@@ -18,7 +19,6 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import javax.naming.ConfigurationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,9 +46,9 @@ public class GuiModTable extends GuiContainer {
     private int totalCost = 0;
     private boolean dirty = false;
 
-    public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z)
+    public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z, TileEnchantTable tileEntity)
     {
-        super(new ContainerEnchantTable(inventory, world, x, y, z));
+        super(new ContainerEnchantTable(inventory, world, x, y, z, tileEntity));
         this.player = inventory.player;
 
         this.container = (ContainerEnchantTable) this.inventorySlots;
