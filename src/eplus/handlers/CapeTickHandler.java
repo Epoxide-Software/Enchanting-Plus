@@ -38,7 +38,8 @@ public class CapeTickHandler implements ITickHandler {
                     for (String modder : modders) {
                         if (modder.equals(thePlayer.username)) {
                             String oldCloak = thePlayer.cloakUrl;
-                            thePlayer.cloakUrl = "http://aesireanempire.com/odin/eplusCape.png";
+                            //thePlayer.cloakUrl = "http://aesireanempire.com/odin/eplusCape.png";
+                            thePlayer.cloakUrl = "http://i.imgur.com/UyEp9Yb.png";
                             if (!thePlayer.cloakUrl.equals(oldCloak)) {
                                 mc.renderEngine.obtainImageData(thePlayer.cloakUrl, new ImageBufferDownload());
                             }
