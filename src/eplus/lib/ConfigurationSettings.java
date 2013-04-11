@@ -13,4 +13,13 @@ public class ConfigurationSettings {
 
     public static boolean bookShelves;
     public static boolean bookShelvesDefault = true;
+
+    public static boolean light;
+    public static boolean lightDefault = true;
+
+    public static boolean particles;
+    public static boolean particlesDefault = true;
+
+    public static boolean disenchanting;
+    public static boolean disenchantingDefault = true;
 }

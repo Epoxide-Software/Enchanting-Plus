@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
 import eplus.helper.MathHelper;
 import eplus.inventory.ContainerEnchantTable;
+import eplus.lib.ConfigurationSettings;
 import eplus.network.packets.EnchantPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -17,6 +18,7 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import javax.naming.ConfigurationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -401,7 +403,9 @@ public class GuiModTable extends GuiContainer {
                     locked = false;
                 }
             } else {
-                enchantmentLevel = tempLevel;
+                if (tempLevel >= privateLevel || ConfigurationSettings.disenchanting) {
+                    enchantmentLevel = tempLevel;
+                }
             }
 
             if (enchantmentLevel <= 0) enchantmentLevel = 0;

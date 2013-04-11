@@ -27,6 +27,8 @@ public class ConnectionHandler implements IConnectionHandler {
     {
         HashMap<String,String> configs = new HashMap<String, String>();
         configs.put("bookShelves", String.valueOf(ConfigurationSettings.bookShelves));
+        configs.put("light", String.valueOf(ConfigurationSettings.light));
+        configs.put("disenchanting", String.valueOf(ConfigurationSettings.disenchanting));
         PacketDispatcher.sendPacketToPlayer(new ConfigPacket(configs).makePacket(), player);
     }
 

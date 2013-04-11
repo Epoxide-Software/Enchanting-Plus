@@ -11,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 /**
  * Enchanting Plus
  *
@@ -24,6 +26,10 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
     protected BlockEnchantTable(int par1)
     {
         super(par1);
+
+        if(ConfigurationSettings.light){
+            this.setLightValue(1.0F);
+        }
     }
 
     @Override
@@ -46,5 +52,40 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
         }
 
         return true;
+    }
+
+    @Override
+    public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
+    {
+        super.randomDisplayTick(par1World, x, y, z, par5Random);
+
+        if (!ConfigurationSettings.particles) return;
+
+        for (int var6 = 0; var6 < 4; ++var6)
+        {
+            double var7 = (double)((float)x + par5Random.nextFloat());
+            double var9 = (double)((float)y + par5Random.nextFloat());
+            double var11 = (double)((float)z + par5Random.nextFloat());
+            double var13;
+            double var15;
+            double var17;
+            int var19 = par5Random.nextInt(2) * 2 - 1;
+            var13 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
+            var15 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
+            var17 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
+
+            if (par1World.getBlockId(x - 1, y, z) != this.blockID && par1World.getBlockId(x + 1, y, z) != this.blockID)
+            {
+                var7 = (double)x + 0.5D + 0.25D * (double)var19;
+                var13 = (double)(par5Random.nextFloat() * 2.0F * (float)var19);
+            }
+            else
+            {
+                var11 = (double)z + 0.5D + 0.25D * (double)var19;
+                var17 = (double)(par5Random.nextFloat() * 2.0F * (float)var19);
+            }
+
+            par1World.spawnParticle("portal", var7, var9, var11, var13, var15, var17);
+        }
     }
 }
