@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
+import eplus.EnchantingPlus;
 import eplus.lib.ConfigurationSettings;
 import eplus.lib.References;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,6 +68,17 @@ public class ConfigPacket extends BasePacket {
                 if (type == boolean.class) {
                     NBTTagCompound entityData = player.getEntityData();
                     entityData.setBoolean(References.MODID + ":" + key, Boolean.parseBoolean(configSettings.get(key)));
+                }
+            }
+        } else {
+            for (String key : configSettings.keySet()) {
+                Field field = ReflectionHelper.findField(ConfigurationSettings.class, key);
+                try {
+                    if(field.getType() == boolean.class) {
+                        field.setBoolean(EnchantingPlus.INSTANCE, Boolean.parseBoolean(configSettings.get(key)));
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
             }
         }

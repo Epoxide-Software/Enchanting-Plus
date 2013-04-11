@@ -27,7 +27,7 @@ public class ConfigurationHandler {
             configuration.load();
 
             ConfigurationSettings.useMod = configuration.get(Configuration.CATEGORY_GENERAL, "useMod", ConfigurationSettings.useModDefault, "Set to true to use custom Enchantment Table in place of Vanilla").getBoolean(ConfigurationSettings.useModDefault);
-
+            ConfigurationSettings.bookShelves = configuration.get(Configuration.CATEGORY_GENERAL, "bookShelves", ConfigurationSettings.bookShelvesDefault, "Set to true to require book shelves to enchant.").getBoolean(ConfigurationSettings.bookShelvesDefault);
 
         } catch (Exception e) {
             EnchantingPlus.log.info("Error Loading configuration");

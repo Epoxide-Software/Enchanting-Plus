@@ -25,7 +25,9 @@ public class ConnectionHandler implements IConnectionHandler {
     @Override
     public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)
     {
-
+        HashMap<String,String> configs = new HashMap<String, String>();
+        configs.put("bookShelves", String.valueOf(ConfigurationSettings.bookShelves));
+        PacketDispatcher.sendPacketToPlayer(new ConfigPacket(configs).makePacket(), player);
     }
 
     @Override

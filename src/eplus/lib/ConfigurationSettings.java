@@ -10,4 +10,7 @@ package eplus.lib;
 public class ConfigurationSettings {
     public static boolean useMod;
     public static boolean useModDefault = true;
+
+    public static boolean bookShelves;
+    public static boolean bookShelvesDefault = true;
 }
