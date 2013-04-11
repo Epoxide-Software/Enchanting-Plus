@@ -113,7 +113,7 @@ public class ContainerEnchantTable extends Container {
                     boolean add = true;
                     for (Object enc : enchantments.keySet()) {
                         Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
-                        if (obj != null && !obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)) {
+                        if (obj != null && (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj))) {
                             add = false;
                         }
                     }

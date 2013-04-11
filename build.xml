@@ -16,11 +16,11 @@
         <delete dir="${build.dir}"/>
     </target>
 
-    <target name="initialize-version" depends="version-provided,git.revision">
+    <target name="initialize-version" depends="not-version-provided,git.revision">
         <property name="project.version.full" value="${project.version}.${build.number}"/>
     </target>
 
-    <target name="version-provided">
+    <target name="not-version-provided" unless="build.number">
         <condition property="build.number" value="${build.number}" else="beta">
             <isset property="test"/>
         </condition>
@@ -105,9 +105,13 @@
         <antcall target="package"/>
     </target>
 
-    <target name="test">
+    <target name="build-test">
         <antcall target="package"/>
     </target>
 
+    <target name="build-number">
+        <input message="Enter a build number:" addproperty="build.number"/>
+        <antcall target="package" />
+    </target>
 
 </project>
