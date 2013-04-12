@@ -26,8 +26,8 @@ import java.util.logging.Logger;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-@Mod(name = References.MODNAME, modid = References.MODID, certificateFingerprint = References.FINGERPRINT)
-@NetworkMod(channels = {BasePacket.CHANNEL}, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
+@Mod(name = References.MODNAME, modid = References.MODID, version = "@VERSION@",dependencies = "required-after:Forge@[7.7.1.644,)", certificateFingerprint = References.FINGERPRINT)
+@NetworkMod(channels = {BasePacket.CHANNEL}, versionBounds = "[1.14.5,)", packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
 public class EnchantingPlus {
 
     @Mod.Instance(References.MODID)
