@@ -17,7 +17,7 @@ import java.util.List;
 public class CapeTickHandler implements ITickHandler {
 
     private static final Minecraft mc = FMLClientHandler.instance().getClient();
-    private final String[] modders = new String[]{"odininon"};
+    private final String[] modders = new String[]{"odininon", "GnRSlashSP"};
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData)

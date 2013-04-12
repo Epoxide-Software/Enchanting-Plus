@@ -74,49 +74,4 @@ public class TileEnchantTable extends TileEntityEnchantmentTable {
 
         tags.setTag("Item", nbtTagList);
     }
-
-    @Override
-    public void updateEntity()
-    {
-        super.updateEntity();
-        this.bookRotationPrev = this.bookRotation2;
-        EntityPlayer entityplayer = this.worldObj.getClosestPlayer((double) ((float) this.xCoord + 0.5F), (double) ((float) this.yCoord + 0.5F), (double) ((float) this.zCoord + 0.5F), 3.0D);
-
-        if (entityplayer != null) {
-            double d0 = entityplayer.posX - (double) ((float) this.xCoord + 0.5F);
-            double d1 = entityplayer.posZ - (double) ((float) this.zCoord + 0.5F);
-            this.bookRotation = (float) Math.atan2(d1, d0);
-        } else {
-            this.bookRotation += 0.02F;
-        }
-
-        while (this.bookRotation2 >= (float) Math.PI) {
-            this.bookRotation2 -= ((float) Math.PI * 2F);
-        }
-
-        while (this.bookRotation2 < -(float) Math.PI) {
-            this.bookRotation2 += ((float) Math.PI * 2F);
-        }
-
-        while (this.bookRotation >= (float) Math.PI) {
-            this.bookRotation -= ((float) Math.PI * 2F);
-        }
-
-        while (this.bookRotation < -(float) Math.PI) {
-            this.bookRotation += ((float) Math.PI * 2F);
-        }
-
-        float f1;
-
-        for (f1 = this.bookRotation - this.bookRotation2; f1 >= (float) Math.PI; f1 -= ((float) Math.PI * 2F)) {
-            ;
-        }
-
-        while (f1 < -(float) Math.PI) {
-            f1 += ((float) Math.PI * 2F);
-        }
-
-        this.bookRotation2 += f1 * 0.4F;
-        ++this.tickCount;
-    }
 }
