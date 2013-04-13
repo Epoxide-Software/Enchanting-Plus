@@ -387,7 +387,7 @@ public class GuiModTable extends GuiContainer {
                     name = name.substring(0, name.lastIndexOf(" "));
                 }
             }
-            int indexX = (dragging) ? sliderX : (int) (xPos + 1 + (width - 6) * (enchantmentLevel / (double) enchantment.getMaxLevel()));
+            int indexX = (dragging) ? sliderX : (enchantmentLevel <= enchantment.getMaxLevel()) ? (int) (xPos + 1 + (width - 6) * (enchantmentLevel / (double) enchantment.getMaxLevel())) : (xPos + 1 + (width - 6));
 
             drawRect(indexX, yPos + 1, indexX + 5, yPos - 1 + height, 0xff000000);
             fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
@@ -413,7 +413,7 @@ public class GuiModTable extends GuiContainer {
             if (sliderX >= guiLeft + 173) sliderX = guiLeft + 173;
 
             index = xPos / (float) (width - 12);
-            int tempLevel = (int) Math.floor((double) enchantment.getMaxLevel() * index);
+            int tempLevel = (int) Math.floor((privateLevel > enchantment.getMaxLevel()) ? privateLevel * index : enchantment.getMaxLevel() * index);
             if (locked) {
                 if (tempLevel < enchantmentLevel) {
                     enchantmentLevel = tempLevel;
@@ -426,8 +426,6 @@ public class GuiModTable extends GuiContainer {
             }
 
             if (enchantmentLevel <= 0) enchantmentLevel = 0;
-
-            if (enchantmentLevel > enchantment.getMaxLevel()) enchantmentLevel = enchantment.getMaxLevel();
         }
 
         /**
