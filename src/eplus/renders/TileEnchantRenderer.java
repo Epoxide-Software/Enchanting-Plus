@@ -4,8 +4,6 @@ import eplus.inventory.TileEnchantTable;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemSword;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -47,7 +45,6 @@ public class TileEnchantRenderer extends TileEntitySpecialRenderer {
         float f2;
 
         for (f2 = tileentity.bookRotation2 - tileentity.bookRotationPrev; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F)) {
-            ;
         }
 
         while (f2 < -(float) Math.PI) {

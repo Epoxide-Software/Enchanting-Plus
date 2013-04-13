@@ -101,7 +101,6 @@ public class GuiModTable extends GuiContainer {
             case 0:
                 if (enchants.size() > 0)
                     PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, totalCost).makePacket());
-                return;
         }
     }
 
@@ -173,12 +172,12 @@ public class GuiModTable extends GuiContainer {
             clicked = sliding = false;
         }
 
-        if(dirty) {
+        if (dirty) {
             ArrayList<GuiItem> temp = convertMapToGuiItems(enchantments, 35 + guiLeft, 15 + guiTop);
 
-            for(GuiItem item : enchantmentArray) {
-                for(GuiItem tempItem : temp) {
-                    if(item.enchantment == tempItem.enchantment) {
+            for (GuiItem item : enchantmentArray) {
+                for (GuiItem tempItem : temp) {
+                    if (item.enchantment == tempItem.enchantment) {
                         item.startingXPos = item.xPos = tempItem.xPos;
                         item.startingYPos = item.yPos = tempItem.yPos;
                     }
@@ -331,11 +330,11 @@ public class GuiModTable extends GuiContainer {
             fontRenderer.drawString(String.format("Book case: %s", container.bookCases()), 5, 15, 0xffaabbaa);
         }
         String displayText = String.format("Player XP Level: %s", player.experienceLevel);
-        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText),guiTop + fontRenderer.FONT_HEIGHT + 8);
+        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + fontRenderer.FONT_HEIGHT + 8);
         displayText = String.format("Enchanting Cost: %s", totalCost);
-        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText),guiTop + (fontRenderer.FONT_HEIGHT + 10) * 2);
+        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + (fontRenderer.FONT_HEIGHT + 10) * 2);
         displayText = String.format("Max Enchant Level: %s", container.bookCases());
-        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText),guiTop + (fontRenderer.FONT_HEIGHT + 10) * 3);
+        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + (fontRenderer.FONT_HEIGHT + 10) * 3);
     }
 
     /**
@@ -350,7 +349,7 @@ public class GuiModTable extends GuiContainer {
         public int startingYPos;
         public int yPos;
         private int enchantmentLevel;
-        private int privateLevel;
+        private final int privateLevel;
         private boolean show = true;
         private float index;
         private boolean dragging = false;
@@ -394,7 +393,7 @@ public class GuiModTable extends GuiContainer {
             fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
             if (disabled) {
                 drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aaffff);
-            } else if(locked) {
+            } else if (locked) {
                 drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44ff0000);
             } else {
                 drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aa55ff);

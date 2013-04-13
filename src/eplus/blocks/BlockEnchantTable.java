@@ -27,7 +27,7 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
     {
         super(par1);
 
-        if(ConfigurationSettings.light){
+        if (ConfigurationSettings.light) {
             this.setLightValue(1.0F);
         }
     }
@@ -61,28 +61,24 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
 
         if (!ConfigurationSettings.particles) return;
 
-        for (int var6 = 0; var6 < 4; ++var6)
-        {
-            double var7 = (double)((float)x + par5Random.nextFloat());
-            double var9 = (double)((float)y + par5Random.nextFloat());
-            double var11 = (double)((float)z + par5Random.nextFloat());
+        for (int var6 = 0; var6 < 4; ++var6) {
+            double var7 = (double) ((float) x + par5Random.nextFloat());
+            double var9 = (double) ((float) y + par5Random.nextFloat());
+            double var11 = (double) ((float) z + par5Random.nextFloat());
             double var13;
             double var15;
             double var17;
             int var19 = par5Random.nextInt(2) * 2 - 1;
-            var13 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-            var15 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
-            var17 = ((double)par5Random.nextFloat() - 0.5D) * 0.5D;
+            var13 = ((double) par5Random.nextFloat() - 0.5D) * 0.5D;
+            var15 = ((double) par5Random.nextFloat() - 0.5D) * 0.5D;
+            var17 = ((double) par5Random.nextFloat() - 0.5D) * 0.5D;
 
-            if (par1World.getBlockId(x - 1, y, z) != this.blockID && par1World.getBlockId(x + 1, y, z) != this.blockID)
-            {
-                var7 = (double)x + 0.5D + 0.25D * (double)var19;
-                var13 = (double)(par5Random.nextFloat() * 2.0F * (float)var19);
-            }
-            else
-            {
-                var11 = (double)z + 0.5D + 0.25D * (double)var19;
-                var17 = (double)(par5Random.nextFloat() * 2.0F * (float)var19);
+            if (par1World.getBlockId(x - 1, y, z) != this.blockID && par1World.getBlockId(x + 1, y, z) != this.blockID) {
+                var7 = (double) x + 0.5D + 0.25D * (double) var19;
+                var13 = (double) (par5Random.nextFloat() * 2.0F * (float) var19);
+            } else {
+                var11 = (double) z + 0.5D + 0.25D * (double) var19;
+                var17 = (double) (par5Random.nextFloat() * 2.0F * (float) var19);
             }
 
             par1World.spawnParticle("portal", var7, var9, var11, var13, var15, var17);

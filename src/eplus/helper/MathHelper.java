@@ -1,9 +1,8 @@
 package eplus.helper;
 
 /**
- * User: freyja
- * Date: 4/6/13
- * Time: 6:25 AM
+ * @user odininon
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 public class MathHelper {
 

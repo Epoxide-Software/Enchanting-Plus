@@ -1,6 +1,5 @@
 package eplus.commands;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public class CommandRegister {
 
-    static HashMap<String, List<String>> commands = new HashMap<String, List<String>>();
+    static final HashMap<String, List<String>> commands = new HashMap<String, List<String>>();
 
     static {
         commands.put("useMod", Arrays.asList("true", "false"));

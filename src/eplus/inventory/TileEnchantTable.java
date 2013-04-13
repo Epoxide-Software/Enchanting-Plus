@@ -1,6 +1,5 @@
 package eplus.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -52,7 +51,7 @@ public class TileEnchantTable extends TileEntityEnchantmentTable {
         worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
     }
 
-    public void readCustomNBT(NBTTagCompound tags)
+    void readCustomNBT(NBTTagCompound tags)
     {
         NBTTagList nbtTagList = tags.getTagList("Item");
 
@@ -62,7 +61,7 @@ public class TileEnchantTable extends TileEntityEnchantmentTable {
         }
     }
 
-    public void writeCustomNBT(NBTTagCompound tags)
+    void writeCustomNBT(NBTTagCompound tags)
     {
 
         NBTTagList nbtTagList = new NBTTagList();

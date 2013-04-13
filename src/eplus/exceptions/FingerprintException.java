@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiErrorScreen;
  */
 public class FingerprintException extends CustomModLoadingErrorDisplayException {
 
-    private String[] errorMessage;
+    private final String[] errorMessage;
 
     public FingerprintException(String s)
     {
@@ -25,8 +25,8 @@ public class FingerprintException extends CustomModLoadingErrorDisplayException 
     @Override
     public void drawScreen(GuiErrorScreen errorScreen, FontRenderer fontRenderer, int mouseRelX, int mouseRelY, float tickTime)
     {
-        for(int i = 0; i < errorMessage.length; i++) {
-            errorScreen.drawCenteredString(fontRenderer,errorMessage[i], errorScreen.width / 2, ((errorScreen.height - (fontRenderer.FONT_HEIGHT * errorMessage.length)) / 2) + (fontRenderer.FONT_HEIGHT + 10 * i), 0xffaabbcc);
+        for (int i = 0; i < errorMessage.length; i++) {
+            errorScreen.drawCenteredString(fontRenderer, errorMessage[i], errorScreen.width / 2, ((errorScreen.height - (fontRenderer.FONT_HEIGHT * errorMessage.length)) / 2) + (fontRenderer.FONT_HEIGHT + 10 * i), 0xffaabbcc);
         }
     }
 }

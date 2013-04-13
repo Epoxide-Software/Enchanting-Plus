@@ -3,12 +3,8 @@ package eplus.network;
 import cpw.mods.fml.common.IPlayerTracker;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import eplus.lib.ConfigurationSettings;
-import eplus.network.packets.ConfigPacket;
 import eplus.network.packets.ReConfigPacket;
 import net.minecraft.entity.player.EntityPlayer;
-
-import java.util.HashMap;
 
 /**
  * @user odininon

@@ -48,7 +48,7 @@ public abstract class BasePacket {
         }
     }
 
-    public final int getPacketId()
+    final int getPacketId()
     {
         if (idMap.inverse().containsKey(getClass())) {
             return idMap.inverse().get(getClass());
@@ -75,7 +75,7 @@ public abstract class BasePacket {
      *
      * @param output array being wrote to
      */
-    public abstract void write(ByteArrayDataOutput output);
+    protected abstract void write(ByteArrayDataOutput output);
 
     /**
      * Reads data from the packet

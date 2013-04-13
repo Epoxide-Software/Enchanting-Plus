@@ -74,7 +74,7 @@ public class ConfigPacket extends BasePacket {
             for (String key : configSettings.keySet()) {
                 Field field = ReflectionHelper.findField(ConfigurationSettings.class, key);
                 try {
-                    if(field.getType() == boolean.class) {
+                    if (field.getType() == boolean.class) {
                         field.setBoolean(EnchantingPlus.INSTANCE, Boolean.parseBoolean(configSettings.get(key)));
                     }
                 } catch (IllegalAccessException e) {

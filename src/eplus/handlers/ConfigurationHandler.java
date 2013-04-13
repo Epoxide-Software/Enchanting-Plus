@@ -17,7 +17,7 @@ import java.util.logging.Level;
 public class ConfigurationHandler {
     public static final String CATEGORY_CLIENT = "client";
     public static final String CATEGORY_SERVER = "server";
-    public static final String CATEGORY_BOTH= "both";
+    public static final String CATEGORY_BOTH = "both";
 
     public static Configuration configuration;
 
@@ -58,12 +58,13 @@ public class ConfigurationHandler {
             }
         }
 
-        if(configuration.hasChanged()){
+        if (configuration.hasChanged()) {
             configuration.save();
         }
     }
 
-    public static void set(String propertyName, String newValue) {
-        set("general",propertyName,newValue);
+    public static void set(String propertyName, String newValue)
+    {
+        set("general", propertyName, newValue);
     }
 }

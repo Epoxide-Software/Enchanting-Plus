@@ -30,8 +30,8 @@ public class ContainerEnchantTable extends Container {
     private final int xPos;
     private final int yPos;
     private final int zPos;
-    public IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
-    TileEnchantTable tileEnchantTable;
+    public final IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
+    final TileEnchantTable tileEnchantTable;
     private Map<Integer, Integer> enchantments;
 
     public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, TileEnchantTable tileEntity)
@@ -141,14 +141,14 @@ public class ContainerEnchantTable extends Container {
         if (slot != null && slot.getHasStack()) {
             ItemStack stack = slot.getStack();
 
-            ItemStack tempstack = stack.copy();
+            ItemStack tempStack = stack.copy();
             itemStack = stack.copy();
-            tempstack.stackSize = 1;
+            tempStack.stackSize = 1;
 
             if (par2 != 0) {
                 Slot slot1 = (Slot) this.inventorySlots.get(0);
 
-                if (!slot1.getHasStack() && slot1.isItemValid(tempstack) && mergeItemStack(tempstack, 0, 1, false)) {
+                if (!slot1.getHasStack() && slot1.isItemValid(tempStack) && mergeItemStack(tempStack, 0, 1, false)) {
                     stack.stackSize--;
                     itemStack = stack.copy();
                 }
