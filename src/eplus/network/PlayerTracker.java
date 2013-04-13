@@ -2,8 +2,10 @@ package eplus.network;
 
 import cpw.mods.fml.common.IPlayerTracker;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import eplus.lib.ConfigurationSettings;
 import eplus.network.packets.ConfigPacket;
+import eplus.network.packets.ReConfigPacket;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import java.util.HashMap;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 public class PlayerTracker implements IPlayerTracker {
+
     @Override
     public void onPlayerLogin(EntityPlayer player)
     {
@@ -34,8 +37,6 @@ public class PlayerTracker implements IPlayerTracker {
     @Override
     public void onPlayerRespawn(EntityPlayer player)
     {
-        HashMap<String,String> configs = new HashMap<String, String>();
-        configs.put("useMod", String.valueOf(ConfigurationSettings.useMod));
-        PacketDispatcher.sendPacketToServer(new ConfigPacket(configs).makePacket());
+        PacketDispatcher.sendPacketToPlayer(new ReConfigPacket().makePacket(), (Player) player);
     }
 }

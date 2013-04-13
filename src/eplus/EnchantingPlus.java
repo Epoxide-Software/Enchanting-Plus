@@ -17,6 +17,7 @@ import eplus.network.packets.BasePacket;
 import eplus.network.proxies.CommonProxy;
 import net.minecraft.tileentity.TileEntity;
 
+import java.security.cert.Certificate;
 import java.util.logging.Logger;
 
 /**
@@ -26,15 +27,15 @@ import java.util.logging.Logger;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-@Mod(name = References.MODNAME, modid = References.MODID, version = "@VERSION@",dependencies = "required-after:Forge@[7.7.1.644,)", certificateFingerprint = References.FINGERPRINT)
-@NetworkMod(channels = {BasePacket.CHANNEL}, versionBounds = "[1.14.5,)", packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class)
+@Mod(name = References.MODNAME, modid = References.MODID, version = "@VERSION@", dependencies = "required-after:Forge@[7.7.1.644,)", certificateFingerprint = References.FINGERPRINT)
+@NetworkMod(channels = {BasePacket.CHANNEL}, versionBounds = "[1.14.5,)", packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class, clientSideRequired = true)
 public class EnchantingPlus {
 
     @Mod.Instance(References.MODID)
     public static EnchantingPlus INSTANCE;
 
     public static Logger log = Logger.getLogger(References.MODID);
-    public static boolean Debug = false;
+    public static boolean Debug = Boolean.parseBoolean(System.getenv("DEBUG"));
 
     @SidedProxy(clientSide = "eplus.network.proxies.ClientProxy", serverSide = "eplus.network.proxies.CommonProxy")
     public static CommonProxy proxy;
@@ -75,6 +76,8 @@ public class EnchantingPlus {
     @Mod.FingerprintWarning
     public void invalidFingerprint(FMLFingerprintViolationEvent event)
     {
+        if(Debug) log.severe(event.fingerprints.toString());
         log.severe(String.format("Received incorrect fingerprint Expected %s", event.expectedFingerprint));
+        if(!Debug) proxy.throwFingerprintError(References.MODNAME + " Received an incorrect fingerprint.\nThis means someone has tampered with the jar.\nPlease downloaded from official links.");
     }
 }

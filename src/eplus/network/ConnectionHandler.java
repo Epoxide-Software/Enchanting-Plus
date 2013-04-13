@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import eplus.lib.ConfigurationSettings;
 import eplus.network.packets.ConfigPacket;
+import eplus.network.packets.ReConfigPacket;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
@@ -25,11 +26,7 @@ public class ConnectionHandler implements IConnectionHandler {
     @Override
     public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)
     {
-        HashMap<String,String> configs = new HashMap<String, String>();
-        configs.put("bookShelves", String.valueOf(ConfigurationSettings.bookShelves));
-        configs.put("light", String.valueOf(ConfigurationSettings.light));
-        configs.put("disenchanting", String.valueOf(ConfigurationSettings.disenchanting));
-        PacketDispatcher.sendPacketToPlayer(new ConfigPacket(configs).makePacket(), player);
+        PacketDispatcher.sendPacketToPlayer(new ReConfigPacket().makePacket(), player);
     }
 
     @Override
@@ -59,8 +56,6 @@ public class ConnectionHandler implements IConnectionHandler {
     @Override
     public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login)
     {
-        HashMap<String,String> configs = new HashMap<String, String>();
-        configs.put("useMod", String.valueOf(ConfigurationSettings.useMod));
-        PacketDispatcher.sendPacketToServer(new ConfigPacket(configs).makePacket());
+        PacketDispatcher.sendPacketToServer(new ReConfigPacket().makePacket());
     }
 }

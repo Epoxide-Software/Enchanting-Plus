@@ -8,4 +8,8 @@ public class CommonProxy {
     public void registerTickHandlers()
     {
     }
+
+    public void throwFingerprintError(String s)
+    {
+    }
 }

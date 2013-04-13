@@ -3,6 +3,7 @@ package eplus.network.proxies;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+import eplus.exceptions.FingerprintException;
 import eplus.handlers.CapeTickHandler;
 import eplus.inventory.TileEnchantTable;
 import eplus.renders.TileEnchantRenderer;
@@ -17,5 +18,11 @@ public class ClientProxy extends CommonProxy {
     {
         TickRegistry.registerTickHandler(new CapeTickHandler(), Side.CLIENT);
         ClientRegistry.bindTileEntitySpecialRenderer(TileEnchantTable.class, new TileEnchantRenderer());
+    }
+
+    @Override
+    public void throwFingerprintError(String s)
+    {
+        throw new FingerprintException(s);
     }
 }

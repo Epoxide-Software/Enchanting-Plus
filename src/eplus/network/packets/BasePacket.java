@@ -24,6 +24,7 @@ public abstract class BasePacket {
         ImmutableBiMap.Builder<Integer, Class<? extends BasePacket>> builder = ImmutableBiMap.builder();
         builder.put(0, EnchantPacket.class);
         builder.put(1, ConfigPacket.class);
+        builder.put(2, ReConfigPacket.class);
 
         idMap = builder.build();
     }

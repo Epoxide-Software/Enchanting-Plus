@@ -72,8 +72,8 @@
             <arg line="reobfuscate_srg.sh"/>
         </exec>
 
-        <copy todir="${build.dir}/classes">
-            <fileset dir="${mcp.dir}/reobf/minecraft"/>
+        <copy todir="${build.dir}/classes/eplus">
+            <fileset dir="${mcp.dir}/reobf/minecraft/eplus"/>
         </copy>
 
         <copy todir="${build.dir}/classes">
