@@ -12,6 +12,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -243,7 +244,7 @@ public class ContainerEnchantTable extends Container {
         int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
         int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 4));
         if (!ConfigurationSettings.bookShelves) {
-            int temp = adjustedCost * (60 / (bookCases() + 1));
+            int temp = (int)(adjustedCost * (60 / (bookCases() + 1)));
             temp /= 20;
             if (temp > adjustedCost) {
                 adjustedCost = temp;
@@ -264,7 +265,7 @@ public class ContainerEnchantTable extends Container {
         int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
         int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 2));
         if (!ConfigurationSettings.bookShelves) {
-            int temp = adjustedCost * (60 / (bookCases() + 1));
+            int temp = (int)(adjustedCost * (60 / (bookCases() + 1)));
             temp /= 20;
             if (temp > adjustedCost) {
                 adjustedCost = temp;
@@ -273,36 +274,21 @@ public class ContainerEnchantTable extends Container {
         return Math.min(-1, adjustedCost);
     }
 
-    public int bookCases()
+    public float bookCases()
     {
-        int temp = 0;
+        float temp = 0;
         for (int j = -1; j <= 1; ++j) {
             for (int k = -1; k <= 1; ++k) {
                 if ((j != 0 || k != 0) && this.worldObj.isAirBlock(this.xPos + k, this.yPos, this.zPos + j) && this.worldObj.isAirBlock(this.xPos + k, this.yPos + 1, this.zPos + j)) {
-                    if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos, this.zPos + j * 2) == Block.bookShelf.blockID) {
-                        ++temp;
-                    }
+                    temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos, zPos + j * 2);
+                    temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos + 1, zPos + j * 2);
 
-                    if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos + 1, this.zPos + j * 2) == Block.bookShelf.blockID) {
-                        ++temp;
-                    }
-
-                    if (k != 0 && j != 0) {
-                        if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos, this.zPos + j) == Block.bookShelf.blockID) {
-                            ++temp;
-                        }
-
-                        if (this.worldObj.getBlockId(this.xPos + k * 2, this.yPos + 1, this.zPos + j) == Block.bookShelf.blockID) {
-                            ++temp;
-                        }
-
-                        if (this.worldObj.getBlockId(this.xPos + k, this.yPos, this.zPos + j * 2) == Block.bookShelf.blockID) {
-                            ++temp;
-                        }
-
-                        if (this.worldObj.getBlockId(this.xPos + k, this.yPos + 1, this.zPos + j * 2) == Block.bookShelf.blockID) {
-                            ++temp;
-                        }
+                    if (k != 0 && j != 0)
+                    {
+                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos,     zPos + j    );
+                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos + 1, zPos + j    );
+                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k,     yPos,     zPos + j * 2);
+                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k,     yPos + 1, zPos + j * 2);
                     }
                 }
             }
