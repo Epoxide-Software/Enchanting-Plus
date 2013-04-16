@@ -229,7 +229,7 @@ public class ContainerEnchantTable extends Container {
 
     public boolean canPurchase(EntityPlayer player, int cost)
     {
-        return player.capabilities.isCreativeMode || (player.experienceLevel >= cost && ConfigurationSettings.bookShelves ? cost <= bookCases() : cost <= player.experienceLevel);
+        return player.capabilities.isCreativeMode || (player.experienceLevel >= cost && ConfigurationSettings.needsBookShelves ? cost <= bookCases() : cost <= player.experienceLevel);
     }
 
     public int enchantmentCost(int enchantmentId, int enchantmentLevel, Integer level)
@@ -243,7 +243,7 @@ public class ContainerEnchantTable extends Container {
 
         int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
         int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 4));
-        if (!ConfigurationSettings.bookShelves) {
+        if (!ConfigurationSettings.needsBookShelves) {
             int temp = (int)(adjustedCost * (60 / (bookCases() + 1)));
             temp /= 20;
             if (temp > adjustedCost) {
@@ -264,7 +264,7 @@ public class ContainerEnchantTable extends Container {
 
         int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
         int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 2));
-        if (!ConfigurationSettings.bookShelves) {
+        if (!ConfigurationSettings.needsBookShelves) {
             int temp = (int)(adjustedCost * (60 / (bookCases() + 1)));
             temp /= 20;
             if (temp > adjustedCost) {

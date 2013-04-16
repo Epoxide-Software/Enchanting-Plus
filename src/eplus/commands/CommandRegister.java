@@ -14,6 +14,7 @@ public class CommandRegister {
 
     static {
         commands.put("useMod", Arrays.asList("true", "false"));
+        commands.put("hasParticles", Arrays.asList("true", "false"));
     }
 
 }

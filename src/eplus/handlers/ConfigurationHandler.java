@@ -1,10 +1,13 @@
 package eplus.handlers;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import eplus.EnchantingPlus;
 import eplus.lib.ConfigurationSettings;
 import net.minecraftforge.common.Configuration;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.util.Set;
 import java.util.logging.Level;
 
 /**
@@ -35,10 +38,10 @@ public class ConfigurationHandler {
             configuration.addCustomCategoryComment(CATEGORY_BOTH, "Settings controlled by both.\nClient can be different from server.\nIf client differs from server, server can disable client's setting if false.");
 
             ConfigurationSettings.useMod = configuration.get(CATEGORY_BOTH, "useMod", ConfigurationSettings.useModDefault, "Set to true to use custom Enchantment Table in place of Vanilla").getBoolean(ConfigurationSettings.useModDefault);
-            ConfigurationSettings.bookShelves = configuration.get(CATEGORY_SERVER, "needsBookShelves", ConfigurationSettings.bookShelvesDefault, "Set to true to require book shelves to enchant.").getBoolean(ConfigurationSettings.bookShelvesDefault);
-            ConfigurationSettings.light = configuration.get(CATEGORY_SERVER, "hasLight", ConfigurationSettings.lightDefault, "Set to true to have the enchanting table emmit light.").getBoolean(ConfigurationSettings.lightDefault);
-            ConfigurationSettings.particles = configuration.get(CATEGORY_CLIENT, "hasParticles", ConfigurationSettings.particlesDefault, "Set to true to have the enchanting table emmit particles.").getBoolean(ConfigurationSettings.particlesDefault);
-            ConfigurationSettings.disenchanting = configuration.get(CATEGORY_SERVER, "AllowDisenchanting", ConfigurationSettings.disenchantingDefault, "Set to true to allow disenchanting.").getBoolean(ConfigurationSettings.disenchantingDefault);
+            ConfigurationSettings.needsBookShelves = configuration.get(CATEGORY_SERVER, "needsBookShelves", ConfigurationSettings.bookShelvesDefault, "Set to true to require book shelves to enchant.").getBoolean(ConfigurationSettings.bookShelvesDefault);
+            ConfigurationSettings.hasLight = configuration.get(CATEGORY_SERVER, "hasLight", ConfigurationSettings.lightDefault, "Set to true to have the enchanting table emmit light.").getBoolean(ConfigurationSettings.lightDefault);
+            ConfigurationSettings.hasParticles = configuration.get(CATEGORY_CLIENT, "hasParticles", ConfigurationSettings.particlesDefault, "Set to true to have the enchanting table emmit particles.").getBoolean(ConfigurationSettings.particlesDefault);
+            ConfigurationSettings.AllowDisenchanting = configuration.get(CATEGORY_SERVER, "AllowDisenchanting", ConfigurationSettings.disenchantingDefault, "Set to true to allow disenchanting.").getBoolean(ConfigurationSettings.disenchantingDefault);
 
         } catch (Exception e) {
             EnchantingPlus.log.info("Error Loading configuration");
@@ -49,22 +52,29 @@ public class ConfigurationHandler {
         }
     }
 
-    public static void set(String categoryName, String propertyName, String newValue)
+    public static void set(String propertyName, String newValue)
     {
         configuration.load();
-        if (configuration.getCategoryNames().contains(categoryName)) {
-            if (configuration.getCategory(categoryName).containsKey(propertyName)) {
-                configuration.getCategory(categoryName).get(propertyName).set(newValue);
+
+        Set<String> categoryNames = configuration.getCategoryNames();
+
+        for(String category : categoryNames) {
+            if (configuration.getCategory(category).containsKey(propertyName)) {
+                configuration.getCategory(category).get(propertyName).set(newValue);
             }
+        }
+
+        Field field = ReflectionHelper.findField(ConfigurationSettings.class, propertyName);
+        try {
+            if (field.getType() == boolean.class) {
+                field.setBoolean(EnchantingPlus.INSTANCE, Boolean.parseBoolean(newValue));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
         if (configuration.hasChanged()) {
             configuration.save();
         }
-    }
-
-    public static void set(String propertyName, String newValue)
-    {
-        set("general", propertyName, newValue);
     }
 }

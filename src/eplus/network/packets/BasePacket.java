@@ -25,6 +25,7 @@ public abstract class BasePacket {
         builder.put(0, EnchantPacket.class);
         builder.put(1, ConfigPacket.class);
         builder.put(2, ReConfigPacket.class);
+        builder.put(3, GuiPacket.class);
 
         idMap = builder.build();
     }

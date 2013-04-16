@@ -1,14 +1,18 @@
 package eplus.commands;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import eplus.EnchantingPlus;
 import eplus.handlers.ConfigurationHandler;
 import eplus.helper.StringHelper;
+import eplus.lib.ConfigurationSettings;
+import eplus.lib.References;
 import eplus.network.packets.ConfigPacket;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,7 +64,7 @@ public class EplusCommands extends CommandBase {
 
             for (String command : CommandRegister.commands.keySet()) {
                 if (commandName.equalsIgnoreCase(command)) {
-                    processConfigCommand(commandName, args);
+                    processConfigCommand(icommandsender, commandName, args);
                     return;
                 }
             }
@@ -70,7 +74,7 @@ public class EplusCommands extends CommandBase {
         }
     }
 
-    private void processConfigCommand(String commandName, String[] args)
+    private void processConfigCommand(ICommandSender icommandsender, String commandName, String[] args)
     {
         for (String arg : args) {
             if (CommandRegister.commands.get(commandName).contains(arg)) {
@@ -82,6 +86,8 @@ public class EplusCommands extends CommandBase {
                 config.put(commandName, args[0]);
 
                 PacketDispatcher.sendPacketToServer(new ConfigPacket(config).makePacket());
+                icommandsender.sendChatToPlayer(String.format("%s: Config '%s' changed to %s.", References.MODID.toUpperCase(), commandName, args[0]));
+
                 return;
             }
         }

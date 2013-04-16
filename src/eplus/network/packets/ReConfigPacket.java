@@ -37,9 +37,9 @@ public class ReConfigPacket extends BasePacket {
             PacketDispatcher.sendPacketToServer(new ConfigPacket(configs).makePacket());
         } else {
             HashMap<String, String> configs = new HashMap<String, String>();
-            configs.put("bookShelves", String.valueOf(ConfigurationSettings.bookShelves));
-            configs.put("light", String.valueOf(ConfigurationSettings.light));
-            configs.put("disenchanting", String.valueOf(ConfigurationSettings.disenchanting));
+            configs.put("needsBookShelves", String.valueOf(ConfigurationSettings.needsBookShelves));
+            configs.put("hasLight", String.valueOf(ConfigurationSettings.hasLight));
+            configs.put("AllowDisenchanting", String.valueOf(ConfigurationSettings.AllowDisenchanting));
             PacketDispatcher.sendPacketToPlayer(new ConfigPacket(configs).makePacket(), (Player) player);
         }
     }

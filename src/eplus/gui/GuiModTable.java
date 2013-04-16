@@ -6,7 +6,9 @@ import eplus.helper.MathHelper;
 import eplus.inventory.ContainerEnchantTable;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.ConfigurationSettings;
+import eplus.lib.GuiIds;
 import eplus.network.packets.EnchantPacket;
+import eplus.network.packets.GuiPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -33,14 +35,15 @@ import java.util.Map;
 public class GuiModTable extends GuiContainer {
     private final EntityPlayer player;
     private final ContainerEnchantTable container;
+    private final int xPos;
+    private final int yPos;
+    private final int zPos;
+    private final World world;
     private ArrayList<GuiItem> enchantmentArray = new ArrayList<GuiItem>();
-
     private double sliderIndex = 0;
     private int enchantingPages = 0;
     private double sliderY = 0;
-
     private Map enchantments;
-
     private boolean clicked = false;
     private boolean sliding = false;
     private int totalCost = 0;
@@ -53,6 +56,11 @@ public class GuiModTable extends GuiContainer {
 
         this.container = (ContainerEnchantTable) this.inventorySlots;
 
+        this.world = world;
+        this.xPos = x;
+        this.yPos = y;
+        this.zPos = z;
+
         xSize = 209;
         ySize = 182;
     }
@@ -63,6 +71,8 @@ public class GuiModTable extends GuiContainer {
     {
         super.initGui();
         this.buttonList.add(new GuiIcon(0, guiLeft + 9, guiTop + 55, "E").customTexture(0));
+        String s = "Vanilla";
+        this.buttonList.add(new GuiButton(1, guiLeft + xSize + 10, guiTop + 5, fontRenderer.getStringWidth(s) + 10, 20, s));
 
         this.dirty = true;
     }
@@ -101,6 +111,9 @@ public class GuiModTable extends GuiContainer {
             case 0:
                 if (enchants.size() > 0)
                     PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, totalCost).makePacket());
+                return;
+            case 1:
+                PacketDispatcher.sendPacketToServer(new GuiPacket(player.username, GuiIds.VanillaTable, xPos, yPos, zPos).makePacket());
         }
     }
 
@@ -342,20 +355,20 @@ public class GuiModTable extends GuiContainer {
      */
     class GuiItem extends Gui {
         private final Enchantment enchantment;
-        private int xPos;
         private final int height;
         private final int width;
+        private final int privateLevel;
         public int startingXPos;
         public int startingYPos;
         public int yPos;
+        public boolean locked = false;
+        private int xPos;
         private int enchantmentLevel;
-        private final int privateLevel;
         private boolean show = true;
         private float index;
         private boolean dragging = false;
         private int sliderX;
         private boolean disabled;
-        public boolean locked = false;
 
         public GuiItem(int id, int level, int x, int y)
         {
@@ -420,7 +433,7 @@ public class GuiModTable extends GuiContainer {
                     locked = false;
                 }
             } else {
-                if (tempLevel >= privateLevel || ConfigurationSettings.disenchanting) {
+                if (tempLevel >= privateLevel || ConfigurationSettings.AllowDisenchanting) {
                     enchantmentLevel = tempLevel;
                 }
             }

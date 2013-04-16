@@ -27,7 +27,7 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
     {
         super(par1);
 
-        if (ConfigurationSettings.light) {
+        if (ConfigurationSettings.hasLight) {
             this.setLightValue(1.0F);
         }
     }
@@ -59,7 +59,7 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
     {
         super.randomDisplayTick(par1World, x, y, z, par5Random);
 
-        if (!ConfigurationSettings.particles) return;
+        if (!ConfigurationSettings.hasParticles) return;
 
         for (int var6 = 0; var6 < 4; ++var6) {
             double var7 = (double) ((float) x + par5Random.nextFloat());

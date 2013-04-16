@@ -11,15 +11,15 @@ public class ConfigurationSettings {
     public static boolean useMod;
     public static final boolean useModDefault = true;
 
-    public static boolean bookShelves;
+    public static boolean needsBookShelves;
     public static final boolean bookShelvesDefault = true;
 
-    public static boolean light;
+    public static boolean hasLight;
     public static final boolean lightDefault = true;
 
-    public static boolean particles;
+    public static boolean hasParticles;
     public static final boolean particlesDefault = true;
 
-    public static boolean disenchanting;
+    public static boolean AllowDisenchanting;
     public static final boolean disenchantingDefault = true;
 }
