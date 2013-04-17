@@ -80,7 +80,5 @@ public class EnchantingPlus {
     {
         if (Debug) log.severe(event.fingerprints.toString());
         log.severe(String.format("Received incorrect fingerprint Expected %s", event.expectedFingerprint));
-        if (!Debug)
-            proxy.throwFingerprintError(References.MODNAME + " Received an incorrect fingerprint.\nThis means someone has tampered with the jar.\nPlease downloaded from official links.");
     }
 }
