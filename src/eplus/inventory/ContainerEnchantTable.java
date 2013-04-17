@@ -2,7 +2,6 @@ package eplus.inventory;
 
 import eplus.helper.EnchantHelper;
 import eplus.lib.ConfigurationSettings;
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,11 +27,11 @@ import java.util.Map;
 public class ContainerEnchantTable extends Container {
 
     public final World worldObj;
+    public final IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
+    final TileEnchantTable tileEnchantTable;
     private final int xPos;
     private final int yPos;
     private final int zPos;
-    public final IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
-    final TileEnchantTable tileEnchantTable;
     private Map<Integer, Integer> enchantments;
 
     public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, TileEnchantTable tileEntity)
@@ -239,12 +238,12 @@ public class ContainerEnchantTable extends Container {
         Enchantment enchantment = Enchantment.enchantmentsList[enchantmentId];
         int maxLevel = enchantment.getMaxLevel();
 
-        if(enchantmentLevel > maxLevel) return 0;
+        if (enchantmentLevel > maxLevel) return 0;
 
         int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
         int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 4));
         if (!ConfigurationSettings.needsBookShelves) {
-            int temp = (int)(adjustedCost * (60 / (bookCases() + 1)));
+            int temp = (int) (adjustedCost * (60 / (bookCases() + 1)));
             temp /= 20;
             if (temp > adjustedCost) {
                 adjustedCost = temp;
@@ -260,18 +259,20 @@ public class ContainerEnchantTable extends Container {
         Enchantment enchantment = Enchantment.enchantmentsList[enchantmentId];
         int maxLevel = enchantment.getMaxLevel();
 
-        if(enchantmentLevel > maxLevel) return 0;
+        if (enchantmentLevel > maxLevel) return 0;
 
         int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
-        int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 2));
+        int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 5));
         if (!ConfigurationSettings.needsBookShelves) {
-            int temp = (int)(adjustedCost * (60 / (bookCases() + 1)));
+            int temp = (int) (adjustedCost * (60 / (bookCases() + 1)));
             temp /= 20;
             if (temp > adjustedCost) {
                 adjustedCost = temp;
             }
         }
-        return Math.min(-1, adjustedCost);
+        int enchantmentCost = enchantmentCost(enchantmentId, level - 1, enchantmentLevel);
+
+        return Math.max(adjustedCost, -enchantmentCost);
     }
 
     public float bookCases()
@@ -283,12 +284,11 @@ public class ContainerEnchantTable extends Container {
                     temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos, zPos + j * 2);
                     temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos + 1, zPos + j * 2);
 
-                    if (k != 0 && j != 0)
-                    {
-                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos,     zPos + j    );
-                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos + 1, zPos + j    );
-                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k,     yPos,     zPos + j * 2);
-                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k,     yPos + 1, zPos + j * 2);
+                    if (k != 0 && j != 0) {
+                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos, zPos + j);
+                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k * 2, yPos + 1, zPos + j);
+                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k, yPos, zPos + j * 2);
+                        temp += ForgeHooks.getEnchantPower(worldObj, xPos + k, yPos + 1, zPos + j * 2);
                     }
                 }
             }
