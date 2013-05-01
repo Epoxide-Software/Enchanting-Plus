@@ -16,7 +16,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -212,7 +211,7 @@ public class GuiModTable extends GuiContainer {
             for (int i1 = 0; i1 < enchantmentArray.size(); i1++) {
                 GuiItem item2 = enchantmentArray.get(i1);
                 if (item == item2) continue;
-                enabled[i1] = (container.tableInventory.getStackInSlot(0).itemID == Item.book.itemID) || ((enabled[i1]) || (i != i1) && (!item.enchantment.canApplyTogether(item2.enchantment) || !item2.enchantment.canApplyTogether(item.enchantment)));
+                enabled[i1] = ((enabled[i1]) || (i != i1) && (!item.enchantment.canApplyTogether(item2.enchantment) || !item2.enchantment.canApplyTogether(item.enchantment)));
             }
         }
         for (int i = 0; i < enchantmentArray.size(); i++) {

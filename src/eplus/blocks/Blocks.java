@@ -27,6 +27,6 @@ public class Blocks {
         Item.itemsList[blockID] = null;
 
         Block table = (new BlockEnchantTable(blockID)).setHardness(5.0F).setResistance(2000.0F).setUnlocalizedName("enchantmentTable");
-        GameRegistry.registerBlock(table, table.getUnlocalizedName().substring(table.getUnlocalizedName().indexOf(".") + 1));
+        GameRegistry.registerBlock(table, table.getUnlocalizedName());
     }
 }

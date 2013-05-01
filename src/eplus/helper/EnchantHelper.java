@@ -1,6 +1,7 @@
 package eplus.helper;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,7 +50,9 @@ public class EnchantHelper {
      */
     public static boolean canEnchantItem(ItemStack itemStack, Enchantment obj)
     {
-        return (itemStack.itemID == Item.book.itemID) || obj.func_92089_a(itemStack);
+        ItemStack fakeBook = Item.enchantedBook.func_92111_a(new EnchantmentData(obj, 1));
+
+        return (itemStack.itemID == Item.book.itemID) || obj.canApplyAtEnchantingTable(itemStack); //|| itemStack.getItem().isBookEnchantable(itemStack, fakeBook);
     }
 
     /**
