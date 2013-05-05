@@ -13,6 +13,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import eplus.blocks.Blocks;
 import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
+import eplus.handlers.NickyChatHandler;
+import eplus.handlers.NickyHandler;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.References;
 import eplus.network.ConnectionHandler;
@@ -22,6 +24,7 @@ import eplus.network.PlayerTracker;
 import eplus.network.packets.BasePacket;
 import eplus.network.proxies.CommonProxy;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.logging.Logger;
 
@@ -61,6 +64,9 @@ public class EnchantingPlus
         registerTileEntity(TileEnchantTable.class);
         NetworkRegistry.instance().registerGuiHandler(INSTANCE, new GuiHandler());
         GameRegistry.registerPlayerTracker(new PlayerTracker());
+
+        NickyHandler.addNick("odininon", "Freyja");
+        MinecraftForge.EVENT_BUS.register(new NickyChatHandler());
         proxy.registerTickHandlers();
     }
 

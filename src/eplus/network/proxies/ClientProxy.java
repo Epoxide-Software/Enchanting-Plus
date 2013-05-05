@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import eplus.exceptions.FingerprintException;
 import eplus.handlers.CapeTickHandler;
+import eplus.handlers.NickyTickHandler;
 import eplus.inventory.TileEnchantTable;
 import eplus.renders.TableEntityItem;
 import eplus.renders.TableEntityItemRenderer;
@@ -21,6 +22,8 @@ public class ClientProxy extends CommonProxy
     public void registerTickHandlers()
     {
         TickRegistry.registerTickHandler(new CapeTickHandler(), Side.CLIENT);
+        TickRegistry.registerTickHandler(new NickyTickHandler(), Side.CLIENT);
+
         ClientRegistry.bindTileEntitySpecialRenderer(TileEnchantTable.class, new TileEnchantRenderer());
         RenderingRegistry.registerEntityRenderingHandler(TableEntityItem.class, new TableEntityItemRenderer());
     }
