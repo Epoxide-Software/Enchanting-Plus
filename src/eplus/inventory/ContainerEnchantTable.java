@@ -330,7 +330,7 @@ public class ContainerEnchantTable extends Container {
         if (itemStack == null) return;
 
         int serverCost = repairCost();
-        if (cost != serverCost) return;
+        if (cost != serverCost || !itemStack.isItemEnchanted()) return;
 
         if (canPurchase(player, serverCost))
         {
