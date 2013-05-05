@@ -2,6 +2,7 @@ package eplus.handlers;
 
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.ServerChatEvent;
 
 /**
  * @user Freyja
@@ -11,16 +12,11 @@ public class NickyChatHandler
 {
 
     @ForgeSubscribe
-    public void replaceName(ClientChatReceivedEvent event)
+    public void replaceName(ServerChatEvent event)
     {
-        String rawmessage = event.message;
-        String username = rawmessage.substring(rawmessage.indexOf("<") + 1, rawmessage.indexOf(">"));
+        String nick = NickyHandler.getNick(event.username);
+        if(nick == null) return;
 
-        String nickName = NickyHandler.getNick(username);
-        if(nickName == null) return;
-
-        String message = rawmessage.substring(username.length() + 3);
-
-        event.message = String.format("<%s> %s", nickName, message);
+        event.line = String.format("<%s> %s", nick, event.message);
     }
 }
