@@ -12,11 +12,10 @@ import net.minecraft.item.Item;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class Blocks {
+public class Blocks
+{
 
-    /**
-     * Initializes all mod blocks
-     */
+    /** Initializes all mod blocks */
 
     public static void init()
     {

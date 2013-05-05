@@ -9,6 +9,7 @@ import eplus.lib.ConfigurationSettings;
 import eplus.lib.GuiIds;
 import eplus.network.packets.EnchantPacket;
 import eplus.network.packets.GuiPacket;
+import eplus.network.packets.RepairPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -109,7 +110,12 @@ public class GuiModTable extends GuiContainer {
         switch (par1GuiButton.id) {
             case 0:
                 if (enchants.size() > 0)
+                {
                     PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, totalCost).makePacket());
+                } else
+                {
+                    PacketDispatcher.sendPacketToServer(new RepairPacket(totalCost).makePacket());
+                }
                 return;
             case 1:
                 PacketDispatcher.sendPacketToServer(new GuiPacket(player.username, GuiIds.VanillaTable, xPos, yPos, zPos).makePacket());
@@ -175,6 +181,8 @@ public class GuiModTable extends GuiContainer {
 
         Map enchantments = container.getEnchantments();
 
+        ((GuiIcon) this.buttonList.get(0)).displayString = "E";
+
         if (this.enchantments != enchantments) {
             this.enchantments = enchantments;
 
@@ -222,8 +230,11 @@ public class GuiModTable extends GuiContainer {
         this.enchantingPages = (enchantmentArray.size() / 4);
         this.totalCost = 0;
 
-        for (GuiItem item : enchantmentArray) {
-            item.yPos = item.startingYPos - (int) ((18 * 4) * sliderIndex);
+        if (!enchantmentArray.isEmpty())
+        {
+            for (GuiItem item : enchantmentArray)
+            {
+                item.yPos = item.startingYPos - (int) ((18 * 4) * sliderIndex);
 
             Integer level = (Integer) enchantments.get(item.enchantment.effectId);
             if (item.enchantmentLevel > level && !item.disabled) {
@@ -239,6 +250,11 @@ public class GuiModTable extends GuiContainer {
             } else if (item.enchantmentLevel < level && !item.disabled) {
                 this.totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
             }
+        }
+        } else
+        {
+            ((GuiIcon) this.buttonList.get(0)).displayString = "R";
+            totalCost += container.repairCost();
         }
 
     }
@@ -343,8 +359,17 @@ public class GuiModTable extends GuiContainer {
         }
         String displayText = String.format("Player XP Level: %s", player.experienceLevel);
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + fontRenderer.FONT_HEIGHT + 8);
-        displayText = String.format("Enchanting Cost: %s", totalCost);
+
+        if (container.tableInventory.getStackInSlot(0) != null && container.tableInventory.getStackInSlot(0).isItemDamaged() && container.tableInventory.getStackInSlot(0).isItemEnchanted())
+        {
+            displayText = String.format("Repair Cost: %s", totalCost);
+
+        } else
+        {
+            displayText = String.format("Enchanting Cost: %s", totalCost);
+        }
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + (fontRenderer.FONT_HEIGHT + 10) * 2);
+
         displayText = String.format("Max Enchant Level: %s", container.bookCases());
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + (fontRenderer.FONT_HEIGHT + 10) * 3);
     }

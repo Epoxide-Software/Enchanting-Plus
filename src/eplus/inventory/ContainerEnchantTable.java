@@ -98,7 +98,8 @@ public class ContainerEnchantTable extends Container {
 
         HashMap<Integer, Integer> temp = new LinkedHashMap<Integer, Integer>();
 
-        if (itemStack != null) {
+        if (itemStack != null && !itemStack.isItemDamaged())
+        {
             tileEnchantTable.itemInTable = itemStack.copy();
             if (EnchantHelper.isItemEnchanted(itemStack)) {
                 temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
@@ -275,6 +276,32 @@ public class ContainerEnchantTable extends Container {
         return Math.max(adjustedCost, -enchantmentCost);
     }
 
+    public int repairCost()
+    {
+        ItemStack itemStack = this.tableInventory.getStackInSlot(0);
+        if (itemStack == null) return 0;
+        if (!itemStack.isItemEnchanted()) return 0;
+
+        int cost = 0;
+
+        Map enchantments = EnchantmentHelper.getEnchantments(itemStack);
+
+        for (Object enchantment : enchantments.keySet())
+        {
+            Integer enchantmentId = (Integer) enchantment;
+            Integer enchantmentLevel = (Integer) enchantments.get(enchantment);
+
+            cost += enchantmentCost(enchantmentId, enchantmentLevel, 0);
+        }
+
+        int maxDamage = itemStack.getMaxDamage();
+        int currentDamage = itemStack.getItemDamage();
+
+        double percentDamage = currentDamage / ((double) maxDamage * 2);
+
+        return (int) Math.max(1, percentDamage * cost);
+    }
+
     public float bookCases()
     {
         float temp = 0;
@@ -295,6 +322,23 @@ public class ContainerEnchantTable extends Container {
         }
 
         return temp * 2;
+    }
+
+    public void repair(EntityPlayer player, int cost)
+    {
+        ItemStack itemStack = this.tableInventory.getStackInSlot(0);
+        if (itemStack == null) return;
+
+        int serverCost = repairCost();
+        if (cost != serverCost) return;
+
+        if (canPurchase(player, serverCost))
+        {
+            itemStack.setItemDamage(0);
+            if (!player.capabilities.isCreativeMode) player.addExperienceLevel(-cost);
+        }
+
+        this.onCraftMatrixChanged(this.tableInventory);
     }
 }
 

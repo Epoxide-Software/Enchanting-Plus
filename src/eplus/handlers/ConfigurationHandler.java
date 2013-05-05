@@ -17,7 +17,8 @@ import java.util.logging.Level;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class ConfigurationHandler {
+public class ConfigurationHandler
+{
     public static final String CATEGORY_CLIENT = "client";
     public static final String CATEGORY_SERVER = "server";
     public static final String CATEGORY_BOTH = "both";
@@ -30,7 +31,8 @@ public class ConfigurationHandler {
 
         EnchantingPlus.log.info("Initializing Configurations.");
 
-        try {
+        try
+        {
             configuration.load();
 
             configuration.addCustomCategoryComment(CATEGORY_CLIENT, "Settings controlled client.\nCan vary from server to server.");
@@ -43,10 +45,12 @@ public class ConfigurationHandler {
             ConfigurationSettings.hasParticles = configuration.get(CATEGORY_CLIENT, "hasParticles", ConfigurationSettings.particlesDefault, "Set to true to have the enchanting table emmit particles.").getBoolean(ConfigurationSettings.particlesDefault);
             ConfigurationSettings.AllowDisenchanting = configuration.get(CATEGORY_SERVER, "AllowDisenchanting", ConfigurationSettings.disenchantingDefault, "Set to true to allow disenchanting.").getBoolean(ConfigurationSettings.disenchantingDefault);
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             EnchantingPlus.log.info("Error Loading configuration");
             EnchantingPlus.log.log(Level.INFO, "Cause by {0}", e.getLocalizedMessage());
-        } finally {
+        } finally
+        {
             if (configuration.hasChanged())
                 configuration.save();
         }
@@ -58,22 +62,28 @@ public class ConfigurationHandler {
 
         Set<String> categoryNames = configuration.getCategoryNames();
 
-        for(String category : categoryNames) {
-            if (configuration.getCategory(category).containsKey(propertyName)) {
+        for (String category : categoryNames)
+        {
+            if (configuration.getCategory(category).containsKey(propertyName))
+            {
                 configuration.getCategory(category).get(propertyName).set(newValue);
             }
         }
 
         Field field = ReflectionHelper.findField(ConfigurationSettings.class, propertyName);
-        try {
-            if (field.getType() == boolean.class) {
+        try
+        {
+            if (field.getType() == boolean.class)
+            {
                 field.setBoolean(EnchantingPlus.INSTANCE, Boolean.parseBoolean(newValue));
             }
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e)
+        {
             e.printStackTrace();
         }
 
-        if (configuration.hasChanged()) {
+        if (configuration.hasChanged())
+        {
             configuration.save();
         }
     }

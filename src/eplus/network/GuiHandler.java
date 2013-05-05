@@ -18,8 +18,10 @@ import net.minecraft.world.World;
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-public class GuiHandler implements IGuiHandler {
-    static {
+public class GuiHandler implements IGuiHandler
+{
+    static
+    {
         EnchantingPlus.log.info("Initializing GUI Handler.");
     }
 
@@ -27,7 +29,8 @@ public class GuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         TileEntity tileEntity;
-        switch (ID) {
+        switch (ID)
+        {
             case GuiIds.ModTable:
                 tileEntity = world.getBlockTileEntity(x, y, z);
                 if (tileEntity == null || !(tileEntity instanceof TileEnchantTable)) return null;
@@ -45,7 +48,8 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         TileEntity tileEntity;
-        switch (ID) {
+        switch (ID)
+        {
             case GuiIds.ModTable:
                 tileEntity = world.getBlockTileEntity(x, y, z);
                 if (tileEntity == null || !(tileEntity instanceof TileEnchantTable)) return null;

@@ -28,7 +28,8 @@ import java.util.Random;
  */
 
 @SideOnly(Side.CLIENT)
-public class TableEntityItemRenderer extends Render {
+public class TableEntityItemRenderer extends Render
+{
     private RenderBlocks itemRenderBlocks = new RenderBlocks();
 
     /** The RNG used in RenderItem (for bobbing itemstacks on the ground) */
@@ -39,20 +40,21 @@ public class TableEntityItemRenderer extends Render {
     public float zLevel = 0.0F;
     public static boolean renderInFrame = false;
 
-    public TableEntityItemRenderer() {
+    public TableEntityItemRenderer()
+    {
         this.shadowSize = 0.15F;
         this.shadowOpaque = 0.75F;
     }
 
-    /**
-     * Renders the item
-     */
+    /** Renders the item */
     public void doRenderItem(EntityItem par1EntityItem, double par2,
-                             double par4, double par6, float par8, float par9) {
+                             double par4, double par6, float par8, float par9)
+    {
         this.random.setSeed(187L);
         ItemStack itemstack = par1EntityItem.getEntityItem();
 
-        if (itemstack.getItem() != null) {
+        if (itemstack.getItem() != null)
+        {
             GL11.glPushMatrix();
             float f2 = shouldBob() ? MathHelper
                     .sin(((float) par1EntityItem.age + par9) / 10.0F
@@ -69,21 +71,25 @@ public class TableEntityItemRenderer extends Render {
             float f6;
 
             Block block = null;
-            if (itemstack.itemID < Block.blocksList.length) {
+            if (itemstack.itemID < Block.blocksList.length)
+            {
                 block = Block.blocksList[itemstack.itemID];
             }
 
             if (ForgeHooksClient.renderEntityItem(par1EntityItem, itemstack,
-                    f2, f3, random, renderManager.renderEngine, renderBlocks)) {
+                    f2, f3, random, renderManager.renderEngine, renderBlocks))
+            {
                 ;
             } else if (itemstack.getItemSpriteNumber() == 0
                     && block != null
                     && RenderBlocks
                     .renderItemIn3d(Block.blocksList[itemstack.itemID]
-                            .getRenderType())) {
+                            .getRenderType()))
+            {
                 GL11.glRotatef(f3, 0.0F, 1.0F, 0.0F);
 
-                if (renderInFrame) {
+                if (renderInFrame)
+                {
                     GL11.glScalef(1.25F, 1.25F, 1.25F);
                     GL11.glTranslatef(0.0F, 0.05F, 0.0F);
                     GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
@@ -93,16 +99,19 @@ public class TableEntityItemRenderer extends Render {
                 float f7 = 0.25F;
                 int j = block.getRenderType();
 
-                if (j == 1 || j == 19 || j == 12 || j == 2) {
+                if (j == 1 || j == 19 || j == 12 || j == 2)
+                {
                     f7 = 0.5F;
                 }
 
                 GL11.glScalef(f7, f7, f7);
 
-                for (i = 0; i < b0; ++i) {
+                for (i = 0; i < b0; ++i)
+                {
                     GL11.glPushMatrix();
 
-                    if (i > 0) {
+                    if (i > 0)
+                    {
                         f5 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F
                                 / f7;
                         f4 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F
@@ -117,26 +126,32 @@ public class TableEntityItemRenderer extends Render {
                             itemstack.getItemDamage(), f5);
                     GL11.glPopMatrix();
                 }
-            } else {
+            } else
+            {
                 float f8;
 
-                if (itemstack.getItem().requiresMultipleRenderPasses()) {
-                    if (renderInFrame) {
+                if (itemstack.getItem().requiresMultipleRenderPasses())
+                {
+                    if (renderInFrame)
+                    {
                         GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
                         GL11.glTranslatef(0.0F, -0.05F, 0.0F);
-                    } else {
+                    } else
+                    {
                         GL11.glScalef(0.5F, 0.5F, 0.5F);
                     }
 
                     this.loadTexture("/gui/items.png");
 
                     for (int k = 0; k < itemstack.getItem().getRenderPasses(
-                            itemstack.getItemDamage()); ++k) {
+                            itemstack.getItemDamage()); ++k)
+                    {
                         this.random.setSeed(187L);
                         Icon icon = itemstack.getItem().getIcon(itemstack, k);
                         f8 = 1.0F;
 
-                        if (this.renderWithColor) {
+                        if (this.renderWithColor)
+                        {
                             i = Item.itemsList[itemstack.itemID]
                                     .getColorFromItemStack(itemstack, k);
                             f5 = (float) (i >> 16 & 255) / 255.0F;
@@ -145,28 +160,35 @@ public class TableEntityItemRenderer extends Render {
                             GL11.glColor4f(f5 * f8, f4 * f8, f6 * f8, 1.0F);
                             this.renderDroppedItem(par1EntityItem, icon, b0,
                                     par9, f5 * f8, f4 * f8, f6 * f8);
-                        } else {
+                        } else
+                        {
                             this.renderDroppedItem(par1EntityItem, icon, b0,
                                     par9, 1.0F, 1.0F, 1.0F);
                         }
                     }
-                } else {
-                    if (renderInFrame) {
+                } else
+                {
+                    if (renderInFrame)
+                    {
                         GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
                         GL11.glTranslatef(0.0F, -0.05F, 0.0F);
-                    } else {
+                    } else
+                    {
                         GL11.glScalef(0.5F, 0.5F, 0.5F);
                     }
 
                     Icon icon1 = itemstack.getIconIndex();
 
-                    if (itemstack.getItemSpriteNumber() == 0) {
+                    if (itemstack.getItemSpriteNumber() == 0)
+                    {
                         this.loadTexture("/terrain.png");
-                    } else {
+                    } else
+                    {
                         this.loadTexture("/gui/items.png");
                     }
 
-                    if (this.renderWithColor) {
+                    if (this.renderWithColor)
+                    {
                         int l = Item.itemsList[itemstack.itemID]
                                 .getColorFromItemStack(itemstack, 0);
                         f8 = (float) (l >> 16 & 255) / 255.0F;
@@ -175,7 +197,8 @@ public class TableEntityItemRenderer extends Render {
                         f4 = 1.0F;
                         this.renderDroppedItem(par1EntityItem, icon1, b0, par9,
                                 f8 * f4, f9 * f4, f5 * f4);
-                    } else {
+                    } else
+                    {
                         this.renderDroppedItem(par1EntityItem, icon1, b0, par9,
                                 1.0F, 1.0F, 1.0F);
                     }
@@ -187,14 +210,14 @@ public class TableEntityItemRenderer extends Render {
         }
     }
 
-    /**
-     * Renders a dropped item
-     */
+    /** Renders a dropped item */
     private void renderDroppedItem(EntityItem par1EntityItem, Icon par2Icon,
-                                   int par3, float par4, float par5, float par6, float par7) {
+                                   int par3, float par4, float par5, float par6, float par7)
+    {
         Tessellator tessellator = Tessellator.instance;
 
-        if (par2Icon == null) {
+        if (par2Icon == null)
+        {
             par2Icon = this.renderManager.renderEngine
                     .getMissingIcon(par1EntityItem.getEntityItem()
                             .getItemSpriteNumber());
@@ -211,9 +234,11 @@ public class TableEntityItemRenderer extends Render {
 
         GL11.glPushMatrix();
 
-        if (renderInFrame) {
+        if (renderInFrame)
+        {
             GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-        } else {
+        } else
+        {
             GL11.glRotatef(
                     (((float) par1EntityItem.age + par4) / 20.0F + par1EntityItem.hoverStart)
                             * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
@@ -227,22 +252,27 @@ public class TableEntityItemRenderer extends Render {
 
         GL11.glTranslatef(-f9, -f10, -((f12 + f11) * (float) b0 / 2.0F));
 
-        for (int k = 0; k < b0; ++k) {
+        for (int k = 0; k < b0; ++k)
+        {
             GL11.glTranslatef(0.0F, 0.0F, f12 + f11);
             // Makes items offset when in 3D, like when in 2D, looks much
             // better. Considered a vanilla bug...
-            if (k > 0 && shouldSpreadItems()) {
+            if (k > 0 && shouldSpreadItems())
+            {
                 float x = (random.nextFloat() * 2.0F - 1.0F) * 0.3F / 0.5F;
                 float y = (random.nextFloat() * 2.0F - 1.0F) * 0.3F / 0.5F;
                 float z = (random.nextFloat() * 2.0F - 1.0F) * 0.3F / 0.5F;
                 GL11.glTranslatef(x, y, f12 + f11);
-            } else {
+            } else
+            {
                 GL11.glTranslatef(0f, 0f, f12 + f11);
             }
 
-            if (itemstack.getItemSpriteNumber() == 0) {
+            if (itemstack.getItemSpriteNumber() == 0)
+            {
                 this.loadTexture("/terrain.png");
-            } else {
+            } else
+            {
                 this.loadTexture("/gui/items.png");
             }
 
@@ -250,7 +280,8 @@ public class TableEntityItemRenderer extends Render {
             ItemRenderer.renderItemIn2D(tessellator, f5, f6, f4, f7,
                     par2Icon.getSheetWidth(), par2Icon.getSheetHeight(), f12);
 
-            if (itemstack != null && itemstack.hasEffect()) {
+            if (itemstack != null && itemstack.hasEffect())
+            {
                 GL11.glDepthFunc(GL11.GL_EQUAL);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 this.renderManager.renderEngine
@@ -288,12 +319,11 @@ public class TableEntityItemRenderer extends Render {
 
     }
 
-    /**
-     * Renders the item's icon or block into the UI at the specified position.
-     */
+    /** Renders the item's icon or block into the UI at the specified position. */
     public void renderItemIntoGUI(FontRenderer par1FontRenderer,
                                   RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4,
-                                  int par5) {
+                                  int par5)
+    {
         int k = par3ItemStack.itemID;
         int l = par3ItemStack.getItemDamage();
         Icon icon = par3ItemStack.getIconIndex();
@@ -305,7 +335,8 @@ public class TableEntityItemRenderer extends Render {
         if (par3ItemStack.getItemSpriteNumber() == 0
                 && block != null
                 && RenderBlocks.renderItemIn3d(Block.blocksList[k]
-                .getRenderType())) {
+                .getRenderType()))
+        {
             par2RenderEngine.bindTexture("/terrain.png");
             GL11.glPushMatrix();
             GL11.glTranslatef((float) (par4 - 2), (float) (par5 + 3), -3.0F
@@ -320,7 +351,8 @@ public class TableEntityItemRenderer extends Render {
             f = (float) (i1 >> 8 & 255) / 255.0F;
             f1 = (float) (i1 & 255) / 255.0F;
 
-            if (this.renderWithColor) {
+            if (this.renderWithColor)
+            {
                 GL11.glColor4f(f2, f, f1, 1.0F);
             }
 
@@ -329,16 +361,19 @@ public class TableEntityItemRenderer extends Render {
             this.itemRenderBlocks.renderBlockAsItem(block, l, 1.0F);
             this.itemRenderBlocks.useInventoryTint = true;
             GL11.glPopMatrix();
-        } else {
+        } else
+        {
             int j1;
 
-            if (Item.itemsList[k].requiresMultipleRenderPasses()) {
+            if (Item.itemsList[k].requiresMultipleRenderPasses())
+            {
                 GL11.glDisable(GL11.GL_LIGHTING);
                 par2RenderEngine.bindTexture(par3ItemStack
                         .getItemSpriteNumber() == 0 ? "/terrain.png"
                         : "/gui/items.png");
 
-                for (j1 = 0; j1 < Item.itemsList[k].getRenderPasses(l); ++j1) {
+                for (j1 = 0; j1 < Item.itemsList[k].getRenderPasses(l); ++j1)
+                {
                     Icon icon1 = Item.itemsList[k].getIcon(par3ItemStack, j1);
                     int k1 = Item.itemsList[k].getColorFromItemStack(
                             par3ItemStack, j1);
@@ -346,7 +381,8 @@ public class TableEntityItemRenderer extends Render {
                     f1 = (float) (k1 >> 8 & 255) / 255.0F;
                     float f3 = (float) (k1 & 255) / 255.0F;
 
-                    if (this.renderWithColor) {
+                    if (this.renderWithColor)
+                    {
                         GL11.glColor4f(f, f1, f3, 1.0F);
                     }
 
@@ -354,16 +390,20 @@ public class TableEntityItemRenderer extends Render {
                 }
 
                 GL11.glEnable(GL11.GL_LIGHTING);
-            } else {
+            } else
+            {
                 GL11.glDisable(GL11.GL_LIGHTING);
 
-                if (par3ItemStack.getItemSpriteNumber() == 0) {
+                if (par3ItemStack.getItemSpriteNumber() == 0)
+                {
                     par2RenderEngine.bindTexture("/terrain.png");
-                } else {
+                } else
+                {
                     par2RenderEngine.bindTexture("/gui/items.png");
                 }
 
-                if (icon == null) {
+                if (icon == null)
+                {
                     icon = par2RenderEngine.getMissingIcon(par3ItemStack
                             .getItemSpriteNumber());
                 }
@@ -373,7 +413,8 @@ public class TableEntityItemRenderer extends Render {
                 f2 = (float) (j1 >> 8 & 255) / 255.0F;
                 f = (float) (j1 & 255) / 255.0F;
 
-                if (this.renderWithColor) {
+                if (this.renderWithColor)
+                {
                     GL11.glColor4f(f4, f2, f, 1.0F);
                 }
 
@@ -385,21 +426,23 @@ public class TableEntityItemRenderer extends Render {
         GL11.glEnable(GL11.GL_CULL_FACE);
     }
 
-    /**
-     * Render the item's icon or block into the GUI, including the glint effect.
-     */
+    /** Render the item's icon or block into the GUI, including the glint effect. */
     public void renderItemAndEffectIntoGUI(FontRenderer par1FontRenderer,
                                            RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4,
-                                           int par5) {
-        if (par3ItemStack != null) {
+                                           int par5)
+    {
+        if (par3ItemStack != null)
+        {
             if (!ForgeHooksClient.renderInventoryItem(renderBlocks,
                     par2RenderEngine, par3ItemStack, renderWithColor, zLevel,
-                    (float) par4, (float) par5)) {
+                    (float) par4, (float) par5))
+            {
                 this.renderItemIntoGUI(par1FontRenderer, par2RenderEngine,
                         par3ItemStack, par4, par5);
             }
 
-            if (par3ItemStack.hasEffect()) {
+            if (par3ItemStack.hasEffect())
+            {
                 GL11.glDepthFunc(GL11.GL_GREATER);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDepthMask(false);
@@ -419,13 +462,17 @@ public class TableEntityItemRenderer extends Render {
         }
     }
 
-    private void renderGlint(int par1, int par2, int par3, int par4, int par5) {
-        for (int j1 = 0; j1 < 2; ++j1) {
-            if (j1 == 0) {
+    private void renderGlint(int par1, int par2, int par3, int par4, int par5)
+    {
+        for (int j1 = 0; j1 < 2; ++j1)
+        {
+            if (j1 == 0)
+            {
                 GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
             }
 
-            if (j1 == 1) {
+            if (j1 == 1)
+            {
                 GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
             }
 
@@ -437,7 +484,8 @@ public class TableEntityItemRenderer extends Render {
             Tessellator tessellator = Tessellator.instance;
             float f4 = 4.0F;
 
-            if (j1 == 1) {
+            if (j1 == 1)
+            {
                 f4 = -1.0F;
             }
 
@@ -462,21 +510,25 @@ public class TableEntityItemRenderer extends Render {
     }
 
     /**
-     * Renders the item's overlay information. Examples being stack count or
-     * damage on top of the item's image at the specified position.
+     * Renders the item's overlay information. Examples being stack count or damage on top of the item's image at the
+     * specified position.
      */
     public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer,
                                          RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4,
-                                         int par5) {
+                                         int par5)
+    {
         this.renderItemStack(par1FontRenderer, par2RenderEngine, par3ItemStack,
                 par4, par5, (String) null);
     }
 
     public void renderItemStack(FontRenderer par1FontRenderer,
                                 RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4,
-                                int par5, String par6Str) {
-        if (par3ItemStack != null) {
-            if (par3ItemStack.stackSize > 1 || par6Str != null) {
+                                int par5, String par6Str)
+    {
+        if (par3ItemStack != null)
+        {
+            if (par3ItemStack.stackSize > 1 || par6Str != null)
+            {
                 String s1 = par6Str == null ? String
                         .valueOf(par3ItemStack.stackSize) : par6Str;
                 GL11.glDisable(GL11.GL_LIGHTING);
@@ -488,7 +540,8 @@ public class TableEntityItemRenderer extends Render {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }
 
-            if (par3ItemStack.isItemDamaged()) {
+            if (par3ItemStack.isItemDamaged())
+            {
                 int k = (int) Math.round(13.0D
                         - (double) par3ItemStack.getItemDamageForDisplay()
                         * 13.0D / (double) par3ItemStack.getMaxDamage());
@@ -513,11 +566,12 @@ public class TableEntityItemRenderer extends Render {
     }
 
     /**
-     * Adds a quad to the tesselator at the specified position with the set
-     * width and height and color. Args: tessellator, x, y, width, height, color
+     * Adds a quad to the tesselator at the specified position with the set width and height and color. Args:
+     * tessellator, x, y, width, height, color
      */
     private void renderQuad(Tessellator par1Tessellator, int par2, int par3,
-                            int par4, int par5, int par6) {
+                            int par4, int par5, int par6)
+    {
         par1Tessellator.startDrawingQuads();
         par1Tessellator.setColorOpaque_I(par6);
         par1Tessellator.addVertex((double) (par2 + 0), (double) (par3 + 0),
@@ -531,7 +585,8 @@ public class TableEntityItemRenderer extends Render {
         par1Tessellator.draw();
     }
 
-    public void renderIcon(int par1, int par2, Icon par3Icon, int par4, int par5) {
+    public void renderIcon(int par1, int par2, Icon par3Icon, int par4, int par5)
+    {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV((double) (par1 + 0),
@@ -550,15 +605,14 @@ public class TableEntityItemRenderer extends Render {
     }
 
     /**
-     * Actually renders the given argument. This is a synthetic bridge method,
-     * always casting down its argument and then handing it off to a worker
-     * function which does the actual work. In all probabilty, the class Render
-     * is generic (Render<T extends Entity) and this method has signature public
-     * void doRender(T entity, double d, double d1, double d2, float f, float
-     * f1). But JAD is pre 1.5 so doesn't do that.
+     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
+     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
+     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
+     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     public void doRender(Entity par1Entity, double par2, double par4,
-                         double par6, float par8, float par9) {
+                         double par6, float par8, float par9)
+    {
         this.doRenderItem((EntityItem) par1Entity, par2, par4, par6, par8, par9);
     }
 
@@ -567,7 +621,8 @@ public class TableEntityItemRenderer extends Render {
      *
      * @return
      */
-    public boolean shouldSpreadItems() {
+    public boolean shouldSpreadItems()
+    {
         return true;
     }
 
@@ -576,11 +631,13 @@ public class TableEntityItemRenderer extends Render {
      *
      * @return
      */
-    public boolean shouldBob() {
+    public boolean shouldBob()
+    {
         return true;
     }
 
-    public byte getMiniBlockCount(ItemStack stack) {
+    public byte getMiniBlockCount(ItemStack stack)
+    {
         byte ret = 1;
         if (stack.stackSize > 1)
             ret = 2;
@@ -594,13 +651,14 @@ public class TableEntityItemRenderer extends Render {
     }
 
     /**
-     * Allows for a subclass to override how many rendered items appear in a
-     * "mini item 3d stack"
+     * Allows for a subclass to override how many rendered items appear in a "mini item 3d stack"
      *
      * @param stack
+     *
      * @return
      */
-    public byte getMiniItemCount(ItemStack stack) {
+    public byte getMiniItemCount(ItemStack stack)
+    {
         byte ret = 1;
         if (stack.stackSize > 1)
             ret = 2;

@@ -17,7 +17,8 @@ import java.util.Random;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class TileEnchantTable extends TileEntityEnchantmentTable {
+public class TileEnchantTable extends TileEntityEnchantmentTable
+{
 
     private static Random rand = new Random();
     public ItemStack itemInTable;
@@ -55,7 +56,8 @@ public class TileEnchantTable extends TileEntityEnchantmentTable {
     {
         NBTTagList nbtTagList = tags.getTagList("Item");
 
-        for (int i = 0; i < nbtTagList.tagCount(); i++) {
+        for (int i = 0; i < nbtTagList.tagCount(); i++)
+        {
             NBTTagCompound tagCompound = (NBTTagCompound) nbtTagList.tagAt(i);
             itemInTable = ItemStack.loadItemStackFromNBT(tagCompound);
         }
@@ -65,7 +67,8 @@ public class TileEnchantTable extends TileEntityEnchantmentTable {
     {
 
         NBTTagList nbtTagList = new NBTTagList();
-        if (itemInTable != null) {
+        if (itemInTable != null)
+        {
             NBTTagCompound tagCompound = new NBTTagCompound();
             itemInTable.writeToNBT(tagCompound);
             nbtTagList.appendTag(tagCompound);

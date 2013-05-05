@@ -26,6 +26,7 @@ public abstract class BasePacket {
         builder.put(1, ConfigPacket.class);
         builder.put(2, ReConfigPacket.class);
         builder.put(3, GuiPacket.class);
+        builder.put(4, RepairPacket.class);
 
         idMap = builder.build();
     }

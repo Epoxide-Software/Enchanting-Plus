@@ -14,15 +14,15 @@ import java.util.Map;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-/**
- * Helper class with Enchanting functions
- */
-public class EnchantHelper {
+/** Helper class with Enchanting functions */
+public class EnchantHelper
+{
 
     /**
      * Checks to see if item is enchanted
      *
      * @param itemStack the item to check
+     *
      * @return true if item is enchanted
      */
     public static boolean isItemEnchanted(ItemStack itemStack)
@@ -34,6 +34,7 @@ public class EnchantHelper {
      * checks to see if item is enchantable
      *
      * @param itemStack the item to check
+     *
      * @return true if item can accept more enchantments
      */
     public static boolean isItemEnchantable(ItemStack itemStack)
@@ -46,6 +47,7 @@ public class EnchantHelper {
      *
      * @param itemStack the item to check
      * @param obj       the enchantment to add
+     *
      * @return true is item can accept the enchantment
      */
     public static boolean canEnchantItem(ItemStack itemStack, Enchantment obj)
@@ -65,28 +67,36 @@ public class EnchantHelper {
     {
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (Object o : map.keySet()) {
+        for (Object o : map.keySet())
+        {
             int i = (Integer) o;
             NBTTagCompound nbttagcompound = new NBTTagCompound();
             nbttagcompound.setShort("id", (short) i);
             nbttagcompound.setShort("lvl", (short) ((Integer) map.get(i)).intValue());
             nbttaglist.appendTag(nbttagcompound);
 
-            if (itemStack.itemID == Item.book.itemID || itemStack.itemID == Item.enchantedBook.itemID) {
+            if (itemStack.itemID == Item.book.itemID || itemStack.itemID == Item.enchantedBook.itemID)
+            {
                 itemStack.itemID = Item.enchantedBook.itemID;
             }
         }
 
-        if (nbttaglist.tagCount() > 0) {
-            if (itemStack.itemID != Item.enchantedBook.itemID) {
+        if (nbttaglist.tagCount() > 0)
+        {
+            if (itemStack.itemID != Item.enchantedBook.itemID)
+            {
                 itemStack.setTagInfo("ench", nbttaglist);
-            } else {
+            } else
+            {
                 itemStack.setTagInfo("StoredEnchantments", nbttaglist);
             }
-        } else if (itemStack.hasTagCompound()) {
-            if (itemStack.itemID != Item.enchantedBook.itemID) {
+        } else if (itemStack.hasTagCompound())
+        {
+            if (itemStack.itemID != Item.enchantedBook.itemID)
+            {
                 itemStack.getTagCompound().removeTag("ench");
-            } else {
+            } else
+            {
                 itemStack.getTagCompound().removeTag("StoredEnchantments");
                 itemStack.stackTagCompound = null;
                 itemStack.itemID = Item.book.itemID;

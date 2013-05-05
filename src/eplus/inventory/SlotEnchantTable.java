@@ -9,7 +9,8 @@ import net.minecraft.inventory.InventoryBasic;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class SlotEnchantTable extends InventoryBasic {
+public class SlotEnchantTable extends InventoryBasic
+{
     final ContainerEnchantTable container;
 
     public SlotEnchantTable(ContainerEnchantTable containerEnchantTable, String par1Str, boolean par2, int par3)

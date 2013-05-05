@@ -9,7 +9,8 @@ import net.minecraft.world.World;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class TableEntityItem extends EntityItem {
+public class TableEntityItem extends EntityItem
+{
     public TableEntityItem(World par1World)
     {
         super(par1World);

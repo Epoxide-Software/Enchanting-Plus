@@ -34,7 +34,8 @@ import java.util.logging.Logger;
 
 @Mod(name = References.MODNAME, modid = References.MODID, version = "@VERSION@", dependencies = "required-after:Forge@[7.7.1.649,)", certificateFingerprint = References.FINGERPRINT)
 @NetworkMod(channels = {BasePacket.CHANNEL}, versionBounds = "[1.14.5,)", packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class, clientSideRequired = true)
-public class EnchantingPlus {
+public class EnchantingPlus
+{
 
     @Mod.Instance(References.MODID)
     public static EnchantingPlus INSTANCE;

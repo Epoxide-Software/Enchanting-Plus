@@ -36,7 +36,8 @@ public class CapeTickHandler implements ITickHandler {
                     EntityPlayer thePlayer = (EntityPlayer) player;
 
                     for (String modder : modders) {
-                        if (modder.equals(thePlayer.username)) {
+                        if (modder.equals(thePlayer.username) && thePlayer.skinUrl.startsWith("http://skins.minecraft.net/MinecraftSkins/"))
+                        {
                             String oldCloak = thePlayer.cloakUrl;
                             //thePlayer.cloakUrl = "http://aesireanempire.com/odin/eplusCape.png";
                             thePlayer.cloakUrl = "http://i.imgur.com/UyEp9Yb.png";

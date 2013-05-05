@@ -2,10 +2,8 @@ package eplus.network.packets;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
-import eplus.EnchantingPlus;
 import eplus.handlers.ConfigurationHandler;
 import eplus.lib.ConfigurationSettings;
 import eplus.lib.References;
@@ -22,7 +20,8 @@ import java.util.HashMap;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class ConfigPacket extends BasePacket {
+public class ConfigPacket extends BasePacket
+{
 
     HashMap<String, String> configSettings = new HashMap<String, String>();
 
@@ -40,7 +39,8 @@ public class ConfigPacket extends BasePacket {
     {
         output.writeInt(configSettings.size());
 
-        for (String key : configSettings.keySet()) {
+        for (String key : configSettings.keySet())
+        {
             output.writeUTF(key);
             output.writeUTF(configSettings.get(key));
         }
@@ -53,7 +53,8 @@ public class ConfigPacket extends BasePacket {
         int count = input.readInt();
 
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             temp.put(input.readUTF(), input.readUTF());
         }
 
@@ -63,17 +64,22 @@ public class ConfigPacket extends BasePacket {
     @Override
     public void execute(EntityPlayer player, Side side)
     {
-        if (side.isServer()) {
-            for (String key : configSettings.keySet()) {
+        if (side.isServer())
+        {
+            for (String key : configSettings.keySet())
+            {
                 Field field = ReflectionHelper.findField(ConfigurationSettings.class, key);
                 Class<?> type = field.getType();
-                if (type == boolean.class) {
+                if (type == boolean.class)
+                {
                     NBTTagCompound entityData = player.getEntityData();
                     entityData.setBoolean(References.MODID + ":" + key, Boolean.parseBoolean(configSettings.get(key)));
                 }
             }
-        } else {
-            for (String key : configSettings.keySet()) {
+        } else
+        {
+            for (String key : configSettings.keySet())
+            {
                 ConfigurationHandler.set(key, configSettings.get(key));
             }
         }

@@ -12,7 +12,8 @@ import net.minecraft.item.ItemStack;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class SlotEnchant extends Slot {
+public class SlotEnchant extends Slot
+{
     final ContainerEnchantTable container;
 
     public SlotEnchant(ContainerEnchantTable containerEnchantTable, IInventory tableInventory, int i, int i1, int i2)

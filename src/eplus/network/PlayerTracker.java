@@ -10,7 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-public class PlayerTracker implements IPlayerTracker {
+public class PlayerTracker implements IPlayerTracker
+{
 
     @Override
     public void onPlayerLogin(EntityPlayer player)

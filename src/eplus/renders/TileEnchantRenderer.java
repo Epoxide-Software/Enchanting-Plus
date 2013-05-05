@@ -2,13 +2,11 @@ package eplus.renders;
 
 import eplus.inventory.TileEnchantTable;
 import net.minecraft.client.model.ModelBook;
-import net.minecraft.client.renderer.entity.RenderEnchantmentTable;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -17,7 +15,8 @@ import org.lwjgl.opengl.GL11;
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-public class TileEnchantRenderer extends TileEntitySpecialRenderer {
+public class TileEnchantRenderer extends TileEntitySpecialRenderer
+{
     private ModelBook enchantmentBook = new ModelBook();
 
     @Override
@@ -28,9 +27,11 @@ public class TileEnchantRenderer extends TileEntitySpecialRenderer {
         int yCoord = tileentity.yCoord;
         int zCoord = tileentity.zCoord;
 
-        if (((TileEnchantTable) tileentity).itemInTable != null && world.getBlockId(xCoord, yCoord + 1, zCoord) == 0) {
+        if (((TileEnchantTable) tileentity).itemInTable != null && world.getBlockId(xCoord, yCoord + 1, zCoord) == 0)
+        {
             this.renderTable((TileEnchantTable) tileentity, d0, d1, d2, f);
-        } else {
+        } else
+        {
             this.renderDefaultTable((TileEnchantTable) tileentity, d0, d1, d2, f);
         }
     }
@@ -38,29 +39,29 @@ public class TileEnchantRenderer extends TileEntitySpecialRenderer {
     private void renderDefaultTable(TileEnchantTable tileentity, double d0, double d1, double d2, float f)
     {
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)d0 + 0.5F, (float)d1 + 0.75F, (float)d2 + 0.5F);
-        float f1 = (float)tileentity.tickCount + f;
+        GL11.glTranslatef((float) d0 + 0.5F, (float) d1 + 0.75F, (float) d2 + 0.5F);
+        float f1 = (float) tileentity.tickCount + f;
         GL11.glTranslatef(0.0F, 0.1F + MathHelper.sin(f1 * 0.1F) * 0.01F, 0.0F);
         float f2;
 
-        for (f2 = tileentity.bookRotation2 - tileentity.bookRotationPrev; f2 >= (float)Math.PI; f2 -= ((float)Math.PI * 2F))
+        for (f2 = tileentity.bookRotation2 - tileentity.bookRotationPrev; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F))
         {
             ;
         }
 
-        while (f2 < -(float)Math.PI)
+        while (f2 < -(float) Math.PI)
         {
-            f2 += ((float)Math.PI * 2F);
+            f2 += ((float) Math.PI * 2F);
         }
 
         float f3 = tileentity.bookRotationPrev + f2 * f;
-        GL11.glRotatef(-f3 * 180.0F / (float)Math.PI, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(-f3 * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(80.0F, 0.0F, 0.0F, 1.0F);
         this.bindTextureByName("/item/book.png");
         float f4 = tileentity.pageFlipPrev + (tileentity.pageFlip - tileentity.pageFlipPrev) * f + 0.25F;
         float f5 = tileentity.pageFlipPrev + (tileentity.pageFlip - tileentity.pageFlipPrev) * f + 0.75F;
-        f4 = (f4 - (float)MathHelper.truncateDoubleToInt((double)f4)) * 1.6F - 0.3F;
-        f5 = (f5 - (float)MathHelper.truncateDoubleToInt((double)f5)) * 1.6F - 0.3F;
+        f4 = (f4 - (float) MathHelper.truncateDoubleToInt((double) f4)) * 1.6F - 0.3F;
+        f5 = (f5 - (float) MathHelper.truncateDoubleToInt((double) f5)) * 1.6F - 0.3F;
 
         if (f4 < 0.0F)
         {
@@ -84,7 +85,7 @@ public class TileEnchantRenderer extends TileEntitySpecialRenderer {
 
         float f6 = tileentity.bookSpreadPrev + (tileentity.bookSpread - tileentity.bookSpreadPrev) * f;
         GL11.glEnable(GL11.GL_CULL_FACE);
-        this.enchantmentBook.render((Entity)null, f1, f4, f5, f6, 0.0F, 0.0625F);
+        this.enchantmentBook.render((Entity) null, f1, f4, f5, f6, 0.0F, 0.0625F);
         GL11.glPopMatrix();
 
     }
@@ -104,10 +105,12 @@ public class TileEnchantRenderer extends TileEntitySpecialRenderer {
 
         float f2;
 
-        for (f2 = tileentity.bookRotation2 - tileentity.bookRotationPrev; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F)) {
+        for (f2 = tileentity.bookRotation2 - tileentity.bookRotationPrev; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F))
+        {
         }
 
-        while (f2 < -(float) Math.PI) {
+        while (f2 < -(float) Math.PI)
+        {
             f2 += ((float) Math.PI * 2F);
         }
 

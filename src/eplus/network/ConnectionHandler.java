@@ -17,7 +17,8 @@ import net.minecraft.server.MinecraftServer;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class ConnectionHandler implements IConnectionHandler {
+public class ConnectionHandler implements IConnectionHandler
+{
 
     @Override
     public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)

@@ -1,7 +1,6 @@
 package eplus.gui;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-import eplus.EnchantingPlus;
 import eplus.lib.ConfigurationSettings;
 import eplus.lib.GuiIds;
 import eplus.network.packets.GuiPacket;
@@ -17,7 +16,8 @@ import net.minecraft.world.World;
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-public class GuiVanillaTable extends GuiEnchantment {
+public class GuiVanillaTable extends GuiEnchantment
+{
     private final EntityPlayer player;
     private final World world;
     private final int xPos;
@@ -39,7 +39,7 @@ public class GuiVanillaTable extends GuiEnchantment {
     {
         super.initGui();
         String s = "Mod";
-        if(ConfigurationSettings.useMod)
+        if (ConfigurationSettings.useMod)
             this.buttonList.add(new GuiButton(0, guiLeft + xSize + 10, guiTop + 5, fontRenderer.getStringWidth(s) + 10, 20, s));
     }
 
@@ -48,7 +48,8 @@ public class GuiVanillaTable extends GuiEnchantment {
     {
         super.actionPerformed(par1GuiButton);
 
-        switch (par1GuiButton.id) {
+        switch (par1GuiButton.id)
+        {
             case 0:
                 PacketDispatcher.sendPacketToServer(new GuiPacket(player.username, GuiIds.ModTable, xPos, yPos, zPos).makePacket());
         }
