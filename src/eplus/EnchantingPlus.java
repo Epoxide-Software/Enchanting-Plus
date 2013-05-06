@@ -12,8 +12,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import eplus.blocks.Blocks;
 import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
-import eplus.handlers.NickyChatHandler;
-import eplus.handlers.NickyHandler;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.References;
 import eplus.network.ConnectionHandler;
@@ -23,7 +21,6 @@ import eplus.network.PlayerTracker;
 import eplus.network.packets.BasePacket;
 import eplus.network.proxies.CommonProxy;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.util.logging.Logger;
 
@@ -34,7 +31,7 @@ import java.util.logging.Logger;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-@Mod(name = References.MODNAME, modid = References.MODID, dependencies = "required-after:Forge@[7.7.2.682,)")
+@Mod(name = References.MODNAME, modid = References.MODID, dependencies = "required-after:Forge@[7.7.1.649,)")
 @NetworkMod(channels = {BasePacket.CHANNEL}, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class, clientSideRequired = true)
 public class EnchantingPlus
 {
@@ -64,8 +61,6 @@ public class EnchantingPlus
         NetworkRegistry.instance().registerGuiHandler(INSTANCE, new GuiHandler());
         GameRegistry.registerPlayerTracker(new PlayerTracker());
 
-        NickyHandler.addNick("odininon", "Freyja");
-        MinecraftForge.EVENT_BUS.register(new NickyChatHandler());
         proxy.registerTickHandlers();
     }
 
