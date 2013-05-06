@@ -54,13 +54,14 @@
          <shortRevisionLength>8</shortRevisionLength>
          <doCheck>false</doCheck>
          <doUpdate>false</doUpdate>
-         <timestampFormat>
-           {0, date, yyyy-MM-dd HH:mm:ss}
-         </timestampFormat>
+         <format>{0,date,yyyy-MM-dd_HH-mm}</format>
+	 <items>
+           <item>timestamp</item>
+         </items>
        </configuration>
       </plugin>
     </plugins>
-    <finalName>${project.artifactId}-${project.version}-${build_number}</finalName>	
+    <finalName>${project.artifactId}-${project.version}-${buildNumber}</finalName>	
     <sourceDirectory>${basedir}/src</sourceDirectory>
     <resources>
       <resource>
