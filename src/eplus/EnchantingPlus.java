@@ -3,7 +3,6 @@ package eplus;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLFingerprintViolationEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -36,7 +35,7 @@ import java.util.logging.Logger;
  */
 
 @Mod(name = References.MODNAME, modid = References.MODID, dependencies = "required-after:Forge@[7.7.2.682,)")
-@NetworkMod(channels = {BasePacket.CHANNEL}, versionBounds = "[1.14.6,)", packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class, clientSideRequired = true)
+@NetworkMod(channels = {BasePacket.CHANNEL}, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class, clientSideRequired = true)
 public class EnchantingPlus
 {
 
