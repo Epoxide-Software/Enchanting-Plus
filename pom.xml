@@ -39,6 +39,13 @@
 
     <build>
         <finalName>${project.artifactId}-${project.version}-${buildNumber}</finalName>
+        <sourceDirectory>${basedir}/src</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${basedir}/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
     <profiles>
