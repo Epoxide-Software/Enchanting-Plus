@@ -38,7 +38,7 @@
     </repositories>
 
     <build>
-        <finalName>${project.artifactId}-${project.version}-${buildNumber}</finalName>
+        <finalName>${artifactId}-${buildVersion}</finalName>
         <sourceDirectory>${basedir}/src</sourceDirectory>
         <resources>
             <resource>
@@ -57,7 +57,7 @@
                 </property>
             </activation>
             <properties>
-                <buildNumber>0</buildNumber>
+                <buildVersion>${project.version}</buildVersion>
             </properties>
         </profile>
         <profile>
@@ -68,7 +68,7 @@
                 </property>
             </activation>
             <properties>
-                <buildNumber>${env.BUILD_NUMBER}</buildNumber>
+                <buildVersion>${project.version}-${env.BUILD_NUMBER}</buildVersion>
             </properties>
         </profile>
     </profiles>
