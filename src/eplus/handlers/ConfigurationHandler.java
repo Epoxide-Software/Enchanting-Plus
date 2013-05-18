@@ -44,6 +44,7 @@ public class ConfigurationHandler
             ConfigurationSettings.hasLight = configuration.get(CATEGORY_SERVER, "hasLight", ConfigurationSettings.lightDefault, "Set to true to have the enchanting table emmit light.").getBoolean(ConfigurationSettings.lightDefault);
             ConfigurationSettings.hasParticles = configuration.get(CATEGORY_CLIENT, "hasParticles", ConfigurationSettings.particlesDefault, "Set to true to have the enchanting table emmit particles.").getBoolean(ConfigurationSettings.particlesDefault);
             ConfigurationSettings.AllowDisenchanting = configuration.get(CATEGORY_SERVER, "AllowDisenchanting", ConfigurationSettings.disenchantingDefault, "Set to true to allow disenchanting.").getBoolean(ConfigurationSettings.disenchantingDefault);
+            ConfigurationSettings.AllowRepair = configuration.get(CATEGORY_SERVER, "AllowRepair", ConfigurationSettings.repairDefault, "Set to true to allow repairing of items via enchantment table.").getBoolean(ConfigurationSettings.repairDefault);
 
         } catch (Exception e)
         {

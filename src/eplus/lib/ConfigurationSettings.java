@@ -23,4 +23,7 @@ public class ConfigurationSettings
 
     public static boolean AllowDisenchanting;
     public static final boolean disenchantingDefault = true;
+
+    public static boolean AllowRepair;
+    public static boolean repairDefault = true;
 }

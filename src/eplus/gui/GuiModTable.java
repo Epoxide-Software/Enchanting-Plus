@@ -109,11 +109,9 @@ public class GuiModTable extends GuiContainer {
 
         switch (par1GuiButton.id) {
             case 0:
-                if (enchants.size() > 0)
-                {
+                if (enchants.size() > 0) {
                     PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, totalCost).makePacket());
-                } else
-                {
+                } else if (ConfigurationSettings.AllowRepair) {
                     PacketDispatcher.sendPacketToServer(new RepairPacket(totalCost).makePacket());
                 }
                 return;
@@ -230,29 +228,26 @@ public class GuiModTable extends GuiContainer {
         this.enchantingPages = (enchantmentArray.size() / 4);
         this.totalCost = 0;
 
-        if (!enchantmentArray.isEmpty())
-        {
-            for (GuiItem item : enchantmentArray)
-            {
+        if (!enchantmentArray.isEmpty()) {
+            for (GuiItem item : enchantmentArray) {
                 item.yPos = item.startingYPos - (int) ((18 * 4) * sliderIndex);
 
-            Integer level = (Integer) enchantments.get(item.enchantment.effectId);
-            if (item.enchantmentLevel > level && !item.disabled) {
-                int temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
-                if (!container.canPurchase(player, temp)) item.locked = true;
-                while (item.locked && item.enchantmentLevel > 0) {
-                    item.dragging = false;
-                    item.enchantmentLevel--;
-                    temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
-                    if (container.canPurchase(player, temp)) item.locked = false;
+                Integer level = (Integer) enchantments.get(item.enchantment.effectId);
+                if (item.enchantmentLevel > level && !item.disabled) {
+                    int temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+                    if (!container.canPurchase(player, temp)) item.locked = true;
+                    while (item.locked && item.enchantmentLevel > 0) {
+                        item.dragging = false;
+                        item.enchantmentLevel--;
+                        temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+                        if (container.canPurchase(player, temp)) item.locked = false;
+                    }
+                    totalCost = temp;
+                } else if (item.enchantmentLevel < level && !item.disabled) {
+                    this.totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
                 }
-                totalCost = temp;
-            } else if (item.enchantmentLevel < level && !item.disabled) {
-                this.totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
             }
-        }
-        } else
-        {
+        } else if (ConfigurationSettings.AllowRepair) {
             ((GuiIcon) this.buttonList.get(0)).displayString = "R";
             totalCost += container.repairCost();
         }
@@ -360,13 +355,11 @@ public class GuiModTable extends GuiContainer {
         String displayText = String.format("Player XP Level: %s", player.experienceLevel);
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + fontRenderer.FONT_HEIGHT + 8);
 
-        if (container.tableInventory.getStackInSlot(0) != null && container.tableInventory.getStackInSlot(0).isItemDamaged() && container.tableInventory.getStackInSlot(0).isItemEnchanted())
-        {
+        if (container.tableInventory.getStackInSlot(0) == null || !container.tableInventory.getStackInSlot(0).isItemDamaged() || !container.tableInventory.getStackInSlot(0).isItemEnchanted()) {
+            displayText = String.format("Enchanting Cost: %s", totalCost);
+        } else if (ConfigurationSettings.AllowRepair) {
             displayText = String.format("Repair Cost: %s", totalCost);
 
-        } else
-        {
-            displayText = String.format("Enchanting Cost: %s", totalCost);
         }
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + (fontRenderer.FONT_HEIGHT + 10) * 2);
 

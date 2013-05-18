@@ -43,6 +43,7 @@ public class ReConfigPacket extends BasePacket
             configs.put("needsBookShelves", String.valueOf(ConfigurationSettings.needsBookShelves));
             configs.put("hasLight", String.valueOf(ConfigurationSettings.hasLight));
             configs.put("AllowDisenchanting", String.valueOf(ConfigurationSettings.AllowDisenchanting));
+            configs.put("AllowRepair", String.valueOf(ConfigurationSettings.AllowRepair));
             PacketDispatcher.sendPacketToPlayer(new ConfigPacket(configs).makePacket(), (Player) player);
         }
     }
