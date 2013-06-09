@@ -3,14 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>mods.freyja</groupId>
     <artifactId>EnchantingPlus</artifactId>
-    <version>1.14.6</version>
+    <version>1.15.1</version>
     <name>EnchantingPlus</name>
     <url>https://github.com/odininon/enchantingplus</url>
 
     <parent>
         <groupId>net.md-5</groupId>
         <artifactId>ForgeMod</artifactId>
-        <version>1.5.1-7.7.2-SNAPSHOT</version>
+        <version>1.5.2-7.8.0-SNAPSHOT</version>
     </parent>
 
     <scm>
