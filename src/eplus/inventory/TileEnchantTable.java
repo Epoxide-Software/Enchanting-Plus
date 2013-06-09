@@ -56,6 +56,7 @@ public class TileEnchantTable extends TileEntityEnchantmentTable
     {
         NBTTagList nbtTagList = tags.getTagList("Item");
 
+        itemInTable = null;
         for (int i = 0; i < nbtTagList.tagCount(); i++)
         {
             NBTTagCompound tagCompound = (NBTTagCompound) nbtTagList.tagAt(i);
