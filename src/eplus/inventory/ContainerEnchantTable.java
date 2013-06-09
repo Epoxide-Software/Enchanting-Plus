@@ -57,7 +57,7 @@ public class ContainerEnchantTable extends Container {
             this.addSlotToContainer(new Slot(par1InventoryPlayer, l, 17 + l * 18, 149));
         }
 
-        this.putStackInSlot(0, tileEntity.itemInTable);
+        this.putStackInSlot(0, tileEnchantTable.itemInTable);
     }
 
     @Override
@@ -70,6 +70,10 @@ public class ContainerEnchantTable extends Container {
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         super.onCraftMatrixChanged(par1IInventory);
+
+        // TODO fix http://mantis.aesireanempire.com/view.php?id=1
+        //tileEnchantTable.itemInTable = this.tableInventory.getStackInSlot(0);
+        //PacketDispatcher.sendPacketToAllAround(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord, 64, tileEnchantTable.worldObj.getWorldInfo().getDimension(), tileEnchantTable.getDescriptionPacket());
         tileEnchantTable.getWorldObj().markBlockForRenderUpdate(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord);
 
         readItems();
@@ -85,8 +89,16 @@ public class ContainerEnchantTable extends Container {
     {
         super.onCraftGuiClosed(par1EntityPlayer);
 
-        tileEnchantTable.itemInTable = tableInventory.getStackInSlot(0);
-        tileEnchantTable.getWorldObj().markBlockForRenderUpdate(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord);
+        for (int i = 0; i < this.tableInventory.getSizeInventory(); i++) {
+            ItemStack stack = this.tableInventory.getStackInSlot(i);
+            if (stack != null) {
+                par1EntityPlayer.dropPlayerItem(stack);
+            }
+        }
+
+        //TODO fix http://mantis.aesireanempire.com/view.php?id=1
+        //tileEnchantTable.itemInTable = tableInventory.getStackInSlot(0);
+        //tileEnchantTable.getWorldObj().markBlockForRenderUpdate(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord);
     }
 
     /**
@@ -340,6 +352,20 @@ public class ContainerEnchantTable extends Container {
         }
 
         this.onCraftMatrixChanged(this.tableInventory);
+    }
+
+    public void checkItems()
+    {
+        if (!ItemStack.areItemStacksEqual(tileEnchantTable.itemInTable, tableInventory.getStackInSlot(0))) {
+            this.putStackInSlot(0, tileEnchantTable.itemInTable);
+            PacketDispatcher.sendPacketToAllAround(tileEnchantTable.xCoord,
+                    tileEnchantTable.yCoord,
+                    tileEnchantTable.zCoord,
+                    64,
+                    tileEnchantTable.worldObj.getWorldInfo().getDimension(),
+                    tileEnchantTable.getDescriptionPacket());
+            this.onCraftMatrixChanged(this.tableInventory);
+        }
     }
 }
 

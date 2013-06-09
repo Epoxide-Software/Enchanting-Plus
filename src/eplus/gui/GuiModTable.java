@@ -182,9 +182,11 @@ public class GuiModTable extends GuiContainer {
     {
         super.updateScreen();
 
+        //TODO fix http://mantis.aesireanempire.com/view.php?id=1
+        //container.checkItems();
+
         Map enchantments = container.getEnchantments();
 
-        ((GuiIcon) this.buttonList.get(0)).displayString = "E";
 
         if (this.enchantments != enchantments) {
             this.enchantments = enchantments;
