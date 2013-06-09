@@ -11,7 +11,9 @@ import net.minecraft.nbt.NBTTagList;
  */
 
 
-/** Helper class for book enchanting functions */
+/**
+ * Helper class for book enchanting functions
+ */
 public class BookHelper
 {
 
@@ -27,14 +29,11 @@ public class BookHelper
         NBTTagList nbttaglist = getTag(itemStack);
         boolean flag = true;
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound nbttagcompound = (NBTTagCompound) nbttaglist.tagAt(i);
 
-            if (nbttagcompound.getShort("id") == enchantmentData.enchantmentobj.effectId)
-            {
-                if (nbttagcompound.getShort("lvl") != enchantmentData.enchantmentLevel)
-                {
+            if (nbttagcompound.getShort("id") == enchantmentData.enchantmentobj.effectId) {
+                if (nbttagcompound.getShort("lvl") != enchantmentData.enchantmentLevel) {
                     nbttagcompound.setShort("lvl", (short) enchantmentData.enchantmentLevel);
                 }
 
@@ -43,16 +42,14 @@ public class BookHelper
             }
         }
 
-        if (flag)
-        {
+        if (flag) {
             NBTTagCompound nbttagcompound1 = new NBTTagCompound();
             nbttagcompound1.setShort("id", (short) enchantmentData.enchantmentobj.effectId);
             nbttagcompound1.setShort("lvl", (short) enchantmentData.enchantmentLevel);
             nbttaglist.appendTag(nbttagcompound1);
         }
 
-        if (!itemStack.hasTagCompound())
-        {
+        if (!itemStack.hasTagCompound()) {
             itemStack.setTagCompound(new NBTTagCompound());
         }
 
@@ -63,11 +60,12 @@ public class BookHelper
      * Gets stack compound of a enchanted book
      *
      * @param par1ItemStack the book to check
-     *
      * @return the stack compound of the enchanted book
      */
     public static NBTTagList getTag(ItemStack par1ItemStack)
     {
-        return par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound.hasKey("StoredEnchantments") ? (NBTTagList) par1ItemStack.stackTagCompound.getTag("StoredEnchantments") : new NBTTagList();
+        return par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound
+                .hasKey("StoredEnchantments") ? (NBTTagList) par1ItemStack.stackTagCompound
+                .getTag("StoredEnchantments") : new NBTTagList();
     }
 }

@@ -32,13 +32,11 @@ public class ReConfigPacket extends BasePacket
     @Override
     public void execute(EntityPlayer player, Side side)
     {
-        if (side == Side.CLIENT)
-        {
+        if (side == Side.CLIENT) {
             HashMap<String, String> configs = new HashMap<String, String>();
             configs.put("useMod", String.valueOf(ConfigurationSettings.useMod));
             PacketDispatcher.sendPacketToServer(new ConfigPacket(configs).makePacket());
-        } else
-        {
+        } else {
             HashMap<String, String> configs = new HashMap<String, String>();
             configs.put("needsBookShelves", String.valueOf(ConfigurationSettings.needsBookShelves));
             configs.put("hasLight", String.valueOf(ConfigurationSettings.hasLight));

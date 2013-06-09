@@ -35,8 +35,7 @@ public class EnchantPacket extends BasePacket
         output.writeInt(cost);
         output.writeInt(map.size());
 
-        for (Integer enchantmentId : map.keySet())
-        {
+        for (Integer enchantmentId : map.keySet()) {
             output.writeInt(enchantmentId);
             output.writeInt(map.get(enchantmentId));
         }
@@ -50,8 +49,7 @@ public class EnchantPacket extends BasePacket
 
         int size = input.readInt();
 
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             temp.put(input.readInt(), input.readInt());
         }
         this.map = temp;
@@ -60,10 +58,8 @@ public class EnchantPacket extends BasePacket
     @Override
     public void execute(EntityPlayer player, Side side)
     {
-        if (side.isServer())
-        {
-            if (player.openContainer instanceof ContainerEnchantTable)
-            {
+        if (side.isServer()) {
+            if (player.openContainer instanceof ContainerEnchantTable) {
                 ((ContainerEnchantTable) player.openContainer).enchant(player, map, cost);
                 player.openContainer.detectAndSendChanges();
             }

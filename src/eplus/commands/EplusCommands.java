@@ -36,24 +36,19 @@ public class EplusCommands extends CommandBase
     @Override
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] args)
     {
-        switch (args.length)
-        {
-            case 1:
-            {
+        switch (args.length) {
+            case 1: {
                 return getListOfStringsFromIterableMatchingLastWord(args, CommandRegister.commands.keySet());
             }
-            case 2:
-            {
-                for (String command : CommandRegister.commands.keySet())
-                {
-                    if (args[0].equalsIgnoreCase(command))
-                    {
-                        return getListOfStringsFromIterableMatchingLastWord(args, CommandRegister.commands.get(command));
+            case 2: {
+                for (String command : CommandRegister.commands.keySet()) {
+                    if (args[0].equalsIgnoreCase(command)) {
+                        return getListOfStringsFromIterableMatchingLastWord(args,
+                                CommandRegister.commands.get(command));
                     }
                 }
             }
-            default:
-            {
+            default: {
                 return null;
             }
         }
@@ -62,32 +57,26 @@ public class EplusCommands extends CommandBase
     @Override
     public void processCommand(ICommandSender icommandsender, String[] args)
     {
-        if (args.length > 0)
-        {
+        if (args.length > 0) {
             String commandName = args[0];
             System.arraycopy(args, 1, args, 0, args.length - 1);
 
-            for (String command : CommandRegister.commands.keySet())
-            {
-                if (commandName.equalsIgnoreCase(command))
-                {
+            for (String command : CommandRegister.commands.keySet()) {
+                if (commandName.equalsIgnoreCase(command)) {
                     processConfigCommand(icommandsender, commandName, args);
                     return;
                 }
             }
             throw new WrongUsageException("eplus " + StringHelper.keySetToString(CommandRegister.commands.keySet()));
-        } else
-        {
+        } else {
             throw new WrongUsageException("eplus " + StringHelper.keySetToString(CommandRegister.commands.keySet()));
         }
     }
 
     private void processConfigCommand(ICommandSender icommandsender, String commandName, String[] args)
     {
-        for (String arg : args)
-        {
-            if (CommandRegister.commands.get(commandName).contains(arg))
-            {
+        for (String arg : args) {
+            if (CommandRegister.commands.get(commandName).contains(arg)) {
                 EnchantingPlus.log.info(commandName + ":" + args[0]);
                 ConfigurationHandler.set(commandName, args[0]);
 
@@ -96,12 +85,16 @@ public class EplusCommands extends CommandBase
                 config.put(commandName, args[0]);
 
                 PacketDispatcher.sendPacketToServer(new ConfigPacket(config).makePacket());
-                icommandsender.sendChatToPlayer(String.format("%s: Config '%s' changed to %s.", References.MODID.toUpperCase(), commandName, args[0]));
+                icommandsender.sendChatToPlayer(String.format("%s: Config '%s' changed to %s.",
+                        References.MODID.toUpperCase(),
+                        commandName,
+                        args[0]));
 
                 return;
             }
         }
-        throw new WrongUsageException("eplus " + commandName + " " + StringHelper.listToString(CommandRegister.commands.get(commandName)));
+        throw new WrongUsageException("eplus " + commandName + " " + StringHelper.listToString(CommandRegister.commands
+                .get(commandName)));
     }
 }
 

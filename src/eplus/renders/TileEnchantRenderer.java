@@ -27,11 +27,9 @@ public class TileEnchantRenderer extends TileEntitySpecialRenderer
         int yCoord = tileentity.yCoord;
         int zCoord = tileentity.zCoord;
 
-        if (((TileEnchantTable) tileentity).itemInTable != null && world.getBlockId(xCoord, yCoord + 1, zCoord) == 0)
-        {
+        if (((TileEnchantTable) tileentity).itemInTable != null && world.getBlockId(xCoord, yCoord + 1, zCoord) == 0) {
             this.renderTable((TileEnchantTable) tileentity, d0, d1, d2, f);
-        } else
-        {
+        } else {
             this.renderDefaultTable((TileEnchantTable) tileentity, d0, d1, d2, f);
         }
     }
@@ -44,13 +42,11 @@ public class TileEnchantRenderer extends TileEntitySpecialRenderer
         GL11.glTranslatef(0.0F, 0.1F + MathHelper.sin(f1 * 0.1F) * 0.01F, 0.0F);
         float f2;
 
-        for (f2 = tileentity.bookRotation2 - tileentity.bookRotationPrev; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F))
-        {
+        for (f2 = tileentity.bookRotation2 - tileentity.bookRotationPrev; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F)) {
             ;
         }
 
-        while (f2 < -(float) Math.PI)
-        {
+        while (f2 < -(float) Math.PI) {
             f2 += ((float) Math.PI * 2F);
         }
 
@@ -63,23 +59,19 @@ public class TileEnchantRenderer extends TileEntitySpecialRenderer
         f4 = (f4 - (float) MathHelper.truncateDoubleToInt((double) f4)) * 1.6F - 0.3F;
         f5 = (f5 - (float) MathHelper.truncateDoubleToInt((double) f5)) * 1.6F - 0.3F;
 
-        if (f4 < 0.0F)
-        {
+        if (f4 < 0.0F) {
             f4 = 0.0F;
         }
 
-        if (f5 < 0.0F)
-        {
+        if (f5 < 0.0F) {
             f5 = 0.0F;
         }
 
-        if (f4 > 1.0F)
-        {
+        if (f4 > 1.0F) {
             f4 = 1.0F;
         }
 
-        if (f5 > 1.0F)
-        {
+        if (f5 > 1.0F) {
             f5 = 1.0F;
         }
 
@@ -99,18 +91,20 @@ public class TileEnchantRenderer extends TileEntitySpecialRenderer
         float f1 = (float) tileentity.tickCount + f;
         GL11.glTranslatef(0.0F, 0.1F + MathHelper.sin(f1 * 0.1F) * 0.01F, 0.0F);
 
-        TableEntityItem entityItem = new TableEntityItem(tileentity.getWorldObj(), 0.0D, 0.0D, 0.0D, tileentity.itemInTable);
+        TableEntityItem entityItem = new TableEntityItem(tileentity.getWorldObj(),
+                0.0D,
+                0.0D,
+                0.0D,
+                tileentity.itemInTable);
         entityItem.getEntityItem().stackSize = 1;
         entityItem.hoverStart = 0.0F;
 
         float f2;
 
-        for (f2 = tileentity.bookRotation2 - tileentity.bookRotationPrev; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F))
-        {
+        for (f2 = tileentity.bookRotation2 - tileentity.bookRotationPrev; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F)) {
         }
 
-        while (f2 < -(float) Math.PI)
-        {
+        while (f2 < -(float) Math.PI) {
             f2 += ((float) Math.PI * 2F);
         }
 

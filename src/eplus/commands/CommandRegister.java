@@ -13,8 +13,7 @@ public class CommandRegister
 
     static final HashMap<String, List<String>> commands = new HashMap<String, List<String>>();
 
-    static
-    {
+    static {
         commands.put("useMod", Arrays.asList("true", "false"));
         commands.put("hasParticles", Arrays.asList("true", "false"));
     }

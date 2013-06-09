@@ -54,7 +54,7 @@ public class EnchantHelper
     {
         ItemStack fakeBook = Item.enchantedBook.func_92111_a(new EnchantmentData(obj, 1));
 
-        return (itemStack.itemID == Item.book.itemID) || obj.canApplyAtEnchantingTable(itemStack); //|| itemStack.getItem().isBookEnchantable(itemStack, fakeBook);
+        return itemStack.itemID == Item.book.itemID || obj.canApplyAtEnchantingTable(itemStack); //|| itemStack.getItem().isBookEnchantable(itemStack, fakeBook);
     }
 
     /**

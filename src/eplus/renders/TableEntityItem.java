@@ -25,6 +25,7 @@ public class TableEntityItem extends EntityItem
     {
         this(par1World, par2, par4, par6);
         this.setEntityItemStack(par8ItemStack);
-        this.lifespan = (par8ItemStack.getItem() == null ? 6000 : par8ItemStack.getItem().getEntityLifespan(par8ItemStack, par1World));
+        this.lifespan = (par8ItemStack.getItem() == null ? 6000 : par8ItemStack.getItem()
+                .getEntityLifespan(par8ItemStack, par1World));
     }
 }

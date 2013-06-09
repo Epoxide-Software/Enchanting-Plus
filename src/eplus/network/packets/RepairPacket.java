@@ -41,10 +41,8 @@ public class RepairPacket extends BasePacket
     @Override
     public void execute(EntityPlayer player, Side side)
     {
-        if (side.isServer())
-        {
-            if (player.openContainer instanceof ContainerEnchantTable)
-            {
+        if (side.isServer()) {
+            if (player.openContainer instanceof ContainerEnchantTable) {
                 ((ContainerEnchantTable) player.openContainer).repair(player, cost);
                 player.openContainer.detectAndSendChanges();
             }

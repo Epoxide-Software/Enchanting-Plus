@@ -31,8 +31,14 @@ import java.util.logging.Logger;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-@Mod(name = References.MODNAME, modid = References.MODID, useMetadata = true, dependencies = "required-after:Forge@[7.8.0.684,)")
-@NetworkMod(channels = {BasePacket.CHANNEL}, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class, clientSideRequired = true)
+@Mod(name = References.MODNAME,
+        modid = References.MODID,
+        useMetadata = true,
+        dependencies = "required-after:Forge@[7.8.0.684,)")
+@NetworkMod(channels = {BasePacket.CHANNEL},
+        packetHandler = PacketHandler.class,
+        connectionHandler = ConnectionHandler.class,
+        clientSideRequired = true)
 public class EnchantingPlus
 {
 

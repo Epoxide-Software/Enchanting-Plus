@@ -15,7 +15,9 @@ import net.minecraft.item.Item;
 public class Blocks
 {
 
-    /** Initializes all mod blocks */
+    /**
+     * Initializes all mod blocks
+     */
 
     public static void init()
     {
@@ -25,7 +27,9 @@ public class Blocks
         Block.blocksList[blockID] = null;
         Item.itemsList[blockID] = null;
 
-        Block table = (new BlockEnchantTable(blockID)).setHardness(5.0F).setResistance(2000.0F).setUnlocalizedName("enchantmentTable");
+        Block table = (new BlockEnchantTable(blockID)).setHardness(5.0F)
+                .setResistance(2000.0F)
+                .setUnlocalizedName("enchantmentTable");
         GameRegistry.registerBlock(table, table.getUnlocalizedName());
     }
 }

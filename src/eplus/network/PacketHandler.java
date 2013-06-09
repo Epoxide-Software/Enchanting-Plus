@@ -21,16 +21,14 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class PacketHandler implements IPacketHandler
 {
-    static
-    {
+    static {
         EnchantingPlus.log.info("Initializing Packet Handler.");
     }
 
     @Override
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
     {
-        try
-        {
+        try {
             EntityPlayer entityPlayer = (EntityPlayer) player;
             ByteArrayDataInput input = ByteStreams.newDataInput(packet.data);
             int packetId = input.readUnsignedByte();
@@ -38,15 +36,12 @@ public class PacketHandler implements IPacketHandler
             BasePacket basePacket = BasePacket.constructPacket(packetId);
             basePacket.read(input);
             basePacket.execute(entityPlayer, entityPlayer.worldObj.isRemote ? Side.CLIENT : Side.SERVER);
-        } catch (BasePacket.ProtocolException ex)
-        {
-            if (player instanceof EntityPlayerMP)
-            {
+        } catch (BasePacket.ProtocolException ex) {
+            if (player instanceof EntityPlayerMP) {
                 ((EntityPlayerMP) player).playerNetServerHandler.kickPlayerFromServer("Protocol Exception!");
                 EnchantingPlus.log.warning(((EntityPlayer) player).username + " cause a Protocol Exception!");
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new RuntimeException("Unexpected Reflection exception during Packet construction!", ex);
         }
     }

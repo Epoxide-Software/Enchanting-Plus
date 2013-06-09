@@ -14,7 +14,8 @@ import java.util.List;
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-public class CapeTickHandler implements ITickHandler {
+public class CapeTickHandler implements ITickHandler
+{
 
     private static final Minecraft mc = FMLClientHandler.instance().getClient();
     private final String[] modders = new String[]{"odininon", "FSNTF"};
@@ -36,8 +37,8 @@ public class CapeTickHandler implements ITickHandler {
                     EntityPlayer thePlayer = (EntityPlayer) player;
 
                     for (String modder : modders) {
-                        if (modder.equalsIgnoreCase(thePlayer.username) && thePlayer.skinUrl.startsWith("http://skins.minecraft.net/MinecraftSkins/"))
-                        {
+                        if (modder.equalsIgnoreCase(thePlayer.username) && thePlayer.skinUrl
+                                .startsWith("http://skins.minecraft.net/MinecraftSkins/")) {
                             String oldCloak = thePlayer.cloakUrl;
                             //thePlayer.cloakUrl = "http://aesireanempire.com/odin/eplusCape.png";
                             thePlayer.cloakUrl = "http://i.imgur.com/UyEp9Yb.png";

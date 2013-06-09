@@ -39,8 +39,7 @@ public class ConfigPacket extends BasePacket
     {
         output.writeInt(configSettings.size());
 
-        for (String key : configSettings.keySet())
-        {
+        for (String key : configSettings.keySet()) {
             output.writeUTF(key);
             output.writeUTF(configSettings.get(key));
         }
@@ -53,8 +52,7 @@ public class ConfigPacket extends BasePacket
         int count = input.readInt();
 
 
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             temp.put(input.readUTF(), input.readUTF());
         }
 
@@ -64,22 +62,17 @@ public class ConfigPacket extends BasePacket
     @Override
     public void execute(EntityPlayer player, Side side)
     {
-        if (side.isServer())
-        {
-            for (String key : configSettings.keySet())
-            {
+        if (side.isServer()) {
+            for (String key : configSettings.keySet()) {
                 Field field = ReflectionHelper.findField(ConfigurationSettings.class, key);
                 Class<?> type = field.getType();
-                if (type == boolean.class)
-                {
+                if (type == boolean.class) {
                     NBTTagCompound entityData = player.getEntityData();
                     entityData.setBoolean(References.MODID + ":" + key, Boolean.parseBoolean(configSettings.get(key)));
                 }
             }
-        } else
-        {
-            for (String key : configSettings.keySet())
-            {
+        } else {
+            for (String key : configSettings.keySet()) {
                 ConfigurationHandler.set(key, configSettings.get(key));
             }
         }

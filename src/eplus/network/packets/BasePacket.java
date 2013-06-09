@@ -15,7 +15,8 @@ import net.minecraft.network.packet.Packet;
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-public abstract class BasePacket {
+public abstract class BasePacket
+{
 
     public static final String CHANNEL = References.MODID;
     private static final BiMap<Integer, Class<? extends BasePacket>> idMap;
@@ -94,7 +95,8 @@ public abstract class BasePacket {
      */
     public abstract void execute(EntityPlayer player, Side side);
 
-    public static class ProtocolException extends Exception {
+    public static class ProtocolException extends Exception
+    {
         public ProtocolException()
         {
         }

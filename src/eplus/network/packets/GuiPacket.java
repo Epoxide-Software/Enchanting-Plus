@@ -59,12 +59,10 @@ public class GuiPacket extends BasePacket
     @Override
     public void execute(EntityPlayer player, Side side)
     {
-        if (side == Side.SERVER)
-        {
+        if (side == Side.SERVER) {
             NBTTagCompound tag = player.getEntityData();
 
-            if (tag.getBoolean(References.MODID + ":useMod") && ConfigurationSettings.useMod)
-            {
+            if (tag.getBoolean(References.MODID + ":useMod") && ConfigurationSettings.useMod) {
                 player.openGui(EnchantingPlus.INSTANCE, guiId, player.worldObj, xPos, yPos, zPos);
             }
         }

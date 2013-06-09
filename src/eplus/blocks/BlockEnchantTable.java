@@ -28,8 +28,7 @@ public class BlockEnchantTable extends BlockEnchantmentTable
     {
         super(par1);
 
-        if (ConfigurationSettings.hasLight)
-        {
+        if (ConfigurationSettings.hasLight) {
             this.setLightValue(1.0F);
         }
     }
@@ -43,15 +42,15 @@ public class BlockEnchantTable extends BlockEnchantmentTable
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-        if (world.isRemote) return true;
+        if (world.isRemote) {
+            return true;
+        }
 
         NBTTagCompound tag = player.getEntityData();
 
-        if (tag.getBoolean(References.MODID + ":useMod") && ConfigurationSettings.useMod)
-        {
+        if (tag.getBoolean(References.MODID + ":useMod") && ConfigurationSettings.useMod) {
             player.openGui(EnchantingPlus.INSTANCE, GuiIds.ModTable, world, x, y, z);
-        } else
-        {
+        } else {
             player.openGui(EnchantingPlus.INSTANCE, GuiIds.VanillaTable, world, x, y, z);
         }
 
@@ -63,10 +62,11 @@ public class BlockEnchantTable extends BlockEnchantmentTable
     {
         super.randomDisplayTick(par1World, x, y, z, par5Random);
 
-        if (!ConfigurationSettings.hasParticles) return;
+        if (!ConfigurationSettings.hasParticles) {
+            return;
+        }
 
-        for (int var6 = 0; var6 < 4; ++var6)
-        {
+        for (int var6 = 0; var6 < 4; ++var6) {
             double var7 = (double) ((float) x + par5Random.nextFloat());
             double var9 = (double) ((float) y + par5Random.nextFloat());
             double var11 = (double) ((float) z + par5Random.nextFloat());
@@ -78,12 +78,12 @@ public class BlockEnchantTable extends BlockEnchantmentTable
             var15 = ((double) par5Random.nextFloat() - 0.5D) * 0.5D;
             var17 = ((double) par5Random.nextFloat() - 0.5D) * 0.5D;
 
-            if (par1World.getBlockId(x - 1, y, z) != this.blockID && par1World.getBlockId(x + 1, y, z) != this.blockID)
-            {
+            if (par1World.getBlockId(x - 1, y, z) != this.blockID && par1World.getBlockId(x + 1,
+                    y,
+                    z) != this.blockID) {
                 var7 = (double) x + 0.5D + 0.25D * (double) var19;
                 var13 = (double) (par5Random.nextFloat() * 2.0F * (float) var19);
-            } else
-            {
+            } else {
                 var11 = (double) z + 0.5D + 0.25D * (double) var19;
                 var17 = (double) (par5Random.nextFloat() * 2.0F * (float) var19);
             }
