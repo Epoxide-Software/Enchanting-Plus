@@ -253,7 +253,7 @@ public class ContainerEnchantTable extends Container {
         if (enchantmentLevel > maxLevel) return 0;
 
         int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
-        int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 4));
+        int adjustedCost = (int) ((averageCost * (enchantmentLevel - level + maxLevel)) / ((double) maxLevel * 5));
         if (!ConfigurationSettings.needsBookShelves) {
             int temp = (int) (adjustedCost * (60 / (bookCases() + 1)));
             temp /= 20;
@@ -274,7 +274,7 @@ public class ContainerEnchantTable extends Container {
         if (enchantmentLevel > maxLevel) return 0;
 
         int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
-        int adjustedCost = (int) ((averageCost * (enchantmentLevel - level)) / ((double) maxLevel * 5));
+        int adjustedCost = (int) ((averageCost * (enchantmentLevel - level - maxLevel)) / ((double) maxLevel * 6));
         if (!ConfigurationSettings.needsBookShelves) {
             int temp = (int) (adjustedCost * (60 / (bookCases() + 1)));
             temp /= 20;
