@@ -70,9 +70,11 @@ public class GuiModTable extends GuiContainer {
     public void initGui()
     {
         super.initGui();
-        this.buttonList.add(new GuiIcon(0, guiLeft + 9, guiTop + 55, "E").customTexture(0));
+        this.buttonList.add(new GuiIcon(0, guiLeft + 9, guiTop + 40, "E").customTexture(0));
+        this.buttonList.add(new GuiIcon(1, guiLeft + 9, guiTop + 60, "R").customTexture(0));
         String s = "Vanilla";
-        this.buttonList.add(new GuiButton(1, guiLeft + xSize + 10, guiTop + 5, fontRenderer.getStringWidth(s) + 10, 20, s));
+        this.buttonList
+                .add(new GuiButton(2, guiLeft + xSize + 10, guiTop + 5, fontRenderer.getStringWidth(s) + 10, 20, s));
 
         this.dirty = true;
     }
@@ -111,11 +113,14 @@ public class GuiModTable extends GuiContainer {
             case 0:
                 if (enchants.size() > 0) {
                     PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, totalCost).makePacket());
-                } else if (ConfigurationSettings.AllowRepair) {
-                    PacketDispatcher.sendPacketToServer(new RepairPacket(totalCost).makePacket());
                 }
                 return;
             case 1:
+                if (enchants.size() == 0 && ConfigurationSettings.AllowRepair) {
+                    PacketDispatcher.sendPacketToServer(new RepairPacket(totalCost).makePacket());
+                }
+                return;
+            case 2:
                 PacketDispatcher.sendPacketToServer(new GuiPacket(player.username, GuiIds.VanillaTable, xPos, yPos, zPos).makePacket());
         }
     }
@@ -225,10 +230,10 @@ public class GuiModTable extends GuiContainer {
             item.disabled = enabled[i];
         }
 
-        this.enchantingPages = (enchantmentArray.size() / 4);
+        this.enchantingPages = (int) Math.ceil(enchantmentArray.size() / 4.0);
         this.totalCost = 0;
 
-        if (!enchantmentArray.isEmpty()) {
+        if (!enchantmentArray.isEmpty() && levelChanged()) {
             for (GuiItem item : enchantmentArray) {
                 item.yPos = item.startingYPos - (int) ((18 * 4) * sliderIndex);
 
@@ -247,11 +252,22 @@ public class GuiModTable extends GuiContainer {
                     this.totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
                 }
             }
-        } else if (ConfigurationSettings.AllowRepair) {
-            ((GuiIcon) this.buttonList.get(0)).displayString = "R";
+        } else if (ConfigurationSettings.AllowRepair && !levelChanged()) {
             totalCost += container.repairCost();
+            for (GuiItem item : enchantmentArray) {
+                item.yPos = item.startingYPos - (int) ((18 * 4) * sliderIndex);
+            }
         }
+    }
 
+    protected boolean levelChanged()
+    {
+        for (GuiItem item : enchantmentArray) {
+            if (item.enchantmentLevel != item.privateLevel) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -355,9 +371,14 @@ public class GuiModTable extends GuiContainer {
         String displayText = String.format("Player XP Level: %s", player.experienceLevel);
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + fontRenderer.FONT_HEIGHT + 8);
 
-        if (container.tableInventory.getStackInSlot(0) == null || !container.tableInventory.getStackInSlot(0).isItemDamaged() || !container.tableInventory.getStackInSlot(0).isItemEnchanted()) {
+        if (container.tableInventory
+                .getStackInSlot(0) == null || levelChanged() || !levelChanged() && !container.tableInventory
+                .getStackInSlot(0)
+                .isItemDamaged()) {
             displayText = String.format("Enchanting Cost: %s", totalCost);
-        } else if (ConfigurationSettings.AllowRepair) {
+        } else if (ConfigurationSettings.AllowRepair && !levelChanged() && container.tableInventory
+                .getStackInSlot(0)
+                .isItemDamaged()) {
             displayText = String.format("Repair Cost: %s", totalCost);
 
         }
@@ -450,7 +471,9 @@ public class GuiModTable extends GuiContainer {
                     locked = false;
                 }
             } else {
-                if (tempLevel >= privateLevel || ConfigurationSettings.AllowDisenchanting) {
+                if (tempLevel >= privateLevel || ConfigurationSettings.AllowDisenchanting && !container.tableInventory
+                        .getStackInSlot(0)
+                        .isItemDamaged()) {
                     enchantmentLevel = tempLevel;
                 }
             }

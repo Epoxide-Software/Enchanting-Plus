@@ -1,5 +1,6 @@
 package eplus.inventory;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.helper.EnchantHelper;
 import eplus.lib.ConfigurationSettings;
 import net.minecraft.enchantment.Enchantment;
@@ -43,7 +44,7 @@ public class ContainerEnchantTable extends Container {
 
         this.tileEnchantTable = tileEntity;
 
-        this.addSlotToContainer(new SlotEnchant(this, this.tableInventory, 0, 11, 31));
+        this.addSlotToContainer(new SlotEnchant(this, this.tableInventory, 0, 11, 17));
         int l;
 
         for (l = 0; l < 3; ++l) {
@@ -98,9 +99,7 @@ public class ContainerEnchantTable extends Container {
 
         HashMap<Integer, Integer> temp = new LinkedHashMap<Integer, Integer>();
 
-        if (itemStack != null && !itemStack.isItemDamaged())
-        {
-            tileEnchantTable.itemInTable = itemStack.copy();
+        if (itemStack != null) {
             if (EnchantHelper.isItemEnchanted(itemStack)) {
                 temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
             }
@@ -182,7 +181,7 @@ public class ContainerEnchantTable extends Container {
     @SuppressWarnings("SuspiciousMethodCalls")
     public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost)
     {
-        ItemStack itemstack = this.getSlot(0).getStack();
+        ItemStack itemstack = this.tableInventory.getStackInSlot(0);
         HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
         int serverCost = 0;
 
@@ -280,7 +279,9 @@ public class ContainerEnchantTable extends Container {
     {
         ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         if (itemStack == null) return 0;
-        if (!itemStack.isItemEnchanted()) return 0;
+        if (!itemStack.isItemEnchanted() || !itemStack.isItemDamaged()) {
+            return 0;
+        }
 
         int cost = 0;
 

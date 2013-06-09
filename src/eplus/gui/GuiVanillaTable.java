@@ -39,8 +39,15 @@ public class GuiVanillaTable extends GuiEnchantment
     {
         super.initGui();
         String s = "Mod";
-        if (ConfigurationSettings.useMod)
-            this.buttonList.add(new GuiButton(0, guiLeft + xSize + 10, guiTop + 5, fontRenderer.getStringWidth(s) + 10, 20, s));
+        if (ConfigurationSettings.useMod) {
+            this.buttonList
+                    .add(new GuiButton(0,
+                            guiLeft + xSize + 10,
+                            guiTop + 5,
+                            fontRenderer.getStringWidth(s) + 10,
+                            20,
+                            s));
+        }
     }
 
     @Override
@@ -48,10 +55,13 @@ public class GuiVanillaTable extends GuiEnchantment
     {
         super.actionPerformed(par1GuiButton);
 
-        switch (par1GuiButton.id)
-        {
+        switch (par1GuiButton.id) {
             case 0:
-                PacketDispatcher.sendPacketToServer(new GuiPacket(player.username, GuiIds.ModTable, xPos, yPos, zPos).makePacket());
+                PacketDispatcher.sendPacketToServer(new GuiPacket(player.username,
+                        GuiIds.ModTable,
+                        xPos,
+                        yPos,
+                        zPos).makePacket());
         }
     }
 
@@ -60,6 +70,8 @@ public class GuiVanillaTable extends GuiEnchantment
     {
         super.drawScreen(par1, par2, par3);
         String displayText = String.format("Player XP Level: %s", player.experienceLevel);
-        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + fontRenderer.FONT_HEIGHT + 8);
+        drawCreativeTabHoveringText(displayText,
+                guiLeft - 20 - fontRenderer.getStringWidth(displayText),
+                guiTop + fontRenderer.FONT_HEIGHT + 8);
     }
 }
