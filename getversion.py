@@ -52,7 +52,7 @@ def main():
         if branch == 'HEAD':
             branch = "master"
 
-    with open("resources/ version.properties", "w") as f:
+    with open("resources/version.properties", "w") as f:
         f.write("%s=%s\n" % ("eplus.major.number", major))
         f.write("%s=%s\n" % ("eplus.minor.number", minor))
         f.write("%s=%s\n" % ("eplus.revision.number", rev))

@@ -11,6 +11,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import eplus.blocks.Blocks;
 import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
+import eplus.handlers.Version;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.References;
 import eplus.network.ConnectionHandler;
@@ -32,7 +33,6 @@ import java.util.logging.Logger;
 
 @Mod(name = References.MODNAME,
         modid = References.MODID,
-        useMetadata = true,
         dependencies = "required-after:Forge@[7.8.0.684,)")
 @NetworkMod(channels = {BasePacket.CHANNEL},
         packetHandler = PacketHandler.class,
@@ -55,6 +55,10 @@ public class EnchantingPlus
     {
         log = event.getModLog();
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
+        Version.init(event.getVersionProperties());
+
+        Version.check();
+        event.getModMetadata().version = Version.getCurrentModVersion();
     }
 
     @Mod.Init

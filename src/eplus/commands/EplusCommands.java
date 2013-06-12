@@ -3,6 +3,7 @@ package eplus.commands;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
 import eplus.handlers.ConfigurationHandler;
+import eplus.handlers.Version;
 import eplus.helper.StringHelper;
 import eplus.lib.References;
 import eplus.network.packets.ConfigPacket;
@@ -10,6 +11,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,7 +21,12 @@ import java.util.List;
  */
 public class EplusCommands extends CommandBase
 {
+    private static List<String> commands = new ArrayList<String>();
 
+    static {
+        commands.addAll(CommandRegister.commands.keySet());
+        commands.add("changelog");
+    }
 
     @Override
     public String getCommandName()
@@ -38,7 +45,7 @@ public class EplusCommands extends CommandBase
     {
         switch (args.length) {
             case 1: {
-                return getListOfStringsFromIterableMatchingLastWord(args, CommandRegister.commands.keySet());
+                return getListOfStringsFromIterableMatchingLastWord(args, commands);
             }
             case 2: {
                 for (String command : CommandRegister.commands.keySet()) {
@@ -67,10 +74,24 @@ public class EplusCommands extends CommandBase
                     return;
                 }
             }
+            if(commandName.equalsIgnoreCase("changelog")) {
+                processChangelog(icommandsender, commandName, args);
+                return;
+            }
+
             throw new WrongUsageException("eplus " + StringHelper.keySetToString(CommandRegister.commands.keySet()));
         } else {
             throw new WrongUsageException("eplus " + StringHelper.keySetToString(CommandRegister.commands.keySet()));
         }
+    }
+
+    private void processChangelog(ICommandSender icommandsender, String commandName, String[] args)
+    {
+        icommandsender.sendChatToPlayer(String.format("\u00A7e[%s] Changelog for %s", References.MODID, Version.getRecommendedVersion()));
+        for(String line : Version.getChangelog()){
+            icommandsender.sendChatToPlayer(line);
+        }
+
     }
 
     private void processConfigCommand(ICommandSender icommandsender, String commandName, String[] args)
