@@ -2,6 +2,7 @@ package eplus.handlers;
 
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
+import eplus.lib.References;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.EnumSet;
@@ -23,7 +24,8 @@ public class VersionTickHandler implements IScheduledTickHandler
 
         if(Version.versionSeen() && Version.isVersionCheckComplete()) {
             if(Version.hasUpdated()){
-                player.sendChatToPlayer(String.format("[EPLUS]: %s: %s", "Version update is available", Version.getRecommendedVersion()));
+                player.sendChatToPlayer(String.format("[%s]: %s: %s", References.MODID, "Version update is available", Version.getRecommendedVersion()));
+                player.sendChatToPlayer(String.format("[%s]: to view a changelog use: %s", References.MODID, "/eplus changelog"));
             }
         }
         messageSent = true;

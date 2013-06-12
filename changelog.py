@@ -18,17 +18,22 @@ def main():
     args = parser.parse_args()
 
     print("Obtaining version information from git")
-    cmd = "git describe --tags"
+    cmd = "git tag"
     try:
         process = subprocess.Popen(cmdsplit(cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=-1)
-        vers, _ = process.communicate()
+        tags, _ = process.communicate()
     except OSError:
-        vers = "v0.1-0-default"
+        print("Git not found")
 
-    (major, minor, rev, githash) = re.match("v(\d+).(\d+)-(\d+)-(.*)", vers).groups()
+    tagList = tags.split('\n')
+    last = tagList[-3]
+    tag = tagList[-2]
+
+    (majorLast, minorLast) = re.match("v(\d+).(\d+)", last).groups()
+    (major, minor) = re.match("v(\d+).(\d+)", tag).groups()
 
     tag2 = "HEAD"
-    tag1 = "v" + major + "." + minor
+    tag1 = last
 
     if args.verbose:
         print("Obtaining changelog from git")
@@ -58,9 +63,9 @@ def main():
         if not line.startswith('-'): continue
         log.append(line)
 
-    file = open("./resources/changelog", 'wb')
+    file = open("./resources/changelog.txt", 'wb')
     for line in log:
-        file.write('%s\n' % line)
+        file.write('%s\r\n' % line)
     file.close()
 
 
