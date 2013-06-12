@@ -96,6 +96,8 @@ public class GuiModTable extends GuiContainer {
         }
     }
 
+
+
     @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
@@ -317,8 +319,8 @@ public class GuiModTable extends GuiContainer {
         int adjustedMouseY = par2 - guiTop;
 
         mc.renderEngine.bindTexture("/mods/eplus/gui/enchant.png");
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        //GL11.glDisable(GL11.GL_LIGHTING);
+        //GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 

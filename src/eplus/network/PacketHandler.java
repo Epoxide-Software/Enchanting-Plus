@@ -21,9 +21,6 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class PacketHandler implements IPacketHandler
 {
-    static {
-        EnchantingPlus.log.info("Initializing Packet Handler.");
-    }
 
     @Override
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)

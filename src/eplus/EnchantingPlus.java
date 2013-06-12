@@ -1,6 +1,5 @@
 package eplus;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -45,7 +44,7 @@ public class EnchantingPlus
     @Mod.Instance(References.MODID)
     public static EnchantingPlus INSTANCE;
 
-    public static final Logger log = Logger.getLogger(References.MODID);
+    public static Logger log;
     public static final boolean Debug = Boolean.parseBoolean(System.getenv("DEBUG"));
 
     @SidedProxy(clientSide = "eplus.network.proxies.ClientProxy", serverSide = "eplus.network.proxies.CommonProxy")
@@ -54,7 +53,7 @@ public class EnchantingPlus
     @Mod.PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
-        log.setParent(FMLCommonHandler.instance().getFMLLogger());
+        log = event.getModLog();
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
     }
 
