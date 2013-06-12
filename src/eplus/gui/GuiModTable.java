@@ -41,7 +41,7 @@ public class GuiModTable extends GuiContainer {
     private final World world;
     private ArrayList<GuiItem> enchantmentArray = new ArrayList<GuiItem>();
     private double sliderIndex = 0;
-    private int enchantingPages = 0;
+    private double enchantingPages = 0;
     private double sliderY = 0;
     private Map enchantments;
     private boolean clicked = false;
@@ -234,7 +234,7 @@ public class GuiModTable extends GuiContainer {
             item.disabled = enabled[i];
         }
 
-        this.enchantingPages = (int) Math.ceil(enchantmentArray.size() / 4.0);
+        this.enchantingPages = (enchantmentArray.size() / 4.0 > 1) ? enchantmentArray.size() / 4.0 - 1.0 : 0;
         this.totalCost = 0;
 
         if (!enchantmentArray.isEmpty() && levelChanged()) {
