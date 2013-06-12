@@ -29,7 +29,7 @@ def cleanDirs(path):
 
 def main():
     print("Obtaining version information from git")
-    cmd = "git describe --tags"
+    cmd = "git describe --match \"[^(jenkins)]*\" --tags HEAD"
     try:
         process = subprocess.Popen(cmdsplit(cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=-1)
         vers, _ = process.communicate()
