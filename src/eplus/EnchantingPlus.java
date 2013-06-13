@@ -3,6 +3,7 @@ package eplus;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
@@ -13,6 +14,7 @@ import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
 import eplus.handlers.Version;
 import eplus.inventory.TileEnchantTable;
+import eplus.lib.EnchantmentHelp;
 import eplus.lib.References;
 import eplus.network.ConnectionHandler;
 import eplus.network.GuiHandler;
@@ -71,6 +73,11 @@ public class EnchantingPlus
         GameRegistry.registerPlayerTracker(new PlayerTracker());
 
         proxy.registerTickHandlers();
+    }
+
+    @Mod.PostInit
+    public void postInit(FMLPostInitializationEvent event) {
+        EnchantmentHelp.init();
     }
 
     private void registerTileEntity(Class<? extends TileEntity> tileEntity)

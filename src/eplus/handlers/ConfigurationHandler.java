@@ -17,16 +17,14 @@ import java.util.logging.Level;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-public class ConfigurationHandler
-{
+public class ConfigurationHandler {
     public static final String CATEGORY_CLIENT = "client";
     public static final String CATEGORY_SERVER = "server";
     public static final String CATEGORY_BOTH = "both";
 
     public static Configuration configuration;
 
-    public static void init(File suggestedConfigurationFile)
-    {
+    public static void init(File suggestedConfigurationFile) {
         configuration = new Configuration(suggestedConfigurationFile, false);
 
         EnchantingPlus.log.info("Initializing Configurations.");
@@ -80,8 +78,7 @@ public class ConfigurationHandler
         }
     }
 
-    public static void set(String propertyName, String newValue)
-    {
+    public static void set(String propertyName, String newValue) {
         configuration.load();
 
         Set<String> categoryNames = configuration.getCategoryNames();

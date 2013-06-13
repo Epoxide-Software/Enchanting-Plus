@@ -6,6 +6,8 @@ import eplus.helper.MathHelper;
 import eplus.inventory.ContainerEnchantTable;
 import eplus.inventory.TileEnchantTable;
 import eplus.lib.ConfigurationSettings;
+import eplus.lib.EnchantmentHelp;
+import eplus.lib.FontFormat;
 import eplus.lib.GuiIds;
 import eplus.network.packets.EnchantPacket;
 import eplus.network.packets.GuiPacket;
@@ -21,9 +23,7 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Enchanting Plus
@@ -390,6 +390,25 @@ public class GuiModTable extends GuiContainer {
 
         displayText = String.format("Max Enchant Level: %s", container.bookCases());
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + (fontRenderer.FONT_HEIGHT + 10) * 3);
+
+
+        if (isShiftKeyDown() && getItemFromPos(par1, par2) != null) {
+            String name = FontFormat.BOLD + getItemFromPos(par1, par2).getTranslatedName();
+            String info = EnchantmentHelp.getInfo(getItemFromPos(par1, par2).enchantment);
+
+            if (info.isEmpty()) {
+                info = FontFormat.DARKRED + "PLEASE REPORT THIS: Please add: " + getItemFromPos(par1, par2).enchantment.getName();
+            }
+
+            info = FontFormat.PURPLE + info;
+
+            List<String> display = new ArrayList<String>();
+
+            display.add(name);
+            display.addAll(fontRenderer.listFormattedStringToWidth(info, 150));
+
+            drawHoveringText(display, par1, par2, fontRenderer);
+        }
     }
 
     /**
@@ -426,13 +445,7 @@ public class GuiModTable extends GuiContainer {
             this.width = 143;
         }
 
-        /**
-         * Draws the gui item
-         */
-        public void draw()
-        {
-            if (!show) return;
-
+        public String getTranslatedName() {
             String name = enchantment.getTranslatedName(enchantmentLevel);
 
             if (enchantmentLevel == 0) {
@@ -442,10 +455,21 @@ public class GuiModTable extends GuiContainer {
                     name = name.substring(0, name.lastIndexOf(" "));
                 }
             }
+
+            return name;
+        }
+
+
+        /**
+         * Draws the gui item
+         */
+        public void draw() {
+            if (!show) return;
+
             int indexX = (dragging) ? sliderX : (enchantmentLevel <= enchantment.getMaxLevel()) ? (int) (xPos + 1 + (width - 6) * (enchantmentLevel / (double) enchantment.getMaxLevel())) : (xPos + 1 + (width - 6));
 
             drawRect(indexX, yPos + 1, indexX + 5, yPos - 1 + height, 0xff000000);
-            fontRenderer.drawString(name, xPos + 5, yPos + height / 4, 0x55aaff00);
+            fontRenderer.drawString(getTranslatedName(), xPos + 5, yPos + height / 4, 0x55aaff00);
             if (disabled) {
                 drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aaffff);
             } else if (locked) {
@@ -517,6 +541,7 @@ public class GuiModTable extends GuiContainer {
         public GuiIcon(int id, int x, int y, int width, int height, String caption)
         {
             super(id, x, y, width, height, caption);
+
         }
 
         @Override
