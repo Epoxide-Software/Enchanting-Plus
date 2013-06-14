@@ -11,22 +11,22 @@ import java.util.Map;
  */
 public class EnchantmentHelp {
 
-    private static Map<Enchantment, String> enchantments = new HashMap<Enchantment, String>();
+    private static Map<String, String> enchantments = new HashMap<String, String>();
 
     public static String getInfo(Enchantment enchant) {
-        return (enchantments.containsKey(enchant)) ? enchantments.get(enchant) : "";
+        return (enchantments.containsKey(enchant.getName())) ? enchantments.get(enchant.getName()) : "";
     }
 
-    public static void put(Enchantment enchantment, String info) {
-        enchantments.put(enchantment, info);
+    public static boolean put(Enchantment enchantment, String info) {
+        return put(enchantment.getName(), info);
     }
 
-    public static void put(String enchantment, String info) {
-        for (Enchantment enchant : Enchantment.enchantmentsList) {
-            if (enchant != null && enchant.getName().equals(enchantment)) {
-                enchantments.put(enchant, info);
-            }
+    public static boolean put(String enchantment, String info) {
+        if (!enchantments.containsKey(enchantment)) {
+            enchantments.put(enchantment, info);
+            return true;
         }
+        return false;
     }
 
     public static void init() {
@@ -60,14 +60,5 @@ public class EnchantmentHelp {
         put(Enchantment.punch, "Increases knockback");
         put(Enchantment.flame, "Flaming arrows");
         put(Enchantment.infinity, "Shooting consumes no arrows");
-
-        //Thaumcraft3
-        put("enchantment.repair", "Consumes vis from the local aura to repair the item with this enchantment");
-        put("enchantment.charging", "Allows your \"Tool\" and \"Weapon\" wands to recharge from the local aura.");
-        put("enchantment.frugal", "Wand equivalent of unbreaking.");
-        put("enchantment.potency", "Increases damage or range that wands have.");
-        put("enchantment.haste", "Usable on boots and the Thaumostatic Harness only. Makes you move faster. Very effective on Boots of the Traveller, or the Thaumostatic Harness.");
-
-
     }
 }
