@@ -57,7 +57,13 @@ public class ContainerEnchantTable extends Container {
             this.addSlotToContainer(new Slot(par1InventoryPlayer, l, 17 + l * 18, 149));
         }
 
-        this.putStackInSlot(0, tileEnchantTable.itemInTable);
+        // Will drop items saved in the table.
+        if (tileEnchantTable.itemInTable != null) {
+            par1InventoryPlayer.player.dropPlayerItem(tileEnchantTable.itemInTable);
+            tileEnchantTable.itemInTable = null;
+        }
+
+        //this.putStackInSlot(0, tileEnchantTable.itemInTable);
     }
 
     @Override
