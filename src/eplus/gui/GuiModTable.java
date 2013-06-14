@@ -23,7 +23,10 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Enchanting Plus
@@ -328,6 +331,8 @@ public class GuiModTable extends GuiContainer {
         if (tempY <= 0) tempY = 0;
         if (tempY >= 57) tempY = 57;
         sliderIndex = (sliding) ? MathHelper.round((tempY / 57D), .25) : sliderIndex;
+
+        if(sliderIndex >= enchantingPages) sliderIndex = enchantingPages;
 
         sliderY = (sliding) ? tempY : 57 * (sliderIndex / enchantingPages);
 
