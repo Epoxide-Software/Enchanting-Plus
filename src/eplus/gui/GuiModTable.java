@@ -412,7 +412,7 @@ public class GuiModTable extends GuiContainer {
             display.add(name);
             display.addAll(fontRenderer.listFormattedStringToWidth(info, 150));
 
-            drawHoveringText(display, par1, par2, fontRenderer);
+            super.drawHoveringText(display, par1, par2, fontRenderer);
         }
     }
 
