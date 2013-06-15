@@ -377,25 +377,32 @@ public class GuiModTable extends GuiContainer {
             fontRenderer.drawString(String.format("Enchanting cost: %s", totalCost), 5, 5, 0xffaabbaa);
             fontRenderer.drawString(String.format("Book case: %s", container.bookCases()), 5, 15, 0xffaabbaa);
         }
-        String displayText = String.format("Player XP Level: %s", player.experienceLevel);
-        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + fontRenderer.FONT_HEIGHT + 8);
+        int maxWidth = guiLeft - 20;
+        List<List> information = new ArrayList<List>();
+        information.add(fontRenderer.listFormattedStringToWidth(String.format("Player XP Level: %s", player.experienceLevel), maxWidth));
 
         if (container.tableInventory
                 .getStackInSlot(0) == null || levelChanged() || !levelChanged() && !container.tableInventory
                 .getStackInSlot(0)
                 .isItemDamaged()) {
-            displayText = String.format("Enchanting Cost: %s", totalCost);
+            information.add(fontRenderer.listFormattedStringToWidth(String.format("Enchanting Cost: %s", totalCost), maxWidth));
         } else if (ConfigurationSettings.AllowRepair && !levelChanged() && container.tableInventory
                 .getStackInSlot(0)
                 .isItemDamaged()) {
-            displayText = String.format("Repair Cost: %s", totalCost);
-
+            information.add(fontRenderer.listFormattedStringToWidth(String.format("Repair Cost: %s", totalCost), maxWidth));
         }
-        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + (fontRenderer.FONT_HEIGHT + 10) * 2);
+        information.add(fontRenderer.listFormattedStringToWidth(String.format("Max Enchant Level: %s", container.bookCases()), maxWidth));
 
-        displayText = String.format("Max Enchant Level: %s", container.bookCases());
-        drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + (fontRenderer.FONT_HEIGHT + 10) * 3);
+        for (List display : information) {
+            int height = (information.indexOf(display) == 0) ? guiTop + (fontRenderer.FONT_HEIGHT + 8) : guiTop + (fontRenderer.FONT_HEIGHT + 8) * (information.indexOf(display) + 1);
+            if (information.indexOf(display) > 0) {
+                for (int i = information.indexOf(display) - 1; i >= 0; i--) {
+                    height += (fontRenderer.FONT_HEIGHT + 3) * (information.get(i).size() - 1);
+                }
+            }
 
+            super.drawHoveringText(display, guiLeft - 20 - maxWidth, height, fontRenderer);
+        }
 
         if (isShiftKeyDown() && getItemFromPos(par1, par2) != null) {
             String name = FontFormat.BOLD + getItemFromPos(par1, par2).getTranslatedName();
