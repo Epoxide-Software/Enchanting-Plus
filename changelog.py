@@ -29,8 +29,8 @@ def main():
     last = tagList[-3]
     tag = tagList[-2]
 
-    (majorLast, minorLast) = re.match("v(\d+).(\d+)", last).groups()
-    (major, minor) = re.match("v(\d+).(\d+)", tag).groups()
+    (majorLast, minorLast, _) = re.match(r"v(\d+).(\d+(\.\d+|\w)?)", last).groups()
+    (major, minor, _) = re.match(r"v(\d+).(\d+(\.\d+|\w)?)", tag).groups()
 
     tag2 = "HEAD"
     tag1 = last

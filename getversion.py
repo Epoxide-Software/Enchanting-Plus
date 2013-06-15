@@ -36,7 +36,7 @@ def main():
     except OSError:
         print("Git not found")
         vers = "v1.0-0-deadbeef"
-    (major, minor, rev, githash) = re.match("v(\d+).(\d+)-(\d+)-(.*)", vers).groups()
+    (major, minor, _, rev, githash) = re.match(r"v(\d+).(\d+(\.\d+|\w)?)-(\d+)-(.*)", vers).groups()
 
     if os.getenv("GIT_BRANCH") is None:
         cmd = "git rev-parse --abbrev-ref HEAD"
