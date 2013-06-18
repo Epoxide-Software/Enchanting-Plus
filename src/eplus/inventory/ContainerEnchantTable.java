@@ -3,6 +3,7 @@ package eplus.inventory;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.helper.EnchantHelper;
 import eplus.lib.ConfigurationSettings;
+import eplus.lib.EnchantmentHelp;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -117,13 +118,13 @@ public class ContainerEnchantTable extends Container {
 
         HashMap<Integer, Integer> temp = new LinkedHashMap<Integer, Integer>();
 
-        if (itemStack != null) {
+        if (itemStack != null && !EnchantmentHelp.isBlackListed(itemStack.getItem())) {
             if (EnchantHelper.isItemEnchanted(itemStack)) {
                 temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
             }
             if (EnchantHelper.isItemEnchantable(itemStack)) {
                 for (Enchantment obj : Enchantment.enchantmentsList) {
-                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj)) {
+                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && !EnchantmentHelp.isBlackListed(obj)) {
                         temp.put(obj.effectId, 0);
                     }
                 }
@@ -136,7 +137,7 @@ public class ContainerEnchantTable extends Container {
                             add = false;
                         }
                     }
-                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && add) {
+                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && add && !EnchantmentHelp.isBlackListed(obj)) {
                         temp.put(obj.effectId, 0);
                     }
                 }

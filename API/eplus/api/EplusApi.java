@@ -2,9 +2,11 @@ package eplus.api;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,5 +56,93 @@ public class EplusApi {
         tagCompound.setTag("Enchantments", nbtTagList);
 
         FMLInterModComms.sendMessage("eplus", "enchant-tooltip", tagCompound);
+    }
+
+    /**
+     * Add an enchantment to not show up in the enchanting interface
+     *
+     * @param enchantment Enchantment object to blacklist
+     */
+    public static void addEnchantmentToBlackList(Enchantment enchantment) {
+        addEnchantmentToBlackList(enchantment.getName());
+    }
+
+    /**
+     * String version of {@link #addEnchantmentToBlackList(net.minecraft.enchantment.Enchantment)}
+     *
+     * @param enchantmentName Name of enchantment to blacklist
+     */
+    public static void addEnchantmentToBlackList(String enchantmentName) {
+        FMLInterModComms.sendMessage("eplus", "blacklist-enchantment", enchantmentName);
+    }
+
+    /**
+     * List version of {@link #addEnchantmentToBlackList(net.minecraft.enchantment.Enchantment)}
+     *
+     * @param enchantments List of enchantments to blacklist
+     */
+    public static void addEnchantmentToBlackList(List<?> enchantments) {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        NBTTagList nbtTagList = new NBTTagList();
+
+        for (Object enchant : enchantments) {
+            String name = "";
+            if (Enchantment.class.isAssignableFrom(enchant.getClass())) {
+                name = ((Enchantment) enchant).getName();
+            } else if (String.class.isAssignableFrom(enchant.getClass())) {
+                name = enchant.toString();
+            }
+
+            NBTTagCompound tagCompound1 = new NBTTagCompound();
+            tagCompound1.setString("Name", name);
+            nbtTagList.appendTag(tagCompound1);
+        }
+        tagCompound.setTag("Enchantments", nbtTagList);
+
+        FMLInterModComms.sendMessage("eplus", "blacklist-enchantment", tagCompound);
+    }
+
+    /**
+     * Adds item to being able not to be used in the enchanting interface
+     *
+     * @param item Item object to blacklist
+     */
+    public static void addItemToBlackList(Item item) {
+        addItemToBlackList(item.itemID);
+    }
+
+    /**
+     * Integer version of {@link #addItemToBlackList(net.minecraft.item.Item)}
+     *
+     * @param itemId Item Id to blacklist
+     */
+    public static void addItemToBlackList(Integer itemId) {
+        FMLInterModComms.sendMessage("eplus", "blacklist-item", String.valueOf(itemId));
+    }
+
+    /**
+     * List version of {@link #addItemToBlackList(net.minecraft.item.Item)}
+     *
+     * @param items List of items to blacklist
+     */
+    public static void addItemToBlackList(List<?> items) {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        NBTTagList nbtTagList = new NBTTagList();
+
+        for (Object item : items) {
+            int itemId = 0;
+            if (Item.class.isAssignableFrom(item.getClass())) {
+                itemId = ((Item) item).itemID;
+            } else if (Integer.class.isAssignableFrom(item.getClass())) {
+                itemId = (Integer.getInteger(String.valueOf(item)));
+            }
+
+            NBTTagCompound tagCompound1 = new NBTTagCompound();
+            tagCompound1.setString("itemId", String.valueOf(itemId));
+            nbtTagList.appendTag(tagCompound1);
+        }
+        tagCompound.setTag("items", nbtTagList);
+
+        FMLInterModComms.sendMessage("eplus", "blacklist-item", tagCompound);
     }
 }

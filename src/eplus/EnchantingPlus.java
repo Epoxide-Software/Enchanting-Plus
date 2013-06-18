@@ -5,7 +5,9 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.ItemData;
 import eplus.blocks.Blocks;
 import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
@@ -25,6 +27,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -52,6 +56,7 @@ public class EnchantingPlus
 
     @SidedProxy(clientSide = "eplus.network.proxies.ClientProxy", serverSide = "eplus.network.proxies.CommonProxy")
     public static CommonProxy proxy;
+    public static Map<Integer, String> itemMap = new HashMap<Integer, String>();
 
     @Mod.PreInit
     public void preInit(FMLPreInitializationEvent event)
@@ -62,6 +67,13 @@ public class EnchantingPlus
 
         Version.check();
         event.getModMetadata().version = Version.getCurrentModVersion();
+
+        NBTTagList list = new NBTTagList();
+        GameData.writeItemData(list);
+        for (int i = 0; i < list.tagCount(); i++) {
+            ItemData itemData = new ItemData((NBTTagCompound) list.tagAt(i));
+            this.itemMap.put(itemData.getItemId(), itemData.getModId());
+        }
 
         PluginHandler.init(event.getAsmData().getAll(EplusPlugin.class.getCanonicalName()));
         PluginHandler.initPlugins(event.getModState());
@@ -104,7 +116,7 @@ public class EnchantingPlus
             if (imcMessage.key.equalsIgnoreCase("enchant-tooltip")) {
                 if (imcMessage.isStringMessage()) {
                     String[] strings = imcMessage.getStringValue().split(":");
-                    if (EnchantmentHelp.put(strings[0], strings[1])) {
+                    if (EnchantmentHelp.putToolTips(strings[0], strings[1])) {
                         EnchantingPlus.log.info(String.format("Add custom enchantment tool-tip for %s. Request sent from %s", strings[0], imcMessage.getSender()));
                     }
                 } else if (imcMessage.isNBTMessage()) {
@@ -115,8 +127,48 @@ public class EnchantingPlus
                         NBTTagCompound nbtBase = (NBTTagCompound) enchantments.tagAt(i);
                         String name = nbtBase.getString("Name");
                         String description = nbtBase.getString("Description");
-                        if (EnchantmentHelp.put(name, description)) {
+                        if (EnchantmentHelp.putToolTips(name, description)) {
                             EnchantingPlus.log.info(String.format("Add custom enchantment tool-tip for %s. Request sent from %s", name, imcMessage.getSender()));
+                        }
+                    }
+                } else {
+                    EnchantingPlus.log.warning(String.format("Invalid IMC Message from %s", imcMessage.getSender()));
+                }
+            } else if (imcMessage.key.equalsIgnoreCase("blacklist-enchantment")) {
+                if (imcMessage.isStringMessage()) {
+                    String string = imcMessage.getStringValue();
+                    if (EnchantmentHelp.putBlackList(string)) {
+                        EnchantingPlus.log.info(String.format("Add custom enchantment blacklist for %s. Request sent from %s", string, imcMessage.getSender()));
+                    }
+                } else if (imcMessage.isNBTMessage()) {
+                    NBTTagCompound nbtValue = imcMessage.getNBTValue();
+                    NBTTagList enchantments = nbtValue.getTagList("Enchantments");
+
+                    for (int i = 0; i < enchantments.tagCount(); i++) {
+                        NBTTagCompound nbtBase = (NBTTagCompound) enchantments.tagAt(i);
+                        String name = nbtBase.getString("Name");
+                        if (EnchantmentHelp.putBlackList(name)) {
+                            EnchantingPlus.log.info(String.format("Add custom enchantment blacklist for %s. Request sent from %s", name, imcMessage.getSender()));
+                        }
+                    }
+                } else {
+                    EnchantingPlus.log.warning(String.format("Invalid IMC Message from %s", imcMessage.getSender()));
+                }
+            } else if (imcMessage.key.equalsIgnoreCase("blacklist-item")) {
+                if (imcMessage.isStringMessage()) {
+                    Integer itemId = Integer.valueOf(imcMessage.getStringValue());
+                    if (EnchantmentHelp.putBlackListItem(itemId)) {
+                        EnchantingPlus.log.info(String.format("Add custom item blacklist for item id %d. Request sent from %s", itemId, imcMessage.getSender()));
+                    }
+                } else if (imcMessage.isNBTMessage()) {
+                    NBTTagCompound nbtValue = imcMessage.getNBTValue();
+                    NBTTagList enchantments = nbtValue.getTagList("items");
+
+                    for (int i = 0; i < enchantments.tagCount(); i++) {
+                        NBTTagCompound nbtBase = (NBTTagCompound) enchantments.tagAt(i);
+                        Integer itemId = Integer.valueOf(nbtBase.getString("itemId"));
+                        if (EnchantmentHelp.putBlackListItem(itemId)) {
+                            EnchantingPlus.log.info(String.format("Add custom item blacklist for item id %d. Request sent from %s", itemId, imcMessage.getSender()));
                         }
                     }
                 } else {

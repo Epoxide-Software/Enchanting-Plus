@@ -322,7 +322,7 @@ public class GuiModTable extends GuiContainer {
         int adjustedMouseY = par2 - guiTop;
 
         mc.renderEngine.bindTexture("/mods/eplus/gui/enchant.png");
-        //GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_LIGHTING);
         //GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -406,7 +406,7 @@ public class GuiModTable extends GuiContainer {
 
         if (isShiftKeyDown() && getItemFromPos(par1, par2) != null) {
             String name = FontFormat.BOLD + getItemFromPos(par1, par2).getTranslatedName();
-            String info = EnchantmentHelp.getInfo(getItemFromPos(par1, par2).enchantment);
+            String info = EnchantmentHelp.getToolTip(getItemFromPos(par1, par2).enchantment);
 
             if (info.isEmpty()) {
                 info = FontFormat.DARKRED + "PLEASE REPORT THIS: Please add: " + getItemFromPos(par1, par2).enchantment.getName();

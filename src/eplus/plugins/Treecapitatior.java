@@ -12,6 +12,6 @@ public class Treecapitatior {
     @EplusPlugin.PreInit
     public void preInit()
     {
-        EplusApi.addCustomEnchantmentToolTip("Treecapitating", "Allows axe's not in the config to chop down trees Treecapitator style.");
+        EplusApi.addCustomEnchantmentToolTip("Treecapitating", "Allows axes not in the config to chop down trees Treecapitator style.");
     }
 }
