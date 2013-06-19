@@ -153,6 +153,7 @@ public class EplusApi {
 
 
     static Class EnchantmentHelp;
+    static Method ToolTip;
 
     /**
      * Gets the string description for an enchantment
@@ -166,9 +167,11 @@ public class EplusApi {
                 EnchantmentHelp = Class.forName("eplus.lib.EnchantmentHelp");
             }
 
-            Method method = EnchantmentHelp.getMethod("getToolTip", net.minecraft.enchantment.Enchantment.class);
+            if (ToolTip == null) {
+                ToolTip = EnchantmentHelp.getMethod("getToolTip", net.minecraft.enchantment.Enchantment.class);
+            }
 
-            return String.valueOf(method.invoke(getMainInstance(), enchantment));
+            return String.valueOf(ToolTip.invoke(getMainInstance(), enchantment));
 
         } catch (Exception e) {
             return "";
@@ -177,6 +180,7 @@ public class EplusApi {
 
     static Class EnchantingPlus;
     static Field EnchantingPlusInstance;
+    static Object EnchantingPlusObject;
 
     /**
      * Gets the instance of Enchanting plus currently running.
@@ -191,7 +195,11 @@ public class EplusApi {
             if (EnchantingPlusInstance == null) {
                 EnchantingPlusInstance = EnchantingPlus.getField("eplus.EnchantingPlus.INSTANCE");
             }
-            return EnchantingPlusInstance.get(null);
+            if (EnchantingPlusObject == null) {
+                EnchantingPlusObject = EnchantingPlusInstance.get(null);
+            }
+
+            return EnchantingPlusObject;
 
         } catch (Exception e) {
             return null;
