@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ import java.util.Map;
 public class EplusApi {
     /**
      * Registers the custom enchantment to be rendered as a tool-tip
+     *
      * @param enchantment Enchantment object to be registered
      * @param description Description to be show on the too-tip
      */
@@ -25,8 +28,9 @@ public class EplusApi {
 
     /**
      * String version of {@link #addCustomEnchantmentToolTip(net.minecraft.enchantment.Enchantment, String)}
-     * @param enchantmentName  Simple name of enchantment
-     * @param description Description to be show on the too-tip
+     *
+     * @param enchantmentName Simple name of enchantment
+     * @param description     Description to be show on the too-tip
      */
     public static void addCustomEnchantmentToolTip(String enchantmentName, String description) {
         FMLInterModComms.sendMessage("eplus", "enchant-tooltip", enchantmentName + ":" + description);
@@ -34,6 +38,7 @@ public class EplusApi {
 
     /**
      * Map version of {@link #addCustomEnchantmentToolTip(net.minecraft.enchantment.Enchantment, String)}
+     *
      * @param enchantments map of enchantments
      */
     public static void addCustomEnchantmentToolTip(Map<?, String> enchantments) {
@@ -144,5 +149,52 @@ public class EplusApi {
         tagCompound.setTag("items", nbtTagList);
 
         FMLInterModComms.sendMessage("eplus", "blacklist-item", tagCompound);
+    }
+
+
+    static Class EnchantmentHelp;
+
+    /**
+     * Gets the string description for an enchantment
+     *
+     * @param enchantment Enchantment object to get
+     * @return String description
+     */
+    public static String getEnchantmentToolTip(Enchantment enchantment) {
+        try {
+            if (EnchantmentHelp == null) {
+                EnchantmentHelp = Class.forName("eplus.lib.EnchantmentHelp");
+            }
+
+            Method method = EnchantmentHelp.getMethod("getToolTip", net.minecraft.enchantment.Enchantment.class);
+
+            return String.valueOf(method.invoke(getMainInstance(), enchantment));
+
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    static Class EnchantingPlus;
+    static Field EnchantingPlusInstance;
+
+    /**
+     * Gets the instance of Enchanting plus currently running.
+     *
+     * @return EnchantingPlus object or null
+     */
+    public static Object getMainInstance() {
+        try {
+            if (EnchantingPlus == null) {
+                EnchantingPlus = Class.forName("eplus.EnchantingPlus");
+            }
+            if (EnchantingPlusInstance == null) {
+                EnchantingPlusInstance = EnchantingPlus.getField("eplus.EnchantingPlus.INSTANCE");
+            }
+            return EnchantingPlusInstance.get(null);
+
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
