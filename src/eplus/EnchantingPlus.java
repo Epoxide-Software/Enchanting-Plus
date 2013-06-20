@@ -11,6 +11,7 @@ import cpw.mods.fml.common.registry.ItemData;
 import eplus.blocks.Blocks;
 import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
+import eplus.handlers.LanguageHandler;
 import eplus.handlers.PluginHandler;
 import eplus.handlers.Version;
 import eplus.inventory.TileEnchantTable;
@@ -77,6 +78,10 @@ public class EnchantingPlus
 
         PluginHandler.init(event.getAsmData().getAll(EplusPlugin.class.getCanonicalName()));
         PluginHandler.initPlugins(event.getModState());
+
+        //Strings.buildDefaultXML("en_US");
+        LanguageHandler.getInstance().addLanguages("/mods/eplus/lang/langs.txt");
+        LanguageHandler.getInstance().loadLangauges();
     }
 
     @Mod.Init

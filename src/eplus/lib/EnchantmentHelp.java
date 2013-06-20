@@ -59,35 +59,35 @@ public class EnchantmentHelp {
     }
 
     public static void init() {
-        putToolTips(Enchantment.unbreaking, "Increases durability");
+        putToolTips(Enchantment.unbreaking, Strings.enchantmentUnbreaking);
 
         //Armour
-        putToolTips(Enchantment.thorns, "Chance of dealing damage to mobs or players attacking the wearer");
-        putToolTips(Enchantment.aquaAffinity, "Increases underwater mining rate");
-        putToolTips(Enchantment.respiration, "Decreases the rate of air loss underwater; increases time between damage while suffocating and drowning");
-        putToolTips(Enchantment.projectileProtection, "Protection against damage from projectile entities");
-        putToolTips(Enchantment.blastProtection, "Protection against explosion damage; reduces explosion recoil");
-        putToolTips(Enchantment.featherFalling, "Protection against fall damage");
-        putToolTips(Enchantment.fireProtection, "Protection against fire damage; fire is extinguished faster");
-        putToolTips(Enchantment.protection, "Reduces damage from all sources");
+        putToolTips(Enchantment.thorns, Strings.enchantmentThorns);
+        putToolTips(Enchantment.aquaAffinity, Strings.enchantmentAquaAffinity);
+        putToolTips(Enchantment.respiration, Strings.enchantmentRespiration);
+        putToolTips(Enchantment.projectileProtection, Strings.enchantmentProtectionProjectile);
+        putToolTips(Enchantment.blastProtection, Strings.enchantmentProtectionBlast);
+        putToolTips(Enchantment.featherFalling, Strings.enchantmentFeatherFalling);
+        putToolTips(Enchantment.fireProtection, Strings.enchantmentProtectionFire);
+        putToolTips(Enchantment.protection, Strings.enchantmentProtection);
 
         //Weapons
-        putToolTips(Enchantment.sharpness, "Extra damage");
-        putToolTips(Enchantment.smite, "Extra damage to undead mobs");
-        putToolTips(Enchantment.baneOfArthropods, "Extra damage to spiders, cave spiders and silverfish");
-        putToolTips(Enchantment.knockback, "Increases knockback");
-        putToolTips(Enchantment.fireAspect, "Lights the target on fire");
-        putToolTips(Enchantment.looting, "Mobs can drop more loot");
+        putToolTips(Enchantment.sharpness, Strings.enchantmentSharpness);
+        putToolTips(Enchantment.smite, Strings.enchantmentSmite);
+        putToolTips(Enchantment.baneOfArthropods, Strings.enchantmentBaneOfAthropods);
+        putToolTips(Enchantment.knockback, Strings.enchantmentKnockBack);
+        putToolTips(Enchantment.fireAspect, Strings.enchantmentFireAspect);
+        putToolTips(Enchantment.looting, Strings.enchantmentLooting);
 
         //Tools
-        putToolTips(Enchantment.efficiency, "Faster resource gathering while in use");
-        putToolTips(Enchantment.silkTouch, "Mined blocks will drop themselves instead of the item(s) it should drop");
-        putToolTips(Enchantment.fortune, "Increases the drop rate of items from blocks");
+        putToolTips(Enchantment.efficiency, Strings.enchantmentEfficiency);
+        putToolTips(Enchantment.silkTouch, Strings.enchantmentSilkTouch);
+        putToolTips(Enchantment.fortune, Strings.enchantmentFortune);
 
         //Bows
-        putToolTips(Enchantment.power, "Increases damage");
-        putToolTips(Enchantment.punch, "Increases knockback");
-        putToolTips(Enchantment.flame, "Flaming arrows");
-        putToolTips(Enchantment.infinity, "Shooting consumes no arrows");
+        putToolTips(Enchantment.power, Strings.enchantmentPower);
+        putToolTips(Enchantment.punch, Strings.enchantmentPunch);
+        putToolTips(Enchantment.flame, Strings.enchantmentFlame);
+        putToolTips(Enchantment.infinity, Strings.enchantmentInfinity);
     }
 }

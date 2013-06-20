@@ -5,10 +5,7 @@ import eplus.EnchantingPlus;
 import eplus.helper.MathHelper;
 import eplus.inventory.ContainerEnchantTable;
 import eplus.inventory.TileEnchantTable;
-import eplus.lib.ConfigurationSettings;
-import eplus.lib.EnchantmentHelp;
-import eplus.lib.FontFormat;
-import eplus.lib.GuiIds;
+import eplus.lib.*;
 import eplus.network.packets.EnchantPacket;
 import eplus.network.packets.GuiPacket;
 import eplus.network.packets.RepairPacket;
@@ -52,8 +49,7 @@ public class GuiModTable extends GuiContainer {
     private int totalCost = 0;
     private boolean dirty = false;
 
-    public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z, TileEnchantTable tileEntity)
-    {
+    public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z, TileEnchantTable tileEntity) {
         super(new ContainerEnchantTable(inventory, world, x, y, z, tileEntity));
         this.player = inventory.player;
 
@@ -70,8 +66,7 @@ public class GuiModTable extends GuiContainer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void initGui()
-    {
+    public void initGui() {
         super.initGui();
         this.buttonList.add(new GuiIcon(0, guiLeft + 9, guiTop + 40, "E").customTexture(0));
         this.buttonList.add(new GuiIcon(1, guiLeft + 9, guiTop + 60, "R").customTexture(0));
@@ -83,8 +78,7 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
-    {
+    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 
         mc.renderEngine.bindTexture("/mods/eplus/gui/enchant.png");
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -100,10 +94,8 @@ public class GuiModTable extends GuiContainer {
     }
 
 
-
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
-    {
+    protected void actionPerformed(GuiButton par1GuiButton) {
         HashMap<Integer, Integer> enchants = new HashMap<Integer, Integer>();
 
         for (GuiItem item : enchantmentArray) {
@@ -138,8 +130,7 @@ public class GuiModTable extends GuiContainer {
      * @param y   starting y position
      * @return the arraylist of gui items
      */
-    private ArrayList<GuiItem> convertMapToGuiItems(Map map, int x, int y)
-    {
+    private ArrayList<GuiItem> convertMapToGuiItems(Map map, int x, int y) {
         ArrayList<GuiItem> temp = new ArrayList<GuiItem>();
 
         int i = 0;
@@ -159,8 +150,7 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    public void handleMouseInput()
-    {
+    public void handleMouseInput() {
         super.handleMouseInput();
 
         int eventDWheel = Mouse.getEventDWheel();
@@ -183,8 +173,7 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    public void updateScreen()
-    {
+    public void updateScreen() {
         super.updateScreen();
 
         //TODO fix http://mantis.aesireanempire.com/view.php?id=1
@@ -267,8 +256,7 @@ public class GuiModTable extends GuiContainer {
         }
     }
 
-    protected boolean levelChanged()
-    {
+    protected boolean levelChanged() {
         for (GuiItem item : enchantmentArray) {
             if (item.enchantmentLevel != item.privateLevel) {
                 return true;
@@ -278,8 +266,7 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int par3)
-    {
+    protected void mouseClicked(int x, int y, int par3) {
         super.mouseClicked(x, y, par3);
 
         GuiItem itemFromPos = getItemFromPos(x, y);
@@ -300,8 +287,7 @@ public class GuiModTable extends GuiContainer {
      * @param y mouse y position
      * @return the GuiItem found
      */
-    private GuiItem getItemFromPos(int x, int y)
-    {
+    private GuiItem getItemFromPos(int x, int y) {
         if (x < guiLeft + 35 || x > guiLeft + xSize - 32) return null;
 
         for (GuiItem item : enchantmentArray) {
@@ -314,8 +300,7 @@ public class GuiModTable extends GuiContainer {
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3)
-    {
+    public void drawScreen(int par1, int par2, float par3) {
         super.drawScreen(par1, par2, par3);
 
         int adjustedMouseX = par1 - guiLeft;
@@ -332,7 +317,7 @@ public class GuiModTable extends GuiContainer {
         if (tempY >= 57) tempY = 57;
         sliderIndex = (sliding) ? MathHelper.round((tempY / 57D), .25) : sliderIndex;
 
-        if(sliderIndex >= enchantingPages) sliderIndex = enchantingPages;
+        if (sliderIndex >= enchantingPages) sliderIndex = enchantingPages;
 
         sliderY = (sliding) ? tempY : 57 * (sliderIndex / enchantingPages);
 
@@ -374,24 +359,24 @@ public class GuiModTable extends GuiContainer {
             }
         }
         if (EnchantingPlus.Debug) {
-            fontRenderer.drawString(String.format("Enchanting cost: %s", totalCost), 5, 5, 0xffaabbaa);
+            fontRenderer.drawString(String.format("%s: %s", Strings.enchantingCost, totalCost), 5, 5, 0xffaabbaa);
             fontRenderer.drawString(String.format("Book case: %s", container.bookCases()), 5, 15, 0xffaabbaa);
         }
         int maxWidth = guiLeft - 20;
         List<List> information = new ArrayList<List>();
-        information.add(fontRenderer.listFormattedStringToWidth(String.format("Player XP Level: %s", player.experienceLevel), maxWidth));
+        information.add(fontRenderer.listFormattedStringToWidth(String.format("%s: %s", Strings.playerLevel, player.experienceLevel), maxWidth));
 
         if (container.tableInventory
                 .getStackInSlot(0) == null || levelChanged() || !levelChanged() && !container.tableInventory
                 .getStackInSlot(0)
                 .isItemDamaged()) {
-            information.add(fontRenderer.listFormattedStringToWidth(String.format("Enchanting Cost: %s", totalCost), maxWidth));
+            information.add(fontRenderer.listFormattedStringToWidth(String.format("%s: %s", Strings.enchantingCost, totalCost), maxWidth));
         } else if (ConfigurationSettings.AllowRepair && !levelChanged() && container.tableInventory
                 .getStackInSlot(0)
                 .isItemDamaged()) {
-            information.add(fontRenderer.listFormattedStringToWidth(String.format("Repair Cost: %s", totalCost), maxWidth));
+            information.add(fontRenderer.listFormattedStringToWidth(String.format("%s: %s", Strings.repairCost,totalCost), maxWidth));
         }
-        information.add(fontRenderer.listFormattedStringToWidth(String.format("Max Enchant Level: %s", container.bookCases()), maxWidth));
+        information.add(fontRenderer.listFormattedStringToWidth(String.format("%s: %s", Strings.maxEnchantLevel, container.bookCases()), maxWidth));
 
         for (List display : information) {
             int height = (information.indexOf(display) == 0) ? guiTop + (fontRenderer.FONT_HEIGHT + 8) : guiTop + (fontRenderer.FONT_HEIGHT + 8) * (information.indexOf(display) + 1);
@@ -409,7 +394,7 @@ public class GuiModTable extends GuiContainer {
             String info = EnchantmentHelp.getToolTip(getItemFromPos(par1, par2).enchantment);
 
             if (info.isEmpty()) {
-                info = FontFormat.DARKRED + "PLEASE REPORT THIS: Please add: " + getItemFromPos(par1, par2).enchantment.getName();
+                info = FontFormat.DARKRED + String.format("%s ", Strings.errorToolTip) + getItemFromPos(par1, par2).enchantment.getName();
             }
 
             info = FontFormat.PURPLE + info;
@@ -443,8 +428,7 @@ public class GuiModTable extends GuiContainer {
         private int sliderX;
         private boolean disabled;
 
-        public GuiItem(int id, int level, int x, int y)
-        {
+        public GuiItem(int id, int level, int x, int y) {
             this.enchantment = Enchantment.enchantmentsList[id];
             this.enchantmentLevel = level;
             this.privateLevel = level;
@@ -496,8 +480,7 @@ public class GuiModTable extends GuiContainer {
          *
          * @param xPos the xPost of the mouse to scroll to
          */
-        public void scroll(int xPos)
-        {
+        public void scroll(int xPos) {
             if (disabled) return;
             sliderX = xPos + guiLeft + 36;
             if (sliderX <= guiLeft + 36) sliderX = guiLeft + 36;
@@ -526,8 +509,7 @@ public class GuiModTable extends GuiContainer {
          *
          * @param b true to show | false to hide
          */
-        public void show(boolean b)
-        {
+        public void show(boolean b) {
             this.show = b;
         }
 
@@ -536,8 +518,7 @@ public class GuiModTable extends GuiContainer {
          *
          * @param mouseButton which mouse button clicked the item (0 - Left, 1 - Right)
          */
-        public void handleClick(int mouseButton)
-        {
+        public void handleClick(int mouseButton) {
         }
     }
 
@@ -545,20 +526,17 @@ public class GuiModTable extends GuiContainer {
         private boolean customTexture;
         private int textureIndex;
 
-        public GuiIcon(int id, int x, int y, String caption)
-        {
+        public GuiIcon(int id, int x, int y, String caption) {
             this(id, x, y, 16, 16, caption);
         }
 
-        public GuiIcon(int id, int x, int y, int width, int height, String caption)
-        {
+        public GuiIcon(int id, int x, int y, int width, int height, String caption) {
             super(id, x, y, width, height, caption);
 
         }
 
         @Override
-        public void drawButton(Minecraft mc, int x, int y)
-        {
+        public void drawButton(Minecraft mc, int x, int y) {
             if (!customTexture) {
                 super.drawButton(mc, x, y);
             } else {
@@ -576,8 +554,7 @@ public class GuiModTable extends GuiContainer {
          * @param texture index of the Texture
          * @return the Icon with according changes
          */
-        public GuiIcon customTexture(int texture)
-        {
+        public GuiIcon customTexture(int texture) {
             this.textureIndex = texture;
             this.customTexture = texture != 0;
             if (!customTexture) {
@@ -588,8 +565,7 @@ public class GuiModTable extends GuiContainer {
             return this;
         }
 
-        public GuiIcon enabled(boolean enabled)
-        {
+        public GuiIcon enabled(boolean enabled) {
             this.enabled = enabled;
             return this;
         }
