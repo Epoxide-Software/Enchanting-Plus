@@ -217,7 +217,7 @@ public class ContainerEnchantTable extends Container {
             }
         }
 
-        if (cost != serverCost) return;
+        if (cost != serverCost) throw new Exception("Cost is different on client and server");
 
         for (Integer enchantId : enchantments.keySet()) {
             Integer level = enchantments.get(enchantId);

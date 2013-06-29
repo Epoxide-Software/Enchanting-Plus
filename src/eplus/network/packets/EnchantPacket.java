@@ -3,6 +3,7 @@ package eplus.network.packets;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import cpw.mods.fml.relauncher.Side;
+import eplus.EnchantingPlus;
 import eplus.inventory.ContainerEnchantTable;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -60,7 +61,11 @@ public class EnchantPacket extends BasePacket
     {
         if (side.isServer()) {
             if (player.openContainer instanceof ContainerEnchantTable) {
-                ((ContainerEnchantTable) player.openContainer).enchant(player, map, cost);
+                try {
+					((ContainerEnchantTable) player.openContainer).enchant(player, map, cost);
+				} catch (Exception e) {
+					EnchantingPlus.log.info("Enchant failed because: " + e.getMessage());
+				}
                 player.openContainer.detectAndSendChanges();
             }
         }
