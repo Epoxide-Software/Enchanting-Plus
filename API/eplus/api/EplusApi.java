@@ -172,7 +172,7 @@ public class EplusApi {
 		FMLInterModComms.sendMessage("eplus", "blacklist-item", tagCompound);
 	}
 
-	static Class EnchantmentHelp;
+	static Class<?> EnchantmentHelp;
 	static Method ToolTip;
 
 	/**
@@ -201,7 +201,7 @@ public class EplusApi {
 		}
 	}
 
-	static Class EnchantingPlus;
+	static Class<?> EnchantingPlus;
 	static Field EnchantingPlusInstance;
 	static Object EnchantingPlusObject;
 
