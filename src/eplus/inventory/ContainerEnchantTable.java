@@ -196,9 +196,10 @@ public class ContainerEnchantTable extends Container {
      * @param player player requesting the enchantment
      * @param map    the list of enchantments to add
      * @param cost   the cost of the operation
+     * @throws Exception 
      */
     @SuppressWarnings("SuspiciousMethodCalls")
-    public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost)
+    public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) throws Exception
     {
         ItemStack itemstack = this.tableInventory.getStackInSlot(0);
         HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
@@ -245,9 +246,20 @@ public class ContainerEnchantTable extends Container {
 
     }
 
-    public boolean canPurchase(EntityPlayer player, int cost)
+    public boolean canPurchase(EntityPlayer player, int cost) throws Exception
     {
-        return player.capabilities.isCreativeMode || (player.experienceLevel >= cost && ConfigurationSettings.needsBookShelves ? cost <= bookCases() : cost <= player.experienceLevel);
+    	if(player.capabilities.isCreativeMode) 
+    		return true;
+    	
+    	if(ConfigurationSettings.needsBookShelves) {
+    		if(cost > bookCases()) 
+    			throw new Exception("Not enough bookcases. Required " + cost);
+    	}
+    	
+    	if(player.experienceLevel < cost)
+    		throw new Exception("Not enough levels. Required " + cost);
+
+         return true;
     }
 
     public int enchantmentCost(int enchantmentId, int enchantmentLevel, Integer level)
@@ -344,7 +356,7 @@ public class ContainerEnchantTable extends Container {
         return temp * 2;
     }
 
-    public void repair(EntityPlayer player, int cost)
+    public void repair(EntityPlayer player, int cost) throws Exception
     {
         ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         if (itemStack == null) return;

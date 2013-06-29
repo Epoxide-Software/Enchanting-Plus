@@ -5,3 +5,5 @@ target/
 build.properties
 keystore.ks
 /resources/version.properties
+/.classpath
+/.project

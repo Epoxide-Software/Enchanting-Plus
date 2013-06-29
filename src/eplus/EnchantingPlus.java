@@ -80,7 +80,11 @@ public class EnchantingPlus
         PluginHandler.initPlugins(event.getModState());
 
         //Strings.buildDefaultXML("en_US");
-        LanguageHandler.getInstance().addLanguages("/mods/eplus/lang/langs.txt");
+        try {
+        	LanguageHandler.getInstance().addLanguages("/mods/eplus/lang/langs.txt");
+        } catch (NullPointerException e) {
+        	log.severe(String.format("Can not load %s", "/mods/eplus/lang/langs.txt"));
+        }
         LanguageHandler.getInstance().loadLangauges();
     }
 
