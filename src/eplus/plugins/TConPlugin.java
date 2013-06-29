@@ -7,24 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Freyja
- *         Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * @author Freyja Lesser GNU Public License v3
+ *         (http://www.gnu.org/licenses/lgpl.html)
  */
 @EplusPlugin
 public class TConPlugin {
 
-    @EplusPlugin.PreInit
-    public void preInit() {
-        String modId = "TConstruct";
+	@EplusPlugin.PreInit
+	public void preInit() {
+		String modId = "TConstruct";
 
-        List<Integer> itemsBlackList = new ArrayList<Integer>();
+		List<Integer> itemsBlackList = new ArrayList<Integer>();
 
-        for (Integer itemId : EnchantingPlus.itemMap.keySet()) {
-            if(EnchantingPlus.itemMap.get(itemId).equalsIgnoreCase(modId)) {
-                itemsBlackList.add(itemId);
-            }
-        }
+		for (Integer itemId : EnchantingPlus.itemMap.keySet()) {
+			if (EnchantingPlus.itemMap.get(itemId).equalsIgnoreCase(modId)) {
+				itemsBlackList.add(itemId);
+			}
+		}
 
-        EplusApi.addItemToBlackList(itemsBlackList);
-    }
+		EplusApi.addItemToBlackList(itemsBlackList);
+	}
 }

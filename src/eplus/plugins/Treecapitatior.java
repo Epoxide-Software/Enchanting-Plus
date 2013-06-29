@@ -3,15 +3,15 @@ package eplus.plugins;
 import eplus.api.EplusApi;
 
 /**
- * @author Freyja
- *         Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ * @author Freyja Lesser GNU Public License v3
+ *         (http://www.gnu.org/licenses/lgpl.html)
  */
 @EplusPlugin
 public class Treecapitatior {
 
-    @EplusPlugin.PreInit
-    public void preInit()
-    {
-        EplusApi.addCustomEnchantmentToolTip("Treecapitating", "Allows axes not in the config to chop down trees Treecapitator style.");
-    }
+	@EplusPlugin.PreInit
+	public void preInit() {
+		EplusApi.addCustomEnchantmentToolTip("Treecapitating",
+				"Allows axes not in the config to chop down trees Treecapitator style.");
+	}
 }
