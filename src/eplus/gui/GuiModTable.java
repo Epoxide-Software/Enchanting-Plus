@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -448,8 +449,18 @@ public class GuiModTable extends GuiContainer {
 				}
 			}
 
-			drawHoveringText(display, guiLeft - 20 - maxWidth, height,
-					fontRenderer);
+			try {
+				drawHoveringText(display, guiLeft - 20 - maxWidth, height, fontRenderer);
+			} catch (Exception e) {
+				StringBuilder sb = new StringBuilder();
+				
+				for(String text : display ) {
+					sb.append(text);
+					sb.append(" ");
+				}
+				drawCreativeTabHoveringText(sb.toString(), guiLeft - 20 - maxWidth, height);
+				EnchantingPlus.log.severe("Please update or remove NEI / TMI. It is causing issues.");
+			}
 		}
 
 		if (isShiftKeyDown() && getItemFromPos(par1, par2) != null) {
@@ -470,8 +481,18 @@ public class GuiModTable extends GuiContainer {
 
 			display.add(name);
 			display.addAll(fontRenderer.listFormattedStringToWidth(info, 150));
-
-			drawHoveringText(display, par1, par2, fontRenderer);
+			try {
+				drawHoveringText(display, par1, par2, fontRenderer);
+			} catch (Exception e) {
+				StringBuilder sb = new StringBuilder();
+			
+				for(String text : display ) {
+					sb.append(text);
+					sb.append(" ");
+				}
+				drawCreativeTabHoveringText(sb.toString(), guiLeft - 20 - maxWidth, height);
+				EnchantingPlus.log.severe("Please update or remove NEI / TMI. It is causing issues.");
+			}
 		}
 
 		if (!error.isEmpty()) {
