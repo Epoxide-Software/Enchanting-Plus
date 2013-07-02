@@ -7,12 +7,12 @@ import eplus.api.EplusApi;
  *         (http://www.gnu.org/licenses/lgpl.html)
  */
 @EplusPlugin
-public class Treecapitatior {
+public class Treecapitatior
+{
 
     @EplusPlugin.PreInit
     public void preInit()
     {
-        EplusApi.addCustomEnchantmentToolTip("Treecapitating",
-                "Allows axes not in the config to chop down trees Treecapitator style.");
+        EplusApi.addCustomEnchantmentToolTip("Treecapitating", "Allows axes not in the config to chop down trees Treecapitator style.");
     }
 }

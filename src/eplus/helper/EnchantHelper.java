@@ -1,13 +1,13 @@
 package eplus.helper;
 
+import java.util.Map;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-
-import java.util.Map;
 
 /**
  * @user odininon
@@ -17,45 +17,21 @@ import java.util.Map;
 /**
  * Helper class with Enchanting functions
  */
-public class EnchantHelper {
-
-    /**
-     * Checks to see if item is enchanted
-     *
-     * @param itemStack the item to check
-     * @return true if item is enchanted
-     */
-    public static boolean isItemEnchanted(ItemStack itemStack)
-    {
-        return itemStack.hasTagCompound()
-                && ((itemStack.itemID != Item.enchantedBook.itemID) ? itemStack.stackTagCompound
-                .hasKey("ench") : itemStack.stackTagCompound
-                .hasKey("StoredEnchantments"));
-    }
-
-    /**
-     * checks to see if item is enchantable
-     *
-     * @param itemStack the item to check
-     * @return true if item can accept more enchantments
-     */
-    public static boolean isItemEnchantable(ItemStack itemStack)
-    {
-        return (itemStack.itemID == Item.book.itemID)
-                || itemStack.isItemEnchantable();
-    }
+public class EnchantHelper
+{
 
     /**
      * Checks to see if an enchantment can enchant an item
-     *
-     * @param itemStack the item to check
-     * @param obj       the enchantment to add
+     * 
+     * @param itemStack
+     *            the item to check
+     * @param obj
+     *            the enchantment to add
      * @return true is item can accept the enchantment
      */
     public static boolean canEnchantItem(ItemStack itemStack, Enchantment obj)
     {
-        ItemStack fakeBook = Item.enchantedBook
-                .func_92111_a(new EnchantmentData(obj, 1));
+        Item.enchantedBook.func_92111_a(new EnchantmentData(obj, 1));
 
         return itemStack.itemID == Item.book.itemID || obj.canApply(itemStack); // ||
         // itemStack.getItem().isBookEnchantable(itemStack,
@@ -63,39 +39,72 @@ public class EnchantHelper {
     }
 
     /**
-     * adds enchantments to an item
-     *
-     * @param map       map of enchantments to add
-     * @param itemStack the item to add enchantments to
+     * checks to see if item is enchantable
+     * 
+     * @param itemStack
+     *            the item to check
+     * @return true if item can accept more enchantments
      */
-    public static void setEnchantments(Map map, ItemStack itemStack)
+    public static boolean isItemEnchantable(ItemStack itemStack)
     {
-        NBTTagList nbttaglist = new NBTTagList();
+        return itemStack.itemID == Item.book.itemID || itemStack.isItemEnchantable();
+    }
 
-        for (Object o : map.keySet()) {
-            int i = (Integer) o;
-            NBTTagCompound nbttagcompound = new NBTTagCompound();
+    /**
+     * Checks to see if item is enchanted
+     * 
+     * @param itemStack
+     *            the item to check
+     * @return true if item is enchanted
+     */
+    public static boolean isItemEnchanted(ItemStack itemStack)
+    {
+        return itemStack.hasTagCompound()
+                && (itemStack.itemID != Item.enchantedBook.itemID ? itemStack.stackTagCompound.hasKey("ench") : itemStack.stackTagCompound.hasKey("StoredEnchantments"));
+    }
+
+    /**
+     * adds enchantments to an item
+     * 
+     * @param map
+     *            map of enchantments to add
+     * @param itemStack
+     *            the item to add enchantments to
+     */
+    public static void setEnchantments(Map<?, ?> map, ItemStack itemStack)
+    {
+        final NBTTagList nbttaglist = new NBTTagList();
+
+        for (final Object o : map.keySet())
+        {
+            final int i = (Integer) o;
+            final NBTTagCompound nbttagcompound = new NBTTagCompound();
             nbttagcompound.setShort("id", (short) i);
-            nbttagcompound.setShort("lvl",
-                    (short) ((Integer) map.get(i)).intValue());
+            nbttagcompound.setShort("lvl", (short) ((Integer) map.get(i)).intValue());
             nbttaglist.appendTag(nbttagcompound);
 
-            if (itemStack.itemID == Item.book.itemID
-                    || itemStack.itemID == Item.enchantedBook.itemID) {
+            if (itemStack.itemID == Item.book.itemID || itemStack.itemID == Item.enchantedBook.itemID)
+            {
                 itemStack.itemID = Item.enchantedBook.itemID;
             }
         }
 
-        if (nbttaglist.tagCount() > 0) {
-            if (itemStack.itemID != Item.enchantedBook.itemID) {
+        if (nbttaglist.tagCount() > 0)
+        {
+            if (itemStack.itemID != Item.enchantedBook.itemID)
+            {
                 itemStack.setTagInfo("ench", nbttaglist);
-            } else {
+            } else
+            {
                 itemStack.setTagInfo("StoredEnchantments", nbttaglist);
             }
-        } else if (itemStack.hasTagCompound()) {
-            if (itemStack.itemID != Item.enchantedBook.itemID) {
+        } else if (itemStack.hasTagCompound())
+        {
+            if (itemStack.itemID != Item.enchantedBook.itemID)
+            {
                 itemStack.getTagCompound().removeTag("ench");
-            } else {
+            } else
+            {
                 itemStack.getTagCompound().removeTag("StoredEnchantments");
                 itemStack.stackTagCompound = null;
                 itemStack.itemID = Item.book.itemID;

@@ -1,5 +1,13 @@
 package eplus.commands;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
+import net.minecraft.util.ChatMessageComponent;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
 import eplus.handlers.ConfigurationHandler;
@@ -7,32 +15,45 @@ import eplus.handlers.Version;
 import eplus.helper.StringHelper;
 import eplus.lib.References;
 import eplus.network.packets.ConfigPacket;
-import eplus.utils.AutoDownload;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
-import net.minecraft.util.ChatMessageComponent;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-public class EplusCommands extends CommandBase {
+public class EplusCommands extends CommandBase
+{
     private static List<String> commands = new ArrayList<String>();
 
-    static {
+    static
+    {
         commands.addAll(CommandRegister.commands.keySet());
         commands.add("changelog");
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public String getCommandName()
+    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] args)
     {
-        return "eplus";
+        switch (args.length) {
+            case 1:
+            {
+                return getListOfStringsFromIterableMatchingLastWord(args, commands);
+            }
+            case 2:
+            {
+                for (final String command : CommandRegister.commands.keySet())
+                {
+                    if (args[0].equalsIgnoreCase(command))
+                    {
+                        return getListOfStringsFromIterableMatchingLastWord(args, CommandRegister.commands.get(command));
+                    }
+                }
+            }
+            default:
+            {
+                return null;
+            }
+        }
     }
 
     @Override
@@ -42,98 +63,76 @@ public class EplusCommands extends CommandBase {
     }
 
     @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender,
-                                        String[] args)
+    public String getCommandName()
     {
-        switch (args.length) {
-            case 1: {
-                return getListOfStringsFromIterableMatchingLastWord(args, commands);
-            }
-            case 2: {
-                for (String command : CommandRegister.commands.keySet()) {
-                    if (args[0].equalsIgnoreCase(command)) {
-                        return getListOfStringsFromIterableMatchingLastWord(args,
-                                CommandRegister.commands.get(command));
-                    }
-                }
-            }
-            default: {
-                return null;
-            }
-        }
+        return "eplus";
     }
 
     @Override
-    public void processCommand(ICommandSender icommandsender, String[] args)
+    public String getCommandUsage(ICommandSender icommandsender)
     {
-        if (args.length > 0) {
-            String commandName = args[0];
-            System.arraycopy(args, 1, args, 0, args.length - 1);
-
-            for (String command : CommandRegister.commands.keySet()) {
-                if (commandName.equalsIgnoreCase(command)) {
-                    processConfigCommand(icommandsender, commandName, args);
-                    return;
-                }
-            }
-            if (commandName.equalsIgnoreCase("changelog")) {
-                processChangelog(icommandsender, commandName, args);
-                return;
-            }
-
-
-            throw new WrongUsageException("eplus "
-                    + StringHelper.keySetToString(CommandRegister.commands
-                    .keySet()));
-        } else {
-            throw new WrongUsageException("eplus "
-                    + StringHelper.keySetToString(CommandRegister.commands
-                    .keySet()));
-        }
+        // TODO Auto-generated method stub
+        return null;
     }
 
-    private void processChangelog(ICommandSender icommandsender,
-                                  String commandName, String[] args)
+    private void processChangelog(ICommandSender icommandsender, String commandName, String[] args)
     {
-        icommandsender.func_110122_a(ChatMessageComponent.func_111066_d(String.format(
-                "\u00A7e[%s] Changelog for %s", References.MODID,
-                Version.getRecommendedVersion())));
-        for (String line : Version.getChangelog()) {
+        icommandsender.func_110122_a(ChatMessageComponent.func_111066_d(String.format("\u00A7e[%s] Changelog for %s", References.MODID, Version.getRecommendedVersion())));
+        for (final String line : Version.getChangelog())
+        {
             icommandsender.func_110122_a(ChatMessageComponent.func_111066_d(line));
         }
 
     }
 
-    private void processConfigCommand(ICommandSender icommandsender,
-                                      String commandName, String[] args)
+    @Override
+    public void processCommand(ICommandSender icommandsender, String[] args)
     {
-        for (String arg : args) {
-            if (CommandRegister.commands.get(commandName).contains(arg)) {
+        if (args.length > 0)
+        {
+            final String commandName = args[0];
+            System.arraycopy(args, 1, args, 0, args.length - 1);
+
+            for (final String command : CommandRegister.commands.keySet())
+            {
+                if (commandName.equalsIgnoreCase(command))
+                {
+                    processConfigCommand(icommandsender, commandName, args);
+                    return;
+                }
+            }
+            if (commandName.equalsIgnoreCase("changelog"))
+            {
+                processChangelog(icommandsender, commandName, args);
+                return;
+            }
+
+            throw new WrongUsageException("eplus " + StringHelper.keySetToString(CommandRegister.commands.keySet()));
+        } else
+        {
+            throw new WrongUsageException("eplus " + StringHelper.keySetToString(CommandRegister.commands.keySet()));
+        }
+    }
+
+    private void processConfigCommand(ICommandSender icommandsender, String commandName, String[] args)
+    {
+        for (final String arg : args)
+        {
+            if (CommandRegister.commands.get(commandName).contains(arg))
+            {
                 EnchantingPlus.log.info(commandName + ":" + args[0]);
                 ConfigurationHandler.set(commandName, args[0]);
 
-                HashMap<String, String> config = new HashMap<String, String>();
+                final HashMap<String, String> config = new HashMap<String, String>();
 
                 config.put(commandName, args[0]);
 
-                PacketDispatcher.sendPacketToServer(new ConfigPacket(config)
-                        .makePacket());
-                icommandsender.func_110122_a(ChatMessageComponent.func_111066_d(String.format(
-                        "%s: Config '%s' changed to %s.",
-                        References.MODID.toUpperCase(), commandName, args[0])));
+                PacketDispatcher.sendPacketToServer(new ConfigPacket(config).makePacket());
+                icommandsender.func_110122_a(ChatMessageComponent.func_111066_d(String.format("%s: Config '%s' changed to %s.", References.MODID.toUpperCase(), commandName,
+                        args[0])));
                 return;
             }
         }
-        throw new WrongUsageException("eplus "
-                + commandName
-                + " "
-                + StringHelper.listToString(CommandRegister.commands
-                .get(commandName)));
+        throw new WrongUsageException("eplus " + commandName + " " + StringHelper.listToString(CommandRegister.commands.get(commandName)));
     }
-
-	@Override
-	public String getCommandUsage(ICommandSender icommandsender) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

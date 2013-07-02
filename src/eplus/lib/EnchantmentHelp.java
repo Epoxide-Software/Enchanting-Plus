@@ -1,18 +1,19 @@
 package eplus.lib;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.Item;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Item;
+
 /**
  * @author Freyja Lesser GNU Public License v3
  *         (http://www.gnu.org/licenses/lgpl.html)
  */
-public class EnchantmentHelp {
+public class EnchantmentHelp
+{
 
     private static Map<String, String> toolTips = new HashMap<String, String>();
     private static List<String> enchantmentBlackList = new ArrayList<String>();
@@ -20,50 +21,7 @@ public class EnchantmentHelp {
 
     public static String getToolTip(Enchantment enchant)
     {
-        return (toolTips.containsKey(enchant.getName())) ? toolTips.get(enchant
-                .getName()) : "";
-    }
-
-    public static boolean putToolTips(Enchantment enchantment, String info)
-    {
-        return putToolTips(enchantment.getName(), info);
-    }
-
-    public static boolean putToolTips(String enchantment, String info)
-    {
-        if (!toolTips.containsKey(enchantment)) {
-            toolTips.put(enchantment, info);
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean putBlackList(String string)
-    {
-        if (!enchantmentBlackList.contains(string)) {
-            enchantmentBlackList.add(string);
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isBlackListed(Enchantment enchantment)
-    {
-        return enchantmentBlackList.contains(enchantment.getName());
-    }
-
-    public static boolean isBlackListed(Item item)
-    {
-        return itemBlackList.contains(item.itemID);
-    }
-
-    public static boolean putBlackListItem(Integer itemId)
-    {
-        if (!itemBlackList.contains(itemId)) {
-            itemBlackList.add(itemId);
-            return true;
-        }
-        return false;
+        return toolTips.containsKey(enchant.getName()) ? toolTips.get(enchant.getName()) : "";
     }
 
     public static void init()
@@ -74,21 +32,16 @@ public class EnchantmentHelp {
         putToolTips(Enchantment.thorns, Strings.enchantmentThorns);
         putToolTips(Enchantment.aquaAffinity, Strings.enchantmentAquaAffinity);
         putToolTips(Enchantment.respiration, Strings.enchantmentRespiration);
-        putToolTips(Enchantment.projectileProtection,
-                Strings.enchantmentProtectionProjectile);
-        putToolTips(Enchantment.blastProtection,
-                Strings.enchantmentProtectionBlast);
-        putToolTips(Enchantment.featherFalling,
-                Strings.enchantmentFeatherFalling);
-        putToolTips(Enchantment.fireProtection,
-                Strings.enchantmentProtectionFire);
+        putToolTips(Enchantment.projectileProtection, Strings.enchantmentProtectionProjectile);
+        putToolTips(Enchantment.blastProtection, Strings.enchantmentProtectionBlast);
+        putToolTips(Enchantment.featherFalling, Strings.enchantmentFeatherFalling);
+        putToolTips(Enchantment.fireProtection, Strings.enchantmentProtectionFire);
         putToolTips(Enchantment.protection, Strings.enchantmentProtection);
 
         // Weapons
         putToolTips(Enchantment.sharpness, Strings.enchantmentSharpness);
         putToolTips(Enchantment.smite, Strings.enchantmentSmite);
-        putToolTips(Enchantment.baneOfArthropods,
-                Strings.enchantmentBaneOfAthropods);
+        putToolTips(Enchantment.baneOfArthropods, Strings.enchantmentBaneOfAthropods);
         putToolTips(Enchantment.knockback, Strings.enchantmentKnockBack);
         putToolTips(Enchantment.fireAspect, Strings.enchantmentFireAspect);
         putToolTips(Enchantment.looting, Strings.enchantmentLooting);
@@ -103,5 +56,50 @@ public class EnchantmentHelp {
         putToolTips(Enchantment.punch, Strings.enchantmentPunch);
         putToolTips(Enchantment.flame, Strings.enchantmentFlame);
         putToolTips(Enchantment.infinity, Strings.enchantmentInfinity);
+    }
+
+    public static boolean isBlackListed(Enchantment enchantment)
+    {
+        return enchantmentBlackList.contains(enchantment.getName());
+    }
+
+    public static boolean isBlackListed(Item item)
+    {
+        return itemBlackList.contains(item.itemID);
+    }
+
+    public static boolean putBlackList(String string)
+    {
+        if (!enchantmentBlackList.contains(string))
+        {
+            enchantmentBlackList.add(string);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean putBlackListItem(Integer itemId)
+    {
+        if (!itemBlackList.contains(itemId))
+        {
+            itemBlackList.add(itemId);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean putToolTips(Enchantment enchantment, String info)
+    {
+        return putToolTips(enchantment.getName(), info);
+    }
+
+    public static boolean putToolTips(String enchantment, String info)
+    {
+        if (!toolTips.containsKey(enchantment))
+        {
+            toolTips.put(enchantment, info);
+            return true;
+        }
+        return false;
     }
 }

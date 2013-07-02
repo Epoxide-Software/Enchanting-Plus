@@ -1,19 +1,22 @@
 package eplus.network.packets;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
+
 import cpw.mods.fml.relauncher.Side;
 import eplus.EnchantingPlus;
 import eplus.inventory.ContainerEnchantTable;
-import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Enchanting Plus
- *
+ * 
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-public class RepairPacket extends BasePacket {
+public class RepairPacket extends BasePacket
+{
 
     private int cost;
 
@@ -27,9 +30,22 @@ public class RepairPacket extends BasePacket {
     }
 
     @Override
-    protected void write(ByteArrayDataOutput output)
+    public void execute(EntityPlayer player, Side side)
     {
-        output.writeInt(cost);
+        if (side.isServer())
+        {
+            if (player.openContainer instanceof ContainerEnchantTable)
+            {
+                try
+                {
+                    ((ContainerEnchantTable) player.openContainer).repair(player, cost);
+                } catch (final Exception e)
+                {
+                    EnchantingPlus.log.info("Enchant failed because: " + e.getMessage());
+                }
+                player.openContainer.detectAndSendChanges();
+            }
+        }
     }
 
     @Override
@@ -39,19 +55,8 @@ public class RepairPacket extends BasePacket {
     }
 
     @Override
-    public void execute(EntityPlayer player, Side side)
+    protected void write(ByteArrayDataOutput output)
     {
-        if (side.isServer()) {
-            if (player.openContainer instanceof ContainerEnchantTable) {
-                try {
-                    ((ContainerEnchantTable) player.openContainer).repair(
-                            player, cost);
-                } catch (Exception e) {
-                    EnchantingPlus.log.info("Enchant failed because: "
-                            + e.getMessage());
-                }
-                player.openContainer.detectAndSendChanges();
-            }
-        }
+        output.writeInt(cost);
     }
 }

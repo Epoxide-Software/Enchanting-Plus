@@ -12,14 +12,17 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface EplusPlugin {
+public @interface EplusPlugin
+{
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    public @interface PreInit {
+    public @interface PostInit
+    {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    public @interface PostInit {
+    public @interface PreInit
+    {
     }
 }

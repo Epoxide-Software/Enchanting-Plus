@@ -4,7 +4,8 @@ package eplus.lib;
  * @author Freyja Lesser GNU Public License v3
  *         (http://www.gnu.org/licenses/lgpl.html)
  */
-public class FontFormat {
+public class FontFormat
+{
 
     public static final String PREFIX = "\u00A7";
 

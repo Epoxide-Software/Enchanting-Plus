@@ -1,19 +1,22 @@
 package eplus.network.packets;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
+
 import cpw.mods.fml.relauncher.Side;
 import eplus.EnchantingPlus;
 import eplus.lib.ConfigurationSettings;
 import eplus.lib.References;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-public class GuiPacket extends BasePacket {
+public class GuiPacket extends BasePacket
+{
 
     private String username;
     private int guiId;
@@ -35,6 +38,30 @@ public class GuiPacket extends BasePacket {
     }
 
     @Override
+    public void execute(EntityPlayer player, Side side)
+    {
+        if (side == Side.SERVER)
+        {
+            final NBTTagCompound tag = player.getEntityData();
+
+            if (tag.getBoolean(References.MODID + ":useMod") && ConfigurationSettings.useMod)
+            {
+                player.openGui(EnchantingPlus.INSTANCE, guiId, player.worldObj, xPos, yPos, zPos);
+            }
+        }
+    }
+
+    @Override
+    public void read(ByteArrayDataInput input)
+    {
+        username = input.readUTF();
+        guiId = input.readInt();
+        xPos = input.readInt();
+        yPos = input.readInt();
+        zPos = input.readInt();
+    }
+
+    @Override
     protected void write(ByteArrayDataOutput output)
     {
         output.writeUTF(username);
@@ -42,29 +69,5 @@ public class GuiPacket extends BasePacket {
         output.writeInt(xPos);
         output.writeInt(yPos);
         output.writeInt(zPos);
-    }
-
-    @Override
-    public void read(ByteArrayDataInput input)
-    {
-        this.username = input.readUTF();
-        this.guiId = input.readInt();
-        this.xPos = input.readInt();
-        this.yPos = input.readInt();
-        this.zPos = input.readInt();
-    }
-
-    @Override
-    public void execute(EntityPlayer player, Side side)
-    {
-        if (side == Side.SERVER) {
-            NBTTagCompound tag = player.getEntityData();
-
-            if (tag.getBoolean(References.MODID + ":useMod")
-                    && ConfigurationSettings.useMod) {
-                player.openGui(EnchantingPlus.INSTANCE, guiId, player.worldObj,
-                        xPos, yPos, zPos);
-            }
-        }
     }
 }
