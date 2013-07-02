@@ -9,9 +9,10 @@ import eplus.api.EplusApi;
 @EplusPlugin
 public class Treecapitatior {
 
-	@EplusPlugin.PreInit
-	public void preInit() {
-		EplusApi.addCustomEnchantmentToolTip("Treecapitating",
-				"Allows axes not in the config to chop down trees Treecapitator style.");
-	}
+    @EplusPlugin.PreInit
+    public void preInit()
+    {
+        EplusApi.addCustomEnchantmentToolTip("Treecapitating",
+                "Allows axes not in the config to chop down trees Treecapitator style.");
+    }
 }

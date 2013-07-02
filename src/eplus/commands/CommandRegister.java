@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class CommandRegister {
 
-	static final HashMap<String, List<String>> commands = new HashMap<String, List<String>>();
+    static final HashMap<String, List<String>> commands = new HashMap<String, List<String>>();
 
-	static {
-		commands.put("useMod", Arrays.asList("true", "false"));
-		commands.put("hasParticles", Arrays.asList("true", "false"));
-	}
+    static {
+        commands.put("useMod", Arrays.asList("true", "false"));
+        commands.put("hasParticles", Arrays.asList("true", "false"));
+    }
 
 }

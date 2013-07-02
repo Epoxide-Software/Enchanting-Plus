@@ -17,20 +17,18 @@ import eplus.renders.TileEnchantRenderer;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 public class ClientProxy extends CommonProxy {
-	@Override
-	public void registerTickHandlers() {
-		TickRegistry.registerTickHandler(new CapeTickHandler(), Side.CLIENT);
-		TickRegistry.registerScheduledTickHandler(new VersionTickHandler(),
-				Side.CLIENT);
+    @Override
+    public void registerTickHandlers()
+    {
+        TickRegistry.registerTickHandler(new CapeTickHandler(), Side.CLIENT);
+        TickRegistry.registerScheduledTickHandler(new VersionTickHandler(),
+                Side.CLIENT);
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEnchantTable.class,
-				new TileEnchantRenderer());
-		RenderingRegistry.registerEntityRenderingHandler(TableEntityItem.class,
-				new TableEntityItemRenderer());
-	}
+    }
 
-	@Override
-	public void throwFingerprintError(String s) {
-		throw new FingerprintException(s);
-	}
+    @Override
+    public void throwFingerprintError(String s)
+    {
+        throw new FingerprintException(s);
+    }
 }

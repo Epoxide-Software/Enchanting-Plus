@@ -14,61 +14,70 @@ import java.util.Scanner;
  */
 public class LanguageHandler {
 
-	private List<String> languages = new ArrayList<String>();
+    private List<String> languages = new ArrayList<String>();
 
-	private static LanguageHandler INSTANCE = new LanguageHandler();
+    private static LanguageHandler INSTANCE = new LanguageHandler();
 
-	private final String location = "/mods/eplus/lang/";
+    private final String location = "/assets/eplus/lang/";
 
-	private LanguageHandler() {
+    private LanguageHandler()
+    {
 
-	}
+    }
 
-	public static LanguageHandler getInstance() {
-		return INSTANCE;
-	}
+    public static LanguageHandler getInstance()
+    {
+        return INSTANCE;
+    }
 
-	public List<String> getLanguages() {
-		return languages;
-	}
+    public List<String> getLanguages()
+    {
+        return languages;
+    }
 
-	public void addLanguage(String uri) {
-		if (!languages.contains(uri)) {
-			languages.add(uri);
-		}
-	}
+    public void addLanguage(String uri)
+    {
+        if (!languages.contains(uri)) {
+            languages.add(uri);
+        }
+    }
 
-	public void loadLangauges() {
-		for (String lang : languages) {
-			LanguageRegistry.instance().loadLocalization(lang,
-					getLocalFromFileName(lang), isXMLlangfile(lang));
-			EnchantingPlus.log.info("Localization "
-					+ getLocalFromFileName(lang) + " loaded");
-		}
-	}
+    public void loadLangauges()
+    {
+        for (String lang : languages) {
+            LanguageRegistry.instance().loadLocalization(lang,
+                    getLocalFromFileName(lang), isXMLlangfile(lang));
+            EnchantingPlus.log.info("Localization "
+                    + getLocalFromFileName(lang) + " loaded");
+        }
+    }
 
-	private boolean isXMLlangfile(String lang) {
-		return lang.endsWith(".xml");
-	}
+    private boolean isXMLlangfile(String lang)
+    {
+        return lang.endsWith(".xml");
+    }
 
-	private String getLocalFromFileName(String lang) {
-		return lang.substring(lang.lastIndexOf("/") + 1, lang.lastIndexOf("."));
-	}
+    private String getLocalFromFileName(String lang)
+    {
+        return lang.substring(lang.lastIndexOf("/") + 1, lang.lastIndexOf("."));
+    }
 
-	public String getTranslatedString(String string) {
-		return (LanguageRegistry.instance().getStringLocalization(string)
-				.isEmpty()) ? LanguageRegistry.instance()
-				.getStringLocalization(string, "en_US") : LanguageRegistry
-				.instance().getStringLocalization(string);
-	}
+    public String getTranslatedString(String string)
+    {
+        return (LanguageRegistry.instance().getStringLocalization(string)
+                .isEmpty()) ? LanguageRegistry.instance()
+                .getStringLocalization(string, "en_US") : LanguageRegistry
+                .instance().getStringLocalization(string);
+    }
 
-	public void addLanguages(String langs) {
-		InputStream resourceAsStream = getClass().getResourceAsStream(langs);
+    public void addLanguages(String langs)
+    {
+        InputStream resourceAsStream = getClass().getResourceAsStream(langs);
 
-		Scanner scanner = new Scanner(resourceAsStream);
+        Scanner scanner = new Scanner(resourceAsStream);
 
-		while (scanner.hasNextLine()) {
-			addLanguage(location + scanner.nextLine());
-		}
-	}
+        while (scanner.hasNextLine()) {
+            addLanguage(location + scanner.nextLine());
+        }
+    }
 }

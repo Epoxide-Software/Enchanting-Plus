@@ -12,24 +12,28 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class PlayerTracker implements IPlayerTracker {
 
-	@Override
-	public void onPlayerLogin(EntityPlayer player) {
+    @Override
+    public void onPlayerLogin(EntityPlayer player)
+    {
 
-	}
+    }
 
-	@Override
-	public void onPlayerLogout(EntityPlayer player) {
+    @Override
+    public void onPlayerLogout(EntityPlayer player)
+    {
 
-	}
+    }
 
-	@Override
-	public void onPlayerChangedDimension(EntityPlayer player) {
+    @Override
+    public void onPlayerChangedDimension(EntityPlayer player)
+    {
 
-	}
+    }
 
-	@Override
-	public void onPlayerRespawn(EntityPlayer player) {
-		PacketDispatcher.sendPacketToPlayer(new ReConfigPacket().makePacket(),
-				(Player) player);
-	}
+    @Override
+    public void onPlayerRespawn(EntityPlayer player)
+    {
+        PacketDispatcher.sendPacketToPlayer(new ReConfigPacket().makePacket(),
+                (Player) player);
+    }
 }

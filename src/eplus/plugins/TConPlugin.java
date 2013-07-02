@@ -13,18 +13,19 @@ import java.util.List;
 @EplusPlugin
 public class TConPlugin {
 
-	@EplusPlugin.PreInit
-	public void preInit() {
-		String modId = "TConstruct";
+    @EplusPlugin.PreInit
+    public void preInit()
+    {
+        String modId = "TConstruct";
 
-		List<Integer> itemsBlackList = new ArrayList<Integer>();
+        List<Integer> itemsBlackList = new ArrayList<Integer>();
 
-		for (Integer itemId : EnchantingPlus.itemMap.keySet()) {
-			if (EnchantingPlus.itemMap.get(itemId).equalsIgnoreCase(modId)) {
-				itemsBlackList.add(itemId);
-			}
-		}
+        for (Integer itemId : EnchantingPlus.itemMap.keySet()) {
+            if (EnchantingPlus.itemMap.get(itemId).equalsIgnoreCase(modId)) {
+                itemsBlackList.add(itemId);
+            }
+        }
 
-		EplusApi.addItemToBlackList(itemsBlackList);
-	}
+        EplusApi.addItemToBlackList(itemsBlackList);
+    }
 }

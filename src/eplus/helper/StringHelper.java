@@ -10,23 +10,25 @@ import java.util.Set;
  */
 public class StringHelper {
 
-	public static String listToString(List<String> list) {
-		String ret = "[ ";
-		for (int i = 0; i < list.size(); i++) {
-			ret += list.get(i);
+    public static String listToString(List<String> list)
+    {
+        String ret = "[ ";
+        for (int i = 0; i < list.size(); i++) {
+            ret += list.get(i);
 
-			if (i + 1 <= list.size() - 1) {
-				ret += " | ";
-			} else {
-				ret += " ";
-			}
-		}
-		ret += "]";
-		return ret;
-	}
+            if (i + 1 <= list.size() - 1) {
+                ret += " | ";
+            } else {
+                ret += " ";
+            }
+        }
+        ret += "]";
+        return ret;
+    }
 
-	public static String keySetToString(Set<String> strings) {
-		return listToString(Arrays.asList(strings.toArray(new String[strings
-				.size()])));
-	}
+    public static String keySetToString(Set<String> strings)
+    {
+        return listToString(Arrays.asList(strings.toArray(new String[strings
+                .size()])));
+    }
 }
