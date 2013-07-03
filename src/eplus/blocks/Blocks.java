@@ -27,7 +27,7 @@ public class Blocks
         Block.blocksList[blockID] = null;
         Item.itemsList[blockID] = null;
 
-        final Block table = new BlockEnchantTable(blockID).setHardness(5.0F).setResistance(2000.0F).setUnlocalizedName("enchantmentTable");
+        final Block table = new BlockEnchantTable(blockID).setHardness(5.0F).setResistance(2000.0F).setUnlocalizedName("enchantmentTable").func_111022_d("enchanting_table");
         GameRegistry.registerBlock(table, table.getUnlocalizedName());
     }
 }

@@ -2,6 +2,7 @@ bin/
 mcp/
 build/
 target/
+eclipse/
 build.properties
 keystore.ks
 /resources/version.properties

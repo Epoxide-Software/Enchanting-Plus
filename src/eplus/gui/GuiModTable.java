@@ -264,7 +264,7 @@ public class GuiModTable extends GuiContainer
 
     private boolean dirty = false;
 
-    private final ResourceLocation texture = new ResourceLocation("textures/gui/enchant.png");
+    private final ResourceLocation texture = new ResourceLocation("eplus", "textures/gui/enchant.png");
 
     private String error = "";
 

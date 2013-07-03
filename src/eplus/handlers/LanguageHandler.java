@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import net.minecraft.util.StringTranslate;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import eplus.EnchantingPlus;
 
@@ -65,7 +68,8 @@ public class LanguageHandler
     public String getTranslatedString(String string)
     {
         return LanguageRegistry.instance().getStringLocalization(string).isEmpty() ? LanguageRegistry.instance().getStringLocalization(string, "en_US") : LanguageRegistry
-                .instance().getStringLocalization(string);
+             .instance().getStringLocalization(string);
+        
     }
 
     private boolean isXMLlangfile(String lang)

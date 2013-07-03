@@ -61,7 +61,6 @@ public class EnchantingPlus
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        Blocks.init();
 
         registerTileEntity(TileEnchantTable.class);
         NetworkRegistry.instance().registerGuiHandler(INSTANCE, new GuiHandler());
@@ -101,12 +100,14 @@ public class EnchantingPlus
         // Strings.buildDefaultXML("en_US");
         try
         {
-            LanguageHandler.getInstance().addLanguages("/assets/eplus/lang/langs.txt");
+           LanguageHandler.getInstance().addLanguages("/assets/eplus/lang/langs.txt");
         } catch (final NullPointerException e)
         {
-            log.severe(String.format("Can not load %s", "/mods/eplus/lang/langs.txt"));
+            log.severe(String.format("Can not load %s", "/assets/eplus/lang/langs.txt"));
         }
         LanguageHandler.getInstance().loadLangauges();
+        
+        Blocks.init();
     }
 
     @Mod.EventHandler
