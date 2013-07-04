@@ -9,6 +9,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -166,7 +167,7 @@ public class ContainerEnchantTable extends Container
         }
         final int enchantmentCost = enchantmentCost(enchantmentId, level - 1, enchantmentLevel);
 
-        return Math.max(adjustedCost, -enchantmentCost);
+        return Math.min(adjustedCost * (ConfigurationSettings.CostFactor / 5), -enchantmentCost);
     }
 
     /**
@@ -275,7 +276,7 @@ public class ContainerEnchantTable extends Container
                 adjustedCost = temp;
             }
         }
-        return Math.max(1, adjustedCost);
+        return Math.max(1, adjustedCost * (ConfigurationSettings.CostFactor / 5));
     }
 
     public Map<Integer, Integer> getEnchantments()
@@ -427,11 +428,17 @@ public class ContainerEnchantTable extends Container
         }
 
         final int maxDamage = itemStack.getMaxDamage();
-        final int currentDamage = itemStack.getItemDamage();
-
-        final double percentDamage = currentDamage / ((double) maxDamage * 2);
-
-        return (int) Math.max(1, percentDamage * cost);
+        final int displayDamage = itemStack.getItemDamageForDisplay();
+        final int enchantability = itemStack.getItem().getItemEnchantability();
+        
+        final double percentDamage = 1 - (maxDamage - displayDamage) / (double) maxDamage;
+        
+        double totalCost = percentDamage * cost * enchantability;
+        
+        totalCost /= 8;
+        
+        
+        return (int) Math.max(1, totalCost);
     }
 
     @Override

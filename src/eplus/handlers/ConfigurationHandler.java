@@ -52,7 +52,17 @@ public class ConfigurationHandler
                     "Set to true to allow disenchanting.").getBoolean(ConfigurationSettings.disenchantingDefault);
             ConfigurationSettings.AllowRepair = configuration.get(CATEGORY_SERVER, "AllowRepair", ConfigurationSettings.repairDefault,
                     "Set to true to allow repairing of items via enchantment table.").getBoolean(ConfigurationSettings.repairDefault);
-
+            
+            ConfigurationSettings.AllowEnchantDamaged = configuration.get(CATEGORY_SERVER, "AllowEnchantDamaged", ConfigurationSettings.AllowEnchantDamagedDefault, "Determinds if a player can enchant a damaged item").getBoolean(ConfigurationSettings.AllowEnchantDamagedDefault);
+            
+            ConfigurationSettings.CostFactor = configuration.get(CATEGORY_SERVER, "CostFactor", 5, "Determinds the cost factor of enchanting / disenchanting / repair").getInt();
+            
+            if(ConfigurationSettings.CostFactor <= 0 )
+            {
+                configuration.getCategory(CATEGORY_SERVER).get("CostFactor").set(1);
+                ConfigurationSettings.CostFactor = 1;
+            }
+            
         } catch (final Exception e)
         {
             EnchantingPlus.log.info("Error Loading configuration");

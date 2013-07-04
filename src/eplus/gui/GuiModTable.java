@@ -216,7 +216,7 @@ public class GuiModTable extends GuiContainer
             final int tempLevel = (int) Math.floor(privateLevel > enchantment.getMaxLevel() ? privateLevel * index : enchantment.getMaxLevel() * index);
             if (locked)
             {
-                if (tempLevel < enchantmentLevel)
+                if (tempLevel < enchantmentLevel && (!container.tableInventory.getStackInSlot(0).isItemDamaged() || ConfigurationSettings.AllowEnchantDamaged))
                 {
                     enchantmentLevel = tempLevel;
                     locked = false;
