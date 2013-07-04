@@ -33,7 +33,7 @@ def main():
     (major, minor, _) = re.match(r"v(\d+).(\d+(\.\d+|\w)?)", tag).groups()
 
     tag2 = "HEAD"
-    tag1 = last
+    tag1 = tag
 
     if args.verbose:
         print("Obtaining changelog from git")

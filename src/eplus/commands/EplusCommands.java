@@ -77,10 +77,10 @@ public class EplusCommands extends CommandBase
 
     private void processChangelog(ICommandSender icommandsender, String commandName, String[] args)
     {
-        icommandsender.func_110122_a(ChatMessageComponent.func_111066_d(String.format("\u00A7e[%s] Changelog for %s", References.MODID, Version.getRecommendedVersion())));
+        icommandsender.sendChatToPlayer(ChatMessageComponent.func_111066_d(String.format("\u00A7e[%s] Changelog for %s", References.MODID, Version.getRecommendedVersion())));
         for (final String line : Version.getChangelog())
         {
-            icommandsender.func_110122_a(ChatMessageComponent.func_111066_d(line));
+            icommandsender.sendChatToPlayer(ChatMessageComponent.func_111066_d(line));
         }
 
     }
@@ -128,7 +128,7 @@ public class EplusCommands extends CommandBase
                 config.put(commandName, args[0]);
 
                 PacketDispatcher.sendPacketToServer(new ConfigPacket(config).makePacket());
-                icommandsender.func_110122_a(ChatMessageComponent.func_111066_d(String.format("%s: Config '%s' changed to %s.", References.MODID.toUpperCase(), commandName,
+                icommandsender.sendChatToPlayer(ChatMessageComponent.func_111066_d(String.format("%s: Config '%s' changed to %s.", References.MODID.toUpperCase(), commandName,
                         args[0])));
                 return;
             }

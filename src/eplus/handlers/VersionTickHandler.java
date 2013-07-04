@@ -60,9 +60,9 @@ public class VersionTickHandler implements IScheduledTickHandler
         {
             if (Version.hasUpdated())
             {
-                player.func_110122_a(ChatMessageComponent.func_111066_d(String.format("[%s]: %s: %s", References.MODID, "Version update is available",
+                player.sendChatToPlayer(ChatMessageComponent.func_111066_d(String.format("[%s]: %s: %s", References.MODID, "Version update is available",
                         Version.getRecommendedVersion())));
-                player.func_110122_a(ChatMessageComponent.func_111066_d(String.format("[%s]: to view a changelog use: %s", References.MODID, "/eplus changelog")));
+                player.sendChatToPlayer(ChatMessageComponent.func_111066_d(String.format("[%s]: to view a changelog use: %s", References.MODID, "/eplus changelog")));
             }
         }
         messageSent = true;
