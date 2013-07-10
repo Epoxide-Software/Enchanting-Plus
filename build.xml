@@ -8,9 +8,9 @@
 	<property name="fullversion" value="${build.ver}" />
 
 	<property name="mcp.version" value="802" />
-	<property name="minecraft.version" value="1.6.1" />
-	<property name="forgemajor.version" value="8.9.0" />
-	<property name="forgebuild" value="760" />
+	<property name="minecraft.version" value="1.6.2" />
+	<property name="forgemajor.version" value="9.10.0" />
+	<property name="forgebuild" value="789" />
 
 	<property name="forge.version" value="${minecraft.version}-${forgemajor.version}.${forgebuild}" />
 	<property name="forgeant.version" value="${forgemajor.version}.${forgebuild}" />
@@ -112,6 +112,10 @@
 		<copy todir="${classes.dir}">
 			<fileset dir="${mcp.dir}/reobf/minecraft" />
 		</copy>
+		
+		<exec dir="." executable="python">
+			<arg value="getversion.py" />
+		</exec>
 
 		<mkdir dir="${classes.dir}" />
 		<copy todir="${classes.dir}/">

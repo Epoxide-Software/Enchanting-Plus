@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.lib.ConfigurationSettings;
 import eplus.lib.GuiIds;
+import eplus.lib.Strings;
 import eplus.network.packets.GuiPacket;
 
 /**
@@ -47,7 +48,7 @@ public class GuiVanillaTable extends GuiEnchantment
     public void drawScreen(int par1, int par2, float par3)
     {
         super.drawScreen(par1, par2, par3);
-        final String displayText = String.format("Player XP Level: %s", player.experienceLevel);
+        final String displayText = String.format("%s: %s", Strings.playerLevel, player.experienceLevel);
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRenderer.getStringWidth(displayText), guiTop + fontRenderer.FONT_HEIGHT + 8);
     }
 

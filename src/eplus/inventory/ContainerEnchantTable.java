@@ -134,7 +134,7 @@ public class ContainerEnchantTable extends Container
         {
             putStackInSlot(0, tileEnchantTable.itemInTable);
             PacketDispatcher.sendPacketToAllAround(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord, 64, tileEnchantTable.worldObj.getWorldInfo()
-                    .getDimension(), tileEnchantTable.getDescriptionPacket());
+                    .getVanillaDimension(), tileEnchantTable.getDescriptionPacket());
             onCraftMatrixChanged(tableInventory);
         }
     }
@@ -285,9 +285,9 @@ public class ContainerEnchantTable extends Container
     }
 
     @Override
-    public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
+    public void onContainerClosed(EntityPlayer par1EntityPlayer)
     {
-        super.onCraftGuiClosed(par1EntityPlayer);
+        super.onContainerClosed(par1EntityPlayer);
 
         for (int i = 0; i < tableInventory.getSizeInventory(); i++)
         {

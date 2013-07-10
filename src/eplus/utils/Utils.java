@@ -1,12 +1,10 @@
 package eplus.utils;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.SimpleTexture;
-import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class Utils
 {

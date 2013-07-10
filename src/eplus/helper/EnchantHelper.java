@@ -31,7 +31,7 @@ public class EnchantHelper
      */
     public static boolean canEnchantItem(ItemStack itemStack, Enchantment obj)
     {
-        Item.enchantedBook.func_92111_a(new EnchantmentData(obj, 1));
+        //Item.enchantedBook.get(new EnchantmentData(obj, 1));
 
         return itemStack.itemID == Item.book.itemID || obj.canApply(itemStack); // ||
         // itemStack.getItem().isBookEnchantable(itemStack,

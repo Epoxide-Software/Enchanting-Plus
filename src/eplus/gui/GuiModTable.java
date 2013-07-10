@@ -9,10 +9,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import org.lwjgl.input.Mouse;
