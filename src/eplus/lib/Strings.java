@@ -16,12 +16,15 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import eplus.handlers.LanguageHandler;
 
 /**
  * @author Freyja Lesser GNU Public License v3
  *         (http://www.gnu.org/licenses/lgpl.html)
  */
+
 public class Strings
 {
     public static String enchantingCost = LanguageHandler.getInstance().getTranslatedString("enchanting.cost");

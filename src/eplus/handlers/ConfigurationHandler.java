@@ -63,6 +63,13 @@ public class ConfigurationHandler
                 ConfigurationSettings.CostFactor = 1;
             }
             
+            ConfigurationSettings.RepairFactor = configuration.get(CATEGORY_SERVER, "RepairFactor", 8, "factor which repair cost is divided by (Default = 8). Higher is Cheaper").getInt();
+            
+            if(ConfigurationSettings.RepairFactor <= 0 )
+            {
+                configuration.getCategory(CATEGORY_SERVER).get("RepairFactor").set(1);
+                ConfigurationSettings.CostFactor = 1;
+            }
         } catch (final Exception e)
         {
             EnchantingPlus.log.info("Error Loading configuration");

@@ -44,7 +44,8 @@ import eplus.plugins.EplusPlugin;
  */
 
 @Mod(name = References.MODNAME, modid = References.MODID, dependencies = "required-after:Forge@[7.8.0.684,)")
-@NetworkMod(channels = { BasePacket.CHANNEL }, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class, clientSideRequired = true)
+@NetworkMod(channels =
+{ BasePacket.CHANNEL }, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class, clientSideRequired = true)
 public class EnchantingPlus
 {
 
@@ -72,7 +73,6 @@ public class EnchantingPlus
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
-        EnchantmentHelp.init();
         PluginHandler.initPlugins(event.getModState());
     }
 
@@ -100,13 +100,13 @@ public class EnchantingPlus
         // Strings.buildDefaultXML("en_US");
         try
         {
-           LanguageHandler.getInstance().addLanguages("/assets/eplus/lang/langs.txt");
+            LanguageHandler.getInstance().addLanguages("/assets/eplus/lang/langs.txt");
         } catch (final NullPointerException e)
         {
             log.severe(String.format("Can not load %s", "/assets/eplus/lang/langs.txt"));
         }
         LanguageHandler.getInstance().loadLangauges();
-        
+
         Blocks.init();
     }
 
@@ -126,7 +126,8 @@ public class EnchantingPlus
                     {
                         EnchantingPlus.log.info(String.format("Add custom enchantment tool-tip for %s. Request sent from %s", strings[0], imcMessage.getSender()));
                     }
-                } else if (imcMessage.isNBTMessage())
+                }
+                else if (imcMessage.isNBTMessage())
                 {
                     final NBTTagCompound nbtValue = imcMessage.getNBTValue();
                     final NBTTagList enchantments = nbtValue.getTagList("Enchantments");
@@ -141,11 +142,13 @@ public class EnchantingPlus
                             EnchantingPlus.log.info(String.format("Add custom enchantment tool-tip for %s. Request sent from %s", name, imcMessage.getSender()));
                         }
                     }
-                } else
+                }
+                else
                 {
                     EnchantingPlus.log.warning(String.format("Invalid IMC Message from %s", imcMessage.getSender()));
                 }
-            } else if (imcMessage.key.equalsIgnoreCase("blacklist-enchantment"))
+            }
+            else if (imcMessage.key.equalsIgnoreCase("blacklist-enchantment"))
             {
                 if (imcMessage.isStringMessage())
                 {
@@ -154,7 +157,8 @@ public class EnchantingPlus
                     {
                         EnchantingPlus.log.info(String.format("Add custom enchantment blacklist for %s. Request sent from %s", string, imcMessage.getSender()));
                     }
-                } else if (imcMessage.isNBTMessage())
+                }
+                else if (imcMessage.isNBTMessage())
                 {
                     final NBTTagCompound nbtValue = imcMessage.getNBTValue();
                     final NBTTagList enchantments = nbtValue.getTagList("Enchantments");
@@ -168,11 +172,13 @@ public class EnchantingPlus
                             EnchantingPlus.log.info(String.format("Add custom enchantment blacklist for %s. Request sent from %s", name, imcMessage.getSender()));
                         }
                     }
-                } else
+                }
+                else
                 {
                     EnchantingPlus.log.warning(String.format("Invalid IMC Message from %s", imcMessage.getSender()));
                 }
-            } else if (imcMessage.key.equalsIgnoreCase("blacklist-item"))
+            }
+            else if (imcMessage.key.equalsIgnoreCase("blacklist-item"))
             {
                 if (imcMessage.isStringMessage())
                 {
@@ -181,7 +187,8 @@ public class EnchantingPlus
                     {
                         EnchantingPlus.log.info(String.format("Add custom item blacklist for item id %d. Request sent from %s", itemId, imcMessage.getSender()));
                     }
-                } else if (imcMessage.isNBTMessage())
+                }
+                else if (imcMessage.isNBTMessage())
                 {
                     final NBTTagCompound nbtValue = imcMessage.getNBTValue();
                     final NBTTagList enchantments = nbtValue.getTagList("items");
@@ -195,7 +202,8 @@ public class EnchantingPlus
                             EnchantingPlus.log.info(String.format("Add custom item blacklist for item id %d. Request sent from %s", itemId, imcMessage.getSender()));
                         }
                     }
-                } else
+                }
+                else
                 {
                     EnchantingPlus.log.warning(String.format("Invalid IMC Message from %s", imcMessage.getSender()));
                 }

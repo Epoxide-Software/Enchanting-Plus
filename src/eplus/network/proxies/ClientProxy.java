@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import eplus.exceptions.FingerprintException;
 import eplus.handlers.CapeTickHandler;
 import eplus.handlers.VersionTickHandler;
+import eplus.lib.EnchantmentHelp;
 
 /**
  * @user odininon
@@ -18,6 +19,7 @@ public class ClientProxy extends CommonProxy
         TickRegistry.registerTickHandler(new CapeTickHandler(), Side.CLIENT);
         TickRegistry.registerScheduledTickHandler(new VersionTickHandler(), Side.CLIENT);
 
+        EnchantmentHelp.init();
     }
 
     @Override

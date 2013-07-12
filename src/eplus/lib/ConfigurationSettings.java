@@ -23,12 +23,13 @@ public class ConfigurationSettings
 
     public static boolean AllowDisenchanting;
     public static final boolean disenchantingDefault = true;
-    
+
     public static final boolean AllowEnchantDamagedDefault = true;
     public static boolean AllowEnchantDamaged;
 
     public static boolean AllowRepair;
     public static boolean repairDefault = true;
-    
+
     public static int CostFactor;
+    public static int RepairFactor;
 }

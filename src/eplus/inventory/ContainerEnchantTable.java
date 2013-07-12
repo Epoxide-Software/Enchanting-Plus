@@ -434,7 +434,7 @@ public class ContainerEnchantTable extends Container
         
         double totalCost = percentDamage * cost * enchantability;
         
-        totalCost /= 8;
+        totalCost /= ConfigurationSettings.RepairFactor;
         
         
         return (int) Math.max(1, totalCost);
