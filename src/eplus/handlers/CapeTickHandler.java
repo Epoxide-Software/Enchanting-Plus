@@ -8,6 +8,10 @@ import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.texture.TextureObject;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -52,6 +56,13 @@ public class CapeTickHandler implements ITickHandler
         {
             EnchantingPlus.log.warning("Could not load capes from remote authority.");
         }
+
+        for (String modder : modders)
+        {
+            ThreadDownloadImageData object = new ThreadDownloadImageData(capeURL, null, null);
+            mc.renderEngine.func_110579_a(new ResourceLocation("cloaks/" + modder), (TextureObject) object);
+        }
+
     }
 
     @Override
@@ -63,6 +74,7 @@ public class CapeTickHandler implements ITickHandler
     @Override
     public void tickEnd(EnumSet<TickType> type, Object... tickData)
     {
+
         /*
          * if (mc.theWorld != null && mc.theWorld.playerEntities.size() > 0) {
          * List players = mc.theWorld.playerEntities;
@@ -83,6 +95,7 @@ public class CapeTickHandler implements ITickHandler
          * 
          * }
          */
+
     }
 
     @Override
