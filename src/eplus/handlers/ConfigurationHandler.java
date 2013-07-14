@@ -52,24 +52,23 @@ public class ConfigurationHandler
                     "Set to true to allow disenchanting.").getBoolean(ConfigurationSettings.disenchantingDefault);
             ConfigurationSettings.AllowRepair = configuration.get(CATEGORY_SERVER, "AllowRepair", ConfigurationSettings.repairDefault,
                     "Set to true to allow repairing of items via enchantment table.").getBoolean(ConfigurationSettings.repairDefault);
-            
-            ConfigurationSettings.AllowEnchantDamaged = configuration.get(CATEGORY_SERVER, "AllowEnchantDamaged", ConfigurationSettings.AllowEnchantDamagedDefault, "Determinds if a player can enchant a damaged item").getBoolean(ConfigurationSettings.AllowEnchantDamagedDefault);
-            
+
+            ConfigurationSettings.AllowEnchantDamaged = configuration.get(CATEGORY_SERVER, "AllowEnchantDamaged", ConfigurationSettings.AllowEnchantDamagedDefault,
+                    "Determinds if a player can enchant a damaged item").getBoolean(ConfigurationSettings.AllowEnchantDamagedDefault);
+
             ConfigurationSettings.CostFactor = configuration.get(CATEGORY_SERVER, "CostFactor", 5, "Determinds the cost factor of enchanting / disenchanting / repair").getInt();
-            
-            if(ConfigurationSettings.CostFactor <= 0 )
-            {
-                configuration.getCategory(CATEGORY_SERVER).get("CostFactor").set(1);
-                ConfigurationSettings.CostFactor = 1;
-            }
-            
-            ConfigurationSettings.RepairFactor = configuration.get(CATEGORY_SERVER, "RepairFactor", 8, "factor which repair cost is divided by (Default = 8). Higher is Cheaper").getInt();
-            
-            if(ConfigurationSettings.RepairFactor <= 0 )
-            {
-                configuration.getCategory(CATEGORY_SERVER).get("RepairFactor").set(1);
-                ConfigurationSettings.CostFactor = 1;
-            }
+
+            clampSetting(CATEGORY_SERVER, "CostFactor", 1);
+
+            ConfigurationSettings.RepairFactor = configuration.get(CATEGORY_SERVER, "RepairFactor", 5, "factor which repair cost is divided by (Default = 8). Higher is Cheaper")
+                    .getInt();
+
+            clampSetting(CATEGORY_SERVER, "RepairFactor", 1);
+
+            ConfigurationSettings.minimumBook = configuration.get(CATEGORY_SERVER, "minimumBook", 5, "Minimum level of enchanting cost before requiring bookcases").getInt();
+
+            clampSetting(CATEGORY_SERVER, "minimumBook", 0);
+
         } catch (final Exception e)
         {
             EnchantingPlus.log.info("Error Loading configuration");
@@ -81,6 +80,27 @@ public class ConfigurationHandler
                 configuration.save();
             }
         }
+    }
+
+    private static void clampSetting(String category, String setting, int minimum)
+    {
+        try
+        {
+            Class clazz = Class.forName("eplus.lib.ConfigurationSettings");
+            Field field = clazz.getDeclaredField(setting);
+
+            int value = field.getInt(null);
+
+            if (value < minimum)
+            {
+                configuration.getCategory(category).get(setting).set(minimum);
+                field.setInt(null, minimum);
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     public static void set(String propertyName, String newValue)

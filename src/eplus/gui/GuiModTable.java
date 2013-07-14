@@ -18,6 +18,8 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import com.sun.corba.se.impl.orbutil.RepIdDelegator;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
 import eplus.helper.MathHelper;
@@ -223,7 +225,7 @@ public class GuiModTable extends GuiContainer
                 }
             } else
             {
-                if (tempLevel >= privateLevel || ConfigurationSettings.AllowDisenchanting && !container.tableInventory.getStackInSlot(0).isItemDamaged())
+                if (tempLevel >= privateLevel || ConfigurationSettings.AllowDisenchanting && (!container.tableInventory.getStackInSlot(0).isItemDamaged()) || ConfigurationSettings.AllowEnchantDamaged)
                 {
                     enchantmentLevel = tempLevel;
                 }
@@ -261,6 +263,7 @@ public class GuiModTable extends GuiContainer
     private boolean sliding = false;
 
     private int totalCost = 0;
+    private int repairAmount  = 0;
 
     private boolean dirty = false;
 
@@ -308,7 +311,7 @@ public class GuiModTable extends GuiContainer
             case 1:
                 if (enchants.size() == 0 && ConfigurationSettings.AllowRepair)
                 {
-                    PacketDispatcher.sendPacketToServer(new RepairPacket(totalCost).makePacket());
+                    PacketDispatcher.sendPacketToServer(new RepairPacket(totalCost, repairAmount).makePacket());
                 }
                 return;
             case 2:
@@ -716,6 +719,7 @@ public class GuiModTable extends GuiContainer
 
         enchantingPages = enchantmentArray.size() / 4.0 > 1 ? enchantmentArray.size() / 4.0 - 1.0 : 0;
         totalCost = 0;
+        repairAmount = 0;
 
         if (!enchantmentArray.isEmpty() && levelChanged())
         {
@@ -762,7 +766,12 @@ public class GuiModTable extends GuiContainer
             }
         } else if (ConfigurationSettings.AllowRepair && !levelChanged())
         {
-            totalCost += container.repairCost();
+            totalCost += container.repairCostMax(player);
+            int itemDamage = container.tableInventory.getStackInSlot(0) != null ? container.tableInventory.getStackInSlot(0).getItemDamage() : 0;
+            int playerLevel = player.experienceLevel;
+            
+            repairAmount = (itemDamage > playerLevel) ? playerLevel : itemDamage;
+            
             for (final GuiItem item : enchantmentArray)
             {
                 item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);

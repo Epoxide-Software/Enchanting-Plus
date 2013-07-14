@@ -32,4 +32,6 @@ public class ConfigurationSettings
 
     public static int CostFactor;
     public static int RepairFactor;
+    
+    public static int minimumBook;
 }

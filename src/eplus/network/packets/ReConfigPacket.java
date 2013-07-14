@@ -36,6 +36,9 @@ public class ReConfigPacket extends BasePacket
             configs.put("AllowRepair", String.valueOf(ConfigurationSettings.AllowRepair));
             configs.put("CostFactor", String.valueOf(ConfigurationSettings.CostFactor));
             configs.put("AllowEnchantDamaged", String.valueOf(ConfigurationSettings.AllowEnchantDamaged));
+            configs.put("RepairFactor", String.valueOf(ConfigurationSettings.RepairFactor));
+            configs.put("minimumBook", String.valueOf(ConfigurationSettings.minimumBook));
+            
             PacketDispatcher.sendPacketToPlayer(new ConfigPacket(configs).makePacket(), (Player) player);
         }
     }

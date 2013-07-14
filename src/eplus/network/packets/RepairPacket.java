@@ -19,14 +19,16 @@ public class RepairPacket extends BasePacket
 {
 
     private int cost;
+    private int amount;
 
     public RepairPacket()
     {
     }
 
-    public RepairPacket(int cost)
+    public RepairPacket(int cost, int amount)
     {
         this.cost = cost;
+        this.amount = amount;
     }
 
     @Override
@@ -38,10 +40,10 @@ public class RepairPacket extends BasePacket
             {
                 try
                 {
-                    ((ContainerEnchantTable) player.openContainer).repair(player, cost);
+                    ((ContainerEnchantTable) player.openContainer).repair(player, cost, amount);
                 } catch (final Exception e)
                 {
-                    EnchantingPlus.log.info("Enchant failed because: " + e.getMessage());
+                    EnchantingPlus.log.info("Repair failed because: " + e.getMessage());
                 }
                 player.openContainer.detectAndSendChanges();
             }
