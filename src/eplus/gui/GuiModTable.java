@@ -394,7 +394,7 @@ public class GuiModTable extends GuiContainer
         {
             tempY = 57;
         }
-        sliderIndex = sliding ? MathHelper.round(tempY / 57D, .25) : sliderIndex;
+        sliderIndex = sliding ? MathHelper.round(tempY / 57D * enchantingPages, .25) : sliderIndex;
 
         if (sliderIndex >= enchantingPages)
         {
