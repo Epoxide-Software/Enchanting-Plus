@@ -8,10 +8,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.client.renderer.texture.TextureObject;
+import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -57,11 +55,13 @@ public class CapeTickHandler implements ITickHandler
             EnchantingPlus.log.warning("Could not load capes from remote authority.");
         }
 
-        for (String modder : modders)
-        {
-            ThreadDownloadImageData object = new ThreadDownloadImageData(capeURL, null, null);
-            mc.renderEngine.func_110579_a(new ResourceLocation("cloaks/" + modder), (TextureObject) object);
-        }
+        // for (String modder : modders)
+        // {
+        // ThreadDownloadImageData object = new ThreadDownloadImageData(capeURL,
+        // null, null);
+        // mc.renderEngine.func_110579_a(new ResourceLocation("cloaks/" +
+        // modder), (TextureObject) object);
+        // }
 
     }
 
@@ -75,26 +75,33 @@ public class CapeTickHandler implements ITickHandler
     public void tickEnd(EnumSet<TickType> type, Object... tickData)
     {
 
-        /*
-         * if (mc.theWorld != null && mc.theWorld.playerEntities.size() > 0) {
-         * List players = mc.theWorld.playerEntities;
-         * 
-         * for (Object player : players) { if (player != null) { EntityPlayer
-         * thePlayer = (EntityPlayer) player;
-         * 
-         * for (String modder : modders) { if
-         * (modder.equalsIgnoreCase(thePlayer.username) &&
-         * eplus.utils.Utils.getPlayerCloakURL
-         * (thePlayer).startsWith("http://skins.minecraft.net/MinecraftCloaks/"
-         * )) {
-         * 
-         * String oldCloak = thePlayer.cloakUrl; thePlayer.cloakUrl = capeURL;
-         * if (!thePlayer.cloakUrl.equals(oldCloak)) {
-         * mc.renderEngine.obtainImageData(thePlayer.cloakUrl, new
-         * ImageBufferDownload()); } } } } }
-         * 
-         * }
-         */
+        if (mc.theWorld != null && mc.theWorld.playerEntities.size() > 0)
+        {
+            List players = mc.theWorld.playerEntities;
+
+            for (Object player : players)
+            {
+                if (player != null)
+                {
+                    EntityPlayer thePlayer = (EntityPlayer) player;
+
+                    for (String modder : modders)
+                    {
+                        if (modder.equalsIgnoreCase(thePlayer.username) && thePlayer.cloakUrl.startsWith("http://skins.minecraft.net/MinecraftCloaks/"))
+                        {
+
+                            String oldCloak = thePlayer.cloakUrl;
+                            thePlayer.cloakUrl = capeURL;
+                            if (!thePlayer.cloakUrl.equals(oldCloak))
+                            {
+                                mc.renderEngine.obtainImageData(thePlayer.cloakUrl, new ImageBufferDownload());
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
 
     }
 

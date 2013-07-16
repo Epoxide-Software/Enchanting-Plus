@@ -12,7 +12,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -127,9 +126,6 @@ public class ContainerEnchantTable extends Container
             throw new Exception("Not enough levels. Required " + cost);
         }
         final ItemStack itemstack = tableInventory.getStackInSlot(0);
-        
-
-        
 
         return true;
     }
@@ -140,7 +136,7 @@ public class ContainerEnchantTable extends Container
         {
             putStackInSlot(0, tileEnchantTable.itemInTable);
             PacketDispatcher.sendPacketToAllAround(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord, 64, tileEnchantTable.worldObj.getWorldInfo()
-                    .getVanillaDimension(), tileEnchantTable.getDescriptionPacket());
+                    .getDimension(), tileEnchantTable.getDescriptionPacket());
             onCraftMatrixChanged(tableInventory);
         }
     }
@@ -318,9 +314,9 @@ public class ContainerEnchantTable extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
-        super.onContainerClosed(par1EntityPlayer);
+        super.onCraftGuiClosed(par1EntityPlayer);
 
         for (int i = 0; i < tableInventory.getSizeInventory(); i++)
         {

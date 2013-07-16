@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.util.ChatMessageComponent;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
 import eplus.handlers.ConfigurationHandler;
@@ -34,25 +33,26 @@ public class EplusCommands extends CommandBase
     @Override
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] args)
     {
-        switch (args.length) {
-            case 1:
+        switch (args.length)
+        {
+        case 1:
+        {
+            return getListOfStringsFromIterableMatchingLastWord(args, commands);
+        }
+        case 2:
+        {
+            for (final String command : CommandRegister.commands.keySet())
             {
-                return getListOfStringsFromIterableMatchingLastWord(args, commands);
-            }
-            case 2:
-            {
-                for (final String command : CommandRegister.commands.keySet())
+                if (args[0].equalsIgnoreCase(command))
                 {
-                    if (args[0].equalsIgnoreCase(command))
-                    {
-                        return getListOfStringsFromIterableMatchingLastWord(args, CommandRegister.commands.get(command));
-                    }
+                    return getListOfStringsFromIterableMatchingLastWord(args, CommandRegister.commands.get(command));
                 }
             }
-            default:
-            {
-                return null;
-            }
+        }
+        default:
+        {
+            return null;
+        }
         }
     }
 
@@ -77,10 +77,10 @@ public class EplusCommands extends CommandBase
 
     private void processChangelog(ICommandSender icommandsender, String commandName, String[] args)
     {
-        icommandsender.sendChatToPlayer(ChatMessageComponent.func_111066_d(String.format("\u00A7e[%s] Changelog for %s", References.MODID, Version.getRecommendedVersion())));
+        icommandsender.sendChatToPlayer(String.format("\u00A7e[%s] Changelog for %s", References.MODID, Version.getRecommendedVersion()));
         for (final String line : Version.getChangelog())
         {
-            icommandsender.sendChatToPlayer(ChatMessageComponent.func_111066_d(line));
+            icommandsender.sendChatToPlayer(line);
         }
 
     }
@@ -108,7 +108,8 @@ public class EplusCommands extends CommandBase
             }
 
             throw new WrongUsageException("eplus " + StringHelper.keySetToString(CommandRegister.commands.keySet()));
-        } else
+        }
+        else
         {
             throw new WrongUsageException("eplus " + StringHelper.keySetToString(CommandRegister.commands.keySet()));
         }
@@ -128,8 +129,7 @@ public class EplusCommands extends CommandBase
                 config.put(commandName, args[0]);
 
                 PacketDispatcher.sendPacketToServer(new ConfigPacket(config).makePacket());
-                icommandsender.sendChatToPlayer(ChatMessageComponent.func_111066_d(String.format("%s: Config '%s' changed to %s.", References.MODID.toUpperCase(), commandName,
-                        args[0])));
+                icommandsender.sendChatToPlayer(String.format("%s: Config '%s' changed to %s.", References.MODID.toUpperCase(), commandName, args[0]));
                 return;
             }
         }

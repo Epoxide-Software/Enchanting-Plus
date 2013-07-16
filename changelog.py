@@ -38,13 +38,6 @@ def main():
     if args.verbose:
         print("Obtaining changelog from git")
 
-    cmd = "git checkout master"
-    try:
-        process = subprocess.Popen(cmdsplit(cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=-1)
-        process.communicate()
-    except OSError:
-        print("Git not found")
-
     cmd = 'git log ' + tag1 + '..' + tag2 + ' --pretty=format:%s'
     try:
         process = subprocess.Popen(cmdsplit(cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=-1)

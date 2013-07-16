@@ -12,13 +12,10 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-
-import com.sun.corba.se.impl.orbutil.RepIdDelegator;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
@@ -92,7 +89,7 @@ public class GuiModTable extends GuiContainer
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-                mc.func_110434_K().func_110577_a(texture);
+                mc.renderEngine.bindTexture(texture);
                 drawTexturedModalRect(xPosition, yPosition, 8 + textureIndex * 16, 182, width, height);
             }
         }
@@ -276,7 +273,7 @@ public class GuiModTable extends GuiContainer
 
     private boolean dirty = false;
 
-    private final ResourceLocation texture = new ResourceLocation("eplus", "textures/gui/enchant.png");
+    private final String texture = "/assets/eplus/textures/gui/enchant.png";
 
     private String error = "";
 
@@ -372,7 +369,7 @@ public class GuiModTable extends GuiContainer
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
     {
 
-        mc.func_110434_K().func_110577_a(texture);
+        mc.renderEngine.bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
         for (final GuiItem item : enchantmentArray)
@@ -398,7 +395,7 @@ public class GuiModTable extends GuiContainer
         final int adjustedMouseX = par1 - guiLeft;
         final int adjustedMouseY = par2 - guiTop;
 
-        mc.func_110434_K().func_110577_a(texture);
+        mc.renderEngine.bindTexture(texture);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -790,7 +787,7 @@ public class GuiModTable extends GuiContainer
                 }
                 else if (item.enchantmentLevel < level && !item.disabled)
                 {
-                    if (EnchantHelper.containsKey(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions"), item.enchantmentLevel))
+                    if (EnchantHelper.containsKey(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions"), item.enchantment.effectId, item.enchantmentLevel))
                     {
                         totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
                     }

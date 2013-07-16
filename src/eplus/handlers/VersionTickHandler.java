@@ -3,7 +3,6 @@ package eplus.handlers;
 import java.util.EnumSet;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatMessageComponent;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
 import eplus.lib.References;
@@ -34,7 +33,8 @@ public class VersionTickHandler implements IScheduledTickHandler
     {
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings(
+    { "rawtypes", "unchecked" })
     @Override
     public EnumSet ticks()
     {
@@ -60,9 +60,8 @@ public class VersionTickHandler implements IScheduledTickHandler
         {
             if (Version.hasUpdated())
             {
-                player.sendChatToPlayer(ChatMessageComponent.func_111066_d(String.format("[%s]: %s: %s", References.MODID, "Version update is available",
-                        Version.getRecommendedVersion())));
-                player.sendChatToPlayer(ChatMessageComponent.func_111066_d(String.format("[%s]: to view a changelog use: %s", References.MODID, "/eplus changelog")));
+                player.sendChatToPlayer(String.format("[%s]: %s: %s", References.MODID, "Version update is available", Version.getRecommendedVersion()));
+                player.sendChatToPlayer(String.format("[%s]: to view a changelog use: %s", References.MODID, "/eplus changelog"));
             }
         }
         messageSent = true;

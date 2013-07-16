@@ -98,9 +98,18 @@ public class EnchantHelper
             nbttagcompound.setShort("lvl", (short) ((Integer) map.get(i)).intValue());
             nbttaglist.appendTag(nbttagcompound);
 
-            for (int y = levels.get(i); y <= (Integer) map.get(i); y++)
+            int startLevel = (Integer) map.get(i);
+            try
             {
-                if (containsKey(restrictions, y))
+                startLevel = levels.get(i);
+            } catch (NullPointerException e)
+            {
+
+            }
+
+            for (int y = startLevel; y <= (Integer) map.get(i); y++)
+            {
+                if (containsKey(restrictions, i, y))
                 {
                     continue;
                 }
@@ -112,11 +121,11 @@ public class EnchantHelper
                 restrictions.appendTag(compound);
 
             }
+        }
 
-            if (itemStack.itemID == Item.book.itemID || itemStack.itemID == Item.enchantedBook.itemID)
-            {
-                itemStack.itemID = Item.enchantedBook.itemID;
-            }
+        if (itemStack.itemID == Item.book.itemID || itemStack.itemID == Item.enchantedBook.itemID)
+        {
+            itemStack.itemID = Item.enchantedBook.itemID;
         }
 
         if (nbttaglist.tagCount() > 0)
@@ -146,12 +155,12 @@ public class EnchantHelper
         }
     }
 
-    public static boolean containsKey(NBTTagList restrictions, int y)
+    public static boolean containsKey(NBTTagList restrictions, int id, int y)
     {
         for (int k = 0; k < restrictions.tagCount(); k++)
         {
             NBTTagCompound tag = (NBTTagCompound) restrictions.tagAt(k);
-            if (tag.getShort("lvl") == y)
+            if (tag.getShort("lvl") == y && tag.getShort("id") == id)
             {
                 return true;
             }

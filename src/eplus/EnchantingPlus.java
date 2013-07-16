@@ -59,7 +59,7 @@ public class EnchantingPlus
     public static CommonProxy proxy;
     public static Map<Integer, String> itemMap = new HashMap<Integer, String>();
 
-    @Mod.EventHandler
+    @Mod.Init
     public void init(FMLInitializationEvent event)
     {
 
@@ -70,13 +70,13 @@ public class EnchantingPlus
         proxy.registerTickHandlers();
     }
 
-    @Mod.EventHandler
+    @Mod.PostInit
     public void postInit(FMLPostInitializationEvent event)
     {
         PluginHandler.initPlugins(event.getModState());
     }
 
-    @Mod.EventHandler
+    @Mod.PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
         log = event.getModLog();
@@ -110,7 +110,7 @@ public class EnchantingPlus
         Blocks.init();
     }
 
-    @Mod.EventHandler
+    @Mod.IMCCallback
     public void processIMC(FMLInterModComms.IMCEvent event)
     {
 
@@ -216,7 +216,7 @@ public class EnchantingPlus
         GameRegistry.registerTileEntity(tileEntity, References.MODID + ":" + tileEntity.getSimpleName());
     }
 
-    @Mod.EventHandler
+    @Mod.ServerStarting
     public void serverStarting(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new EplusCommands());
