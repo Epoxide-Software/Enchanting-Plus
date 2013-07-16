@@ -22,6 +22,7 @@ import com.sun.corba.se.impl.orbutil.RepIdDelegator;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import eplus.EnchantingPlus;
+import eplus.helper.EnchantHelper;
 import eplus.helper.MathHelper;
 import eplus.inventory.ContainerEnchantTable;
 import eplus.inventory.TileEnchantTable;
@@ -298,6 +299,7 @@ public class GuiModTable extends GuiContainer
     protected void actionPerformed(GuiButton par1GuiButton)
     {
         final HashMap<Integer, Integer> enchants = new HashMap<Integer, Integer>();
+        final HashMap<Integer, Integer> levels = new HashMap<Integer, Integer>();
 
         for (final GuiItem item : enchantmentArray)
         {
@@ -306,6 +308,7 @@ public class GuiModTable extends GuiContainer
             if (item.enchantmentLevel != id && !item.disabled)
             {
                 enchants.put(item.enchantment.effectId, item.enchantmentLevel);
+                levels.put(item.enchantment.effectId, item.privateLevel);
             }
         }
 
@@ -314,7 +317,7 @@ public class GuiModTable extends GuiContainer
         case 0:
             if (enchants.size() > 0)
             {
-                PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, totalCost).makePacket());
+                PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, levels, totalCost).makePacket());
             }
             return;
         case 1:
@@ -787,7 +790,14 @@ public class GuiModTable extends GuiContainer
                 }
                 else if (item.enchantmentLevel < level && !item.disabled)
                 {
-                    totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+                    if (EnchantHelper.containsKey(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions"), item.enchantment.effectId, item.enchantmentLevel))
+                    {
+                        totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+                    }
+                    else
+                    {
+                        item.enchantmentLevel++;
+                    }
                 }
             }
         }

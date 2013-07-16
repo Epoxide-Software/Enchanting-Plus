@@ -19,16 +19,19 @@ import eplus.inventory.ContainerEnchantTable;
 public class EnchantPacket extends BasePacket
 {
 
-    protected HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    protected HashMap<Integer, Integer> list = new HashMap<Integer, Integer>();
+    protected HashMap<Integer, Integer> levels = new HashMap<Integer, Integer>();
     protected int cost;
 
     public EnchantPacket()
     {
     }
 
-    public EnchantPacket(HashMap<Integer, Integer> list, int cost)
+    public EnchantPacket(HashMap<Integer, Integer> list, HashMap<Integer,Integer> levels, int cost)
+    
     {
-        map = list;
+        this.list = list;
+        this.levels = levels;
         this.cost = cost;
     }
 
@@ -41,7 +44,7 @@ public class EnchantPacket extends BasePacket
             {
                 try
                 {
-                    ((ContainerEnchantTable) player.openContainer).enchant(player, map, cost);
+                    ((ContainerEnchantTable) player.openContainer).enchant(player, list, levels, cost);
                 } catch (final Exception e)
                 {
                     EnchantingPlus.log.info("Enchant failed because: " + e.getMessage());
@@ -55,6 +58,7 @@ public class EnchantPacket extends BasePacket
     public void read(ByteArrayDataInput input)
     {
         final HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
+        final HashMap<Integer, Integer> temp2 = new HashMap<Integer, Integer>();
         cost = input.readInt();
 
         final int size = input.readInt();
@@ -63,19 +67,35 @@ public class EnchantPacket extends BasePacket
         {
             temp.put(input.readInt(), input.readInt());
         }
-        map = temp;
+        
+        final int size2 = input.readInt();
+        
+        for (int i = 0; i < size2; i++)
+        {
+            temp2.put(input.readInt(), input.readInt());
+        }
+        list = temp;
+        levels = temp2;
     }
 
     @Override
     public void write(ByteArrayDataOutput output)
     {
         output.writeInt(cost);
-        output.writeInt(map.size());
+        output.writeInt(list.size());
 
-        for (final Integer enchantmentId : map.keySet())
+        for (final Integer enchantmentId : list.keySet())
         {
             output.writeInt(enchantmentId);
-            output.writeInt(map.get(enchantmentId));
+            output.writeInt(list.get(enchantmentId));
+        }
+        
+        output.writeInt(levels.size());
+
+        for (final Integer enchantmentId : levels.keySet())
+        {
+            output.writeInt(enchantmentId);
+            output.writeInt(levels.get(enchantmentId));
         }
     }
 }

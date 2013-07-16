@@ -1,10 +1,13 @@
 package eplus.helper;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -30,7 +33,7 @@ public class EnchantHelper
      */
     public static boolean canEnchantItem(ItemStack itemStack, Enchantment obj)
     {
-        //Item.enchantedBook.get(new EnchantmentData(obj, 1));
+        // Item.enchantedBook.get(new EnchantmentData(obj, 1));
 
         return itemStack.itemID == Item.book.itemID || obj.canApply(itemStack); // ||
         // itemStack.getItem().isBookEnchantable(itemStack,
@@ -69,10 +72,23 @@ public class EnchantHelper
      *            map of enchantments to add
      * @param itemStack
      *            the item to add enchantments to
+     * @param levels
+     * @param player
      */
-    public static void setEnchantments(Map<?, ?> map, ItemStack itemStack)
+    public static void setEnchantments(Map<?, ?> map, ItemStack itemStack, HashMap<Integer, Integer> levels, EntityPlayer player)
     {
         final NBTTagList nbttaglist = new NBTTagList();
+
+        NBTTagList restrictions = null;
+
+        if (itemStack.hasTagCompound())
+        {
+            restrictions = itemStack.getTagCompound().getTagList("restrictions");
+        }
+        else
+        {
+            restrictions = new NBTTagList();
+        }
 
         for (final Object o : map.keySet())
         {
@@ -82,10 +98,34 @@ public class EnchantHelper
             nbttagcompound.setShort("lvl", (short) ((Integer) map.get(i)).intValue());
             nbttaglist.appendTag(nbttagcompound);
 
-            if (itemStack.itemID == Item.book.itemID || itemStack.itemID == Item.enchantedBook.itemID)
+            int startLevel = (Integer) map.get(i);
+            try
             {
-                itemStack.itemID = Item.enchantedBook.itemID;
+                startLevel = levels.get(i);
+            } catch (NullPointerException e)
+            {
+
             }
+
+            for (int y = startLevel; y <= (Integer) map.get(i); y++)
+            {
+                if (containsKey(restrictions, i, y))
+                {
+                    continue;
+                }
+
+                NBTTagCompound compound = new NBTTagCompound();
+                compound.setShort("id", (short) i);
+                compound.setShort("lvl", (short) y);
+                compound.setString("player", player.username);
+                restrictions.appendTag(compound);
+
+            }
+        }
+
+        if (itemStack.itemID == Item.book.itemID || itemStack.itemID == Item.enchantedBook.itemID)
+        {
+            itemStack.itemID = Item.enchantedBook.itemID;
         }
 
         if (nbttaglist.tagCount() > 0)
@@ -93,21 +133,38 @@ public class EnchantHelper
             if (itemStack.itemID != Item.enchantedBook.itemID)
             {
                 itemStack.setTagInfo("ench", nbttaglist);
-            } else
+            }
+            else
             {
                 itemStack.setTagInfo("StoredEnchantments", nbttaglist);
             }
-        } else if (itemStack.hasTagCompound())
+            itemStack.setTagInfo("restrictions", restrictions);
+        }
+        else if (itemStack.hasTagCompound())
         {
             if (itemStack.itemID != Item.enchantedBook.itemID)
             {
                 itemStack.getTagCompound().removeTag("ench");
-            } else
+            }
+            else
             {
                 itemStack.getTagCompound().removeTag("StoredEnchantments");
                 itemStack.stackTagCompound = null;
                 itemStack.itemID = Item.book.itemID;
             }
         }
+    }
+
+    public static boolean containsKey(NBTTagList restrictions, int id, int y)
+    {
+        for (int k = 0; k < restrictions.tagCount(); k++)
+        {
+            NBTTagCompound tag = (NBTTagCompound) restrictions.tagAt(k);
+            if (tag.getShort("lvl") == y && tag.getShort("id") == id)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
