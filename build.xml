@@ -4,7 +4,7 @@
 
 
 	<!-- Versions -->
-	<property name="build.ver" value="1.16.2" />
+	<property name="build.ver" value="1.16.3r2" />
 	<property name="fullversion" value="${build.ver}" />
 
 	<property name="mcp.version" value="802" />

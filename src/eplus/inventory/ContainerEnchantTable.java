@@ -12,6 +12,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -68,6 +69,8 @@ public class ContainerEnchantTable extends Container
             par1InventoryPlayer.player.dropPlayerItem(tileEnchantTable.itemInTable);
             tileEnchantTable.itemInTable = null;
         }
+
+        enchantments = new HashMap<Integer, Integer>();
 
         // this.putStackInSlot(0, tileEnchantTable.itemInTable);
     }
@@ -165,8 +168,17 @@ public class ContainerEnchantTable extends Container
                 adjustedCost = temp;
             }
         }
-        
+
         adjustedCost *= (ConfigurationSettings.CostFactor / 4D);
+
+        if (enchantability > 1)
+        {
+            adjustedCost *= Math.log(enchantability) / 2;
+        }
+        else
+        {
+            adjustedCost /= 10;
+        }
         final int enchantmentCost = enchantmentCost(enchantmentId, level - 1, enchantmentLevel);
 
         return Math.min(adjustedCost, -enchantmentCost);
@@ -201,7 +213,8 @@ public class ContainerEnchantTable extends Container
             if (level > startingLevel)
             {
                 serverCost += enchantmentCost(enchantId, level, startingLevel);
-            } else if (level < startingLevel)
+            }
+            else if (level < startingLevel)
             {
                 serverCost += disenchantmentCost(enchantId, level, startingLevel);
             }
@@ -270,7 +283,7 @@ public class ContainerEnchantTable extends Container
         final int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
         final int enchantability = itemStack.getItem().getItemEnchantability();
         int adjustedCost = (int) (averageCost * (enchantmentLevel - level + maxLevel) / ((double) maxLevel * enchantability));
-        
+
         if (!ConfigurationSettings.needsBookShelves)
         {
             int temp = (int) (adjustedCost * (60 / (bookCases() + 1)));
@@ -280,9 +293,17 @@ public class ContainerEnchantTable extends Container
                 adjustedCost = temp;
             }
         }
-        
+
         adjustedCost *= (ConfigurationSettings.CostFactor / 3D);
-        
+        if (enchantability > 1)
+        {
+            adjustedCost *= Math.log(enchantability) /2;
+        }
+        else
+        {
+            adjustedCost /= 10;
+        }
+
         return Math.max(1, adjustedCost);
     }
 
@@ -353,7 +374,8 @@ public class ContainerEnchantTable extends Container
                         temp.put(obj.effectId, 0);
                     }
                 }
-            } else
+            }
+            else
             {
                 for (final Enchantment obj : Enchantment.enchantmentsList)
                 {
@@ -377,7 +399,8 @@ public class ContainerEnchantTable extends Container
             {
                 enchantments = temp;
             }
-        } else
+        }
+        else
         {
             enchantments = temp;
         }
@@ -400,16 +423,16 @@ public class ContainerEnchantTable extends Container
         if (canPurchase(player, serverCost))
         {
             int maxCost = repairCostMax(player);
-            double percAmnt = serverCost / (double)maxCost;
-            
+            double percAmnt = serverCost / (double) maxCost;
+
             int remain = itemStack.getItemDamageForDisplay();
             int maxDamage = itemStack.getMaxDamage();
-            
+
             double remainNet = remain * percAmnt;
-            
+
             double newDamage = remain - remainNet;
             newDamage = (newDamage <= 0) ? 0 : newDamage;
-            
+
             itemStack.setItemDamage((int) newDamage);
             if (!player.capabilities.isCreativeMode)
             {
@@ -419,7 +442,7 @@ public class ContainerEnchantTable extends Container
 
         onCraftMatrixChanged(tableInventory);
     }
-    
+
     public int repairCostMax(EntityPlayer player)
     {
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
@@ -448,24 +471,25 @@ public class ContainerEnchantTable extends Container
         final int maxDamage = itemStack.getMaxDamage();
         final int displayDamage = itemStack.getItemDamageForDisplay();
         final int enchantability = itemStack.getItem().getItemEnchantability();
-        
+
         final double percentDamage = 1 - (maxDamage - displayDamage) / (double) maxDamage;
-        
+
         double totalCost = (percentDamage * cost) / enchantability;
-        
-        totalCost *= ConfigurationSettings.RepairFactor;
-        
+
+        totalCost *= 2 * ConfigurationSettings.RepairFactor;
+
         return (int) Math.max(1, totalCost);
     }
 
     public int repairCost(EntityPlayer player)
     {
         int costMax = repairCostMax(player);
-        
-        if (costMax == 0 ) {
+
+        if (costMax == 0)
+        {
             return 0;
         }
-        
+
         return (int) Math.min(player.experienceLevel, costMax);
     }
 
@@ -493,7 +517,8 @@ public class ContainerEnchantTable extends Container
                     itemStack = stack.copy();
                 }
 
-            } else if (!mergeItemStack(stack, 1, 37, false))
+            }
+            else if (!mergeItemStack(stack, 1, 37, false))
             {
                 return null;
             }
@@ -501,7 +526,8 @@ public class ContainerEnchantTable extends Container
             if (stack.stackSize == 0)
             {
                 slot.putStack(null);
-            } else
+            }
+            else
             {
                 slot.onSlotChanged();
             }
