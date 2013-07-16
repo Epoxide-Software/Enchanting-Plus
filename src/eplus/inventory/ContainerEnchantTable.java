@@ -126,6 +126,10 @@ public class ContainerEnchantTable extends Container
         {
             throw new Exception("Not enough levels. Required " + cost);
         }
+        final ItemStack itemstack = tableInventory.getStackInSlot(0);
+        
+
+        
 
         return true;
     }
@@ -191,11 +195,12 @@ public class ContainerEnchantTable extends Container
      *            player requesting the enchantment
      * @param map
      *            the list of enchantments to add
+     * @param levels
      * @param cost
      *            the cost of the operation
      * @throws Exception
      */
-    public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, int cost) throws Exception
+    public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, HashMap<Integer, Integer> levels, int cost) throws Exception
     {
         final ItemStack itemstack = tableInventory.getStackInSlot(0);
         final HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
@@ -254,7 +259,7 @@ public class ContainerEnchantTable extends Container
 
         if (canPurchase(player, serverCost))
         {
-            EnchantHelper.setEnchantments(map, itemstack);
+            EnchantHelper.setEnchantments(map, itemstack, levels, player);
             if (!player.capabilities.isCreativeMode)
             {
                 player.addExperienceLevel(-cost);
@@ -297,7 +302,7 @@ public class ContainerEnchantTable extends Container
         adjustedCost *= (ConfigurationSettings.CostFactor / 3D);
         if (enchantability > 1)
         {
-            adjustedCost *= Math.log(enchantability) /2;
+            adjustedCost *= Math.log(enchantability) / 2;
         }
         else
         {
