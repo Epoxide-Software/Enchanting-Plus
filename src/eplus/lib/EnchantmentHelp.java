@@ -60,7 +60,7 @@ public class EnchantmentHelp
 
     public static boolean isBlackListed(Enchantment enchantment)
     {
-        return enchantmentBlackList.contains(enchantment.getName());
+        return enchantmentBlackList.contains(enchantment.getName()) || !ConfigurationSettings.enchantments.get(enchantment.getName());
     }
 
     public static boolean isBlackListed(Item item)

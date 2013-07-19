@@ -74,6 +74,7 @@ public class EnchantingPlus
     public void postInit(FMLPostInitializationEvent event)
     {
         PluginHandler.initPlugins(event.getModState());
+        ConfigurationHandler.loadEnchantments();
     }
 
     @Mod.PreInit

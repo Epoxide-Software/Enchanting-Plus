@@ -1,5 +1,7 @@
 package eplus.lib;
 
+import java.util.HashMap;
+
 /**
  * Enchanting Plus
  * 
@@ -34,4 +36,6 @@ public class ConfigurationSettings
     public static int RepairFactor;
     
     public static int minimumBook;
+    
+    public static HashMap<String, Boolean> enchantments;
 }

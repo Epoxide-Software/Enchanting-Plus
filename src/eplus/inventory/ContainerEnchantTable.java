@@ -126,6 +126,9 @@ public class ContainerEnchantTable extends Container
             throw new Exception("Not enough levels. Required " + cost);
         }
         final ItemStack itemstack = tableInventory.getStackInSlot(0);
+        
+
+        
 
         return true;
     }
@@ -491,6 +494,10 @@ public class ContainerEnchantTable extends Container
             return 0;
         }
 
+        if(player.capabilities.isCreativeMode) {
+            return costMax;
+        }
+        
         return (int) Math.min(player.experienceLevel, costMax);
     }
 

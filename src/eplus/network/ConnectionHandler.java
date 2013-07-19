@@ -8,6 +8,8 @@ import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import eplus.lib.ConfigurationSettings;
+import eplus.network.packets.EnchantmentAllowedPacket;
 import eplus.network.packets.ReConfigPacket;
 
 /**
@@ -54,5 +56,7 @@ public class ConnectionHandler implements IConnectionHandler
     public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager)
     {
         PacketDispatcher.sendPacketToPlayer(new ReConfigPacket().makePacket(), player);
+        PacketDispatcher.sendPacketToPlayer(new EnchantmentAllowedPacket(ConfigurationSettings.enchantments).makePacket(), player);
+        
     }
 }
