@@ -2,7 +2,6 @@ package eplus.handlers;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
@@ -26,6 +25,7 @@ public class ConfigurationHandler
     public static final String CATEGORY_SERVER = "server";
     public static final String CATEGORY_BOTH = "both";
     public static final String CATEGORY_ENCHANT = "enchantments";
+    public static final String CATEGORY_IDS = "ids";
 
     public static Configuration configuration;
 
@@ -46,6 +46,11 @@ public class ConfigurationHandler
 
             configuration.addCustomCategoryComment(CATEGORY_ENCHANT, "Enchantments can be disabled to be enchantable in the table.\nControlled on the server side");
 
+            ConfigurationSettings.tableID = configuration.get(CATEGORY_IDS, "AdvancedEnchantmentTable", 3050).getInt();
+            ConfigurationSettings.upgradeID = configuration.get(CATEGORY_IDS, "EnchantmentTableUpgradte", 10205).getInt();
+            
+            ConfigurationSettings.allowDisenUnowned = configuration.get(CATEGORY_SERVER, "Disenchant Unowned", false, "Allow disenchanting of enchantment levels the player doesn't own.").getBoolean(false);
+            
             ConfigurationSettings.useMod = configuration.get(CATEGORY_BOTH, "useMod", ConfigurationSettings.useModDefault,
                     "Set to true to use custom Enchantment Table in place of Vanilla").getBoolean(ConfigurationSettings.useModDefault);
             ConfigurationSettings.needsBookShelves = configuration.get(CATEGORY_SERVER, "needsBookShelves", ConfigurationSettings.bookShelvesDefault,
@@ -92,7 +97,7 @@ public class ConfigurationHandler
     {
         try
         {
-            Class clazz = Class.forName("eplus.lib.ConfigurationSettings");
+            Class<?> clazz = Class.forName("eplus.lib.ConfigurationSettings");
             Field field = clazz.getDeclaredField(setting);
 
             int value = field.getInt(null);
