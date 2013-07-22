@@ -1,7 +1,5 @@
 package eplus.inventory;
 
-import java.util.Random;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -20,7 +18,6 @@ import net.minecraft.tileentity.TileEntityEnchantmentTable;
 public class TileEnchantTable extends TileEntityEnchantmentTable
 {
 
-    private static Random rand = new Random();
     public ItemStack itemInTable;
 
     @Override

@@ -77,24 +77,23 @@ public class CapeTickHandler implements ITickHandler
 
         if (mc.theWorld != null && mc.theWorld.playerEntities.size() > 0)
         {
-            List players = mc.theWorld.playerEntities;
+            @SuppressWarnings("unchecked")
+            List<EntityPlayer> players = mc.theWorld.playerEntities;
 
-            for (Object player : players)
+            for (EntityPlayer player : players)
             {
                 if (player != null)
                 {
-                    EntityPlayer thePlayer = (EntityPlayer) player;
-
                     for (String modder : modders)
                     {
-                        if (modder.equalsIgnoreCase(thePlayer.username) && thePlayer.cloakUrl.startsWith("http://skins.minecraft.net/MinecraftCloaks/"))
+                        if (modder.equalsIgnoreCase(player.username) && player.cloakUrl.startsWith("http://skins.minecraft.net/MinecraftCloaks/"))
                         {
 
-                            String oldCloak = thePlayer.cloakUrl;
-                            thePlayer.cloakUrl = capeURL;
-                            if (!thePlayer.cloakUrl.equals(oldCloak))
+                            String oldCloak = player.cloakUrl;
+                            player.cloakUrl = capeURL;
+                            if (!player.cloakUrl.equals(oldCloak))
                             {
-                                mc.renderEngine.obtainImageData(thePlayer.cloakUrl, new ImageBufferDownload());
+                                mc.renderEngine.obtainImageData(player.cloakUrl, new ImageBufferDownload());
                             }
                         }
                     }

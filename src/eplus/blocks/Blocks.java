@@ -2,8 +2,12 @@ package eplus.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import eplus.EnchantingPlus;
+import eplus.lib.ConfigurationSettings;
 
 /**
  * Enchanting Plus
@@ -22,12 +26,11 @@ public class Blocks
     public static void init()
     {
         EnchantingPlus.log.info("Initializing Blocks.");
-
-        final int blockID = Block.enchantmentTable.blockID;
-        Block.blocksList[blockID] = null;
-        Item.itemsList[blockID] = null;
-
-        final Block table = new BlockEnchantTable(blockID).setHardness(5.0F).setResistance(2000.0F).setUnlocalizedName("enchantmentTable");
+        final Block table = new BlockEnchantTable(ConfigurationSettings.tableID).setHardness(5.0F).setResistance(2000.0F).setUnlocalizedName("advancedEnchantmentTable");
         GameRegistry.registerBlock(table, table.getUnlocalizedName());
+        LanguageRegistry.addName(table, "Advanced Enchantment Table");
+        
+        CraftingManager.getInstance().addRecipe(new ItemStack(table), " b ", "oto", " e ", 'b', Item.writableBook, 'o', Block.obsidian, 't', Block.enchantmentTable, 'e', Item.eyeOfEnder);
+
     }
 }

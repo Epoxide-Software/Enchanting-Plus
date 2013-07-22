@@ -787,13 +787,14 @@ public class GuiModTable extends GuiContainer
                 }
                 else if (item.enchantmentLevel < level && !item.disabled)
                 {
-                    if (EnchantHelper.containsKey(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions"), item.enchantment.effectId, item.enchantmentLevel))
+                    if (EnchantHelper.containsKey(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions"), item.enchantment.effectId, item.enchantmentLevel) || ConfigurationSettings.allowDisenUnowned)
                     {
                         totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
                     }
                     else
                     {
                         item.enchantmentLevel++;
+                        error = "Can not disenchant level not placed by yourself via eplus";
                     }
                 }
             }

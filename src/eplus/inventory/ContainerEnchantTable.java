@@ -125,11 +125,6 @@ public class ContainerEnchantTable extends Container
         {
             throw new Exception("Not enough levels. Required " + cost);
         }
-        final ItemStack itemstack = tableInventory.getStackInSlot(0);
-        
-
-        
-
         return true;
     }
 
@@ -430,7 +425,7 @@ public class ContainerEnchantTable extends Container
             double percAmnt = serverCost / (double) maxCost;
 
             int remain = itemStack.getItemDamageForDisplay();
-            int maxDamage = itemStack.getMaxDamage();
+            itemStack.getMaxDamage();
 
             double remainNet = remain * percAmnt;
 

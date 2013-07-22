@@ -20,7 +20,7 @@ public class Version implements Runnable
 {
     public static enum EnumUpdateState
     {
-        CURRENT, OUTDATED, CONNECTION_ERROR
+        CURRENT, OUTDATED, CONNECTION_ERROR, BETA
     }
 
     public static Version instance = new Version();
@@ -105,7 +105,8 @@ public class Version implements Runnable
         {
 
         }
-        return new String[] { "Failed to grab changelog." };
+        return new String[]
+        { "Failed to grab changelog." };
     }
 
     public static boolean hasUpdated()
@@ -163,8 +164,6 @@ public class Version implements Runnable
                     }
                 }
             }
-            EnchantingPlus.log.warning("Using outdated version [" + getCurrentModVersion() + "] for Minecraft " + mcVersion + ". Consider updating.");
-            currentVersion = EnumUpdateState.OUTDATED;
 
         } catch (final Exception ex)
         {
@@ -180,9 +179,16 @@ public class Version implements Runnable
             EnchantingPlus.log.log(Level.INFO, "Using the latest version for Minecraft " + getMinecraftVersion(), new Object[0]);
             currentVersion = EnumUpdateState.CURRENT;
             updated = false;
-        } else
+        }
+        else if (currentModVersion.endsWith("b"))
         {
-            EnchantingPlus.log.log(Level.INFO, "An updated version of Enchanting Plus is available: {0}", new Object[] { getRecommendedVersion() });
+            EnchantingPlus.log.info("Using a Beta version of Enchanting Plus: " + getCurrentModVersion());
+            currentVersion = EnumUpdateState.BETA;
+            updated = false;
+        }
+        else
+        {
+            EnchantingPlus.log.log(Level.INFO, "An updated version of Enchanting Plus is available: " + getRecommendedVersion());
             currentVersion = EnumUpdateState.OUTDATED;
             updated = true;
         }
@@ -191,7 +197,7 @@ public class Version implements Runnable
 
     public static boolean versionSeen()
     {
-        if (!(currentVersion == EnumUpdateState.OUTDATED))
+        if (!(currentVersion == EnumUpdateState.OUTDATED) || (currentVersion == EnumUpdateState.BETA))
         {
             return false;
         }

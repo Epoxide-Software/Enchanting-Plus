@@ -9,6 +9,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import cpw.mods.fml.relauncher.Side;
 import eplus.EnchantingPlus;
 import eplus.lib.ConfigurationSettings;
+import eplus.lib.GuiIds;
 import eplus.lib.References;
 
 /**
@@ -44,9 +45,18 @@ public class GuiPacket extends BasePacket
         {
             final NBTTagCompound tag = player.getEntityData();
 
-            if (tag.getBoolean(References.MODID + ":useMod") && ConfigurationSettings.useMod)
+            switch (guiId)
             {
+            case GuiIds.ModTable:
+                if (tag.getBoolean(References.MODID + ":useMod") && ConfigurationSettings.useMod)
+                {
+                    player.openGui(EnchantingPlus.INSTANCE, guiId, player.worldObj, xPos, yPos, zPos);
+                }
+                break;
+
+            case GuiIds.VanillaTable:
                 player.openGui(EnchantingPlus.INSTANCE, guiId, player.worldObj, xPos, yPos, zPos);
+                break;
             }
         }
     }

@@ -26,6 +26,7 @@ import eplus.handlers.LanguageHandler;
 import eplus.handlers.PluginHandler;
 import eplus.handlers.Version;
 import eplus.inventory.TileEnchantTable;
+import eplus.items.Items;
 import eplus.lib.EnchantmentHelp;
 import eplus.lib.References;
 import eplus.network.ConnectionHandler;
@@ -109,6 +110,7 @@ public class EnchantingPlus
         LanguageHandler.getInstance().loadLangauges();
 
         Blocks.init();
+        Items.init();
     }
 
     @Mod.IMCCallback

@@ -34,8 +34,15 @@ public class ConfigurationSettings
 
     public static int CostFactor;
     public static int RepairFactor;
-    
+
     public static int minimumBook;
-    
+
     public static HashMap<String, Boolean> enchantments;
+
+    public static boolean allowDisenUnowned;
+
+    // IDS
+    public static int tableID;
+    public static int upgradeID;
+
 }
