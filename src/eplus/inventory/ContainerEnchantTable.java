@@ -357,6 +357,7 @@ public class ContainerEnchantTable extends Container
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
 
         final HashMap<Integer, Integer> temp = new LinkedHashMap<Integer, Integer>();
+        final HashMap<Integer, Integer> temp2 = new LinkedHashMap<Integer, Integer>();
 
         if (itemStack != null && !EnchantmentHelp.isBlackListed(itemStack.getItem()))
         {
@@ -378,20 +379,26 @@ public class ContainerEnchantTable extends Container
             {
                 for (final Enchantment obj : Enchantment.enchantmentsList)
                 {
+                    if (obj == null)
+                        continue;
+
                     boolean add = true;
                     for (final Object enc : temp.keySet())
                     {
                         final Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
-                        if (obj != null && (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)))
+                        if (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj))
                         {
                             add = false;
                         }
                     }
-                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && add && !EnchantmentHelp.isBlackListed(obj))
+
+                    if (EnchantHelper.canEnchantItem(itemStack, obj) && add && !EnchantmentHelp.isBlackListed(obj))
                     {
-                        temp.put(obj.effectId, 0);
+                        temp2.put(obj.effectId, 0);
                     }
                 }
+                temp.putAll(temp2);
+
             }
 
             if (enchantments != temp)
@@ -489,10 +496,11 @@ public class ContainerEnchantTable extends Container
             return 0;
         }
 
-        if(player.capabilities.isCreativeMode) {
+        if (player.capabilities.isCreativeMode)
+        {
             return costMax;
         }
-        
+
         return (int) Math.min(player.experienceLevel, costMax);
     }
 
