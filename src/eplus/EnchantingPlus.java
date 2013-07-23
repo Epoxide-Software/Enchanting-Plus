@@ -44,7 +44,7 @@ import eplus.plugins.EplusPlugin;
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
-@Mod(name = References.MODNAME, modid = References.MODID, dependencies = "required-after:Forge@[7.8.0.684,)")
+@Mod(name = References.MODNAME, modid = References.MODID, dependencies = "required-after:Forge@[7.8.0.684, 7.8.1.738]", acceptedMinecraftVersions = "[1.5.2, 1.6.1)")
 @NetworkMod(channels =
 { BasePacket.CHANNEL }, packetHandler = PacketHandler.class, connectionHandler = ConnectionHandler.class, clientSideRequired = true)
 public class EnchantingPlus
