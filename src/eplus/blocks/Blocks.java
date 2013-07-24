@@ -30,7 +30,7 @@ public class Blocks
         GameRegistry.registerBlock(table, table.getUnlocalizedName());
         LanguageRegistry.addName(table, "Advanced Enchantment Table");
         
-        CraftingManager.getInstance().addRecipe(new ItemStack(table), " b ", "oto", " e ", 'b', Item.writableBook, 'o', Block.obsidian, 't', Block.enchantmentTable, 'e', Item.eyeOfEnder);
+        CraftingManager.getInstance().addRecipe(new ItemStack(table), "gbg", "oto", "geg", 'b', Item.writableBook, 'o', Block.obsidian, 't', Block.enchantmentTable, 'e', Item.eyeOfEnder, 'g', Item.ingotGold);
 
     }
 }

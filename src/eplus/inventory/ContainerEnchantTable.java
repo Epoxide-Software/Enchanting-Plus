@@ -385,7 +385,10 @@ public class ContainerEnchantTable extends Container
                     boolean add = true;
                     for (final Object enc : temp.keySet())
                     {
+
                         final Enchantment enchantment = Enchantment.enchantmentsList[(Integer) enc];
+                        if (enchantment == null)
+                            continue;
                         if (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj))
                         {
                             add = false;

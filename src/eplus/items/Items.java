@@ -17,7 +17,7 @@ public class Items
         final Item tableUpgrade = new ItemTableUpgrade(ConfigurationSettings.upgradeID).setUnlocalizedName("tableUpgrade");
         LanguageRegistry.addName(tableUpgrade, "Table Upgrade");
         
-        CraftingManager.getInstance().addRecipe(new ItemStack(tableUpgrade), " b ", "o o", " e ", 'b', Item.writableBook, 'o', Block.obsidian, 'e', Item.eyeOfEnder);
+        CraftingManager.getInstance().addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', Item.writableBook, 'o', Block.obsidian, 'e', Item.eyeOfEnder, 'g', Item.ingotGold);
 
     }
 
