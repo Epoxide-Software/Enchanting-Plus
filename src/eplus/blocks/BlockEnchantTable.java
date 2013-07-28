@@ -3,9 +3,11 @@ package eplus.blocks;
 import java.util.Random;
 
 import net.minecraft.block.BlockEnchantmentTable;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import eplus.EnchantingPlus;
 import eplus.inventory.TileEnchantTable;
@@ -22,6 +24,9 @@ import eplus.lib.References;
 
 public class BlockEnchantTable extends BlockEnchantmentTable
 {
+
+    private Icon field_94461_a;
+    private Icon field_94460_b;
 
     protected BlockEnchantTable(int par1)
     {
@@ -53,7 +58,8 @@ public class BlockEnchantTable extends BlockEnchantmentTable
         if (tag.getBoolean(References.MODID + ":useMod") && ConfigurationSettings.useMod)
         {
             player.openGui(EnchantingPlus.INSTANCE, GuiIds.ModTable, world, x, y, z);
-        } else
+        }
+        else
         {
             player.openGui(EnchantingPlus.INSTANCE, GuiIds.VanillaTable, world, x, y, z);
         }
@@ -88,7 +94,8 @@ public class BlockEnchantTable extends BlockEnchantmentTable
             {
                 var7 = x + 0.5D + 0.25D * var19;
                 var13 = par5Random.nextFloat() * 2.0F * var19;
-            } else
+            }
+            else
             {
                 var11 = z + 0.5D + 0.25D * var19;
                 var17 = par5Random.nextFloat() * 2.0F * var19;
@@ -96,5 +103,19 @@ public class BlockEnchantTable extends BlockEnchantmentTable
 
             par1World.spawnParticle("portal", var7, var9, var11, var13, var15, var17);
         }
+    }
+
+    @Override
+    public Icon getIcon(int par1, int par2)
+    {
+        return par1 == 0 ? this.field_94460_b : (par1 == 1 ? this.field_94461_a : this.blockIcon);
+    }
+
+    @Override
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.blockIcon = par1IconRegister.registerIcon("eplus:enchanting_table_side");
+        this.field_94461_a = par1IconRegister.registerIcon("eplus:enchanting_table_top");
+        this.field_94460_b = par1IconRegister.registerIcon("eplus:enchanting_table_bottom");
     }
 }

@@ -24,7 +24,7 @@ public class ItemTableUpgrade extends Item
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        super.registerIcons(par1IconRegister);
+        this.itemIcon = par1IconRegister.registerIcon("eplus:enchanting_table_upgrade");
     }
 
     @Override
