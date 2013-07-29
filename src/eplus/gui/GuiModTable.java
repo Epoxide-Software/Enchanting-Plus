@@ -276,6 +276,8 @@ public class GuiModTable extends GuiContainer
     private final String texture = "/assets/eplus/textures/gui/enchant.png";
 
     private String error = "";
+    
+    private static int guiOffset = 26;
 
     public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z, TileEnchantTable tileEntity)
     {
@@ -288,7 +290,7 @@ public class GuiModTable extends GuiContainer
         yPos = y;
         zPos = z;
 
-        xSize = 209;
+        xSize = 235;
         ySize = 182;
     }
 
@@ -418,7 +420,7 @@ public class GuiModTable extends GuiContainer
 
         sliderY = sliding ? tempY : 57 * (sliderIndex / enchantingPages);
 
-        drawTexturedModalRect(guiLeft + 180, guiTop + 16 + (int) sliderY, 0, 182, 12, 15);
+        drawTexturedModalRect(guiLeft + guiOffset + 180, guiTop + 16 + (int) sliderY, 0, 182, 12, 15);
 
         if (!clicked && Mouse.isButtonDown(0))
         {
@@ -429,7 +431,7 @@ public class GuiModTable extends GuiContainer
                     item.dragging = true;
                 }
             }
-            if (adjustedMouseX <= 191 && adjustedMouseX >= 180)
+            if (adjustedMouseX <= 191 + guiOffset && adjustedMouseX >= 180 + guiOffset)
             {
                 if (enchantingPages != 0)
                 {
@@ -574,7 +576,7 @@ public class GuiModTable extends GuiContainer
      */
     private GuiItem getItemFromPos(int x, int y)
     {
-        if (x < guiLeft + 35 || x > guiLeft + xSize - 32)
+        if (x < guiLeft + guiOffset + 35 || x > guiLeft + guiOffset + xSize - 32)
         {
             return null;
         }
@@ -604,7 +606,7 @@ public class GuiModTable extends GuiContainer
 
         if (eventDWheel != 0)
         {
-            if (mouseX >= 35 && mouseX <= xSize - 32 || mouseX >= 180 && mouseX <= 192)
+            if (mouseX >= 35 + guiOffset && mouseX <= xSize + guiOffset - 32 || mouseX >= 180 + guiOffset && mouseX <= 192 + guiOffset)
             {
                 if (mouseY >= 15 && mouseY <= 87)
                 {
@@ -634,8 +636,8 @@ public class GuiModTable extends GuiContainer
     public void initGui()
     {
         super.initGui();
-        buttonList.add(new GuiIcon(0, guiLeft + 9, guiTop + 40, "E").customTexture(0));
-        buttonList.add(new GuiIcon(1, guiLeft + 9, guiTop + 60, "R").customTexture(0));
+        buttonList.add(new GuiIcon(0, guiLeft + guiOffset + 9, guiTop + 40, "E").customTexture(0));
+        buttonList.add(new GuiIcon(1, guiLeft + guiOffset + 9, guiTop + 60, "R").customTexture(0));
         final String s = "Vanilla";
         buttonList.add(new GuiButton(2, guiLeft + xSize + 10, guiTop + 5, fontRenderer.getStringWidth(s) + 10, 20, s));
 
@@ -687,7 +689,7 @@ public class GuiModTable extends GuiContainer
         {
             this.enchantments = enchantments;
 
-            enchantmentArray = convertMapToGuiItems(enchantments, 35 + guiLeft, 15 + guiTop);
+            enchantmentArray = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
 
             sliderIndex = enchantingPages = 0;
             clicked = sliding = false;
@@ -696,7 +698,7 @@ public class GuiModTable extends GuiContainer
 
         if (dirty)
         {
-            final ArrayList<GuiItem> temp = convertMapToGuiItems(enchantments, 35 + guiLeft, 15 + guiTop);
+            final ArrayList<GuiItem> temp = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
 
             for (final GuiItem item : enchantmentArray)
             {
