@@ -4,7 +4,7 @@
 
 
 	<!-- Versions -->
-	<property name="build.ver" value="1.16.3r3" />
+	<property name="build.ver" value="1.16.4r1" />
 	<property name="fullversion" value="${build.ver}" />
 
 	<property name="mcp.version" value="802" />
@@ -18,7 +18,7 @@
 
 	<!-- Directories -->
 	<property name="download.dir" value="downloads" />
-	<property name="src.dir" value="src" />
+	<property name="src.dir" value="src_work" />
 	<property name="api.dir" value="API" />
 
 	<property name="lib.dir" value="${src.dir}/lib" />

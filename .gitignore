@@ -10,3 +10,6 @@ keystore.ks
 /.project
 .settings/
 downloads/
+src_work/
+
+/*.exe
