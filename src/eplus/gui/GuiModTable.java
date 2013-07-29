@@ -202,21 +202,26 @@ public class GuiModTable extends GuiContainer
          */
         public void scroll(int xPos)
         {
+            
+            int start = guiOffset + guiLeft + 10;
+            
             if (disabled)
             {
                 return;
             }
-            sliderX = xPos + guiLeft + 36;
-            if (sliderX <= guiLeft + 36)
+            sliderX = start + xPos;
+            
+            
+            if(sliderX <= start)
             {
-                sliderX = guiLeft + 36;
+                sliderX = start;
             }
-            if (sliderX >= guiLeft + 173)
-            {
-                sliderX = guiLeft + 173;
+            
+            if(sliderX >= start + width + 20) {
+                sliderX = start + width + 20;
             }
 
-            index = xPos / (float) (width - 12);
+            index = xPos / (float) (width + 10);
             final int tempLevel = (int) Math.floor(privateLevel > enchantment.getMaxLevel() ? privateLevel * index : enchantment.getMaxLevel() * index);
             if (locked)
             {
@@ -276,7 +281,7 @@ public class GuiModTable extends GuiContainer
     private final String texture = "/assets/eplus/textures/gui/enchant.png";
 
     private String error = "";
-    
+
     private static int guiOffset = 26;
 
     public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z, TileEnchantTable tileEntity)
@@ -457,7 +462,7 @@ public class GuiModTable extends GuiContainer
                     item.dragging = false;
                 }
             }
-            if (adjustedMouseX <= 191 && adjustedMouseX >= 180)
+            if (adjustedMouseX <= 191 + guiOffset && adjustedMouseX >= 180 + guiOffset)
             {
                 sliding = false;
             }
@@ -576,7 +581,7 @@ public class GuiModTable extends GuiContainer
      */
     private GuiItem getItemFromPos(int x, int y)
     {
-        if (x < guiLeft + guiOffset + 35 || x > guiLeft + guiOffset + xSize - 32)
+        if (x < guiLeft + guiOffset + 35 || x > guiLeft + xSize - 32)
         {
             return null;
         }
@@ -789,7 +794,8 @@ public class GuiModTable extends GuiContainer
                 }
                 else if (item.enchantmentLevel < level && !item.disabled)
                 {
-                    if (EnchantHelper.containsKey(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions"), item.enchantment.effectId, item.enchantmentLevel) || ConfigurationSettings.allowDisenUnowned)
+                    if (EnchantHelper.containsKey(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions"), item.enchantment.effectId,
+                            item.enchantmentLevel) || ConfigurationSettings.allowDisenUnowned)
                     {
                         totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
                     }

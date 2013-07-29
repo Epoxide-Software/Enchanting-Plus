@@ -1,69 +1,6 @@
 --- ../eplus/inventory/ContainerEnchantTable.java
 +++ ../work/eplus/inventory/ContainerEnchantTable.java
-@@ -11,6 +11,7 @@
- import net.minecraft.inventory.Container;
- import net.minecraft.inventory.IInventory;
- import net.minecraft.inventory.Slot;
-+import net.minecraft.item.Item;
- import net.minecraft.item.ItemStack;
- import net.minecraft.world.World;
- import net.minecraftforge.common.ForgeHooks;
-@@ -37,7 +38,9 @@
-     private final int zPos;
-     private Map<Integer, Integer> enchantments;
- 
--    public ContainerEnchantTable(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, TileEnchantTable tileEntity)
-+    private final int guiOffest = 26;
-+
-+    public ContainerEnchantTable(final InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, TileEnchantTable tileEntity)
-     {
-         worldObj = par2World;
-         xPos = par3;
-@@ -46,20 +49,40 @@
- 
-         tileEnchantTable = tileEntity;
- 
--        addSlotToContainer(new SlotEnchant(this, tableInventory, 0, 11, 17));
-+        addSlotToContainer(new SlotEnchant(this, tableInventory, 0, 11 + guiOffest, 17));
-         int l;
- 
-         for (l = 0; l < 3; ++l)
-         {
-             for (int i1 = 0; i1 < 9; ++i1)
-             {
--                addSlotToContainer(new Slot(par1InventoryPlayer, i1 + l * 9 + 9, 17 + i1 * 18, 91 + l * 18));
-+                addSlotToContainer(new Slot(par1InventoryPlayer, i1 + l * 9 + 9, 17 + i1 * 18 + guiOffest, 91 + l * 18));
-             }
-         }
- 
-         for (l = 0; l < 9; ++l)
-         {
--            addSlotToContainer(new Slot(par1InventoryPlayer, l, 17 + l * 18, 149));
-+            addSlotToContainer(new Slot(par1InventoryPlayer, l, 17 + l * 18 + guiOffest, 149));
-+        }
-+
-+        for (int k = 0; k < 4; k++)
-+        {
-+            final int armorType = k;
-+            addSlotToContainer(new Slot(par1InventoryPlayer, 39 - k, 7, 24 + k * 19)
-+            {
-+                @Override
-+                public int getSlotStackLimit()
-+                {
-+                    return 1;
-+                }
-+
-+                @Override
-+                public boolean isItemValid(ItemStack par1ItemStack)
-+                {
-+                    Item item = (par1ItemStack == null ? null : par1ItemStack.getItem());
-+                    return item != null && item.isValidArmor(par1ItemStack, armorType, par1InventoryPlayer.player);
-+                }
-+            });
-         }
- 
-         // Will drop items saved in the table.
-@@ -134,7 +157,7 @@
+@@ -157,7 +157,7 @@
          {
              putStackInSlot(0, tileEnchantTable.itemInTable);
              PacketDispatcher.sendPacketToAllAround(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord, 64, tileEnchantTable.worldObj.getWorldInfo()
@@ -72,7 +9,7 @@
              onCraftMatrixChanged(tableInventory);
          }
      }
-@@ -312,9 +335,9 @@
+@@ -335,9 +335,9 @@
      }
  
      @Override
@@ -85,12 +22,3 @@
  
          for (int i = 0; i < tableInventory.getSizeInventory(); i++)
          {
-@@ -532,7 +555,7 @@
-                 }
- 
-             }
--            else if (!mergeItemStack(stack, 1, 37, false))
-+            else if (!mergeItemStack(stack, 1, 41, true))
-             {
-                 return null;
-             }

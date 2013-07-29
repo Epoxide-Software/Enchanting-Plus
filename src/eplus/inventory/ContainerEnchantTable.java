@@ -555,7 +555,7 @@ public class ContainerEnchantTable extends Container
                 }
 
             }
-            else if (!mergeItemStack(stack, 1, 41, true))
+            else if (!mergeItemStack2(stack, 1, 41, true))
             {
                 return null;
             }
@@ -576,5 +576,97 @@ public class ContainerEnchantTable extends Container
             slot.onPickupFromSlot(par1EntityPlayer, stack);
         }
         return itemStack;
+    }
+
+    private boolean mergeItemStack2(ItemStack stack, int i, int j, boolean b)
+    {
+        boolean flag1 = false;
+        int k = i;
+
+        if (b)
+        {
+            k = j - 1;
+        }
+
+        Slot slot;
+        ItemStack itemstack1;
+
+        if (stack.isStackable())
+        {
+            while (stack.stackSize > 0 && (!b && k < j || b && k >= i))
+            {
+                slot = (Slot) this.inventorySlots.get(k);
+                itemstack1 = slot.getStack();
+
+                if (itemstack1 != null && itemstack1.itemID == stack.itemID
+                        && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage())
+                        && ItemStack.areItemStackTagsEqual(stack, itemstack1))
+                {
+                    int l = itemstack1.stackSize + stack.stackSize;
+
+                    if (l <= stack.getMaxStackSize())
+                    {
+                        stack.stackSize = 0;
+                        itemstack1.stackSize = l;
+                        slot.onSlotChanged();
+                        flag1 = true;
+                    }
+                    else if (itemstack1.stackSize < stack.getMaxStackSize())
+                    {
+                        stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
+                        itemstack1.stackSize = stack.getMaxStackSize();
+                        slot.onSlotChanged();
+                        flag1 = true;
+                    }
+                }
+
+                if (b)
+                {
+                    --k;
+                }
+                else
+                {
+                    ++k;
+                }
+            }
+        }
+
+        if (stack.stackSize > 0)
+        {
+            if (b)
+            {
+                k = j - 1;
+            }
+            else
+            {
+                k = i;
+            }
+
+            while (!b && k < j || b && k >= i)
+            {
+                slot = (Slot) this.inventorySlots.get(k);
+                itemstack1 = slot.getStack();
+
+                if (itemstack1 == null && slot.isItemValid(stack))
+                {
+                    slot.putStack(stack.copy());
+                    slot.onSlotChanged();
+                    stack.stackSize = 0;
+                    flag1 = true;
+                    break;
+                }
+
+                if (b)
+                {
+                    --k;
+                }
+                else
+                {
+                    ++k;
+                }
+            }
+        }
+
+        return flag1;
     }
 }
