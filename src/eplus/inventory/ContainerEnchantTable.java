@@ -458,7 +458,7 @@ public class ContainerEnchantTable extends Container
             double percAmnt = serverCost / (double) maxCost;
 
             int remain = itemStack.getItemDamageForDisplay();
-            itemStack.getMaxDamage();
+            int maxDamage = itemStack.getMaxDamage();
 
             double remainNet = remain * percAmnt;
 
@@ -502,7 +502,11 @@ public class ContainerEnchantTable extends Container
 
         final int maxDamage = itemStack.getMaxDamage();
         final int displayDamage = itemStack.getItemDamageForDisplay();
-        final int enchantability = itemStack.getItem().getItemEnchantability();
+        int enchantability = itemStack.getItem().getItemEnchantability();
+        
+        if (enchantability == 1) {
+            enchantability = 10;
+        }
 
         final double percentDamage = 1 - (maxDamage - displayDamage) / (double) maxDamage;
 
