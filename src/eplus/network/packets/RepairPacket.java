@@ -5,6 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import eplus.EnchantingPlus;
 import eplus.inventory.ContainerEnchantTable;
@@ -44,6 +46,8 @@ public class RepairPacket extends BasePacket
                 } catch (final Exception e)
                 {
                     EnchantingPlus.log.info("Repair failed because: " + e.getMessage());
+                    PacketDispatcher.sendPacketToPlayer(new DisenchantErrorPacket(e.getMessage()).makePacket(), (Player) player);
+
                 }
                 player.openContainer.detectAndSendChanges();
             }

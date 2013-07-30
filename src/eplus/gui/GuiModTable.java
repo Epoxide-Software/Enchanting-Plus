@@ -280,7 +280,7 @@ public class GuiModTable extends GuiContainer
 
     private final String texture = "/assets/eplus/textures/gui/enchant.png";
 
-    private String error = "";
+    public String error = "";
 
     private static int guiOffset = 26;
 

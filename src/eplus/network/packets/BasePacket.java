@@ -60,6 +60,7 @@ public abstract class BasePacket
         builder.put(3, GuiPacket.class);
         builder.put(4, RepairPacket.class);
         builder.put(5, EnchantmentAllowedPacket.class);
+        builder.put(6, DisenchantErrorPacket.class);
 
         idMap = builder.build();
     }
