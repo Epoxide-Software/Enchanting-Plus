@@ -384,10 +384,6 @@ public class ContainerEnchantTable extends Container
 
         if (itemStack != null && !EnchantmentHelp.isBlackListed(itemStack.getItem()))
         {
-            if (EnchantHelper.isItemEnchanted(itemStack))
-            {
-                temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
-            }
             if (EnchantHelper.isItemEnchantable(itemStack))
             {
                 for (final Enchantment obj : Enchantment.enchantmentsList)
@@ -398,8 +394,10 @@ public class ContainerEnchantTable extends Container
                     }
                 }
             }
-            else
+            else if (EnchantHelper.isItemEnchanted(itemStack))
             {
+                temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
+
                 for (final Enchantment obj : Enchantment.enchantmentsList)
                 {
                     if (obj == null)
@@ -503,8 +501,9 @@ public class ContainerEnchantTable extends Container
         final int maxDamage = itemStack.getMaxDamage();
         final int displayDamage = itemStack.getItemDamageForDisplay();
         int enchantability = itemStack.getItem().getItemEnchantability();
-        
-        if (enchantability == 1) {
+
+        if (enchantability == 1)
+        {
             enchantability = 10;
         }
 
@@ -602,8 +601,7 @@ public class ContainerEnchantTable extends Container
                 slot = (Slot) this.inventorySlots.get(k);
                 itemstack1 = slot.getStack();
 
-                if (itemstack1 != null && itemstack1.itemID == stack.itemID
-                        && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage())
+                if (itemstack1 != null && itemstack1.itemID == stack.itemID && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage())
                         && ItemStack.areItemStackTagsEqual(stack, itemstack1))
                 {
                     int l = itemstack1.stackSize + stack.stackSize;
