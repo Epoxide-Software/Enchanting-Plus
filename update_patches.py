@@ -45,7 +45,7 @@ def main():
             fromlines = open(file_base, 'U').readlines()
             tolines = open(file_work, 'U').readlines()
             
-            patch = ''.join(difflib.unified_diff(fromlines, tolines, '../' + file_base[len(base)+1:], '../' + file_work[len(base)+1:], '', '', n=3))
+            patch = ''.join(difflib.unified_diff(fromlines, tolines, '../' + file_base[len(base_dir)+1:], '../' + file_work[len(base_dir)+1:], '', '', n=3))
             patch_dir = os.path.join(patchd, path[len(work)+1:])
             patch_file = os.path.join(patch_dir, cur_file + '.patch')
             

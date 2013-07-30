@@ -1,5 +1,5 @@
---- ../eplus/commands/EplusCommands.java
-+++ ../work/eplus/commands/EplusCommands.java
+--- ../src/eplus/commands/EplusCommands.java
++++ ../src_work/eplus/commands/EplusCommands.java
 @@ -7,6 +7,7 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.ICommandSender;
