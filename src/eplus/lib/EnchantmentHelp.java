@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import eplus.handlers.ConfigurationHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 
@@ -56,6 +57,16 @@ public class EnchantmentHelp
         putToolTips(Enchantment.punch, Strings.enchantmentPunch);
         putToolTips(Enchantment.flame, Strings.enchantmentFlame);
         putToolTips(Enchantment.infinity, Strings.enchantmentInfinity);
+        
+        saveToolTips();
+    }
+
+    public static void saveToolTips()
+    {
+        for (String enchantment : toolTips.keySet())
+        {
+            ConfigurationHandler.set(enchantment + "-ToolTip", toolTips.get(enchantment));
+        }
     }
 
     public static boolean isBlackListed(Enchantment enchantment)
@@ -100,6 +111,15 @@ public class EnchantmentHelp
             toolTips.put(enchantment, info);
             return true;
         }
+        else
+        {
+            if (toolTips.get(enchantment).isEmpty())
+            {
+                toolTips.put(enchantment, info);
+                return true;
+            }
+        }
+
         return false;
     }
 }

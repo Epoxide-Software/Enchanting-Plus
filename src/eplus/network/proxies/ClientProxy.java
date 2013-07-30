@@ -27,6 +27,11 @@ public class ClientProxy extends CommonProxy
         TickRegistry.registerScheduledTickHandler(new VersionTickHandler(), Side.CLIENT);
         
         ClientRegistry.bindTileEntitySpecialRenderer(TileEnchantTable.class, new EnchantmentTableRender());
+    }
+    
+    @Override
+    public void registerEnchantments()
+    {
         EnchantmentHelp.init();
     }
 

@@ -76,6 +76,7 @@ public class EnchantingPlus
     {
         PluginHandler.initPlugins(event.getModState());
         ConfigurationHandler.loadEnchantments();
+        proxy.registerEnchantments();
     }
 
     @Mod.PreInit

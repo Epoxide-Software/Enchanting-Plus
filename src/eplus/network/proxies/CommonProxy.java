@@ -13,4 +13,8 @@ public class CommonProxy
     public void throwFingerprintError(String s)
     {
     }
+
+    public void registerEnchantments()
+    {
+    }
 }

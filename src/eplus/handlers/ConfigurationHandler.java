@@ -11,6 +11,7 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import eplus.EnchantingPlus;
 import eplus.lib.ConfigurationSettings;
+import eplus.lib.EnchantmentHelp;
 
 /**
  * Enchanting Plus
@@ -48,9 +49,10 @@ public class ConfigurationHandler
 
             ConfigurationSettings.tableID = configuration.get(CATEGORY_IDS, "AdvancedEnchantmentTable", 3050).getInt();
             ConfigurationSettings.upgradeID = configuration.get(CATEGORY_IDS, "EnchantmentTableUpgradte", 10205).getInt();
-            
-            ConfigurationSettings.allowDisenUnowned = configuration.get(CATEGORY_SERVER, "Disenchant Unowned", false, "Allow disenchanting of enchantment levels the player doesn't own.").getBoolean(false);
-            
+
+            ConfigurationSettings.allowDisenUnowned = configuration.get(CATEGORY_SERVER, "Disenchant Unowned", false,
+                    "Allow disenchanting of enchantment levels the player doesn't own.").getBoolean(false);
+
             ConfigurationSettings.useMod = configuration.get(CATEGORY_BOTH, "useMod", ConfigurationSettings.useModDefault,
                     "Set to true to use custom Enchantment Table in place of Vanilla").getBoolean(ConfigurationSettings.useModDefault);
             ConfigurationSettings.needsBookShelves = configuration.get(CATEGORY_SERVER, "needsBookShelves", ConfigurationSettings.bookShelvesDefault,
@@ -128,16 +130,22 @@ public class ConfigurationHandler
             }
         }
 
-        final Field field = ReflectionHelper.findField(ConfigurationSettings.class, propertyName);
         try
         {
-            if (field.getType() == boolean.class)
+            final Field field = ReflectionHelper.findField(ConfigurationSettings.class, propertyName);
+            try
             {
-                field.setBoolean(EnchantingPlus.INSTANCE, Boolean.parseBoolean(newValue));
+                if (field.getType() == boolean.class)
+                {
+                    field.setBoolean(EnchantingPlus.INSTANCE, Boolean.parseBoolean(newValue));
+                }
+            } catch (final IllegalAccessException e)
+            {
+                e.printStackTrace();
             }
-        } catch (final IllegalAccessException e)
+        } catch (final Exception e)
         {
-            e.printStackTrace();
+
         }
 
         if (configuration.hasChanged())
@@ -159,6 +167,7 @@ public class ConfigurationHandler
                 if (enchant != null)
                 {
                     ConfigurationSettings.enchantments.put(enchant.getName(), configuration.get("enchantments", enchant.getName(), true).getBoolean(true));
+                    EnchantmentHelp.putToolTips(enchant, configuration.get("enchantments", enchant.getName() + "-ToolTip", "").getString());
                 }
             }
 
