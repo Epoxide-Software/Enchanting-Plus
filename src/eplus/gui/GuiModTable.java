@@ -375,7 +375,9 @@ public class GuiModTable extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
     {
-
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.renderEngine.bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
@@ -403,9 +405,6 @@ public class GuiModTable extends GuiContainer
         final int adjustedMouseY = par2 - guiTop;
 
         mc.renderEngine.bindTexture(texture);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
         int tempY = adjustedMouseY - 16;
         if (tempY <= 0)
@@ -424,7 +423,10 @@ public class GuiModTable extends GuiContainer
         }
 
         sliderY = sliding ? tempY : 57 * (sliderIndex / enchantingPages);
-
+        
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         drawTexturedModalRect(guiLeft + guiOffset + 180, guiTop + 16 + (int) sliderY, 0, 182, 12, 15);
 
         if (!clicked && Mouse.isButtonDown(0))

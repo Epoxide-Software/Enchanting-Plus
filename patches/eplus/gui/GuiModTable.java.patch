@@ -26,21 +26,21 @@
  
      public String error = "";
  
-@@ -376,7 +377,7 @@
-     protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
-     {
- 
+@@ -378,7 +379,7 @@
+         GL11.glDisable(GL11.GL_LIGHTING);
+         GL11.glDisable(GL11.GL_DEPTH_TEST);
+         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 -        mc.renderEngine.bindTexture(texture);
 +        mc.renderEngine.func_110577_a(texture);
          drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
  
          for (final GuiItem item : enchantmentArray)
-@@ -402,7 +403,7 @@
+@@ -404,7 +405,7 @@
          final int adjustedMouseX = par1 - guiLeft;
          final int adjustedMouseY = par2 - guiTop;
  
 -        mc.renderEngine.bindTexture(texture);
 +        mc.renderEngine.func_110577_a(texture);
-         GL11.glEnable(GL11.GL_LIGHTING);
-         GL11.glEnable(GL11.GL_DEPTH_TEST);
-         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+ 
+         int tempY = adjustedMouseY - 16;
+         if (tempY <= 0)
