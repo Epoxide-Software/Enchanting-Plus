@@ -166,7 +166,7 @@ public class ContainerEnchantTable extends Container
     public int disenchantmentCost(int enchantmentId, int enchantmentLevel, Integer level)
     {
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
-        if (itemStack == null || itemStack.getItem().getItemEnchantability() == 0)
+        if (itemStack == null)
         {
             return 0;
         }
@@ -179,7 +179,10 @@ public class ContainerEnchantTable extends Container
         }
 
         final int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
-        final int enchantability = itemStack.getItem().getItemEnchantability();
+        int enchantability = itemStack.getItem().getItemEnchantability();
+        
+        if (enchantability <= 1) enchantability = 10;
+        
         int adjustedCost = (int) (averageCost * (enchantmentLevel - level - maxLevel) / ((double) maxLevel * enchantability));
         if (!ConfigurationSettings.needsBookShelves)
         {
@@ -291,7 +294,7 @@ public class ContainerEnchantTable extends Container
     public int enchantmentCost(int enchantmentId, int enchantmentLevel, Integer level)
     {
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
-        if (itemStack == null || itemStack.getItem().getItemEnchantability() == 0)
+        if (itemStack == null)
         {
             return 0;
         }
@@ -304,7 +307,10 @@ public class ContainerEnchantTable extends Container
         }
 
         final int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
-        final int enchantability = itemStack.getItem().getItemEnchantability();
+        int enchantability = itemStack.getItem().getItemEnchantability();
+        
+        if(enchantability < 1) enchantability = 1;
+        
         int adjustedCost = (int) (averageCost * (enchantmentLevel - level + maxLevel) / ((double) maxLevel * enchantability));
 
         if (!ConfigurationSettings.needsBookShelves)
@@ -443,13 +449,22 @@ public class ContainerEnchantTable extends Container
     public void repair(EntityPlayer player, int cost, int amount) throws Exception
     {
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
+        
+        boolean flag = true;
+        
+        
         if (itemStack == null)
         {
             return;
         }
+        
+        if(itemStack.hasTagCompound()) 
+        {
+            flag = !itemStack.getTagCompound().hasKey("charge");
+        }
 
         final int serverCost = repairCost(player);
-        if (!itemStack.isItemEnchanted() || serverCost == 0)
+        if ((!itemStack.isItemEnchanted() || serverCost == 0) && flag)
         {
             return;
         }
@@ -506,7 +521,7 @@ public class ContainerEnchantTable extends Container
         final int displayDamage = itemStack.getItemDamageForDisplay();
         int enchantability = itemStack.getItem().getItemEnchantability();
 
-        if (enchantability == 1)
+        if (enchantability <= 1)
         {
             enchantability = 10;
         }

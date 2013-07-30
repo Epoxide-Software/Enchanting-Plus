@@ -48,7 +48,13 @@ public class EnchantHelper
      */
     public static boolean isItemEnchantable(ItemStack itemStack)
     {
-        return itemStack.itemID == Item.book.itemID || itemStack.isItemEnchantable();
+        boolean flag = true;
+        if (itemStack.hasTagCompound())
+        {
+            flag = !itemStack.getTagCompound().hasKey("charge");
+        }
+        
+        return itemStack.itemID == Item.book.itemID || itemStack.isItemEnchantable() && flag;
     }
 
     /**
