@@ -9,7 +9,7 @@
              onCraftMatrixChanged(tableInventory);
          }
      }
-@@ -336,9 +336,9 @@
+@@ -342,9 +342,9 @@
      }
  
      @Override
