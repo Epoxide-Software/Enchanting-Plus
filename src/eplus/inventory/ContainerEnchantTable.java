@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -124,9 +125,9 @@ public class ContainerEnchantTable extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer entityplayer)
+    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return true;
+        return par1EntityPlayer.getDistanceSq((double)this.xPos + 0.5D, (double)this.yPos + 0.5D, (double)this.zPos + 0.5D) <= 64.0D && !par1EntityPlayer.isDead;
     }
 
     public boolean canPurchase(EntityPlayer player, int cost) throws Exception

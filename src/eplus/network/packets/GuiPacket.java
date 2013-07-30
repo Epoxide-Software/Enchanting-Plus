@@ -44,7 +44,7 @@ public class GuiPacket extends BasePacket
         if (side == Side.SERVER)
         {
             final NBTTagCompound tag = player.getEntityData();
-
+            
             switch (guiId)
             {
             case GuiIds.ModTable:

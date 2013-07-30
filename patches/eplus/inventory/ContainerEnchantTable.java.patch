@@ -1,6 +1,6 @@
 --- ../src/eplus/inventory/ContainerEnchantTable.java
 +++ ../src_work/eplus/inventory/ContainerEnchantTable.java
-@@ -157,7 +157,7 @@
+@@ -158,7 +158,7 @@
          {
              putStackInSlot(0, tileEnchantTable.itemInTable);
              PacketDispatcher.sendPacketToAllAround(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord, 64, tileEnchantTable.worldObj.getWorldInfo()
@@ -9,7 +9,7 @@
              onCraftMatrixChanged(tableInventory);
          }
      }
-@@ -335,9 +335,9 @@
+@@ -336,9 +336,9 @@
      }
  
      @Override

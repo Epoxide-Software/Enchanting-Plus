@@ -1,5 +1,6 @@
 package eplus.network;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.tileentity.TileEntity;
@@ -50,7 +51,7 @@ public class GuiHandler implements IGuiHandler
     }
 
     @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getServerGuiElement(int ID, final EntityPlayer player, World world, int x, int y, int z)
     {
         TileEntity tileEntity;
         switch (ID) {
@@ -67,7 +68,13 @@ public class GuiHandler implements IGuiHandler
                 {
                     return null;
                 }
-                return new ContainerEnchantment(player.inventory, world, x, y, z);
+                return new ContainerEnchantment(player.inventory, world, x, y, z) {
+                    @Override
+                    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+                    {
+                        return !player.isDead;
+                    }
+                };
             default:
                 return null;
         }
