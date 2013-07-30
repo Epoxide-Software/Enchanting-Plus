@@ -18,7 +18,7 @@
      public void init(FMLInitializationEvent event)
      {
  
-@@ -71,14 +71,14 @@
+@@ -71,7 +71,7 @@
          proxy.registerTickHandlers();
      }
  
@@ -27,7 +27,8 @@
      public void postInit(FMLPostInitializationEvent event)
      {
          PluginHandler.initPlugins(event.getModState());
-         ConfigurationHandler.loadEnchantments();
+@@ -79,7 +79,7 @@
+         proxy.registerEnchantments();
      }
  
 -    @Mod.PreInit
@@ -35,7 +36,7 @@
      public void preInit(FMLPreInitializationEvent event)
      {
          log = event.getModLog();
-@@ -113,7 +113,7 @@
+@@ -114,7 +114,7 @@
          Items.init();
      }
  
@@ -44,7 +45,7 @@
      public void processIMC(FMLInterModComms.IMCEvent event)
      {
  
-@@ -219,7 +219,7 @@
+@@ -220,7 +220,7 @@
          GameRegistry.registerTileEntity(tileEntity, References.MODID + ":" + tileEntity.getSimpleName());
      }
  

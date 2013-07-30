@@ -24,7 +24,7 @@
 -    private final String texture = "/assets/eplus/textures/gui/enchant.png";
 +    private final ResourceLocation texture = new ResourceLocation("eplus", "textures/gui/enchant.png");
  
-     private String error = "";
+     public String error = "";
  
 @@ -376,7 +377,7 @@
      protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
