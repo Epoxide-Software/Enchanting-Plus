@@ -345,7 +345,10 @@ public class ContainerEnchantTable extends Container
             final ItemStack stack = tableInventory.getStackInSlot(i);
             if (stack != null)
             {
-                par1EntityPlayer.dropPlayerItem(stack);
+                if(par1EntityPlayer.inventory.addItemStackToInventory(stack)) {
+                } else {
+                    par1EntityPlayer.dropPlayerItem(stack);
+                }
             }
         }
 
