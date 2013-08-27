@@ -26,8 +26,8 @@
 +    @Mod.EventHandler
      public void postInit(FMLPostInitializationEvent event)
      {
-         PluginHandler.initPlugins(event.getModState());
-@@ -79,7 +79,7 @@
+         final NBTTagList list = new NBTTagList();
+@@ -87,7 +87,7 @@
          proxy.registerEnchantments();
      }
  

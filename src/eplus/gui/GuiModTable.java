@@ -803,8 +803,10 @@ public class GuiModTable extends GuiContainer
                     }
                     else
                     {
-                        item.enchantmentLevel++;
-                        error = "Can not disenchant level not placed by yourself via eplus";
+                        totalCost = 0;
+                        
+                        //item.enchantmentLevel++;
+                        //error = "Can not disenchant level not placed by yourself via eplus";
                     }
                 }
             }
