@@ -29,6 +29,6 @@ public class TConPlugin
             }
         }
         
-        EnchantmentHelp.putBlackListItem(itemsBlackList);
+        //EnchantmentHelp.putBlackListItem(itemsBlackList);
     }
 }

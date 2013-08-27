@@ -643,8 +643,8 @@ public class GuiModTable extends GuiContainer
     public void initGui()
     {
         super.initGui();
-        buttonList.add(new GuiIcon(0, guiLeft + guiOffset + 9, guiTop + 40, "E").customTexture(0));
-        buttonList.add(new GuiIcon(1, guiLeft + guiOffset + 9, guiTop + 60, "R").customTexture(0));
+        buttonList.add(new GuiIcon(0, guiLeft + guiOffset + 9, guiTop + 38, "E").customTexture(0));
+        buttonList.add(new GuiIcon(1, guiLeft + guiOffset + 9, guiTop + 63, "R").customTexture(0));
         final String s = "Vanilla";
         buttonList.add(new GuiButton(2, guiLeft + xSize + 10, guiTop + 5, fontRenderer.getStringWidth(s) + 10, 20, s));
 
