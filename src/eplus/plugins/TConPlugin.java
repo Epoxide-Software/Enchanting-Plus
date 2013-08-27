@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eplus.EnchantingPlus;
-import eplus.api.EplusApi;
+import eplus.lib.EnchantmentHelp;
 
 /**
  * @author Freyja Lesser GNU Public License v3
@@ -14,8 +14,8 @@ import eplus.api.EplusApi;
 public class TConPlugin
 {
 
-    @EplusPlugin.PreInit
-    public void preInit()
+    @EplusPlugin.PostInit
+    public void postInit()
     {
         final String modId = "TConstruct";
 
@@ -28,7 +28,7 @@ public class TConPlugin
                 itemsBlackList.add(itemId);
             }
         }
-
-        EplusApi.addItemToBlackList(itemsBlackList);
+        
+        EnchantmentHelp.putBlackListItem(itemsBlackList);
     }
 }

@@ -74,6 +74,14 @@ public class EnchantingPlus
     @Mod.PostInit
     public void postInit(FMLPostInitializationEvent event)
     {
+        final NBTTagList list = new NBTTagList();
+        GameData.writeItemData(list);
+        for (int i = 0; i < list.tagCount(); i++)
+        {
+            final ItemData itemData = new ItemData((NBTTagCompound) list.tagAt(i));
+            itemMap.put(itemData.getItemId(), itemData.getModId());
+        }
+        
         PluginHandler.initPlugins(event.getModState());
         ConfigurationHandler.loadEnchantments();
         proxy.registerEnchantments();
@@ -88,15 +96,7 @@ public class EnchantingPlus
 
         Version.check();
         event.getModMetadata().version = Version.getCurrentModVersion();
-
-        final NBTTagList list = new NBTTagList();
-        GameData.writeItemData(list);
-        for (int i = 0; i < list.tagCount(); i++)
-        {
-            final ItemData itemData = new ItemData((NBTTagCompound) list.tagAt(i));
-            itemMap.put(itemData.getItemId(), itemData.getModId());
-        }
-
+        
         PluginHandler.init(event.getAsmData().getAll(EplusPlugin.class.getCanonicalName()));
         PluginHandler.initPlugins(event.getModState());
 

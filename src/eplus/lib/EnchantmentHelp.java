@@ -122,4 +122,13 @@ public class EnchantmentHelp
 
         return false;
     }
+
+    public static void putBlackListItem(List<Integer> itemsBlackList)
+    {
+        for(Integer itemId : itemsBlackList) 
+        {
+            putBlackListItem(itemId);
+        }
+        
+    }
 }
