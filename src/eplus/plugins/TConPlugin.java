@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eplus.EnchantingPlus;
+import eplus.api.EplusPlugin;
 import eplus.lib.EnchantmentHelp;
 
 /**

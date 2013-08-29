@@ -19,6 +19,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.ItemData;
+import eplus.api.EplusPlugin;
 import eplus.blocks.Blocks;
 import eplus.commands.EplusCommands;
 import eplus.handlers.ConfigurationHandler;
@@ -35,7 +36,6 @@ import eplus.network.PacketHandler;
 import eplus.network.PlayerTracker;
 import eplus.network.packets.BasePacket;
 import eplus.network.proxies.CommonProxy;
-import eplus.plugins.EplusPlugin;
 
 /**
  * Enchanting Plus

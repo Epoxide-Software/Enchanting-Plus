@@ -1,6 +1,7 @@
 package eplus.plugins;
 
 import eplus.api.EplusApi;
+import eplus.api.EplusPlugin;
 
 /**
  * @author Freyja Lesser GNU Public License v3

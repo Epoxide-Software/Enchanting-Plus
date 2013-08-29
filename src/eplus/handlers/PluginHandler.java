@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import cpw.mods.fml.common.LoaderState;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import eplus.EnchantingPlus;
-import eplus.plugins.EplusPlugin;
+import eplus.api.EplusPlugin;
 
 /**
  * @author Freyja Lesser GNU Public License v3
