@@ -37,7 +37,7 @@ public class ConfigurationSettings
 
     public static int minimumBook;
 
-    public static HashMap<String, Boolean> enchantments;
+    public static HashMap<String, Boolean> enchantments = new HashMap<String, Boolean>();
 
     public static boolean allowDisenUnowned;
 

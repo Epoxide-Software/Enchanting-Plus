@@ -159,9 +159,6 @@ public class ConfigurationHandler
         try
         {
             configuration.load();
-
-            ConfigurationSettings.enchantments = new HashMap<String, Boolean>();
-
             for (Enchantment enchant : Enchantment.enchantmentsList)
             {
                 if (enchant != null)

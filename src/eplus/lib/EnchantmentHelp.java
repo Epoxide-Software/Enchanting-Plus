@@ -71,7 +71,13 @@ public class EnchantmentHelp
 
     public static boolean isBlackListed(Enchantment enchantment)
     {
-        return enchantment != null && enchantmentBlackList.contains(enchantment.getName()) || !ConfigurationSettings.enchantments.get(enchantment.getName());
+        boolean flag = enchantment != null && enchantmentBlackList.contains(enchantment.getName());
+        
+        if(ConfigurationSettings.enchantments.containsKey(enchantment.getName())){
+            flag |= !ConfigurationSettings.enchantments.get(enchantment.getName());
+        }
+        
+        return flag;
     }
 
     public static boolean isBlackListed(Item item)
@@ -122,7 +128,7 @@ public class EnchantmentHelp
 
         return false;
     }
-
+    
     public static void putBlackListItem(List<Integer> itemsBlackList)
     {
         for(Integer itemId : itemsBlackList) 
