@@ -1,5 +1,5 @@
 --- ../src/eplus/gui/GuiModTable.java
-+++ ../src_work/eplus/gui/GuiModTable.java
++++ ../src_work6/eplus/gui/GuiModTable.java
 @@ -12,6 +12,7 @@
  import net.minecraft.enchantment.Enchantment;
  import net.minecraft.entity.player.EntityPlayer;

@@ -7,17 +7,30 @@ def main():
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     src_dir = os.path.join(base_dir, 'src')
-    work_dir = os.path.join(base_dir, 'src_work')
-    
-    if os.path.isdir(work_dir):
-        shutil.rmtree(work_dir)
+    work_dir6 = os.path.join(base_dir, 'src_work6')
+    work_dir7 = os.path.join(base_dir, 'src_work7')
+        
+    if os.path.isdir(work_dir6):
+        shutil.rmtree(work_dir6)
+        
+    if os.path.isdir(work_dir7):
+        shutil.rmtree(work_dir7)
         
     print 'Setting up source directories'    
-    shutil.copytree(src_dir, work_dir)
+    shutil.copytree(src_dir, work_dir6)
     
     print 'Applying patches'
-    if os.path.isdir(os.path.join(base_dir, 'patches')):
-        apply_patches(os.path.join(base_dir, 'patches'), work_dir)
+    patch_dir = os.path.join(base_dir, 'patches', '1_6')
+    
+    if os.path.isdir(patch_dir):
+        apply_patches(patch_dir, work_dir6)
+
+    shutil.copytree(work_dir6, work_dir7)
+
+    patch_dir = os.path.join(base_dir, 'patches', '1_7')
+    
+    if os.path.isdir(patch_dir):
+        apply_patches(patch_dir, work_dir7)
 
 
 def apply_patches(patch_dir, target_dir, find=None, rep=None):

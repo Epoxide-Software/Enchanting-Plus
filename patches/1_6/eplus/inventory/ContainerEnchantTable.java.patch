@@ -1,5 +1,5 @@
 --- ../src/eplus/inventory/ContainerEnchantTable.java
-+++ ../src_work/eplus/inventory/ContainerEnchantTable.java
++++ ../src_work6/eplus/inventory/ContainerEnchantTable.java
 @@ -158,7 +158,7 @@
          {
              putStackInSlot(0, tileEnchantTable.itemInTable);

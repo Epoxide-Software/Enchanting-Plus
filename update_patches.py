@@ -25,23 +25,15 @@ def cleanDirs(path):
     files = os.listdir(path)
     if len(files) == 0:
         os.rmdir(path)
-        
-def main():
-    print("Creating patches")
-        
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    
-    patchd = os.path.normpath(os.path.join(base_dir, 'patches'))
-    base = os.path.normpath(os.path.join(base_dir, 'src'))
-    work = os.path.normpath(os.path.join(base_dir, 'src_work'))
-    
+
+def createPatches(base_dir, patchd, base, work):
     for path, _, filelist in os.walk(work, followlinks=True):
         for cur_file in fnmatch.filter(filelist, '*.java'):
             file_base = os.path.normpath(os.path.join(base, path[len(work)+1:], cur_file)).replace(os.path.sep, '/')
             file_work = os.path.normpath(os.path.join(work, path[len(work)+1:], cur_file)).replace(os.path.sep, '/')
             if not os.path.isfile(file_base):
-            	print("Missing base file %s"%(file_base))
-            	continue
+                print("Missing base file %s"%(file_base))
+                continue
             fromlines = open(file_base, 'U').readlines()
             tolines = open(file_work, 'U').readlines()
             
@@ -61,7 +53,25 @@ def main():
                 if os.path.isfile(patch_file):
                     print("Deleting empty patch: %s"%(patch_file))
                     os.remove(patch_file)
-                    
+                
+        
+def main():
+    print("Creating patches")
+        
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    patchd = os.path.normpath(os.path.join(base_dir, 'patches', '1_6'))
+    base = os.path.normpath(os.path.join(base_dir, 'src'))
+    work = os.path.normpath(os.path.join(base_dir, 'src_work6'))
+    
+    cleanDirs(patchd)
+    createPatches(base_dir, patchd, base, work)
+
+    patchd = os.path.normpath(os.path.join(base_dir, 'patches', '1_7'))
+    base = os.path.normpath(os.path.join(base_dir, 'src_work6'))
+    work = os.path.normpath(os.path.join(base_dir, 'src_work7'))
+
+    createPatches(base_dir, patchd, base, work)
 
     cleanDirs(patchd)
     

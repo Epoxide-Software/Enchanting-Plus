@@ -1,5 +1,5 @@
 --- ../src/eplus/EnchantingPlus.java
-+++ ../src_work/eplus/EnchantingPlus.java
++++ ../src_work6/eplus/EnchantingPlus.java
 @@ -44,7 +44,7 @@
   * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
   */

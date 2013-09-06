@@ -1,5 +1,5 @@
 --- ../src/eplus/renders/EnchantmentTableRender.java
-+++ ../src_work/eplus/renders/EnchantmentTableRender.java
++++ ../src_work6/eplus/renders/EnchantmentTableRender.java
 @@ -8,6 +8,7 @@
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.tileentity.TileEntityEnchantmentTable;
