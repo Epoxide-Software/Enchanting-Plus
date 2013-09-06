@@ -63,9 +63,9 @@ def main():
     patchd = os.path.normpath(os.path.join(base_dir, 'patches', '1_6'))
     base = os.path.normpath(os.path.join(base_dir, 'src'))
     work = os.path.normpath(os.path.join(base_dir, 'src_work6'))
-    
+
+    createPatches(base_dir, patchd, base, work)    
     cleanDirs(patchd)
-    createPatches(base_dir, patchd, base, work)
 
     patchd = os.path.normpath(os.path.join(base_dir, 'patches', '1_7'))
     base = os.path.normpath(os.path.join(base_dir, 'src_work6'))
