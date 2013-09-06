@@ -172,4 +172,13 @@ public class EnchantHelper
         }
         return false;
     }
+
+    public static boolean isNewItemEnchantable(Item item)
+    {
+        if (item.equals(Item.enchantedBook)) 
+        {
+            return isItemEnchantable(new ItemStack(Item.book));
+        }
+        return isItemEnchantable(new ItemStack(item));
+    }
 }

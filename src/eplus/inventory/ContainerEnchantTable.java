@@ -394,7 +394,7 @@ public class ContainerEnchantTable extends Container
 
         if (itemStack != null && !EnchantmentHelp.isBlackListed(itemStack.getItem()))
         {
-            if (EnchantHelper.isItemEnchantable(itemStack))
+            if (EnchantHelper.isItemEnchantable(itemStack) && itemStack.getItem().getItemEnchantability() > 0)
             {
                 for (final Enchantment obj : Enchantment.enchantmentsList)
                 {
@@ -404,7 +404,7 @@ public class ContainerEnchantTable extends Container
                     }
                 }
             }
-            else if (EnchantHelper.isItemEnchanted(itemStack) && EnchantHelper.isItemEnchantable(new ItemStack(itemStack.getItem())))
+            else if (EnchantHelper.isItemEnchanted(itemStack) && EnchantHelper.isNewItemEnchantable(itemStack.getItem()))
             {                
                 temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
 
