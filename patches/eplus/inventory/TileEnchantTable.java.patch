@@ -1,0 +1,11 @@
+--- ../src/eplus/inventory/TileEnchantTable.java
++++ ../src_work/eplus/inventory/TileEnchantTable.java
+@@ -31,7 +31,7 @@
+     @Override
+     public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+     {
+-        readCustomNBT(pkt.customParam1);
++        readCustomNBT(pkt.data);
+         worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+     }
+ 

@@ -8,15 +8,6 @@
  import net.minecraft.world.World;
  
  import org.lwjgl.input.Mouse;
-@@ -89,7 +90,7 @@
-                 GL11.glDisable(GL11.GL_LIGHTING);
-                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                 GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
--                mc.renderEngine.bindTexture(texture);
-+                mc.renderEngine.func_110577_a(texture);
-                 drawTexturedModalRect(xPosition, yPosition, 8 + textureIndex * 16, 182, width, height);
-             }
-         }
 @@ -278,7 +279,7 @@
  
      private boolean dirty = false;
@@ -26,21 +17,3 @@
  
      public String error = "";
  
-@@ -378,7 +379,7 @@
-         GL11.glDisable(GL11.GL_LIGHTING);
-         GL11.glDisable(GL11.GL_DEPTH_TEST);
-         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
--        mc.renderEngine.bindTexture(texture);
-+        mc.renderEngine.func_110577_a(texture);
-         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
- 
-         for (final GuiItem item : enchantmentArray)
-@@ -404,7 +405,7 @@
-         final int adjustedMouseX = par1 - guiLeft;
-         final int adjustedMouseY = par2 - guiTop;
- 
--        mc.renderEngine.bindTexture(texture);
-+        mc.renderEngine.func_110577_a(texture);
- 
-         int tempY = adjustedMouseY - 16;
-         if (tempY <= 0)

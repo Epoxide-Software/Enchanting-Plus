@@ -11,29 +11,24 @@
  import cpw.mods.fml.client.FMLClientHandler;
  import cpw.mods.fml.common.ITickHandler;
  import cpw.mods.fml.common.TickType;
-@@ -55,13 +58,11 @@
+@@ -54,6 +57,12 @@
+         {
              EnchantingPlus.log.warning("Could not load capes from remote authority.");
          }
- 
--        // for (String modder : modders)
--        // {
--        // ThreadDownloadImageData object = new ThreadDownloadImageData(capeURL,
--        // null, null);
--        // mc.renderEngine.func_110579_a(new ResourceLocation("cloaks/" +
--        // modder), (TextureObject) object);
--        // }
++        
 +        for (String modder : modders)
 +        {
-+            ThreadDownloadImageData object = new ThreadDownloadImageData(capeURL, null, null);
-+            mc.renderEngine.func_110579_a(new ResourceLocation("cloaks/" + modder), (TextureObject) object);
++             ThreadDownloadImageData object = new ThreadDownloadImageData(capeURL, null, null);
++             mc.renderEngine.loadTexture(new ResourceLocation("cloaks/" + modder), (TextureObject) object);
 +        }
- 
      }
  
-@@ -75,32 +76,34 @@
+     @Override
+@@ -65,33 +74,6 @@
+     @Override
      public void tickEnd(EnumSet<TickType> type, Object... tickData)
      {
- 
+-
 -        if (mc.theWorld != null && mc.theWorld.playerEntities.size() > 0)
 -        {
 -            @SuppressWarnings("unchecked")
@@ -60,34 +55,6 @@
 -            }
 -
 -        }
-+        // if (mc.theWorld != null && mc.theWorld.playerEntities.size() > 0)
-+        // {
-+        // @SuppressWarnings("unchecked")
-+        // List<EntityPlayer> players = mc.theWorld.playerEntities;
-+        //
-+        // for (EntityPlayer player : players)
-+        // {
-+        // if (player != null)
-+        // {
-+        // for (String modder : modders)
-+        // {
-+        // if (modder.equalsIgnoreCase(player.username) &&
-+        // player.cloakUrl.startsWith("http://skins.minecraft.net/MinecraftCloaks/"))
-+        // {
-+        //
-+        // String oldCloak = player.cloakUrl;
-+        // player.cloakUrl = capeURL;
-+        // if (!player.cloakUrl.equals(oldCloak))
-+        // {
-+        // mc.renderEngine.obtainImageData(player.cloakUrl, new
-+        // ImageBufferDownload());
-+        // }
-+        // }
-+        // }
-+        // }
-+        // }
-+        //
-+        // }
  
      }
  

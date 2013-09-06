@@ -54,15 +54,6 @@ public class CapeTickHandler implements ITickHandler
         {
             EnchantingPlus.log.warning("Could not load capes from remote authority.");
         }
-
-        // for (String modder : modders)
-        // {
-        // ThreadDownloadImageData object = new ThreadDownloadImageData(capeURL,
-        // null, null);
-        // mc.renderEngine.func_110579_a(new ResourceLocation("cloaks/" +
-        // modder), (TextureObject) object);
-        // }
-
     }
 
     @Override

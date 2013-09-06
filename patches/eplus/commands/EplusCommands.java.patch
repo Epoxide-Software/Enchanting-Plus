@@ -24,7 +24,7 @@
 +
 +    private void sendChatToPlayer(ICommandSender icommandsender, String line)
 +    {
-+        icommandsender.sendChatToPlayer(ChatMessageComponent.func_111066_d(line));
++        icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(line));
      }
  
      @Override

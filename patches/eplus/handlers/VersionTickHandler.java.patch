@@ -23,6 +23,6 @@
 +
 +    private void sendChatToPlayer(EntityPlayer player, String format)
 +    {
-+        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(format));
++        player.sendChatToPlayer(ChatMessageComponent.createFromText(format));
 +    }
  }
