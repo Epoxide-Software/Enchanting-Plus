@@ -54,7 +54,7 @@ public class EnchantHelper
             flag = !itemStack.getTagCompound().hasKey("charge");
         }
         
-        return itemStack.itemID == Item.book.itemID || itemStack.isItemEnchantable() && flag;
+        return itemStack.getItem().getItemEnchantability() > 0 && (itemStack.itemID == Item.book.itemID || itemStack.isItemEnchantable() && flag);
     }
 
     /**

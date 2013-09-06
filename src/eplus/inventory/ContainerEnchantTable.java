@@ -394,7 +394,7 @@ public class ContainerEnchantTable extends Container
 
         if (itemStack != null && !EnchantmentHelp.isBlackListed(itemStack.getItem()))
         {
-            if (EnchantHelper.isItemEnchantable(itemStack) && itemStack.getItem().getItemEnchantability() > 0)
+            if (EnchantHelper.isItemEnchantable(itemStack))
             {
                 for (final Enchantment obj : Enchantment.enchantmentsList)
                 {
