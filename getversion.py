@@ -27,7 +27,7 @@ def cleanDirs(path):
         os.rmdir(path)
 
 
-def main():
+def getVersion():
     print("Obtaining version information from git")
     cmd = "git describe --match \"[^(jenkins)]*\" --tags HEAD"
     try:
@@ -60,6 +60,7 @@ def main():
         f.write("%s=%s\n" % ("eplus.branch", branch))
 
     print("Version information: eplus %s.%s.%s (%s)" % (major, minor, rev, branch))
+    return "%s.%s.%s" % (major, minor, rev)
 
 if __name__ == '__main__':
-    main()
+    getVersion()

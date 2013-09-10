@@ -34,7 +34,7 @@ def main():
 
     tag2 = "HEAD"
     tag1 = tag
-
+    
     if args.verbose:
         print("Obtaining changelog from git")
 
@@ -56,7 +56,7 @@ def main():
         if not line.startswith('-'): continue
         log.append(line)
 
-    file = open("./resources/changelog.txt", 'wb')
+    file = open("./" + ('changelog/%s_%s' % (major, minor)).replace(".", "_") + ".txt", 'wb')
     for line in log:
         file.write('%s\r\n' % line)
     file.close()

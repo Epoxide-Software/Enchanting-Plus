@@ -16,3 +16,7 @@ src_work7/
 /*.exe
 
 /*.iml
+
+/.pydevproject
+
+/changelog
