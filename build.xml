@@ -1,228 +1,236 @@
-<project name="EnchantingPlus" default="setup-forge" basedir=".">
+<project name="EPlus" default="main">
+	<property environment="env"/>
+	<!-- Properties -->
 
-	<property environment="env" />
+	<dirname property="imported.basedir" file="${ant.file.EPlus}"/>
+	<property name="build.dir" value="build"/>
+	<property name="src.dir" value="${imported.basedir}"/>
+	<property name="api.dir" value="${imported.basedir}/API"/>
+	<property name="resources.dir" value="${imported.basedir}/resources"/>
 
+	<property name="download.dir" value="download"/>
 
-	<!-- Versions -->
-	<property name="build.ver" value="1.16.4r1" />
-	<property name="fullversion" value="${build.ver}" />
+	<property name="classes.dir" value="${build.dir}/classes"/>
+	<property name="jar.dir" value="bin"/>
 
-	<property name="mcp.version" value="802" />
-	<property name="minecraft.version" value="1.6.2" />
-	<property name="forgemajor.version" value="9.10.0" />
-	<property name="forgebuild" value="789" />
+	<property name="forge.dir" value="${build.dir}/forge"/>
+	<property name="mcp.dir" value="${forge.dir}/mcp"/>
 
-	<property name="forge.version" value="${minecraft.version}-${forgemajor.version}.${forgebuild}" />
-	<property name="forgeant.version" value="${forgemajor.version}.${forgebuild}" />
+	<property name="mcpsrc.dir" value="${mcp.dir}/src"/>
 
+	<property name="mc.version" value="1.5.2"/>
+	<property name="forge.version" value="7.8.1.737"/>
+	<!--	<property name="project.version" value="0.0.0"/>-->
 
-	<!-- Directories -->
-	<property name="download.dir" value="downloads" />
-	<property name="src.dir" value="src_work" />
-	<property name="api.dir" value="API" />
+	<property name="buildcraft.name" value="buildcraft"/>
 
-	<property name="lib.dir" value="${src.dir}/lib" />
-	<property name="build.dir" value="build" />
-	<property name="classes.dir" value="${build.dir}/packaging" />
-	<property name="forge.dir" value="${build.dir}/forge" />
-	<property name="dist.dir" value="${build.dir}/dist" />
-	<property name="mcp.dir" value="${forge.dir}/mcp" />
-	<property name="mcplib.dir" value="${mcp.dir}/lib" />
-	<property name="mcpsrc.dir" value="${mcp.dir}/src/minecraft" />
-	<property name="resources.dir" value="resources" />
+	<property name="forge.name" value="minecraftforge-src-${mc.version}-${forge.version}.zip"/>
 
-	<!-- URLs -->
-	<property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
+	<available property="forge-exists" file="${download.dir}/${forge.name}"/>
+	<available file="${src.dir}/.git" type="dir" property="git.present"/>
 
-
-	<!-- Name -->
-	<property name="package.meta-inf" value="META-INF" />
-
-
-	<!-- Version Checking -->
-
-	<property file="${forge.dir}/forgeversion.properties" />
-	<condition property="forge-already-installed">
-		<equals arg1="${forge.build.number}" arg2="${forgebuild}" />
-	</condition>
-	<available property="forge-exists" file="${download.dir}/minecraftforge-src-${forge.version}.zip" />
-	<available property="already-compiled" file="${classes.dir}/eplus" />
-
-	<mkdir dir="${download.dir}" />
-	<mkdir dir="${build.dir}" />
-
-
-	<condition property="should-download-ant-contrib">
-		<or>
-			<available file="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar" />
-			<available file="${download.dir}/minecraftforge-src-${forge.version}.zip" />
-		</or>
+	<condition property="out-of-date">
+		<not>
+			<and>
+				<isset property="forge-exists"/>
+				<available file="${mcpsrc.dir}"/>
+			</and>
+		</not>
 	</condition>
 
+	<mkdir dir="${download.dir}"/>
 
-	<!-- Dependencies -->
+	<!-- Targets -->
 
-	<target name="update-names" depends="copy-source">
-		<get src="http://mcp.ocean-labs.de/files/mcptest/methods.csv" dest="${mcp.dir}/conf/methods.csv" />
-		<get src="http://mcp.ocean-labs.de/files/mcptest/fields.csv" dest="${mcp.dir}/conf/fields.csv" />
+	<!-- Clear build directory -->
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
 
-		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
-			<arg line="/c updatenames.bat" />
+	<!-- Set full version -->
+	<target name="initialize-version" depends="version-provided,version-not-provided,git.revision">
+		<property name="project.version.full" value="${project.version}.${build.number}"/>
+	</target>
+
+	<!-- Set unknown build number -->
+	<target name="version-not-provided" unless="env.BUILD_NUMBER">
+		<property name="build.number" value="unknown"/>
+	</target>
+
+	<!-- Set build number from environment -->
+	<target name="version-provided" if="env.BUILD_NUMBER">
+		<property name="build.number" value="${env.BUILD_NUMBER}"/>
+	</target>
+
+	<target name="git.revision">
+		<exec executable="git" dir="${src.dir}" outputproperty="git.revision" failifexecutionfails="false" errorproperty="">
+			<arg value="describe"/>
+			<arg line="--match &quot;[^(jenkins)]*&quot;"/>
+			<arg value="--tags"/>
+		</exec>
+		<loadresource property="git.clean.revision">
+			<propertyresource name="git.revision"/>
+			<filterchain>
+				<tokenfilter>
+					<filetokenizer/>
+					<replaceregex pattern="-[a-z0-9]+$" replace=""/>
+					<replacestring from="-" to="."/>
+				</tokenfilter>
+			</filterchain>
+		</loadresource>
+
+		<condition property="project.version" value="${git.clean.revision}" else="0.0.0">
+			<and>
+				<isset property="git.clean.revision"/>
+				<length string="${git.clean.revision}" trim="yes" length="0" when="greater"/>
+			</and>
+		</condition>
+		<condition property="project.complete.version" value="${git.revision}" else="0.0.0">
+			<and>
+				<isset property="git.revision"/>
+				<length string="${git.revision}" trim="yes" length="0" when="greater"/>
+			</and>
+		</condition>
+		<echo>Building buildcraft version ${project.complete.version} (${project.version})</echo>
+	</target>
+
+	<!-- Download necessary files -->
+	<target name="download-files" depends="download-forge"/>
+
+	<!-- Download forge (if it doesn't exist) -->
+	<target name="download-forge" unless="forge-exists">
+		<get src="http://files.minecraftforge.net/${forge.name}" dest="${download.dir}" usetimestamp="True"/>
+	</target>
+
+	<!-- Setup mcp and forge -->
+	<target name="setup" depends="download-files" if="out-of-date">
+
+		<unzip dest="${forge.dir}/.." src="${download.dir}/${forge.name}"/>
+
+		<!-- Fix executable permissions -->
+		<chmod dir="${forge.dir}" perm="ugo+rx" includes="**.sh"/>
+
+		<!-- Install forge -->
+		<exec dir="${forge.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c install.cmd"/>
 		</exec>
 
-		<exec dir="${mcp.dir}" executable="bash" osfamily="unix" failonerror="true">
-			<arg value="-c" />
-			<arg value="echo Yes | ./updatenames.sh" />
+		<exec dir="${forge.dir}" executable="sh" osfamily="unix">
+			<arg value="install.sh"/>
 		</exec>
+
 	</target>
 
-	<target name="rebuild" depends="clean">
+	<target name="clean-src">
+		<delete verbose="true">
+			<fileset dir="${mcpsrc.dir}/minecraft">
+				<present present="both" targetdir="${src.dir}" /> 
+			</fileset>
+		</delete>
 	</target>
-
-	<target name="forgeinstalled.check">
-	</target>
-
-	<target name="copy-source">
-		<delete dir="${mcpsrc.dir}/eplus" />
-		<copy todir="${mcpsrc.dir}/eplus">
-			<fileset dir="${src.dir}" />
-			<fileset dir="${api.dir}" />
+	<target name="copy-src" depends="clean-src,initialize-version">
+		<!-- Copy sources -->
+		<copy todir="${mcpsrc.dir}/minecraft" verbose="true">
+			<fileset dir="${src.dir}"/>
+			<filterset>
+				<filter token="VERSION" value="${project.complete.version}" />
+				<filter token="BUILD_NUMBER" value="${build.number}" />
+			</filterset>
+			<fileset dir="${api.dir}"/>
 		</copy>
 	</target>
 
-	<target name="build" depends="copy-source" unless="already-compiled">
+	<target name="compile" depends="initialize-version,setup,copy-src">
+
+		<mkdir dir="${classes.dir}"/>
+		<delete includeemptydirs="true">
+			<fileset dir="${classes.dir}" includes="**/*"/>
+		</delete>
 
 		<!-- Recompile -->
-		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
-			<arg line="/c recompile.bat" />
-		</exec>
-
-		<exec dir="${mcp.dir}" executable="sh" osfamily="unix" failonerror="true">
-			<arg value="recompile.sh" />
-		</exec>
-
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
-			<arg line="/c reobfuscate_srg.bat" />
+			<arg line="/c recompile.bat"/>
 		</exec>
 
 		<exec dir="${mcp.dir}" executable="sh" osfamily="unix">
-			<arg value="reobfuscate_srg.sh" />
+			<arg value="recompile.sh"/>
 		</exec>
 
+		<!-- Check for failure -->
+		<fail message="MCP failed to build">
+			<condition>
+				<resourcecontains resource="${mcp.dir}/logs/client_compile.log" substring="error:"/>
+			</condition>
+		</fail>
+
+	</target>
+
+	<target name="reobf" depends="compile">
+
+		<!-- Reobfuscate -->
+		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c reobfuscate_srg.bat"/>
+		</exec>
+
+		<exec dir="${mcp.dir}" executable="sh" osfamily="unix">
+			<arg value="reobfuscate_srg.sh"/>
+		</exec>
+
+		<!-- Copy classes -->
 		<copy todir="${classes.dir}">
-			<fileset dir="${mcp.dir}/reobf/minecraft" />
+			<fileset dir="${mcp.dir}/reobf/minecraft"/>
 		</copy>
-		
-		<exec dir="." executable="python">
-			<arg value="getversion.py" />
-		</exec>
 
-		<mkdir dir="${classes.dir}" />
-		<copy todir="${classes.dir}/">
+		<!-- Copy resources -->
+		<copy todir="${classes.dir}">
 			<fileset dir="${resources.dir}">
-				<exclude name="mcmod.info" />
+				<exclude name="build.xml"/>
 			</fileset>
-
 		</copy>
-		<copy todir="${classes.dir}/" file="${resources.dir}/mcmod.info">
-			<filterset>
-				<filter token="MOD_VERSION" value="${fullversion}" />
-			</filterset>
-		</copy>
-	</target>
 
-	<target name="setup-forge" depends="download-forge" unless="forge-already-installed">
+		<!-- Copy localizations -->
 
-		<unzip dest="${build.dir}">
-			<fileset dir="${download.dir}">
-				<include name="minecraftforge-src-${forge.version}.zip" />
-			</fileset>
-		</unzip>
-
-
-		<!-- Change executables' permitions -->
-
-		<chmod file="${forge.dir}/install.sh" perm="+x" />
-
-		<!-- if your building on OSX these 2 should be executable -->
-
-
-		<!-- Install forge -->
-		<delete dir="${mcp.dir}" failonerror="no" />
-		<exec dir="${forge.dir}" executable="cmd" osfamily="windows" inputstring="Yes\n">
-			<arg line="/c install.cmd" />
-		</exec>
-
-		<exec dir="${forge.dir}" executable="sh" osfamily="unix" inputstring="Yes\n">
-			<arg value="install.sh" />
-
-		</exec>
-
-
-		<chmod file="${mcp.dir}/updatemd5.sh" perm="+x" />
-		<chmod file="${mcp.dir}/recompile.sh" perm="+x" />
-		<chmod file="${mcp.dir}/reobfuscate.sh" perm="+x" />
-		<chmod file="${mcp.dir}/runtime/bin/astyle-osx" perm="+x" />
-		<chmod file="${mcp.dir}/runtime/bin/jad-osx" perm="+x" />
-		<mkdir dir="${mcpsrc.dir}/eplus" />
-
-		<!-- Copy libraries
-        <copy todir="${mcp.dir}/lib">
-            <fileset dir="lib">
-                <patternset includes="*.jar" />
-            </fileset>
-        </copy> -->
-	</target>
-
-	<target name="download-forge" depends="download-ant-contrib" unless="forge-exists">
-		<taskdef resource="net/sf/antcontrib/antlib.xml">
-			<classpath>
-				<pathelement location="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar" />
-				<fileset dir="${download.dir}/ant-contrib/lib">
-					<include name="*.jar" />
-				</fileset>
-			</classpath>
-		</taskdef>
-		<echo message="Downloading forge... " />
-		<getMethod url="http://files.minecraftforge.net/minecraftforge-src-${forge.version}.zip" responseDataFile="${download.dir}/minecraftforge-src-${forge.version}.zip">
-			<header name="User-Agent" value="Ant-${ant.version}/${ant.java.version}" />
-		</getMethod>
-	</target>
-
-	<target name="download-ant-contrib" unless="should-download-ant-contrib">
-		<echo message="Getting: ant-contrib" />
-		<mkdir dir="${download.dir}/tmp" />
-		<mkdir dir="${download.dir}/ant-contrib/lib" />
-		<get src="http://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.zip/download" dest="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip" />
-		<get src="http://archive.apache.org/dist/commons/codec/binaries/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp/commons-codec-1.6-bin.zip" />
-
-		<unzip src="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip" dest="${download.dir}" />
-		<unzip src="${download.dir}/tmp/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp" />
-
-		<move todir="${download.dir}/ant-contrib/lib">
-			<fileset file="${download.dir}/tmp/commons-codec-1.6/commons-codec-1.6.jar" />
-		</move>
-
-		<!-- Delete useless files -->
-		<delete dir="${download.dir}/ant-contrib/docs" />
-		<delete dir="${download.dir}/tmp" />
+		<!-- Reset src dir to post-forge-install state -->
+		<delete dir="${mcpsrc.dir}/minecraft/eplus"/>
 
 	</target>
 
-	<target name="clean">
-		<delete dir="${build.dir}" />
-		<delete dir="${download.dir}" />
-	</target>
+	<!-- Package the compiled files -->
+	<target name="package" depends="reobf">
 
-	<target name="package" depends="build">
-		<mkdir dir="${dist.dir}" />
-
+		<mkdir dir="${jar.dir}"/>
 		<delete includeemptydirs="true">
-			<fileset dir="${dist.dir}" includes="**/*" />
+			<fileset dir="${jar.dir}" includes="**/*"/>
 		</delete>
+		<condition property="jar.file.name" value="${jar.dir}/${buildcraft.name}-${mc.version}-${project.version.full}.jar" else="${jar.dir}/${buildcraft.name}-universal-${mc.version}-${project.version.full}.jar">
+			<isset property="forge-long-name"/>
+		</condition>
+		
+		<jar destfile="${jar.file.name}" basedir="${classes.dir}"/>
+		<copy todir="${jar.dir}/changelog">
+			<fileset dir="${resources.dir}/changelog">
+				<include name="*" />
+			</fileset>
+		</copy>
 
-		<jar destfile="${dist.dir}/EnchantingPlus-${build.ver}.jar" basedir="${classes.dir}" />
 	</target>
 
+	<target name="run">
+
+		<!-- Start Client -->
+		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c startclient.bat"/>
+		</exec>
+
+		<exec dir="${mcp.dir}" executable="sh" osfamily="unix">
+			<arg value="startclient.sh"/>
+		</exec>
+
+	</target>
+
+	<target name="test-run" depends="compile,run"/>
+
+	<!-- Default target to run -->
+	<target name="main" depends="package"/>
 
 </project>

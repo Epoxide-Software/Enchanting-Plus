@@ -12,7 +12,7 @@ def cmdsplit(args):
     return shlex.split(args)
 
 
-def main():
+def changelog():
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true', help='verbose mode')
     args = parser.parse_args()
@@ -49,13 +49,13 @@ def main():
 
     if args.verbose:
         print(change)
-
+    
     log = ["#", "#Changelog for EPLUS v" + major + "." + minor, "#", ""]
 
     for line in table:
         if not line.startswith('-'): continue
         log.append(line)
-
+		
     file = open("./" + ('changelog/%s_%s' % (major, minor)).replace(".", "_") + ".txt", 'wb')
     for line in log:
         file.write('%s\r\n' % line)
@@ -63,4 +63,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    changelog()
