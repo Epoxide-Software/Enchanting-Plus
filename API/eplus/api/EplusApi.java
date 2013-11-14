@@ -249,6 +249,7 @@ public class EplusApi {
 				for (Block block: Block.blocksList){
 					if(advancedTableClass.isInstance(block)) {
 						advancedTable = block;
+						break;
 					}	
 				}
 			}
@@ -278,6 +279,7 @@ public class EplusApi {
 				for (Item item: Item.itemsList){
 					if(tableUpgradeClass.isInstance(item)) {
 						tableUpgrade = item;
+						break;
 					}	
 				}
 			}
