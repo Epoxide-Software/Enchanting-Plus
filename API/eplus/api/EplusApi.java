@@ -1,15 +1,16 @@
 package eplus.api;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import cpw.mods.fml.common.event.FMLInterModComms;
 
 /**
  * @author Freyja Lesser GNU Public License v3
@@ -160,7 +161,7 @@ public class EplusApi {
 			if (Item.class.isAssignableFrom(item.getClass())) {
 				itemId = ((Item) item).itemID;
 			} else if (Integer.class.isAssignableFrom(item.getClass())) {
-				itemId = (int) item;
+				itemId = (Integer) item;
 			}
 
 			NBTTagCompound tagCompound1 = new NBTTagCompound();
@@ -225,6 +226,64 @@ public class EplusApi {
 
 			return EnchantingPlusObject;
 
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	static Block advancedTable;
+	static Class<?> advancedTableClass;
+	
+	/**
+	 * Will attempt to return an instance of the advanced 
+	 * enchanting table
+	 * @return block instance may be null
+	 */
+	public static Block getAdvancedTable(){
+		try {
+			if (advancedTableClass == null) {
+				advancedTableClass = Class.forName("eplus.blocks.BlockEnchantTable");
+			}
+			
+			if (advancedTable == null) {
+				for (Block block: Block.blocksList){
+					if(advancedTableClass.isInstance(block)) {
+						advancedTable = block;
+					}	
+				}
+			}
+			
+			return advancedTable;
+			
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	static Item tableUpgrade;
+	static Class<?> tableUpgradeClass;
+	
+	/**
+	 * Will attempt to return an instance of the table
+	 * upgrade
+	 * @return item instance may be null
+	 */
+	public static Item getTableUpgrade(){
+		try {
+			if (tableUpgradeClass == null) {
+				tableUpgradeClass = Class.forName("eplus.items.ItemTableUpgrade");
+			}
+			
+			if (tableUpgrade == null) {
+				for (Item item: Item.itemsList){
+					if(tableUpgradeClass.isInstance(item)) {
+						tableUpgrade = item;
+					}	
+				}
+			}
+			
+			return tableUpgrade;
+			
 		} catch (Exception e) {
 			return null;
 		}
