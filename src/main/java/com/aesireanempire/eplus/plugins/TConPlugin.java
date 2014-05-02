@@ -1,7 +1,7 @@
 package com.aesireanempire.eplus.plugins;
 
 import com.aesireanempire.eplus.EnchantingPlus;
-import com.aesireanempire.eplus.EplusPlugin;
+import com.aesireanempire.eplus.api.EplusPlugin;
 
 import java.util.ArrayList;
 import java.util.List;

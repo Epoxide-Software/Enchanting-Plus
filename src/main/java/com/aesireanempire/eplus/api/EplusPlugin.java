@@ -1,4 +1,4 @@
-package com.aesireanempire.eplus;
+package com.aesireanempire.eplus.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

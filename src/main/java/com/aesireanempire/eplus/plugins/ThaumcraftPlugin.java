@@ -1,7 +1,7 @@
 package com.aesireanempire.eplus.plugins;
 
-import com.aesireanempire.eplus.EplusApi;
-import com.aesireanempire.eplus.EplusPlugin;
+import com.aesireanempire.eplus.api.EplusApi;
+import com.aesireanempire.eplus.api.EplusPlugin;
 
 import java.util.HashMap;
 import java.util.Map;

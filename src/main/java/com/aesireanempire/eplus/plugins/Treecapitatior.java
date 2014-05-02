@@ -1,7 +1,7 @@
 package com.aesireanempire.eplus.plugins;
 
-import com.aesireanempire.eplus.EplusApi;
-import com.aesireanempire.eplus.EplusPlugin;
+import com.aesireanempire.eplus.api.EplusApi;
+import com.aesireanempire.eplus.api.EplusPlugin;
 
 /**
  * @author Freyja Lesser GNU Public License v3

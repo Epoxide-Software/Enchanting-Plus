@@ -1,5 +1,6 @@
 package com.aesireanempire.eplus;
 
+import com.aesireanempire.eplus.api.EplusPlugin;
 import com.aesireanempire.eplus.blocks.Blocks;
 import com.aesireanempire.eplus.commands.EplusCommands;
 import com.aesireanempire.eplus.handlers.ConfigurationHandler;

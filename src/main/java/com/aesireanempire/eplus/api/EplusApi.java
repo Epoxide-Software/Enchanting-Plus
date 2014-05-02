@@ -1,4 +1,4 @@
-package com.aesireanempire.eplus;
+package com.aesireanempire.eplus.api;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
