@@ -35,7 +35,6 @@ public class ContainerEnchantTable extends Container
     private final int xPos;
     private final int yPos;
     private final int zPos;
-    private final int guiOffest = 26;
     private Map<Integer, Integer> enchantments;
 
     public ContainerEnchantTable(final InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, TileEnchantTable tileEntity)
@@ -47,6 +46,7 @@ public class ContainerEnchantTable extends Container
 
         tileEnchantTable = tileEntity;
 
+        int guiOffest = 26;
         addSlotToContainer(new SlotEnchant(this, tableInventory, 0, 11 + guiOffest, 17));
         int l;
 
@@ -394,7 +394,7 @@ public class ContainerEnchantTable extends Container
             {
                 for (final Enchantment obj : Enchantment.enchantmentsList)
                 {
-                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && !EnchantmentHelp.isBlackListed(obj))
+                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && EnchantmentHelp.isBlackListed(obj))
                     {
                         temp.put(obj.effectId, 0);
                     }
@@ -422,7 +422,7 @@ public class ContainerEnchantTable extends Container
                         }
                     }
 
-                    if (EnchantHelper.canEnchantItem(itemStack, obj) && add && !EnchantmentHelp.isBlackListed(obj))
+                    if (EnchantHelper.canEnchantItem(itemStack, obj) && add && EnchantmentHelp.isBlackListed(obj))
                     {
                         temp2.put(obj.effectId, 0);
                     }
@@ -505,10 +505,9 @@ public class ContainerEnchantTable extends Container
 
         for (final Integer enchantment : enchantments.keySet())
         {
-            final Integer enchantmentId = enchantment;
             final Integer enchantmentLevel = enchantments.get(enchantment);
 
-            cost += enchantmentCost(enchantmentId, enchantmentLevel, 0);
+            cost += enchantmentCost(enchantment, enchantmentLevel, 0);
         }
 
         final int maxDamage = itemStack.getMaxDamage();
@@ -543,7 +542,7 @@ public class ContainerEnchantTable extends Container
             return costMax;
         }
 
-        return (int) Math.min(player.experienceLevel, costMax);
+        return Math.min(player.experienceLevel, costMax);
     }
 
     @Override
@@ -571,7 +570,7 @@ public class ContainerEnchantTable extends Container
                 }
 
             }
-            else if (!mergeItemStack2(stack, 1, 41, true))
+            else if (!mergeItemStack2(stack))
             {
                 return null;
             }
@@ -594,14 +593,14 @@ public class ContainerEnchantTable extends Container
         return itemStack;
     }
 
-    private boolean mergeItemStack2(ItemStack stack, int i, int j, boolean b)
+    private boolean mergeItemStack2(ItemStack stack)
     {
         boolean flag1 = false;
-        int k = i;
+        int k = 1;
 
-        if (b)
+        if (true)
         {
-            k = j - 1;
+            k = 41 - 1;
         }
 
         Slot slot;
@@ -609,7 +608,7 @@ public class ContainerEnchantTable extends Container
 
         if (stack.isStackable())
         {
-            while (stack.stackSize > 0 && (!b && k < j || b && k >= i))
+            while (stack.stackSize > 0 && (!true && k < 41 || true && k >= 1))
             {
                 slot = (Slot) this.inventorySlots.get(k);
                 itemstack1 = slot.getStack();
@@ -635,7 +634,7 @@ public class ContainerEnchantTable extends Container
                     }
                 }
 
-                if (b)
+                if (true)
                 {
                     --k;
                 }
@@ -648,16 +647,16 @@ public class ContainerEnchantTable extends Container
 
         if (stack.stackSize > 0)
         {
-            if (b)
+            if (true)
             {
-                k = j - 1;
+                k = 41 - 1;
             }
             else
             {
-                k = i;
+                k = 1;
             }
 
-            while (!b && k < j || b && k >= i)
+            while (!true && k < 41 || true && k >= 1)
             {
                 slot = (Slot) this.inventorySlots.get(k);
                 itemstack1 = slot.getStack();
@@ -671,7 +670,7 @@ public class ContainerEnchantTable extends Container
                     break;
                 }
 
-                if (b)
+                if (true)
                 {
                     --k;
                 }

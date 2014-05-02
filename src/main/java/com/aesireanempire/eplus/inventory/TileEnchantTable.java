@@ -42,7 +42,7 @@ public class TileEnchantTable extends TileEntityEnchantmentTable
         itemInTable = null;
         for (int i = 0; i < nbtTagList.tagCount(); i++)
         {
-            final NBTTagCompound tagCompound = (NBTTagCompound) nbtTagList.getCompoundTagAt(i);
+            final NBTTagCompound tagCompound = nbtTagList.getCompoundTagAt(i);
             itemInTable = ItemStack.loadItemStackFromNBT(tagCompound);
         }
     }

@@ -13,13 +13,6 @@ import net.minecraft.world.World;
 
 public class ItemTableUpgrade extends Item
 {
-
-    @Deprecated
-    public ItemTableUpgrade(int id)
-    {
-        this();
-    }
-
     public ItemTableUpgrade()
     {
         setMaxStackSize(16);

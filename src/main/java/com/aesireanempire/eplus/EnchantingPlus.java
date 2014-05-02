@@ -103,7 +103,7 @@ public class EnchantingPlus
         Version.init(event.getVersionProperties());
 
         Version.check();
-        event.getModMetadata().version = Version.getCurrentModVersion();
+        event.getModMetadata().version = Version.getCurrentModVersion().toString();
 
         PluginHandler.init(event.getAsmData().getAll(EplusPlugin.class.getCanonicalName()));
         PluginHandler.initPlugins(event.getModState());
@@ -147,7 +147,7 @@ public class EnchantingPlus
 
                     for (int i = 0; i < enchantments.tagCount(); i++)
                     {
-                        final NBTTagCompound nbtBase = (NBTTagCompound) enchantments.getCompoundTagAt(i);
+                        final NBTTagCompound nbtBase = enchantments.getCompoundTagAt(i);
                         final String name = nbtBase.getString("Name");
                         final String description = nbtBase.getString("Description");
                         if (EnchantmentHelp.putToolTips(name, description))
@@ -178,7 +178,7 @@ public class EnchantingPlus
 
                     for (int i = 0; i < enchantments.tagCount(); i++)
                     {
-                        final NBTTagCompound nbtBase = (NBTTagCompound) enchantments.getCompoundTagAt(i);
+                        final NBTTagCompound nbtBase = enchantments.getCompoundTagAt(i);
                         final String name = nbtBase.getString("Name");
                         if (EnchantmentHelp.putBlackList(name))
                         {
@@ -208,7 +208,7 @@ public class EnchantingPlus
 
                     for (int i = 0; i < enchantments.tagCount(); i++)
                     {
-                        final NBTTagCompound nbtBase = (NBTTagCompound) enchantments.getCompoundTagAt(i);
+                        final NBTTagCompound nbtBase = enchantments.getCompoundTagAt(i);
                         final Integer itemId = Integer.valueOf(nbtBase.getString("itemId"));
                         if (EnchantmentHelp.putBlackListItem(itemId))
                         {

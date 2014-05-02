@@ -47,7 +47,6 @@ public class GuiModTable extends GuiContainer
     private ArrayList<GuiItem> enchantmentArray = new ArrayList<GuiItem>();
     private double sliderIndex = 0;
     private double enchantingPages = 0;
-    private double sliderY = 0;
     private Map<Integer, Integer> enchantments;
     private boolean clicked = false;
     private boolean sliding = false;
@@ -190,7 +189,7 @@ public class GuiModTable extends GuiContainer
             sliderIndex = enchantingPages;
         }
 
-        sliderY = sliding ? tempY : 57 * (sliderIndex / enchantingPages);
+        double sliderY = sliding ? tempY : 57 * (sliderIndex / enchantingPages);
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);

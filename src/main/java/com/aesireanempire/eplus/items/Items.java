@@ -1,7 +1,6 @@
 package com.aesireanempire.eplus.items;
 
 import com.aesireanempire.eplus.EnchantingPlus;
-import com.aesireanempire.eplus.lib.ConfigurationSettings;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -14,7 +13,7 @@ public class Items
     public static void init()
     {
         EnchantingPlus.log.info("Initializing Items.");
-        final Item tableUpgrade = new ItemTableUpgrade(ConfigurationSettings.upgradeID).setUnlocalizedName("tableUpgrade");
+        final Item tableUpgrade = new ItemTableUpgrade().setUnlocalizedName("tableUpgrade");
         LanguageRegistry.addName(tableUpgrade, "Table Upgrade");
 
         CraftingManager.getInstance()

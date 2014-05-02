@@ -46,7 +46,6 @@ public class PluginHandler
                 catch (final Exception e)
                 {
                     e.printStackTrace();
-                    continue;
                 }
             }
         }
@@ -98,7 +97,6 @@ public class PluginHandler
                 }
                 catch (final Exception e)
                 {
-                    continue;
                 }
             }
         }
@@ -125,7 +123,6 @@ public class PluginHandler
                 }
                 catch (final Exception e)
                 {
-                    continue;
                 }
             }
         }

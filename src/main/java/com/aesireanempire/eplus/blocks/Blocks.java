@@ -1,7 +1,6 @@
 package com.aesireanempire.eplus.blocks;
 
 import com.aesireanempire.eplus.EnchantingPlus;
-import com.aesireanempire.eplus.lib.ConfigurationSettings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
@@ -28,7 +27,7 @@ public class Blocks
     public static void init()
     {
         EnchantingPlus.log.info("Initializing Blocks.");
-        table = new BlockEnchantTable(ConfigurationSettings.tableID).setHardness(5.0F).setResistance(2000.0F).setBlockName("advancedEnchantmentTable");
+        table = new BlockEnchantTable().setHardness(5.0F).setResistance(2000.0F).setBlockName("advancedEnchantmentTable");
         GameRegistry.registerBlock(table, table.getUnlocalizedName());
         LanguageRegistry.addName(table, "Advanced Enchantment Table");
 

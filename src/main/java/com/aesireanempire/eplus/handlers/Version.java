@@ -23,8 +23,8 @@ public class Version implements Runnable
     public static EnumUpdateState currentVersion = EnumUpdateState.CURRENT;
     private static boolean updated;
     private static boolean versionCheckCompleted;
-    private static String recommendedVersion;
-    private static String currentModVersion;
+    private static ModVersion recommendedVersion;
+    private static ModVersion currentModVersion;
     private static String[] cachedChangelog;
     private static String recommendedDownload;
 
@@ -42,7 +42,7 @@ public class Version implements Runnable
         return cachedChangelog;
     }
 
-    public static String getCurrentModVersion()
+    public static ModVersion getCurrentModVersion()
     {
         return currentModVersion;
     }
@@ -57,17 +57,17 @@ public class Version implements Runnable
         return recommendedDownload;
     }
 
-    public static String getRecommendedVersion()
+    public static ModVersion getRecommendedVersion()
     {
         return recommendedVersion;
     }
 
-    public static String[] grabChangelog(String recommendedVersion)
+    public static String[] grabChangelog(ModVersion recommendedVersion)
     {
 
-        recommendedVersion = recommendedVersion.replace(".", "_") + ".txt";
+        String recommendedVersionFile = recommendedVersion.getAsFileExtension() + ".txt";
 
-        final String changelogURL = REMOTE_CHANGELOG + recommendedVersion;
+        final String changelogURL = REMOTE_CHANGELOG + recommendedVersionFile;
 
         try
         {
@@ -91,7 +91,7 @@ public class Version implements Runnable
 
                 changelog.add(line);
             }
-            return changelog.toArray(new String[0]);
+            return changelog.toArray(new String[changelog.size()]);
         }
         catch (final Exception ex)
         {
@@ -110,14 +110,14 @@ public class Version implements Runnable
     {
         if (versionProperties == null)
         {
-            currentModVersion = "0.0.0";
+            currentModVersion = new ModVersion("0.0.0");
             return;
         }
 
         final String major = versionProperties.getProperty("eplus.major.number");
         final String minor = versionProperties.getProperty("eplus.minor.number");
         versionProperties.getProperty("eplus.revision.number");
-        currentModVersion = major + "." + minor;
+        currentModVersion = new ModVersion(major + "." + minor);
     }
 
     public static boolean isVersionCheckComplete()
@@ -145,9 +145,9 @@ public class Version implements Runnable
                     {
 
                         final String[] tokens = line.split(":");
-                        recommendedVersion = tokens[2];
+                        recommendedVersion = new ModVersion(tokens[2]);
 
-                        if (line.endsWith(currentModVersion))
+                        if (line.endsWith(currentModVersion.toString()))
                         {
                             EnchantingPlus.log.info("Using the latest version [" + getCurrentModVersion() + "] for Minecraft " + mcVersion);
                             currentVersion = EnumUpdateState.CURRENT;
@@ -163,23 +163,25 @@ public class Version implements Runnable
             EnchantingPlus.log.warn("Unable to read from remote version authority.", new Object[0]);
             ex.printStackTrace();
             currentVersion = EnumUpdateState.CONNECTION_ERROR;
-            recommendedVersion = "0.0.0";
+            recommendedVersion = new ModVersion("0.0.0");
             return;
         }
 
-        if (currentModVersion != null && currentModVersion.equals(recommendedVersion))
+        int compared = currentModVersion.compareTo(recommendedVersion);
+
+        if (compared == 0)
         {
             EnchantingPlus.log.info("Using the latest version for Minecraft " + getMinecraftVersion(), new Object[0]);
             currentVersion = EnumUpdateState.CURRENT;
             updated = false;
         }
-        else if (currentModVersion.endsWith("b"))
+        else if (compared > 0)
         {
             EnchantingPlus.log.info("Using a Beta version of Enchanting Plus: " + getCurrentModVersion());
             currentVersion = EnumUpdateState.BETA;
             updated = false;
         }
-        else
+        else if (compared < 0)
         {
             EnchantingPlus.log.info("An updated version of Enchanting Plus is available: " + getRecommendedVersion());
             currentVersion = EnumUpdateState.OUTDATED;
@@ -195,15 +197,15 @@ public class Version implements Runnable
             return false;
         }
 
-        final Property property = ConfigurationHandler.configuration.get("version", "SeenVersion", currentModVersion);
+        final Property property = ConfigurationHandler.configuration.get("version", "SeenVersion", currentModVersion.toString());
         final String seenVersion = property.getString();
 
-        if (recommendedVersion == null || recommendedVersion.equals(seenVersion))
+        if (recommendedVersion == null || recommendedVersion.equals( new ModVersion(seenVersion)))
         {
             return false;
         }
 
-        property.set(getRecommendedVersion());
+        property.set(getRecommendedVersion().toString());
         ConfigurationHandler.configuration.save();
         return true;
     }

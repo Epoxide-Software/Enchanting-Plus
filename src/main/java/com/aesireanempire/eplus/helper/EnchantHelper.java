@@ -160,7 +160,7 @@ public class EnchantHelper
     {
         for (int k = 0; k < restrictions.tagCount(); k++)
         {
-            NBTTagCompound tag = (NBTTagCompound) restrictions.getCompoundTagAt(k);
+            NBTTagCompound tag = restrictions.getCompoundTagAt(k);
             if (tag.getShort("lvl") == y && tag.getShort("id") == id)
             {
                 return true;

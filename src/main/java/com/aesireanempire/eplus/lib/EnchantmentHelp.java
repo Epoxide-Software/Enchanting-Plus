@@ -78,7 +78,7 @@ public class EnchantmentHelp
             flag |= !ConfigurationSettings.enchantments.get(enchantment.getName());
         }
 
-        return flag;
+        return !flag;
     }
 
     public static boolean isBlackListed(Item item)

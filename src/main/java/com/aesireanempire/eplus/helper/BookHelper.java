@@ -29,7 +29,7 @@ public class BookHelper
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            final NBTTagCompound nbttagcompound = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+            final NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
 
             if (nbttagcompound.getShort("id") == enchantmentData.enchantmentobj.effectId)
             {

@@ -41,7 +41,7 @@ public class CapeTickHandler
                 if (!modders.contains(line))
                 {
                     modders.add(line);
-                    setCape(line, capeURL);
+                    setCape(line);
                 }
             }
         }
@@ -51,9 +51,9 @@ public class CapeTickHandler
         }
     }
 
-    private static void setCape(String username, String capeImage)
+    private static void setCape(String username)
     {
-        ThreadDownloadImageData cape = new ThreadDownloadImageData(capeImage, null, null);
-        Minecraft.getMinecraft().getTextureManager().loadTexture(new ResourceLocation("cloaks/" + username), (ITextureObject) cape);
+        ThreadDownloadImageData cape = new ThreadDownloadImageData(CapeTickHandler.capeURL, null, null);
+        Minecraft.getMinecraft().getTextureManager().loadTexture(new ResourceLocation("cloaks/" + username), cape);
     }
 }

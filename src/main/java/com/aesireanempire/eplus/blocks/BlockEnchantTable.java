@@ -26,11 +26,6 @@ public class BlockEnchantTable extends BlockEnchantmentTable
     private IIcon field_94461_a;
     private IIcon field_94460_b;
 
-    protected BlockEnchantTable(int par1)
-    {
-        this();
-    }
-
     public BlockEnchantTable()
     {
         if (ConfigurationSettings.hasLight)

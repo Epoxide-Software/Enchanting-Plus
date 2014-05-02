@@ -36,8 +36,4 @@ public class ConfigurationSettings
 
     public static boolean allowDisenUnowned;
 
-    // IDS
-    public static int tableID;
-    public static int upgradeID;
-
 }

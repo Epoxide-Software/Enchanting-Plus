@@ -45,9 +45,6 @@ public class ConfigurationHandler
 
             configuration.addCustomCategoryComment(CATEGORY_ENCHANT, "Enchantments can be disabled to be enchantable in the table.\nControlled on the server side");
 
-            ConfigurationSettings.tableID = configuration.get(CATEGORY_IDS, "AdvancedEnchantmentTable", 3050).getInt();
-            ConfigurationSettings.upgradeID = configuration.get(CATEGORY_IDS, "EnchantmentTableUpgradte", 10205).getInt();
-
             ConfigurationSettings.allowDisenUnowned = configuration.get(CATEGORY_SERVER, "Disenchant Unowned", false,
                     "Allow disenchanting of enchantment levels the player doesn't own.").getBoolean(false);
 
