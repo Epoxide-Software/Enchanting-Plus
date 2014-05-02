@@ -6,6 +6,9 @@ import com.aesireanempire.eplus.helper.MathHelper;
 import com.aesireanempire.eplus.inventory.ContainerEnchantTable;
 import com.aesireanempire.eplus.inventory.TileEnchantTable;
 import com.aesireanempire.eplus.lib.*;
+import com.aesireanempire.eplus.network.packets.EnchantPacket;
+import com.aesireanempire.eplus.network.packets.GuiPacket;
+import com.aesireanempire.eplus.network.packets.RepairPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -269,7 +272,7 @@ public class GuiModTable extends GuiContainer
 
     private boolean dirty = false;
 
-    private final ResourceLocation texture = new ResourceLocation(References.MODID,"/assets/eplus/textures/gui/enchant.png");
+    private final ResourceLocation texture = new ResourceLocation(References.MODID,"textures/gui/enchant.png");
 
     public String error = "";
 
@@ -312,20 +315,17 @@ public class GuiModTable extends GuiContainer
         case 0:
             if (enchants.size() > 0)
             {
-                //TODO Enchant Packet
-                //PacketDispatcher.sendPacketToServer(new EnchantPacket(enchants, levels, totalCost).makePacket());
+                EnchantingPlus.sendPacketToServer(new EnchantPacket(enchants, levels, totalCost));
             }
             return;
         case 1:
             if (enchants.size() == 0 && ConfigurationSettings.AllowRepair)
             {
-                //TODO Repair Packet
-                //PacketDispatcher.sendPacketToServer(new RepairPacket(totalCost, repairAmount).makePacket());
+                EnchantingPlus.sendPacketToServer(new RepairPacket(totalCost, repairAmount));
             }
             return;
         case 2:
-            //TODO GuiPacket
-            //PacketDispatcher.sendPacketToServer(new GuiPacket(player.username, GuiIds.VanillaTable, xPos, yPos, zPos).makePacket());
+            EnchantingPlus.sendPacketToServer(new GuiPacket(player.getDisplayName(), GuiIds.VanillaTable, xPos, yPos, zPos));
         }
     }
 

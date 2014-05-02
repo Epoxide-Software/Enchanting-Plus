@@ -155,8 +155,7 @@ public class ContainerEnchantTable extends Container
         if (!ItemStack.areItemStacksEqual(tileEnchantTable.itemInTable, tableInventory.getStackInSlot(0)))
         {
             putStackInSlot(0, tileEnchantTable.itemInTable);
-            //TODO
-            //PacketDispatcher.sendPacketToAllAround(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord, 64, tileEnchantTable.worldObj.getWorldInfo().getDimension(), tileEnchantTable.getDescriptionPacket());
+            worldObj.markBlockForUpdate(tileEnchantTable.xCoord, tileEnchantTable.yCoord, tileEnchantTable.zCoord);
             onCraftMatrixChanged(tableInventory);
         }
     }

@@ -56,15 +56,9 @@ public class BlockEnchantTable extends BlockEnchantmentTable
             return true;
         }
 
-        final NBTTagCompound tag = player.getEntityData();
-
-        if (tag.getBoolean(References.MODID + ":useMod") && ConfigurationSettings.useMod)
+        if (ConfigurationSettings.useMod)
         {
             player.openGui(EnchantingPlus.INSTANCE, GuiIds.ModTable, world, x, y, z);
-        }
-        else
-        {
-            player.openGui(EnchantingPlus.INSTANCE, GuiIds.VanillaTable, world, x, y, z);
         }
 
         return true;

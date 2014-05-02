@@ -11,16 +11,23 @@ import com.aesireanempire.eplus.items.Items;
 import com.aesireanempire.eplus.lib.EnchantmentHelp;
 import com.aesireanempire.eplus.lib.References;
 import com.aesireanempire.eplus.network.GuiHandler;
+import com.aesireanempire.eplus.network.packets.ChannelHandler;
+import com.aesireanempire.eplus.network.packets.IPacket;
 import com.aesireanempire.eplus.network.proxies.CommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.FMLEmbeddedChannel;
+import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +53,8 @@ public class EnchantingPlus
     public static CommonProxy proxy;
     public static Map<Integer, String> itemMap = new HashMap<Integer, String>();
 
+    private static EnumMap<Side, FMLEmbeddedChannel> channels;
+
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
@@ -53,9 +62,28 @@ public class EnchantingPlus
         registerTileEntity(TileEnchantTable.class);
         NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
 
-        //TODO player tracking
+        channels = NetworkRegistry.INSTANCE.newChannel(References.MODID, new ChannelHandler());
 
         proxy.registerTickHandlers();
+    }
+
+    public static void sendPacketToServer(IPacket packet)
+    {
+        channels.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
+        channels.get(Side.CLIENT).writeOutbound(packet);
+    }
+
+    public static void sendPacketToPlayer(IPacket packet, EntityPlayer player)
+    {
+        channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
+        channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
+        channels.get(Side.SERVER).writeOutbound(packet);
+    }
+
+    public static void sendPacketToAllClients(IPacket packet)
+    {
+        channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
+        channels.get(Side.SERVER).writeOutbound(packet);
     }
 
     @Mod.EventHandler

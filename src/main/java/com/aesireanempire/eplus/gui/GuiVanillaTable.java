@@ -1,7 +1,10 @@
 package com.aesireanempire.eplus.gui;
 
+import com.aesireanempire.eplus.EnchantingPlus;
 import com.aesireanempire.eplus.lib.ConfigurationSettings;
+import com.aesireanempire.eplus.lib.GuiIds;
 import com.aesireanempire.eplus.lib.Strings;
+import com.aesireanempire.eplus.network.packets.GuiPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiEnchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,8 +40,7 @@ public class GuiVanillaTable extends GuiEnchantment
 
         switch (par1GuiButton.id) {
             case 0:
-                //TODO GuiPacket
-                //PacketDispatcher.sendPacketToServer(new GuiPacket(player.username, GuiIds.ModTable, xPos, yPos, zPos).makePacket());
+                EnchantingPlus.sendPacketToServer(new GuiPacket(player.getDisplayName(), GuiIds.ModTable, xPos, yPos, zPos));
         }
     }
 
