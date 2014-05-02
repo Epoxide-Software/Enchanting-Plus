@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * Enchanting Plus
- * 
+ *
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
@@ -35,9 +35,8 @@ public class ContainerEnchantTable extends Container
     private final int xPos;
     private final int yPos;
     private final int zPos;
-    private Map<Integer, Integer> enchantments;
-
     private final int guiOffest = 26;
+    private Map<Integer, Integer> enchantments;
 
     public ContainerEnchantTable(final InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, TileEnchantTable tileEntity)
     {
@@ -125,7 +124,7 @@ public class ContainerEnchantTable extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return par1EntityPlayer.getDistanceSq((double)this.xPos + 0.5D, (double)this.yPos + 0.5D, (double)this.zPos + 0.5D) <= 64.0D && !par1EntityPlayer.isDead;
+        return par1EntityPlayer.getDistanceSq((double) this.xPos + 0.5D, (double) this.yPos + 0.5D, (double) this.zPos + 0.5D) <= 64.0D && !par1EntityPlayer.isDead;
     }
 
     public boolean canPurchase(EntityPlayer player, int cost) throws Exception
@@ -177,9 +176,9 @@ public class ContainerEnchantTable extends Container
 
         final int averageCost = (enchantment.getMinEnchantability(level) + enchantment.getMaxEnchantability(level)) / 2;
         int enchantability = itemStack.getItem().getItemEnchantability();
-        
+
         if (enchantability <= 1) enchantability = 10;
-        
+
         int adjustedCost = (int) (averageCost * (enchantmentLevel - level - maxLevel) / ((double) maxLevel * enchantability));
         if (!ConfigurationSettings.needsBookShelves)
         {
@@ -208,14 +207,11 @@ public class ContainerEnchantTable extends Container
 
     /**
      * Enchants an item
-     * 
-     * @param player
-     *            player requesting the enchantment
-     * @param map
-     *            the list of enchantments to add
+     *
+     * @param player player requesting the enchantment
+     * @param map    the list of enchantments to add
      * @param levels
-     * @param cost
-     *            the cost of the operation
+     * @param cost   the cost of the operation
      * @throws Exception
      */
     public void enchant(EntityPlayer player, HashMap<Integer, Integer> map, HashMap<Integer, Integer> levels, int cost) throws Exception
@@ -305,9 +301,9 @@ public class ContainerEnchantTable extends Container
 
         final int averageCost = (enchantment.getMinEnchantability(enchantmentLevel) + enchantment.getMaxEnchantability(enchantmentLevel)) / 2;
         int enchantability = itemStack.getItem().getItemEnchantability();
-        
-        if(enchantability < 1) enchantability = 1;
-        
+
+        if (enchantability < 1) enchantability = 1;
+
         int adjustedCost = (int) (averageCost * (enchantmentLevel - level + maxLevel) / ((double) maxLevel * enchantability));
 
         if (!ConfigurationSettings.needsBookShelves)
@@ -348,8 +344,11 @@ public class ContainerEnchantTable extends Container
             final ItemStack stack = tableInventory.getStackInSlot(i);
             if (stack != null)
             {
-                if(par1EntityPlayer.inventory.addItemStackToInventory(stack)) {
-                } else {
+                if (par1EntityPlayer.inventory.addItemStackToInventory(stack))
+                {
+                }
+                else
+                {
                     par1EntityPlayer.entityDropItem(stack, 0.2f);
                 }
             }
@@ -402,7 +401,7 @@ public class ContainerEnchantTable extends Container
                 }
             }
             else if (EnchantHelper.isItemEnchanted(itemStack) && EnchantHelper.isNewItemEnchantable(itemStack.getItem()))
-            {                
+            {
                 temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
 
                 for (final Enchantment obj : Enchantment.enchantmentsList)
@@ -445,16 +444,15 @@ public class ContainerEnchantTable extends Container
     public void repair(EntityPlayer player, int cost, int amount) throws Exception
     {
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
-        
+
         boolean flag = true;
-        
-        
+
         if (itemStack == null)
         {
             return;
         }
-        
-        if(itemStack.hasTagCompound()) 
+
+        if (itemStack.hasTagCompound())
         {
             flag = !itemStack.getTagCompound().hasKey("charge");
         }

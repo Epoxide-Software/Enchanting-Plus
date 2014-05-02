@@ -9,7 +9,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 /**
  * @author Freyja Lesser GNU Public License v3
@@ -43,7 +42,8 @@ public class PluginHandler
                     plugins.add(clazz);
                     EnchantingPlus.log.info("Plugin loaded: " + className);
 
-                } catch (final Exception e)
+                }
+                catch (final Exception e)
                 {
                     e.printStackTrace();
                     continue;
@@ -63,11 +63,13 @@ public class PluginHandler
                 if (modState == LoaderState.ModState.POSTINITIALIZED && postInit(clazz))
                 {
                     EnchantingPlus.log.info("Plugin initialized in PostInit... " + className);
-                } else if (modState == LoaderState.ModState.PREINITIALIZED && preInit(clazz))
+                }
+                else if (modState == LoaderState.ModState.PREINITIALIZED && preInit(clazz))
                 {
                     EnchantingPlus.log.info("Plugin initialized in PreInit... " + className);
                 }
-            } catch (final Exception ex)
+            }
+            catch (final Exception ex)
             {
                 EnchantingPlus.log.info("Plugin failed to initialize.");
                 EnchantingPlus.log.info("Reason for failure: " + ex.getLocalizedMessage());
@@ -93,7 +95,8 @@ public class PluginHandler
                 {
                     method.invoke(clazz.newInstance());
                     successful = true;
-                } catch (final Exception e)
+                }
+                catch (final Exception e)
                 {
                     continue;
                 }
@@ -119,7 +122,8 @@ public class PluginHandler
                 {
                     method.invoke(clazz.newInstance());
                     successful = true;
-                } catch (final Exception e)
+                }
+                catch (final Exception e)
                 {
                     continue;
                 }

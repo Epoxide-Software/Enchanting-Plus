@@ -20,10 +20,10 @@ public class ClientProxy extends CommonProxy
     {
         CapeTickHandler.loadCapes();
         MinecraftForge.EVENT_BUS.register(new VersionTickHandler());
-        
+
         ClientRegistry.bindTileEntitySpecialRenderer(TileEnchantTable.class, new EnchantmentTableRender());
     }
-    
+
     @Override
     public void registerEnchantments()
     {

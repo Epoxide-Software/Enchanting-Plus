@@ -1,260 +1,281 @@
 package com.aesireanempire.eplus.api;
 
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import cpw.mods.fml.common.event.FMLInterModComms;
-
 /**
  * @author Freyja Lesser GNU Public License v3
  *         (http://www.gnu.org/licenses/lgpl.html)
  */
-public class EplusApi {
-	/**
-	 * Registers the custom enchantment to be rendered as a tool-tip
-	 * 
-	 * @param enchantment
-	 *            Enchantment object to be registered
-	 * @param description
-	 *            Description to be show on the too-tip
-	 */
-	public static void addCustomEnchantmentToolTip(Enchantment enchantment,
-			String description) {
-		addCustomEnchantmentToolTip(enchantment.getName(), description);
-	}
+public class EplusApi
+{
+    static Class<?> EnchantmentHelp;
+    static Method ToolTip;
+    static Class<?> EnchantingPlus;
+    static Field EnchantingPlusInstance;
+    static Object EnchantingPlusObject;
+    static Block advancedTable;
+    static Class<?> advancedTableClass;
+    static Item tableUpgrade;
+    static Class<?> tableUpgradeClass;
 
-	/**
-	 * String version of
-	 * {@link #addCustomEnchantmentToolTip(net.minecraft.enchantment.Enchantment, String)}
-	 * 
-	 * @param enchantmentName
-	 *            Simple name of enchantment
-	 * @param description
-	 *            Description to be show on the too-tip
-	 */
-	public static void addCustomEnchantmentToolTip(String enchantmentName,
-			String description) {
-		FMLInterModComms.sendMessage("eplus", "enchant-tooltip",
-				enchantmentName + ":" + description);
-	}
+    /**
+     * Registers the custom enchantment to be rendered as a tool-tip
+     *
+     * @param enchantment Enchantment object to be registered
+     * @param description Description to be show on the too-tip
+     */
+    public static void addCustomEnchantmentToolTip(Enchantment enchantment,
+            String description)
+    {
+        addCustomEnchantmentToolTip(enchantment.getName(), description);
+    }
 
-	/**
-	 * Map version of
-	 * {@link #addCustomEnchantmentToolTip(net.minecraft.enchantment.Enchantment, String)}
-	 * 
-	 * @param enchantments
-	 *            map of enchantments
-	 */
-	public static void addCustomEnchantmentToolTip(Map<?, String> enchantments) {
-		NBTTagCompound tagCompound = new NBTTagCompound();
-		NBTTagList nbtTagList = new NBTTagList();
+    /**
+     * String version of
+     * {@link #addCustomEnchantmentToolTip(net.minecraft.enchantment.Enchantment, String)}
+     *
+     * @param enchantmentName Simple name of enchantment
+     * @param description     Description to be show on the too-tip
+     */
+    public static void addCustomEnchantmentToolTip(String enchantmentName,
+            String description)
+    {
+        FMLInterModComms.sendMessage("eplus", "enchant-tooltip",
+                enchantmentName + ":" + description);
+    }
 
-		for (Object enchant : enchantments.keySet()) {
-			String name = "";
-			if (Enchantment.class.isAssignableFrom(enchant.getClass())) {
-				name = ((Enchantment) enchant).getName();
-			} else if (String.class.isAssignableFrom(enchant.getClass())) {
-				name = enchant.toString();
-			}
+    /**
+     * Map version of
+     * {@link #addCustomEnchantmentToolTip(net.minecraft.enchantment.Enchantment, String)}
+     *
+     * @param enchantments map of enchantments
+     */
+    public static void addCustomEnchantmentToolTip(Map<?, String> enchantments)
+    {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        NBTTagList nbtTagList = new NBTTagList();
 
-			NBTTagCompound tagCompound1 = new NBTTagCompound();
-			tagCompound1.setString("Name", name);
-			tagCompound1.setString("Description", enchantments.get(enchant));
-			nbtTagList.appendTag(tagCompound1);
-		}
-		tagCompound.setTag("Enchantments", nbtTagList);
+        for (Object enchant : enchantments.keySet())
+        {
+            String name = "";
+            if (Enchantment.class.isAssignableFrom(enchant.getClass()))
+            {
+                name = ((Enchantment) enchant).getName();
+            }
+            else if (String.class.isAssignableFrom(enchant.getClass()))
+            {
+                name = enchant.toString();
+            }
 
-		FMLInterModComms.sendMessage("eplus", "enchant-tooltip", tagCompound);
-	}
+            NBTTagCompound tagCompound1 = new NBTTagCompound();
+            tagCompound1.setString("Name", name);
+            tagCompound1.setString("Description", enchantments.get(enchant));
+            nbtTagList.appendTag(tagCompound1);
+        }
+        tagCompound.setTag("Enchantments", nbtTagList);
 
-	/**
-	 * Add an enchantment to not show up in the enchanting interface
-	 * 
-	 * @param enchantment
-	 *            Enchantment object to blacklist
-	 */
-	public static void addEnchantmentToBlackList(Enchantment enchantment) {
-		addEnchantmentToBlackList(enchantment.getName());
-	}
+        FMLInterModComms.sendMessage("eplus", "enchant-tooltip", tagCompound);
+    }
 
-	/**
-	 * String version of
-	 * {@link #addEnchantmentToBlackList(net.minecraft.enchantment.Enchantment)}
-	 * 
-	 * @param enchantmentName
-	 *            Name of enchantment to blacklist
-	 */
-	public static void addEnchantmentToBlackList(String enchantmentName) {
-		FMLInterModComms.sendMessage("eplus", "blacklist-enchantment",
-				enchantmentName);
-	}
+    /**
+     * Add an enchantment to not show up in the enchanting interface
+     *
+     * @param enchantment Enchantment object to blacklist
+     */
+    public static void addEnchantmentToBlackList(Enchantment enchantment)
+    {
+        addEnchantmentToBlackList(enchantment.getName());
+    }
 
-	/**
-	 * List version of
-	 * {@link #addEnchantmentToBlackList(net.minecraft.enchantment.Enchantment)}
-	 * 
-	 * @param enchantments
-	 *            List of enchantments to blacklist
-	 */
-	public static void addEnchantmentToBlackList(List<?> enchantments) {
-		NBTTagCompound tagCompound = new NBTTagCompound();
-		NBTTagList nbtTagList = new NBTTagList();
+    /**
+     * String version of
+     * {@link #addEnchantmentToBlackList(net.minecraft.enchantment.Enchantment)}
+     *
+     * @param enchantmentName Name of enchantment to blacklist
+     */
+    public static void addEnchantmentToBlackList(String enchantmentName)
+    {
+        FMLInterModComms.sendMessage("eplus", "blacklist-enchantment",
+                enchantmentName);
+    }
 
-		for (Object enchant : enchantments) {
-			String name = "";
-			if (Enchantment.class.isAssignableFrom(enchant.getClass())) {
-				name = ((Enchantment) enchant).getName();
-			} else if (String.class.isAssignableFrom(enchant.getClass())) {
-				name = enchant.toString();
-			}
+    /**
+     * List version of
+     * {@link #addEnchantmentToBlackList(net.minecraft.enchantment.Enchantment)}
+     *
+     * @param enchantments List of enchantments to blacklist
+     */
+    public static void addEnchantmentToBlackList(List<?> enchantments)
+    {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        NBTTagList nbtTagList = new NBTTagList();
 
-			NBTTagCompound tagCompound1 = new NBTTagCompound();
-			tagCompound1.setString("Name", name);
-			nbtTagList.appendTag(tagCompound1);
-		}
-		tagCompound.setTag("Enchantments", nbtTagList);
+        for (Object enchant : enchantments)
+        {
+            String name = "";
+            if (Enchantment.class.isAssignableFrom(enchant.getClass()))
+            {
+                name = ((Enchantment) enchant).getName();
+            }
+            else if (String.class.isAssignableFrom(enchant.getClass()))
+            {
+                name = enchant.toString();
+            }
 
-		FMLInterModComms.sendMessage("eplus", "blacklist-enchantment",
-				tagCompound);
-	}
+            NBTTagCompound tagCompound1 = new NBTTagCompound();
+            tagCompound1.setString("Name", name);
+            nbtTagList.appendTag(tagCompound1);
+        }
+        tagCompound.setTag("Enchantments", nbtTagList);
 
-	/**
-	 * Adds item to being able not to be used in the enchanting interface
-	 * 
-	 * @param item
-	 *            Item object to blacklist
-	 */
-	public static void addItemToBlackList(Item item) {
-		addItemToBlackList(Item.getIdFromItem(item));
-	}
+        FMLInterModComms.sendMessage("eplus", "blacklist-enchantment",
+                tagCompound);
+    }
 
-	/**
-	 * Integer version of {@link #addItemToBlackList(net.minecraft.item.Item)}
-	 * 
-	 * @param itemId
-	 *            Item Id to blacklist
-	 */
-	public static void addItemToBlackList(Integer itemId) {
-		FMLInterModComms.sendMessage("eplus", "blacklist-item",
-				String.valueOf(itemId));
-	}
+    /**
+     * Adds item to being able not to be used in the enchanting interface
+     *
+     * @param item Item object to blacklist
+     */
+    public static void addItemToBlackList(Item item)
+    {
+        addItemToBlackList(Item.getIdFromItem(item));
+    }
 
-	/**
-	 * List version of {@link #addItemToBlackList(net.minecraft.item.Item)}
-	 * 
-	 * @param items
-	 *            List of items to blacklist
-	 */
-	public static void addItemToBlackList(List<?> items) {
-		NBTTagCompound tagCompound = new NBTTagCompound();
-		NBTTagList nbtTagList = new NBTTagList();
+    /**
+     * Integer version of {@link #addItemToBlackList(net.minecraft.item.Item)}
+     *
+     * @param itemId Item Id to blacklist
+     */
+    public static void addItemToBlackList(Integer itemId)
+    {
+        FMLInterModComms.sendMessage("eplus", "blacklist-item",
+                String.valueOf(itemId));
+    }
 
-		for (Object item : items) {
-			int itemId = 0;
-			if (Item.class.isAssignableFrom(item.getClass())) {
-				itemId = Item.getIdFromItem((Item) item);
-			} else if (Integer.class.isAssignableFrom(item.getClass())) {
-				itemId = (Integer) item;
-			}
+    /**
+     * List version of {@link #addItemToBlackList(net.minecraft.item.Item)}
+     *
+     * @param items List of items to blacklist
+     */
+    public static void addItemToBlackList(List<?> items)
+    {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        NBTTagList nbtTagList = new NBTTagList();
 
-			NBTTagCompound tagCompound1 = new NBTTagCompound();
-			tagCompound1.setString("itemId", String.valueOf(itemId));
-			nbtTagList.appendTag(tagCompound1);
-		}
-		tagCompound.setTag("items", nbtTagList);
+        for (Object item : items)
+        {
+            int itemId = 0;
+            if (Item.class.isAssignableFrom(item.getClass()))
+            {
+                itemId = Item.getIdFromItem((Item) item);
+            }
+            else if (Integer.class.isAssignableFrom(item.getClass()))
+            {
+                itemId = (Integer) item;
+            }
 
-		FMLInterModComms.sendMessage("eplus", "blacklist-item", tagCompound);
-	}
+            NBTTagCompound tagCompound1 = new NBTTagCompound();
+            tagCompound1.setString("itemId", String.valueOf(itemId));
+            nbtTagList.appendTag(tagCompound1);
+        }
+        tagCompound.setTag("items", nbtTagList);
 
-	static Class<?> EnchantmentHelp;
-	static Method ToolTip;
+        FMLInterModComms.sendMessage("eplus", "blacklist-item", tagCompound);
+    }
 
-	/**
-	 * Gets the string description for an enchantment
-	 * 
-	 * @param enchantment
-	 *            Enchantment object to get
-	 * @return String description
-	 */
-	public static String getEnchantmentToolTip(Enchantment enchantment) {
-		try {
-			if (EnchantmentHelp == null) {
-				EnchantmentHelp = Class.forName("eplus.lib.EnchantmentHelp");
-			}
+    /**
+     * Gets the string description for an enchantment
+     *
+     * @param enchantment Enchantment object to get
+     * @return String description
+     */
+    public static String getEnchantmentToolTip(Enchantment enchantment)
+    {
+        try
+        {
+            if (EnchantmentHelp == null)
+            {
+                EnchantmentHelp = Class.forName("eplus.lib.EnchantmentHelp");
+            }
 
-			if (ToolTip == null) {
-				ToolTip = EnchantmentHelp.getMethod("getToolTip",
-						net.minecraft.enchantment.Enchantment.class);
-			}
+            if (ToolTip == null)
+            {
+                ToolTip = EnchantmentHelp.getMethod("getToolTip",
+                        net.minecraft.enchantment.Enchantment.class);
+            }
 
-			return String.valueOf(ToolTip
-					.invoke(getMainInstance(), enchantment));
+            return String.valueOf(ToolTip
+                    .invoke(getMainInstance(), enchantment));
 
-		} catch (Exception e) {
-			return "";
-		}
-	}
+        }
+        catch (Exception e)
+        {
+            return "";
+        }
+    }
 
-	static Class<?> EnchantingPlus;
-	static Field EnchantingPlusInstance;
-	static Object EnchantingPlusObject;
+    /**
+     * Gets the instance of Enchanting plus currently running.
+     *
+     * @return EnchantingPlus object or null
+     */
+    public static Object getMainInstance()
+    {
+        try
+        {
+            if (EnchantingPlus == null)
+            {
+                EnchantingPlus = Class.forName("eplus.EnchantingPlus");
+            }
+            if (EnchantingPlusInstance == null)
+            {
+                EnchantingPlusInstance = EnchantingPlus
+                        .getField("eplus.EnchantingPlus.INSTANCE");
+            }
+            if (EnchantingPlusObject == null)
+            {
+                EnchantingPlusObject = EnchantingPlusInstance.get(null);
+            }
 
-	/**
-	 * Gets the instance of Enchanting plus currently running.
-	 * 
-	 * @return EnchantingPlus object or null
-	 */
-	public static Object getMainInstance() {
-		try {
-			if (EnchantingPlus == null) {
-				EnchantingPlus = Class.forName("eplus.EnchantingPlus");
-			}
-			if (EnchantingPlusInstance == null) {
-				EnchantingPlusInstance = EnchantingPlus
-						.getField("eplus.EnchantingPlus.INSTANCE");
-			}
-			if (EnchantingPlusObject == null) {
-				EnchantingPlusObject = EnchantingPlusInstance.get(null);
-			}
+            return EnchantingPlusObject;
 
-			return EnchantingPlusObject;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
 
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	static Block advancedTable;
-	static Class<?> advancedTableClass;
-	
-	/**
-	 * Will attempt to return an instance of the advanced 
-	 * enchanting table
-	 * @return block instance may be null
-	 */
-	public static Block getAdvancedTable()
+    /**
+     * Will attempt to return an instance of the advanced
+     * enchanting table
+     *
+     * @return block instance may be null
+     */
+    public static Block getAdvancedTable()
     {
         return GameRegistry.findBlock("eplus", "advancedTable");
-	}
-	
-	static Item tableUpgrade;
-	static Class<?> tableUpgradeClass;
-	
-	/**
-	 * Will attempt to return an instance of the table
-	 * upgrade
-	 * @return item instance may be null
-	 */
-	public static Item getTableUpgrade()
+    }
+
+    /**
+     * Will attempt to return an instance of the table
+     * upgrade
+     *
+     * @return item instance may be null
+     */
+    public static Item getTableUpgrade()
     {
         return GameRegistry.findItem("eplus", "tableUpgrade");
     }

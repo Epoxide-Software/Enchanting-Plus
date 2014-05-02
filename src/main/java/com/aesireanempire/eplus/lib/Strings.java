@@ -144,7 +144,8 @@ public class Strings
 
             transformer.transform(domSource, streamResult);
 
-        } catch (final Exception e)
+        }
+        catch (final Exception e)
         {
             e.printStackTrace();
         }

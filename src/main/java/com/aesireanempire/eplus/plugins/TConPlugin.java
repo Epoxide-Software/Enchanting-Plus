@@ -28,7 +28,7 @@ public class TConPlugin
                 itemsBlackList.add(itemId);
             }
         }
-        
+
         //EnchantmentHelp.putBlackListItem(itemsBlackList);
     }
 }

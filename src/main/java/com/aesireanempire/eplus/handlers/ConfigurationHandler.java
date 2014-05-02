@@ -10,11 +10,10 @@ import net.minecraftforge.common.config.Configuration;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Set;
-import java.util.logging.Level;
 
 /**
  * Enchanting Plus
- * 
+ *
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
@@ -81,11 +80,13 @@ public class ConfigurationHandler
 
             clampSetting(CATEGORY_SERVER, "minimumBook", 0);
 
-        } catch (final Exception e)
+        }
+        catch (final Exception e)
         {
             EnchantingPlus.log.info("Error Loading configuration");
             EnchantingPlus.log.info("Cause by " + e.getLocalizedMessage());
-        } finally
+        }
+        finally
         {
             if (configuration.hasChanged())
             {
@@ -108,7 +109,8 @@ public class ConfigurationHandler
                 configuration.getCategory(category).get(setting).set(minimum);
                 field.setInt(null, minimum);
             }
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -138,11 +140,13 @@ public class ConfigurationHandler
                 {
                     field.setBoolean(EnchantingPlus.INSTANCE, Boolean.parseBoolean(newValue));
                 }
-            } catch (final IllegalAccessException e)
+            }
+            catch (final IllegalAccessException e)
             {
                 e.printStackTrace();
             }
-        } catch (final Exception e)
+        }
+        catch (final Exception e)
         {
 
         }
@@ -167,11 +171,13 @@ public class ConfigurationHandler
                 }
             }
 
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             EnchantingPlus.log.info("Error Loading configuration");
             e.printStackTrace();
-        } finally
+        }
+        finally
         {
             if (configuration.hasChanged())
             {

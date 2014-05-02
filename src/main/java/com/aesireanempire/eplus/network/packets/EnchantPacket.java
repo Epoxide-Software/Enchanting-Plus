@@ -38,14 +38,14 @@ public class EnchantPacket implements IPacket
 
         int size = bytes.readInt();
 
-        for(int i = 0; i < size; i++)
+        for (int i = 0; i < size; i++)
         {
             enchants.put(bytes.readInt(), bytes.readInt());
         }
 
         size = bytes.readInt();
 
-        for(int i = 0; i < size; i++)
+        for (int i = 0; i < size; i++)
         {
             levels.put(bytes.readInt(), bytes.readInt());
         }
@@ -84,12 +84,13 @@ public class EnchantPacket implements IPacket
     @Override
     public void executeServer(EntityPlayer player)
     {
-        if(player.openContainer instanceof ContainerEnchantTable)
+        if (player.openContainer instanceof ContainerEnchantTable)
         {
             try
             {
                 ((ContainerEnchantTable) player.openContainer).enchant(player, enchants, levels, totalCost);
-            } catch (final Exception e)
+            }
+            catch (final Exception e)
             {
                 EnchantingPlus.log.info("Enchanting failed because: " + e.getLocalizedMessage());
             }

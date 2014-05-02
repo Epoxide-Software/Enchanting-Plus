@@ -18,11 +18,9 @@ public class BookHelper
 
     /**
      * Adds enchantments to book
-     * 
-     * @param itemStack
-     *            the book to be enchanted
-     * @param enchantmentData
-     *            the EnchantmentData to add
+     *
+     * @param itemStack       the book to be enchanted
+     * @param enchantmentData the EnchantmentData to add
      */
     public static void addEnchantmentData(ItemStack itemStack, EnchantmentData enchantmentData)
     {
@@ -63,9 +61,8 @@ public class BookHelper
 
     /**
      * Gets stack compound of a enchanted book
-     * 
-     * @param par1ItemStack
-     *            the book to check
+     *
+     * @param par1ItemStack the book to check
      * @return the stack compound of the enchanted book
      */
     public static NBTTagList getTag(ItemStack par1ItemStack)

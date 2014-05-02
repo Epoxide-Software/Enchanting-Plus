@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 /**
  * Enchanting Plus
- * 
+ *
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
@@ -29,7 +29,8 @@ public class GuiHandler implements IGuiHandler
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         TileEntity tileEntity;
-        switch (ID) {
+        switch (ID)
+        {
             case GuiIds.ModTable:
                 tileEntity = world.getTileEntity(x, y, z);
                 if (tileEntity == null || !(tileEntity instanceof TileEnchantTable))
@@ -53,7 +54,8 @@ public class GuiHandler implements IGuiHandler
     public Object getServerGuiElement(int ID, final EntityPlayer player, World world, int x, int y, int z)
     {
         TileEntity tileEntity;
-        switch (ID) {
+        switch (ID)
+        {
             case GuiIds.ModTable:
                 tileEntity = world.getTileEntity(x, y, z);
                 if (tileEntity == null || !(tileEntity instanceof TileEnchantTable))
@@ -67,7 +69,8 @@ public class GuiHandler implements IGuiHandler
                 {
                     return null;
                 }
-                return new ContainerEnchantment(player.inventory, world, x, y, z) {
+                return new ContainerEnchantment(player.inventory, world, x, y, z)
+                {
                     @Override
                     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
                     {

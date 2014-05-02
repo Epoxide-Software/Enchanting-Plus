@@ -26,7 +26,8 @@ public class StringHelper
             if (i + 1 <= list.size() - 1)
             {
                 ret += " | ";
-            } else
+            }
+            else
             {
                 ret += " ";
             }

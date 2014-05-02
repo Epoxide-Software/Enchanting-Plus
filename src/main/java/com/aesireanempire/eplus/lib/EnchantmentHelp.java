@@ -57,7 +57,7 @@ public class EnchantmentHelp
         putToolTips(Enchantment.punch, Strings.enchantmentPunch);
         putToolTips(Enchantment.flame, Strings.enchantmentFlame);
         putToolTips(Enchantment.infinity, Strings.enchantmentInfinity);
-        
+
         saveToolTips();
     }
 
@@ -72,11 +72,12 @@ public class EnchantmentHelp
     public static boolean isBlackListed(Enchantment enchantment)
     {
         boolean flag = enchantment != null && enchantmentBlackList.contains(enchantment.getName());
-        
-        if(ConfigurationSettings.enchantments.containsKey(enchantment.getName())){
+
+        if (ConfigurationSettings.enchantments.containsKey(enchantment.getName()))
+        {
             flag |= !ConfigurationSettings.enchantments.get(enchantment.getName());
         }
-        
+
         return flag;
     }
 
@@ -128,13 +129,13 @@ public class EnchantmentHelp
 
         return false;
     }
-    
+
     public static void putBlackListItem(List<Integer> itemsBlackList)
     {
-        for(Integer itemId : itemsBlackList) 
+        for (Integer itemId : itemsBlackList)
         {
             putBlackListItem(itemId);
         }
-        
+
     }
 }

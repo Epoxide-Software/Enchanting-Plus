@@ -24,11 +24,9 @@ public class EnchantHelper
 
     /**
      * Checks to see if an enchantment can enchant an item
-     * 
-     * @param itemStack
-     *            the item to check
-     * @param obj
-     *            the enchantment to add
+     *
+     * @param itemStack the item to check
+     * @param obj       the enchantment to add
      * @return true is item can accept the enchantment
      */
     public static boolean canEnchantItem(ItemStack itemStack, Enchantment obj)
@@ -42,9 +40,8 @@ public class EnchantHelper
 
     /**
      * checks to see if item is enchantable
-     * 
-     * @param itemStack
-     *            the item to check
+     *
+     * @param itemStack the item to check
      * @return true if item can accept more enchantments
      */
     public static boolean isItemEnchantable(ItemStack itemStack)
@@ -54,15 +51,14 @@ public class EnchantHelper
         {
             flag = !itemStack.getTagCompound().hasKey("charge");
         }
-        
+
         return itemStack.getItem().getItemEnchantability() > 0 && (itemStack.getItem() == Items.book || itemStack.isItemEnchantable() && flag);
     }
 
     /**
      * Checks to see if item is enchanted
-     * 
-     * @param itemStack
-     *            the item to check
+     *
+     * @param itemStack the item to check
      * @return true if item is enchanted
      */
     public static boolean isItemEnchanted(ItemStack itemStack)
@@ -73,11 +69,9 @@ public class EnchantHelper
 
     /**
      * adds enchantments to an item
-     * 
-     * @param map
-     *            map of enchantments to add
-     * @param itemStack
-     *            the item to add enchantments to
+     *
+     * @param map       map of enchantments to add
+     * @param itemStack the item to add enchantments to
      * @param levels
      * @param player
      */
@@ -108,7 +102,8 @@ public class EnchantHelper
             try
             {
                 startLevel = levels.get(i);
-            } catch (NullPointerException e)
+            }
+            catch (NullPointerException e)
             {
 
             }

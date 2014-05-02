@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 /**
  * Enchanting Plus
- * 
+ *
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
@@ -38,7 +38,8 @@ public class GuiVanillaTable extends GuiEnchantment
     {
         super.actionPerformed(par1GuiButton);
 
-        switch (par1GuiButton.id) {
+        switch (par1GuiButton.id)
+        {
             case 0:
                 EnchantingPlus.sendPacketToServer(new GuiPacket(player.getDisplayName(), GuiIds.ModTable, xPos, yPos, zPos));
         }

@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
 
 /**
  * @author Freyja Lesser GNU Public License v3
@@ -18,23 +17,15 @@ import java.util.logging.Level;
  */
 public class Version implements Runnable
 {
-    public static enum EnumUpdateState
-    {
-        CURRENT, OUTDATED, CONNECTION_ERROR, BETA
-    }
-
-    public static Version instance = new Version();
     private static final String REMOTE_VERSION_FILE = "https://dl.dropboxusercontent.com/u/21347544/EnchantingPlus/eplusvers.txt";// "https://raw.github.com/odininon/EnchantingPlus/1.4.6/resources/version";
-
     private static final String REMOTE_CHANGELOG = "https://dl.dropboxusercontent.com/u/21347544/EnchantingPlus/changelogs/";
-
+    public static Version instance = new Version();
     public static EnumUpdateState currentVersion = EnumUpdateState.CURRENT;
     private static boolean updated;
     private static boolean versionCheckCompleted;
     private static String recommendedVersion;
     private static String currentModVersion;
     private static String[] cachedChangelog;
-
     private static String recommendedDownload;
 
     public static void check()
@@ -101,12 +92,13 @@ public class Version implements Runnable
                 changelog.add(line);
             }
             return changelog.toArray(new String[0]);
-        } catch (final Exception ex)
+        }
+        catch (final Exception ex)
         {
 
         }
         return new String[]
-        { "Failed to grab changelog." };
+                { "Failed to grab changelog." };
     }
 
     public static boolean hasUpdated()
@@ -165,7 +157,8 @@ public class Version implements Runnable
                 }
             }
 
-        } catch (final Exception ex)
+        }
+        catch (final Exception ex)
         {
             EnchantingPlus.log.warn("Unable to read from remote version authority.", new Object[0]);
             ex.printStackTrace();
@@ -231,5 +224,10 @@ public class Version implements Runnable
 
         EnchantingPlus.log.info("Version check complete with " + currentVersion);
         versionCheckCompleted = true;
+    }
+
+    public static enum EnumUpdateState
+    {
+        CURRENT, OUTDATED, CONNECTION_ERROR, BETA
     }
 }

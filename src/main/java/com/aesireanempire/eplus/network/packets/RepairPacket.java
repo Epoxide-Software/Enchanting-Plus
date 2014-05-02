@@ -43,7 +43,7 @@ public class RepairPacket implements IPacket
 
     @Override public void executeServer(EntityPlayer player)
     {
-        if(player.openContainer instanceof ContainerEnchantTable)
+        if (player.openContainer instanceof ContainerEnchantTable)
         {
             try
             {

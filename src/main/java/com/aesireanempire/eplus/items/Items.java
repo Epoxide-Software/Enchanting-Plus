@@ -17,7 +17,9 @@ public class Items
         final Item tableUpgrade = new ItemTableUpgrade(ConfigurationSettings.upgradeID).setUnlocalizedName("tableUpgrade");
         LanguageRegistry.addName(tableUpgrade, "Table Upgrade");
 
-        CraftingManager.getInstance().addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', net.minecraft.init.Items.writable_book, 'o', Blocks.obsidian, 'e', net.minecraft.init.Items.ender_eye, 'g', net.minecraft.init.Items.gold_ingot);
+        CraftingManager.getInstance()
+                .addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', net.minecraft.init.Items.writable_book, 'o', Blocks.obsidian, 'e', net.minecraft.init.Items.ender_eye, 'g',
+                        net.minecraft.init.Items.gold_ingot);
 
     }
 

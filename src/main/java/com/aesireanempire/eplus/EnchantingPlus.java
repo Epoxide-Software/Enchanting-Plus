@@ -34,7 +34,7 @@ import java.util.Map;
 
 /**
  * Enchanting Plus
- * 
+ *
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
@@ -44,29 +44,15 @@ import java.util.Map;
 public class EnchantingPlus
 {
 
+    public static final boolean Debug = Boolean.parseBoolean(System.getenv("DEBUG"));
     @Mod.Instance(References.MODID)
     public static EnchantingPlus INSTANCE;
-
     public static org.apache.logging.log4j.Logger log;
-    public static final boolean Debug = Boolean.parseBoolean(System.getenv("DEBUG"));
-
     @SidedProxy(clientSide = "com.aesireanempire.eplus.network.proxies.ClientProxy", serverSide = "com.aesireanempire.eplus.network.proxies.CommonProxy")
     public static CommonProxy proxy;
     public static Map<Integer, String> itemMap = new HashMap<Integer, String>();
 
     private static EnumMap<Side, FMLEmbeddedChannel> channels;
-
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-
-        registerTileEntity(TileEnchantTable.class);
-        NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
-
-        channels = NetworkRegistry.INSTANCE.newChannel(References.MODID, new ChannelHandler());
-
-        proxy.registerTickHandlers();
-    }
 
     public static void sendPacketToServer(IPacket packet)
     {
@@ -88,6 +74,18 @@ public class EnchantingPlus
     }
 
     @Mod.EventHandler
+    public void init(FMLInitializationEvent event)
+    {
+
+        registerTileEntity(TileEnchantTable.class);
+        NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
+
+        channels = NetworkRegistry.INSTANCE.newChannel(References.MODID, new ChannelHandler());
+
+        proxy.registerTickHandlers();
+    }
+
+    @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
         final NBTTagList list = new NBTTagList();
@@ -106,7 +104,7 @@ public class EnchantingPlus
 
         Version.check();
         event.getModMetadata().version = Version.getCurrentModVersion();
-        
+
         PluginHandler.init(event.getAsmData().getAll(EplusPlugin.class.getCanonicalName()));
         PluginHandler.initPlugins(event.getModState());
 
@@ -114,7 +112,8 @@ public class EnchantingPlus
         try
         {
             LanguageHandler.getInstance().addLanguages("/assets/eplus/lang/langs.txt");
-        } catch (final NullPointerException e)
+        }
+        catch (final NullPointerException e)
         {
             log.error(String.format("Can not load %s", "/assets/eplus/lang/langs.txt"));
         }

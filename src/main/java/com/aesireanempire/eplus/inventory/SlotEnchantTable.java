@@ -4,7 +4,7 @@ import net.minecraft.inventory.InventoryBasic;
 
 /**
  * Enchanting Plus
- * 
+ *
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */

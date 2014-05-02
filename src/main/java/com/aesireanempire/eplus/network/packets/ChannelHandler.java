@@ -1,11 +1,11 @@
 package com.aesireanempire.eplus.network.packets;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 
@@ -35,10 +35,10 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<IPacket>
         switch (FMLCommonHandler.instance().getEffectiveSide())
         {
             case CLIENT:
-                packet.executeClient(Minecraft.getMinecraft().thePlayer);
-                break;
-            case SERVER:
                 INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
+                packet.executeClient(((NetHandlerPlayServer) netHandler).playerEntity);
+            case SERVER:
+                netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
                 packet.executeServer(((NetHandlerPlayServer) netHandler).playerEntity);
                 break;
         }

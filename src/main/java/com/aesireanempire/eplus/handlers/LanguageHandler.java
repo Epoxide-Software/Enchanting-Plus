@@ -15,20 +15,18 @@ import java.util.Scanner;
 public class LanguageHandler
 {
 
-    private final List<String> languages = new ArrayList<String>();
-
     private static LanguageHandler INSTANCE = new LanguageHandler();
-
-    public static LanguageHandler getInstance()
-    {
-        return INSTANCE;
-    }
-
+    private final List<String> languages = new ArrayList<String>();
     private final String location = "/assets/eplus/lang/";
 
     private LanguageHandler()
     {
 
+    }
+
+    public static LanguageHandler getInstance()
+    {
+        return INSTANCE;
     }
 
     public void addLanguage(String uri)
@@ -65,8 +63,8 @@ public class LanguageHandler
     public String getTranslatedString(String string)
     {
         return LanguageRegistry.instance().getStringLocalization(string).isEmpty() ? LanguageRegistry.instance().getStringLocalization(string, "en_US") : LanguageRegistry
-             .instance().getStringLocalization(string);
-        
+                .instance().getStringLocalization(string);
+
     }
 
     private boolean isXMLlangfile(String lang)

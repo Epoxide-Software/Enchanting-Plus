@@ -44,7 +44,8 @@ public class CapeTickHandler
                     setCape(line, capeURL);
                 }
             }
-        } catch (final Exception ex)
+        }
+        catch (final Exception ex)
         {
             EnchantingPlus.log.warn("Could not load capes from remote authority.");
         }
@@ -53,6 +54,6 @@ public class CapeTickHandler
     private static void setCape(String username, String capeImage)
     {
         ThreadDownloadImageData cape = new ThreadDownloadImageData(capeImage, null, null);
-        Minecraft.getMinecraft().getTextureManager().loadTexture(new ResourceLocation("cloaks/" + username),(ITextureObject) cape);
+        Minecraft.getMinecraft().getTextureManager().loadTexture(new ResourceLocation("cloaks/" + username), (ITextureObject) cape);
     }
 }

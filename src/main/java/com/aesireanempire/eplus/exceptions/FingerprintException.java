@@ -1,8 +1,8 @@
 package com.aesireanempire.eplus.exceptions;
 
+import cpw.mods.fml.client.CustomModLoadingErrorDisplayException;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiErrorScreen;
-import cpw.mods.fml.client.CustomModLoadingErrorDisplayException;
 
 /**
  * @user odininon
@@ -12,7 +12,7 @@ public class FingerprintException extends CustomModLoadingErrorDisplayException
 {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -8712607652355978922L;
     private final String[] errorMessage;

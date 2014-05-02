@@ -28,237 +28,22 @@ import java.util.Map;
 
 /**
  * Enchanting Plus
- * 
+ *
  * @user odininon
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
 
 public class GuiModTable extends GuiContainer
 {
-    class GuiIcon extends GuiButton
-    {
-        private boolean customTexture;
-        private int textureIndex;
-
-        public GuiIcon(int id, int x, int y, int width, int height, String caption)
-        {
-            super(id, x, y, width, height, caption);
-
-        }
-
-        public GuiIcon(int id, int x, int y, String caption)
-        {
-            this(id, x, y, 16, 16, caption);
-        }
-
-        /**
-         * Determines if GuiIcon has a customTexture
-         * 
-         * @param texture
-         *            index of the Texture
-         * @return the Icon with according changes
-         */
-        public GuiIcon customTexture(int texture)
-        {
-            textureIndex = texture;
-            customTexture = texture != 0;
-            if (!customTexture)
-            {
-                width = 20;
-                height = 20;
-            }
-
-            return this;
-        }
-
-        @Override
-        public void drawButton(Minecraft mc, int x, int y)
-        {
-            if (!customTexture)
-            {
-                super.drawButton(mc, x, y);
-            }
-            else
-            {
-                GL11.glDisable(GL11.GL_LIGHTING);
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-                GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-                mc.renderEngine.bindTexture(texture);
-                drawTexturedModalRect(xPosition, yPosition, 8 + textureIndex * 16, 182, width, height);
-            }
-        }
-
-        public GuiIcon enabled(boolean enabled)
-        {
-            this.enabled = enabled;
-            return this;
-        }
-    }
-
-    /**
-     * Class for the enchantments GUI representation
-     */
-    class GuiItem extends Gui
-    {
-        private final Enchantment enchantment;
-        private final int height;
-        private final int width;
-        private final int privateLevel;
-        public int startingXPos;
-        public int startingYPos;
-        public int yPos;
-        public boolean locked = false;
-        private int xPos;
-        private int enchantmentLevel;
-        private boolean show = true;
-        private float index;
-        private boolean dragging = false;
-        private int sliderX;
-        private boolean disabled;
-
-        public GuiItem(int id, int level, int x, int y)
-        {
-            enchantment = Enchantment.enchantmentsList[id];
-            enchantmentLevel = level;
-            privateLevel = level;
-            xPos = startingXPos = x;
-            yPos = startingYPos = y;
-
-            sliderX = xPos + 1;
-
-            height = 18;
-            width = 143;
-        }
-
-        /**
-         * Draws the gui item
-         */
-        public void draw()
-        {
-            if (!show)
-            {
-                return;
-            }
-
-            final int indexX = dragging ? sliderX : enchantmentLevel <= enchantment.getMaxLevel() ? (int) (xPos + 1 + (width - 6)
-                    * (enchantmentLevel / (double) enchantment.getMaxLevel())) : xPos + 1 + width - 6;
-
-            drawRect(indexX, yPos + 1, indexX + 5, yPos - 1 + height, 0xff000000);
-            fontRendererObj.drawString(getTranslatedName(), xPos + 5, yPos + height / 4, 0x55aaff00);
-            if (disabled)
-            {
-                drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aaffff);
-            }
-            else if (locked)
-            {
-                drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44ff0000);
-            }
-            else
-            {
-                drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aa55ff);
-            }
-        }
-
-        public String getTranslatedName()
-        {
-            String name = enchantment.getTranslatedName(enchantmentLevel);
-
-            if (enchantmentLevel == 0)
-            {
-                if (name.lastIndexOf(" ") == -1)
-                {
-                    name = enchantment.getName();
-                }
-                else
-                {
-                    name = name.substring(0, name.lastIndexOf(" "));
-                }
-            }
-
-            return name;
-        }
-
-        /**
-         * Handles the GuiItem being clicked
-         * 
-         * @param mouseButton
-         *            which mouse button clicked the item (0 - Left, 1 - Right)
-         */
-        public void handleClick(int mouseButton)
-        {
-        }
-
-        /**
-         * Scrolls the item
-         * 
-         * @param xPos
-         *            the xPost of the mouse to scroll to
-         */
-        public void scroll(int xPos)
-        {
-            
-            int start = guiOffset + guiLeft + 10;
-            
-            if (disabled)
-            {
-                return;
-            }
-            sliderX = start + xPos;
-            
-            
-            if(sliderX <= start)
-            {
-                sliderX = start;
-            }
-            
-            if(sliderX >= start + width + 20) {
-                sliderX = start + width + 20;
-            }
-
-            index = xPos / (float) (width + 10);
-            final int tempLevel = (int) Math.floor(privateLevel > enchantment.getMaxLevel() ? privateLevel * index : enchantment.getMaxLevel() * index);
-            if (locked)
-            {
-                if (tempLevel < enchantmentLevel && (!container.tableInventory.getStackInSlot(0).isItemDamaged() || ConfigurationSettings.AllowEnchantDamaged))
-                {
-                    enchantmentLevel = tempLevel;
-                    locked = false;
-                }
-            }
-            else
-            {
-                if (tempLevel >= privateLevel || ConfigurationSettings.AllowDisenchanting && (!container.tableInventory.getStackInSlot(0).isItemDamaged())
-                        || ConfigurationSettings.AllowEnchantDamaged)
-                {
-                    enchantmentLevel = tempLevel;
-                }
-            }
-
-            if (enchantmentLevel <= 0)
-            {
-                enchantmentLevel = 0;
-            }
-        }
-
-        /**
-         * Changes the show property
-         * 
-         * @param b
-         *            true to show | false to hide
-         */
-        public void show(boolean b)
-        {
-            show = b;
-        }
-    }
-
     private static boolean TMInagged = false;
-
+    private static int guiOffset = 26;
     private final EntityPlayer player;
     private final ContainerEnchantTable container;
     private final int xPos;
     private final int yPos;
     private final int zPos;
+    private final ResourceLocation texture = new ResourceLocation(References.MODID, "textures/gui/enchant.png");
+    public String error = "";
     private ArrayList<GuiItem> enchantmentArray = new ArrayList<GuiItem>();
     private double sliderIndex = 0;
     private double enchantingPages = 0;
@@ -266,17 +51,9 @@ public class GuiModTable extends GuiContainer
     private Map<Integer, Integer> enchantments;
     private boolean clicked = false;
     private boolean sliding = false;
-
     private int totalCost = 0;
     private int repairAmount = 0;
-
     private boolean dirty = false;
-
-    private final ResourceLocation texture = new ResourceLocation(References.MODID,"textures/gui/enchant.png");
-
-    public String error = "";
-
-    private static int guiOffset = 26;
 
     public GuiModTable(InventoryPlayer inventory, World world, int x, int y, int z, TileEnchantTable tileEntity)
     {
@@ -312,32 +89,29 @@ public class GuiModTable extends GuiContainer
 
         switch (par1GuiButton.id)
         {
-        case 0:
-            if (enchants.size() > 0)
-            {
-                EnchantingPlus.sendPacketToServer(new EnchantPacket(enchants, levels, totalCost));
-            }
-            return;
-        case 1:
-            if (enchants.size() == 0 && ConfigurationSettings.AllowRepair)
-            {
-                EnchantingPlus.sendPacketToServer(new RepairPacket(totalCost, repairAmount));
-            }
-            return;
-        case 2:
-            EnchantingPlus.sendPacketToServer(new GuiPacket(player.getDisplayName(), GuiIds.VanillaTable, xPos, yPos, zPos));
+            case 0:
+                if (enchants.size() > 0)
+                {
+                    EnchantingPlus.sendPacketToServer(new EnchantPacket(enchants, levels, totalCost));
+                }
+                return;
+            case 1:
+                if (enchants.size() == 0 && ConfigurationSettings.AllowRepair)
+                {
+                    EnchantingPlus.sendPacketToServer(new RepairPacket(totalCost, repairAmount));
+                }
+                return;
+            case 2:
+                EnchantingPlus.sendPacketToServer(new GuiPacket(player.getDisplayName(), GuiIds.VanillaTable, xPos, yPos, zPos));
         }
     }
 
     /**
      * Converts map to arraylist of gui items
-     * 
-     * @param map
-     *            the map of enchantments to convert
-     * @param x
-     *            starting x position
-     * @param y
-     *            starting y position
+     *
+     * @param map the map of enchantments to convert
+     * @param x   starting x position
+     * @param y   starting y position
      * @return the arraylist of gui items
      */
     private ArrayList<GuiItem> convertMapToGuiItems(Map<Integer, Integer> map, int x, int y)
@@ -417,7 +191,7 @@ public class GuiModTable extends GuiContainer
         }
 
         sliderY = sliding ? tempY : 57 * (sliderIndex / enchantingPages);
-        
+
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -505,7 +279,8 @@ public class GuiModTable extends GuiContainer
             try
             {
                 drawHoveringText(display, guiLeft - 20 - maxWidth, height, fontRendererObj);
-            } catch (NoSuchMethodError e)
+            }
+            catch (NoSuchMethodError e)
             {
                 final StringBuilder sb = new StringBuilder();
 
@@ -542,7 +317,8 @@ public class GuiModTable extends GuiContainer
             try
             {
                 drawHoveringText(display, par1, par2, fontRendererObj);
-            } catch (NoSuchMethodError e)
+            }
+            catch (NoSuchMethodError e)
             {
                 final StringBuilder sb = new StringBuilder();
 
@@ -568,11 +344,9 @@ public class GuiModTable extends GuiContainer
 
     /**
      * Gets a GuiItem from mouse position
-     * 
-     * @param x
-     *            mouse x position
-     * @param y
-     *            mouse y position
+     *
+     * @param x mouse x position
+     * @param y mouse y position
      * @return the GuiItem found
      */
     private GuiItem getItemFromPos(int x, int y)
@@ -765,7 +539,8 @@ public class GuiModTable extends GuiContainer
                         {
                             item.locked = false;
                         }
-                    } catch (final Exception e)
+                    }
+                    catch (final Exception e)
                     {
                         item.locked = true;
                         error = e.getMessage();
@@ -781,7 +556,8 @@ public class GuiModTable extends GuiContainer
                                 {
                                     item.locked = false;
                                 }
-                            } catch (final Exception ex)
+                            }
+                            catch (final Exception ex)
                             {
                             }
                         }
@@ -798,7 +574,7 @@ public class GuiModTable extends GuiContainer
                     else
                     {
                         totalCost = 0;
-                        
+
                         //item.enchantmentLevel++;
                         //error = "Can not disenchant level not placed by yourself via eplus";
                     }
@@ -817,6 +593,219 @@ public class GuiModTable extends GuiContainer
             {
                 item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);
             }
+        }
+    }
+
+    class GuiIcon extends GuiButton
+    {
+        private boolean customTexture;
+        private int textureIndex;
+
+        public GuiIcon(int id, int x, int y, int width, int height, String caption)
+        {
+            super(id, x, y, width, height, caption);
+
+        }
+
+        public GuiIcon(int id, int x, int y, String caption)
+        {
+            this(id, x, y, 16, 16, caption);
+        }
+
+        /**
+         * Determines if GuiIcon has a customTexture
+         *
+         * @param texture index of the Texture
+         * @return the Icon with according changes
+         */
+        public GuiIcon customTexture(int texture)
+        {
+            textureIndex = texture;
+            customTexture = texture != 0;
+            if (!customTexture)
+            {
+                width = 20;
+                height = 20;
+            }
+
+            return this;
+        }
+
+        @Override
+        public void drawButton(Minecraft mc, int x, int y)
+        {
+            if (!customTexture)
+            {
+                super.drawButton(mc, x, y);
+            }
+            else
+            {
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+                mc.renderEngine.bindTexture(texture);
+                drawTexturedModalRect(xPosition, yPosition, 8 + textureIndex * 16, 182, width, height);
+            }
+        }
+
+        public GuiIcon enabled(boolean enabled)
+        {
+            this.enabled = enabled;
+            return this;
+        }
+    }
+
+    /**
+     * Class for the enchantments GUI representation
+     */
+    class GuiItem extends Gui
+    {
+        private final Enchantment enchantment;
+        private final int height;
+        private final int width;
+        private final int privateLevel;
+        public int startingXPos;
+        public int startingYPos;
+        public int yPos;
+        public boolean locked = false;
+        private int xPos;
+        private int enchantmentLevel;
+        private boolean show = true;
+        private float index;
+        private boolean dragging = false;
+        private int sliderX;
+        private boolean disabled;
+
+        public GuiItem(int id, int level, int x, int y)
+        {
+            enchantment = Enchantment.enchantmentsList[id];
+            enchantmentLevel = level;
+            privateLevel = level;
+            xPos = startingXPos = x;
+            yPos = startingYPos = y;
+
+            sliderX = xPos + 1;
+
+            height = 18;
+            width = 143;
+        }
+
+        /**
+         * Draws the gui item
+         */
+        public void draw()
+        {
+            if (!show)
+            {
+                return;
+            }
+
+            final int indexX = dragging ? sliderX : enchantmentLevel <= enchantment.getMaxLevel() ? (int) (xPos + 1 + (width - 6)
+                    * (enchantmentLevel / (double) enchantment.getMaxLevel())) : xPos + 1 + width - 6;
+
+            drawRect(indexX, yPos + 1, indexX + 5, yPos - 1 + height, 0xff000000);
+            fontRendererObj.drawString(getTranslatedName(), xPos + 5, yPos + height / 4, 0x55aaff00);
+            if (disabled)
+            {
+                drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aaffff);
+            }
+            else if (locked)
+            {
+                drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44ff0000);
+            }
+            else
+            {
+                drawRect(xPos, yPos + 1, xPos + width, yPos - 1 + height, 0x44aa55ff);
+            }
+        }
+
+        public String getTranslatedName()
+        {
+            String name = enchantment.getTranslatedName(enchantmentLevel);
+
+            if (enchantmentLevel == 0)
+            {
+                if (name.lastIndexOf(" ") == -1)
+                {
+                    name = enchantment.getName();
+                }
+                else
+                {
+                    name = name.substring(0, name.lastIndexOf(" "));
+                }
+            }
+
+            return name;
+        }
+
+        /**
+         * Handles the GuiItem being clicked
+         *
+         * @param mouseButton which mouse button clicked the item (0 - Left, 1 - Right)
+         */
+        public void handleClick(int mouseButton)
+        {
+        }
+
+        /**
+         * Scrolls the item
+         *
+         * @param xPos the xPost of the mouse to scroll to
+         */
+        public void scroll(int xPos)
+        {
+
+            int start = guiOffset + guiLeft + 10;
+
+            if (disabled)
+            {
+                return;
+            }
+            sliderX = start + xPos;
+
+            if (sliderX <= start)
+            {
+                sliderX = start;
+            }
+
+            if (sliderX >= start + width + 20)
+            {
+                sliderX = start + width + 20;
+            }
+
+            index = xPos / (float) (width + 10);
+            final int tempLevel = (int) Math.floor(privateLevel > enchantment.getMaxLevel() ? privateLevel * index : enchantment.getMaxLevel() * index);
+            if (locked)
+            {
+                if (tempLevel < enchantmentLevel && (!container.tableInventory.getStackInSlot(0).isItemDamaged() || ConfigurationSettings.AllowEnchantDamaged))
+                {
+                    enchantmentLevel = tempLevel;
+                    locked = false;
+                }
+            }
+            else
+            {
+                if (tempLevel >= privateLevel || ConfigurationSettings.AllowDisenchanting && (!container.tableInventory.getStackInSlot(0).isItemDamaged())
+                        || ConfigurationSettings.AllowEnchantDamaged)
+                {
+                    enchantmentLevel = tempLevel;
+                }
+            }
+
+            if (enchantmentLevel <= 0)
+            {
+                enchantmentLevel = 0;
+            }
+        }
+
+        /**
+         * Changes the show property
+         *
+         * @param b true to show | false to hide
+         */
+        public void show(boolean b)
+        {
+            show = b;
         }
     }
 }

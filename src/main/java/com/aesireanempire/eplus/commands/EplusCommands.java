@@ -1,18 +1,18 @@
 package com.aesireanempire.eplus.commands;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
 import com.aesireanempire.eplus.EnchantingPlus;
 import com.aesireanempire.eplus.handlers.ConfigurationHandler;
 import com.aesireanempire.eplus.handlers.Version;
 import com.aesireanempire.eplus.helper.StringHelper;
 import com.aesireanempire.eplus.lib.References;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatComponentText;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @user odininon
@@ -34,24 +34,24 @@ public class EplusCommands extends CommandBase
     {
         switch (args.length)
         {
-        case 1:
-        {
-            return getListOfStringsFromIterableMatchingLastWord(args, commands);
-        }
-        case 2:
-        {
-            for (final String command : CommandRegister.commands.keySet())
+            case 1:
             {
-                if (args[0].equalsIgnoreCase(command))
+                return getListOfStringsFromIterableMatchingLastWord(args, commands);
+            }
+            case 2:
+            {
+                for (final String command : CommandRegister.commands.keySet())
                 {
-                    return getListOfStringsFromIterableMatchingLastWord(args, CommandRegister.commands.get(command));
+                    if (args[0].equalsIgnoreCase(command))
+                    {
+                        return getListOfStringsFromIterableMatchingLastWord(args, CommandRegister.commands.get(command));
+                    }
                 }
             }
-        }
-        default:
-        {
-            return null;
-        }
+            default:
+            {
+                return null;
+            }
         }
     }
 

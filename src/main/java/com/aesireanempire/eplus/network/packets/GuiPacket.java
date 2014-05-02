@@ -3,10 +3,8 @@ package com.aesireanempire.eplus.network.packets;
 import com.aesireanempire.eplus.EnchantingPlus;
 import com.aesireanempire.eplus.lib.ConfigurationSettings;
 import com.aesireanempire.eplus.lib.GuiIds;
-import com.aesireanempire.eplus.lib.References;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Created by freyja
