@@ -1,7 +1,7 @@
 package com.aesireanempire.eplus.handlers;
 
 import com.aesireanempire.eplus.EnchantingPlus;
-import com.aesireanempire.eplus.EplusPlugin;
+import com.aesireanempire.eplus.api.EplusPlugin;
 import cpw.mods.fml.common.LoaderState;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 
