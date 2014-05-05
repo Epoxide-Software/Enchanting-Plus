@@ -1,6 +1,7 @@
 package com.aesireanempire.eplus.items;
 
 import com.aesireanempire.eplus.EnchantingPlus;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -15,6 +16,8 @@ public class Items
         EnchantingPlus.log.info("Initializing Items.");
         final Item tableUpgrade = new ItemTableUpgrade().setUnlocalizedName("tableUpgrade");
         LanguageRegistry.addName(tableUpgrade, "Table Upgrade");
+
+        GameRegistry.registerItem(tableUpgrade, tableUpgrade.getUnlocalizedName());
 
         CraftingManager.getInstance()
                 .addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', net.minecraft.init.Items.writable_book, 'o', Blocks.obsidian, 'e', net.minecraft.init.Items.ender_eye, 'g',
