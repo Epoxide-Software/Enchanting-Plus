@@ -77,6 +77,8 @@ public class ConfigurationHandler
 
             clampSetting(CATEGORY_SERVER, "minimumBook", 0);
 
+            ConfigurationSettings.classicMode = configuration.get(CATEGORY_SERVER, "classicMode", false).getBoolean(false);
+
         }
         catch (final Exception e)
         {

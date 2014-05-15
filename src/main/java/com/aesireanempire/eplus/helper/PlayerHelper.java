@@ -1,5 +1,6 @@
 package com.aesireanempire.eplus.helper;
 
+import com.aesireanempire.eplus.lib.ConfigurationSettings;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -20,7 +21,7 @@ public class PlayerHelper
             return false;
         }
 
-        if (player.capabilities.isCreativeMode)
+        if (player.capabilities.isCreativeMode || ConfigurationSettings.classicMode)
         {
             return true;
         }

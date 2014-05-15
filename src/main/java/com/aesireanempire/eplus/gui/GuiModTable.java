@@ -612,7 +612,7 @@ public class GuiModTable extends GuiContainer
             }
         }
 
-        if (container.currentItemIs(Items.enchanted_book) && !container.hasPlayerUnlocked(enchantments.keySet()))
+        if (!ConfigurationSettings.classicMode && container.currentItemIs(Items.enchanted_book) && !container.hasPlayerUnlocked(enchantments.keySet()))
         {
             ((GuiIcon) buttonList.get(1)).setDisplayString("U");
         }

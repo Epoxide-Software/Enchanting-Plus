@@ -1,5 +1,7 @@
 package com.aesireanempire.eplus.lib;
 
+import net.minecraftforge.common.config.Property;
+
 import java.util.HashMap;
 
 /**
@@ -36,4 +38,5 @@ public class ConfigurationSettings
 
     public static boolean allowDisenUnowned;
 
+    public static boolean classicMode;
 }
