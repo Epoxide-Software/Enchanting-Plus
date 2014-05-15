@@ -1,6 +1,8 @@
 package com.aesireanempire.eplus.inventory;
 
+import com.aesireanempire.eplus.EnchantingPlus;
 import com.aesireanempire.eplus.helper.EnchantHelper;
+import com.aesireanempire.eplus.helper.PlayerHelper;
 import com.aesireanempire.eplus.lib.ConfigurationSettings;
 import com.aesireanempire.eplus.lib.EnchantmentHelp;
 import net.minecraft.enchantment.Enchantment;
@@ -11,6 +13,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -18,6 +21,7 @@ import net.minecraftforge.common.ForgeHooks;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Enchanting Plus
@@ -35,6 +39,7 @@ public class ContainerEnchantTable extends Container
     private final int xPos;
     private final int yPos;
     private final int zPos;
+    private final EntityPlayer player;
     private Map<Integer, Integer> enchantments;
 
     public ContainerEnchantTable(final InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, TileEnchantTable tileEntity)
@@ -45,6 +50,8 @@ public class ContainerEnchantTable extends Container
         zPos = par5;
 
         tileEnchantTable = tileEntity;
+
+        player = par1InventoryPlayer.player;
 
         int guiOffest = 26;
         addSlotToContainer(new SlotEnchant(this, tableInventory, 0, 11 + guiOffest, 17));
@@ -78,7 +85,7 @@ public class ContainerEnchantTable extends Container
                 public boolean isItemValid(ItemStack par1ItemStack)
                 {
                     Item item = (par1ItemStack == null ? null : par1ItemStack.getItem());
-                    return item != null && item.isValidArmor(par1ItemStack, armorType, par1InventoryPlayer.player);
+                    return item != null && item.isValidArmor(par1ItemStack, armorType, player);
                 }
             });
         }
@@ -86,7 +93,7 @@ public class ContainerEnchantTable extends Container
         // Will drop items saved in the table.
         if (tileEnchantTable.itemInTable != null)
         {
-            par1InventoryPlayer.player.entityDropItem(tileEnchantTable.itemInTable, 0.2f);
+            player.entityDropItem(tileEnchantTable.itemInTable, 0.2f);
             tileEnchantTable.itemInTable = null;
         }
 
@@ -392,13 +399,7 @@ public class ContainerEnchantTable extends Container
         {
             if (EnchantHelper.isItemEnchantable(itemStack))
             {
-                for (final Enchantment obj : Enchantment.enchantmentsList)
-                {
-                    if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && EnchantmentHelp.isBlackListed(obj))
-                    {
-                        temp.put(obj.effectId, 0);
-                    }
-                }
+                addEnchantsFor(itemStack, temp);
             }
             else if (EnchantHelper.isItemEnchanted(itemStack) && EnchantHelper.isNewItemEnchantable(itemStack.getItem()))
             {
@@ -421,10 +422,9 @@ public class ContainerEnchantTable extends Container
                             add = false;
                         }
                     }
-
-                    if (EnchantHelper.canEnchantItem(itemStack, obj) && add && EnchantmentHelp.isBlackListed(obj))
+                    if (add)
                     {
-                        temp2.put(obj.effectId, 0);
+                        addEnchantFor(itemStack, temp2, obj);
                     }
                 }
                 temp.putAll(temp2);
@@ -438,6 +438,22 @@ public class ContainerEnchantTable extends Container
         else
         {
             enchantments = temp;
+        }
+    }
+
+    private void addEnchantsFor(ItemStack itemStack, HashMap<Integer, Integer> temp)
+    {
+        for (final Enchantment obj : Enchantment.enchantmentsList)
+        {
+            addEnchantFor(itemStack, temp, obj);
+        }
+    }
+
+    private void addEnchantFor(ItemStack itemStack, HashMap<Integer, Integer> temp, Enchantment obj)
+    {
+        if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && !EnchantmentHelp.isBlackListed(obj) && PlayerHelper.hasPlayerUnlocked(player, obj))
+        {
+            temp.put(obj.effectId, 0);
         }
     }
 
@@ -596,19 +612,16 @@ public class ContainerEnchantTable extends Container
     private boolean mergeItemStack2(ItemStack stack)
     {
         boolean flag1 = false;
-        int k = 1;
+        int k;
 
-        if (true)
-        {
-            k = 41 - 1;
-        }
+        k = 41 - 1;
 
         Slot slot;
         ItemStack itemstack1;
 
         if (stack.isStackable())
         {
-            while (stack.stackSize > 0 && (!true && k < 41 || true && k >= 1))
+            while (stack.stackSize > 0 && (k >= 1))
             {
                 slot = (Slot) this.inventorySlots.get(k);
                 itemstack1 = slot.getStack();
@@ -634,29 +647,15 @@ public class ContainerEnchantTable extends Container
                     }
                 }
 
-                if (true)
-                {
-                    --k;
-                }
-                else
-                {
-                    ++k;
-                }
+                --k;
             }
         }
 
         if (stack.stackSize > 0)
         {
-            if (true)
-            {
-                k = 41 - 1;
-            }
-            else
-            {
-                k = 1;
-            }
+            k = 41 - 1;
 
-            while (!true && k < 41 || true && k >= 1)
+            while (k >= 1)
             {
                 slot = (Slot) this.inventorySlots.get(k);
                 itemstack1 = slot.getStack();
@@ -670,17 +669,46 @@ public class ContainerEnchantTable extends Container
                     break;
                 }
 
-                if (true)
-                {
-                    --k;
-                }
-                else
-                {
-                    ++k;
-                }
+                --k;
             }
         }
 
         return flag1;
+    }
+
+    public boolean currentItemIs(Item item)
+    {
+        final ItemStack itemStack = tableInventory.getStackInSlot(0);
+
+        return itemStack != null && item.equals(itemStack.getItem());
+    }
+
+    public void unlock(EntityPlayer player, HashMap<Integer, Integer> enchants)
+    {
+        for(Integer enchantmentID : enchants.keySet())
+        {
+            final ItemStack itemStack = tableInventory.getStackInSlot(0);
+
+            PlayerHelper.unlockEnchantmentForPlayer(player, EnchantmentHelp.getEnchantmentById(enchantmentID));
+
+            tableInventory.setInventorySlotContents(0, EnchantHelper.removeEnchant(itemStack, EnchantmentHelp.getEnchantmentById(enchantmentID)));
+        }
+    }
+
+    public boolean hasPlayerUnlocked(Set<Integer> enchantmentIds)
+    {
+        for(Integer enchantmentId : enchantmentIds)
+        {
+            if (!hasPlayerUnlocked(EnchantmentHelp.getEnchantmentById(enchantmentId)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean hasPlayerUnlocked(Enchantment enchantmentById)
+    {
+        return PlayerHelper.hasPlayerUnlocked(player, enchantmentById);
     }
 }

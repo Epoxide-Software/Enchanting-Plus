@@ -9,6 +9,7 @@ import com.aesireanempire.eplus.lib.*;
 import com.aesireanempire.eplus.network.packets.EnchantPacket;
 import com.aesireanempire.eplus.network.packets.GuiPacket;
 import com.aesireanempire.eplus.network.packets.RepairPacket;
+import com.aesireanempire.eplus.network.packets.UnlockPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -16,6 +17,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
@@ -79,10 +81,21 @@ public class GuiModTable extends GuiContainer
         {
             final Integer id = enchantments.get(item.enchantment.effectId);
 
-            if (item.enchantmentLevel != id && !item.disabled)
+            if (par1GuiButton.id == 1 && ((GuiIcon) buttonList.get(1)).displayString.equals("U"))
             {
-                enchants.put(item.enchantment.effectId, item.enchantmentLevel);
-                levels.put(item.enchantment.effectId, item.privateLevel);
+                if (!container.hasPlayerUnlocked(EnchantmentHelp.getEnchantmentById(id)))
+                {
+                    enchants.put(item.enchantment.effectId, item.enchantmentLevel);
+                }
+            }
+            else
+            {
+
+                if (item.enchantmentLevel != id && !item.disabled)
+                {
+                    enchants.put(item.enchantment.effectId, item.enchantmentLevel);
+                    levels.put(item.enchantment.effectId, item.privateLevel);
+                }
             }
         }
 
@@ -98,6 +111,10 @@ public class GuiModTable extends GuiContainer
                 if (enchants.size() == 0 && ConfigurationSettings.AllowRepair)
                 {
                     EnchantingPlus.sendPacketToServer(new RepairPacket(totalCost, repairAmount));
+                }
+                else if (((GuiIcon) buttonList.get(1)).displayString.equals("U"))
+                {
+                    EnchantingPlus.sendPacketToServer(new UnlockPacket(enchants));
                 }
                 return;
             case 2:
@@ -348,6 +365,7 @@ public class GuiModTable extends GuiContainer
      * @param y mouse y position
      * @return the GuiItem found
      */
+
     private GuiItem getItemFromPos(int x, int y)
     {
         if (x < guiLeft + guiOffset + 35 || x > guiLeft + xSize - 32)
@@ -593,6 +611,15 @@ public class GuiModTable extends GuiContainer
                 item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);
             }
         }
+
+        if (container.currentItemIs(Items.enchanted_book) && !container.hasPlayerUnlocked(enchantments.keySet()))
+        {
+            ((GuiIcon) buttonList.get(1)).setDisplayString("U");
+        }
+        else
+        {
+            ((GuiIcon) buttonList.get(1)).setDisplayString("R");
+        }
     }
 
     class GuiIcon extends GuiButton
@@ -651,6 +678,16 @@ public class GuiModTable extends GuiContainer
         {
             this.enabled = enabled;
             return this;
+        }
+
+        public String getDisplayString()
+        {
+            return displayString;
+        }
+
+        public void setDisplayString(String displayString)
+        {
+            this.displayString = displayString;
         }
     }
 

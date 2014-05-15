@@ -4,10 +4,7 @@ import com.aesireanempire.eplus.handlers.ConfigurationHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Freyja Lesser GNU Public License v3
@@ -71,14 +68,19 @@ public class EnchantmentHelp
 
     public static boolean isBlackListed(Enchantment enchantment)
     {
-        boolean flag = enchantment != null && enchantmentBlackList.contains(enchantment.getName());
+        if(enchantment == null)
+        {
+            return true;
+        }
+
+        boolean flag = enchantmentBlackList.contains(enchantment.getName());
 
         if (ConfigurationSettings.enchantments.containsKey(enchantment.getName()))
         {
             flag |= !ConfigurationSettings.enchantments.get(enchantment.getName());
         }
 
-        return !flag;
+        return flag;
     }
 
     public static boolean isBlackListed(Item item)
@@ -137,5 +139,10 @@ public class EnchantmentHelp
             putBlackListItem(itemId);
         }
 
+    }
+
+    public static Enchantment getEnchantmentById(Integer enchantmentID)
+    {
+        return Enchantment.enchantmentsList[enchantmentID];
     }
 }

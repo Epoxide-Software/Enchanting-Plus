@@ -1,6 +1,7 @@
 package com.aesireanempire.eplus.helper;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -67,17 +68,16 @@ public class EnchantHelper
 
     /**
      * adds enchantments to an item
-     *
-     * @param map       map of enchantments to add
+     *  @param map       map of enchantments to add
      * @param itemStack the item to add enchantments to
      * @param levels
      * @param player
      */
-    public static void setEnchantments(Map<?, ?> map, ItemStack itemStack, HashMap<Integer, Integer> levels, EntityPlayer player)
+    public static ItemStack setEnchantments(Map<?, ?> map, ItemStack itemStack, HashMap<Integer, Integer> levels, EntityPlayer player)
     {
         final NBTTagList nbttaglist = new NBTTagList();
 
-        NBTTagList restrictions = null;
+        NBTTagList restrictions;
 
         if (itemStack.hasTagCompound())
         {
@@ -122,7 +122,7 @@ public class EnchantHelper
             }
         }
 
-        if (itemStack.getItem() == Items.book || itemStack.getItem() == Items.enchanted_book)
+        if (itemStack.getItem() == Items.book)
         {
             itemStack = new ItemStack(Items.enchanted_book);
         }
@@ -152,6 +152,7 @@ public class EnchantHelper
                 itemStack = new ItemStack(Items.book);
             }
         }
+        return itemStack;
     }
 
     public static boolean containsKey(NBTTagList restrictions, int id, int y)
@@ -174,5 +175,16 @@ public class EnchantHelper
             return isItemEnchantable(new ItemStack(Items.book));
         }
         return isItemEnchantable(new ItemStack(item));
+    }
+
+    public static ItemStack removeEnchant(ItemStack itemStack, Enchantment enchantment)
+    {
+        Map enchantments = EnchantmentHelper.getEnchantments(itemStack);
+        if(enchantments.containsKey(enchantment.effectId))
+        {
+            enchantments.remove(enchantment.effectId);
+        }
+
+        return setEnchantments(enchantments, itemStack, null, null);
     }
 }

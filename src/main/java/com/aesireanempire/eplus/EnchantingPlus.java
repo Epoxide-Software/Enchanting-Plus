@@ -27,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -79,6 +80,7 @@ public class EnchantingPlus
 
         registerTileEntity(TileEnchantTable.class);
         NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
+        MinecraftForge.EVENT_BUS.register(new Events());
 
         channels = NetworkRegistry.INSTANCE.newChannel(References.MODID, new ChannelHandler());
 

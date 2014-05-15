@@ -4,7 +4,6 @@ import com.aesireanempire.eplus.EnchantingPlus;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.BufferedReader;
@@ -35,7 +34,7 @@ public class CapeTickHandler
             final InputStreamReader inputStreamReader = new InputStreamReader(url.openStream());
             final BufferedReader reader = new BufferedReader(inputStreamReader);
 
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null)
             {
                 if (!modders.contains(line))
