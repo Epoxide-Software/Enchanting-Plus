@@ -34,7 +34,7 @@ public class EnchantHelper
     {
         // Item.enchantedBook.get(new EnchantmentData(obj, 1));
 
-        return itemStack != null && itemStack.getItem() == Items.book || obj != null && obj.canApply(itemStack);
+        return itemStack != null && itemStack.getItem() == Items.book && obj.isAllowedOnBooks() || obj != null && obj.canApplyAtEnchantingTable(itemStack) ;
     }
 
     /**
