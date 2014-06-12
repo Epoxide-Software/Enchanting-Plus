@@ -280,7 +280,8 @@ public class ContainerEnchantTable extends Container
 
         if (canPurchase(player, serverCost))
         {
-            EnchantHelper.setEnchantments(map, itemstack, levels, player);
+            ItemStack itemStack = EnchantHelper.setEnchantments(map, itemstack, levels, player);
+            tableInventory.setInventorySlotContents(0, itemStack);
             if (!player.capabilities.isCreativeMode)
             {
                 player.addExperienceLevel(-cost);
