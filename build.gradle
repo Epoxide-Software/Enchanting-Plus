@@ -55,7 +55,7 @@ ext.artifact_version = 'NFG'
 if (System.getenv().DEV_BUILD != null) {
     artifact_version = "${config.mod_version}.${project.buildInfo.buildNum}"
 }
-else {
+if (System.getenv().DEV_BUILD == null) {
     artifact_version = "${config.mod_version}"
 }
 
