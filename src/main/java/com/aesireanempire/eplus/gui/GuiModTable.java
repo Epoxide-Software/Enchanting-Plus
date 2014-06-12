@@ -24,6 +24,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -506,12 +507,9 @@ public class GuiModTable extends GuiContainer
             dirty = false;
         }
 
-        final boolean enabled[] = new boolean[enchantmentArray.size()];
+        final boolean[] enabled = new boolean[enchantmentArray.size()];
 
-        for (int i = 0; i < enabled.length; i++)
-        {
-            enabled[i] = false;
-        }
+        Arrays.fill(enabled, false);
 
         for (int i = 0; i < enchantmentArray.size(); i++)
         {
