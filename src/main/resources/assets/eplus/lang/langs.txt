@@ -1,3 +1,0 @@
-en_US.xml
-ru_RU.xml
-de_DE.xml
