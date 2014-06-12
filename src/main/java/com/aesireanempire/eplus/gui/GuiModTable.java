@@ -131,7 +131,7 @@ public class GuiModTable extends GuiContainer
      * @param y   starting y position
      * @return the arraylist of gui items
      */
-    private ArrayList<GuiItem> convertMapToGuiItems(Map<Integer, Integer> map, int x, int y)
+    private ArrayList<GuiItem> convertMapToGuiItems(final Map<Integer, Integer> map, int x, int y)
     {
         final ArrayList<GuiItem> temp = new ArrayList<GuiItem>();
 
@@ -476,37 +476,23 @@ public class GuiModTable extends GuiContainer
         // TODO fix http://mantis.aesireanempire.com/view.php?id=1
         // container.checkItems();
 
-        final Map<Integer, Integer> enchantments = container.getEnchantments();
+        final Map<Integer, Integer> enchantments = updateEnchantments(container.getEnchantments());
 
-        if (this.enchantments != enchantments)
-        {
-            this.enchantments = enchantments;
+        handleChangedScreenSize(enchantments);
 
-            enchantmentArray = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
+        enableEnchantments();
 
-            sliderIndex = enchantingPages = 0;
-            clicked = sliding = false;
-            error = "";
-        }
+        enchantingPages = enchantmentArray.size() / 4.0 > 1 ? enchantmentArray.size() / 4.0 - 1.0 : 0;
+        totalCost = 0;
+        repairAmount = 0;
 
-        if (dirty)
-        {
-            final ArrayList<GuiItem> temp = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
+        handleChangedEnchantments(enchantments);
 
-            for (final GuiItem item : enchantmentArray)
-            {
-                for (final GuiItem tempItem : temp)
-                {
-                    if (item.enchantment == tempItem.enchantment)
-                    {
-                        item.startingXPos = item.xPos = tempItem.xPos;
-                        item.startingYPos = item.yPos = tempItem.yPos;
-                    }
-                }
-            }
-            dirty = false;
-        }
+        handleButtonLabels(enchantments);
+    }
 
+    private void enableEnchantments()
+    {
         final boolean[] enabled = new boolean[enchantmentArray.size()];
 
         Arrays.fill(enabled, false);
@@ -533,67 +519,15 @@ public class GuiModTable extends GuiContainer
             final GuiItem item = enchantmentArray.get(i);
             item.disabled = enabled[i];
         }
+    }
 
-        enchantingPages = enchantmentArray.size() / 4.0 > 1 ? enchantmentArray.size() / 4.0 - 1.0 : 0;
-        totalCost = 0;
-        repairAmount = 0;
-
+    private void handleChangedEnchantments(Map<Integer, Integer> enchantments)
+    {
         if (!enchantmentArray.isEmpty() && levelChanged())
         {
             for (final GuiItem item : enchantmentArray)
             {
-                item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);
-
-                final Integer level = enchantments.get(item.enchantment.effectId);
-                if (item.enchantmentLevel > level && !item.disabled)
-                {
-                    int temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
-                    try
-                    {
-                        if (container.canPurchase(player, temp))
-                        {
-                            item.locked = false;
-                        }
-                    }
-                    catch (final Exception e)
-                    {
-                        item.locked = true;
-                        error = e.getMessage();
-
-                        while (item.locked && item.enchantmentLevel > 0)
-                        {
-                            item.dragging = false;
-                            item.enchantmentLevel--;
-                            temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
-                            try
-                            {
-                                if (container.canPurchase(player, temp))
-                                {
-                                    item.locked = false;
-                                }
-                            }
-                            catch (final Exception ex)
-                            {
-                            }
-                        }
-                    }
-                    totalCost = temp;
-                }
-                else if (item.enchantmentLevel < level && !item.disabled)
-                {
-                    if (EnchantHelper.containsKey(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions", 10), item.enchantment.effectId,
-                            item.enchantmentLevel) || ConfigurationSettings.allowDisenUnowned)
-                    {
-                        totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
-                    }
-                    else
-                    {
-                        totalCost = 0;
-
-                        //item.enchantmentLevel++;
-                        //error = "Can not disenchant level not placed by yourself via eplus";
-                    }
-                }
+                handleChangedEnchantment(enchantments, item);
             }
         }
         else if (ConfigurationSettings.AllowRepair && !levelChanged())
@@ -609,7 +543,66 @@ public class GuiModTable extends GuiContainer
                 item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);
             }
         }
+    }
 
+    private void handleChangedEnchantment(Map<Integer, Integer> enchantments, GuiItem item)
+    {
+        item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);
+
+        final Integer level = enchantments.get(item.enchantment.effectId);
+        if (item.enchantmentLevel > level && !item.disabled)
+        {
+            int temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+            try
+            {
+                if (container.canPurchase(player, temp))
+                {
+                    item.locked = false;
+                }
+            }
+            catch (final Exception e)
+            {
+                item.locked = true;
+                error = e.getMessage();
+
+                while (item.locked && item.enchantmentLevel > 0)
+                {
+                    item.dragging = false;
+                    item.enchantmentLevel--;
+                    temp = totalCost + container.enchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+                    try
+                    {
+                        if (container.canPurchase(player, temp))
+                        {
+                            item.locked = false;
+                        }
+                    }
+                    catch (final Exception ex)
+                    {
+                    }
+                }
+            }
+            totalCost = temp;
+        }
+        else if (item.enchantmentLevel < level && !item.disabled)
+        {
+            if (EnchantHelper.containsKey(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions", 10), item.enchantment.effectId,
+                    item.enchantmentLevel) || ConfigurationSettings.allowDisenUnowned)
+            {
+                totalCost += container.disenchantmentCost(item.enchantment.effectId, item.enchantmentLevel, level);
+            }
+            else
+            {
+                totalCost = 0;
+
+                //item.enchantmentLevel++;
+                //error = "Can not disenchant level not placed by yourself via eplus";
+            }
+        }
+    }
+
+    private void handleButtonLabels(Map<Integer, Integer> enchantments)
+    {
         if (!ConfigurationSettings.classicMode && container.currentItemIs(Items.enchanted_book) && !container.hasPlayerUnlocked(enchantments.keySet()))
         {
             ((GuiIcon) buttonList.get(1)).setDisplayString("U");
@@ -618,6 +611,44 @@ public class GuiModTable extends GuiContainer
         {
             ((GuiIcon) buttonList.get(1)).setDisplayString("R");
         }
+    }
+
+    private void handleChangedScreenSize(Map<Integer, Integer> enchantments)
+    {
+        if (dirty)
+        {
+            final ArrayList<GuiItem> temp = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
+
+            for (final GuiItem item : enchantmentArray)
+            {
+                for (final GuiItem tempItem : temp)
+                {
+                    if (item.enchantment == tempItem.enchantment)
+                    {
+                        item.startingXPos = item.xPos = tempItem.xPos;
+                        item.startingYPos = item.yPos = tempItem.yPos;
+                    }
+                }
+            }
+            dirty = false;
+        }
+    }
+
+    private Map<Integer, Integer> updateEnchantments(final Map<Integer, Integer> enchantments)
+    {
+        if (this.enchantments != enchantments)
+        {
+            this.enchantments = enchantments;
+
+            enchantmentArray = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
+
+            sliderIndex = enchantingPages = 0;
+            clicked = sliding = false;
+            error = "";
+            return this.enchantments;
+        }
+
+        return enchantments;
     }
 
     class GuiIcon extends GuiButton
