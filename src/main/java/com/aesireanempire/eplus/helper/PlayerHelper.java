@@ -63,7 +63,7 @@ public class PlayerHelper
         {
             return unlockedEnchants.get(player.getDisplayName());
         }
-        return null;
+        return new ArrayList<Enchantment>();
     }
 
     public static void setPlayerEnchantments(EntityPlayer player, ArrayList<Enchantment> enchantments)
