@@ -9,12 +9,5 @@ import net.minecraftforge.event.entity.EntityEvent;
  */
 public class Events
 {
-    @SubscribeEvent
-    public void extendedProperties(EntityEvent.EntityConstructing event)
-    {
-        if(event.entity instanceof EntityPlayer)
-        {
-            event.entity.registerExtendedProperties("eplus", new Properties((EntityPlayer) event.entity));
-        }
-    }
+
 }

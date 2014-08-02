@@ -37,6 +37,4 @@ public class ConfigurationSettings
     public static HashMap<String, Boolean> enchantments = new HashMap<String, Boolean>();
 
     public static boolean allowDisenUnowned;
-
-    public static boolean classicMode;
 }

@@ -19,7 +19,6 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<IPacket>
         addDiscriminator(1, RepairPacket.class);
         addDiscriminator(2, ErrorPacket.class);
         addDiscriminator(3, GuiPacket.class);
-        addDiscriminator(4, UnlockPacket.class);
     }
 
     @Override

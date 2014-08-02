@@ -2,7 +2,6 @@ package com.aesireanempire.eplus.inventory;
 
 import com.aesireanempire.eplus.EnchantingPlus;
 import com.aesireanempire.eplus.helper.EnchantHelper;
-import com.aesireanempire.eplus.helper.PlayerHelper;
 import com.aesireanempire.eplus.lib.ConfigurationSettings;
 import com.aesireanempire.eplus.lib.EnchantmentHelp;
 import net.minecraft.enchantment.Enchantment;
@@ -452,7 +451,7 @@ public class ContainerEnchantTable extends Container
 
     private void addEnchantFor(ItemStack itemStack, HashMap<Integer, Integer> temp, Enchantment obj)
     {
-        if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && !EnchantmentHelp.isBlackListed(obj) && PlayerHelper.hasPlayerUnlocked(player, obj))
+        if (obj != null && EnchantHelper.canEnchantItem(itemStack, obj) && !EnchantmentHelp.isBlackListed(obj))
         {
             temp.put(obj.effectId, 0);
         }
@@ -682,34 +681,5 @@ public class ContainerEnchantTable extends Container
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
 
         return itemStack != null && item.equals(itemStack.getItem());
-    }
-
-    public void unlock(EntityPlayer player, HashMap<Integer, Integer> enchants)
-    {
-        for(Integer enchantmentID : enchants.keySet())
-        {
-            final ItemStack itemStack = tableInventory.getStackInSlot(0);
-
-            PlayerHelper.unlockEnchantmentForPlayer(player, EnchantmentHelp.getEnchantmentById(enchantmentID));
-
-            tableInventory.setInventorySlotContents(0, EnchantHelper.removeEnchant(itemStack, EnchantmentHelp.getEnchantmentById(enchantmentID)));
-        }
-    }
-
-    public boolean hasPlayerUnlocked(Set<Integer> enchantmentIds)
-    {
-        for(Integer enchantmentId : enchantmentIds)
-        {
-            if (!hasPlayerUnlocked(EnchantmentHelp.getEnchantmentById(enchantmentId)))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean hasPlayerUnlocked(Enchantment enchantmentById)
-    {
-        return PlayerHelper.hasPlayerUnlocked(player, enchantmentById);
     }
 }
