@@ -1,6 +1,5 @@
 package com.aesireanempire.eplus.inventory;
 
-import com.aesireanempire.eplus.EnchantingPlus;
 import com.aesireanempire.eplus.helper.EnchantHelper;
 import com.aesireanempire.eplus.lib.ConfigurationSettings;
 import com.aesireanempire.eplus.lib.EnchantmentHelp;
@@ -12,7 +11,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -20,7 +18,6 @@ import net.minecraftforge.common.ForgeHooks;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Enchanting Plus

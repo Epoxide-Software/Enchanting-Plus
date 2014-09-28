@@ -4,7 +4,6 @@ import com.aesireanempire.eplus.api.EplusPlugin;
 import com.aesireanempire.eplus.blocks.Blocks;
 import com.aesireanempire.eplus.commands.EplusCommands;
 import com.aesireanempire.eplus.handlers.ConfigurationHandler;
-import com.aesireanempire.eplus.handlers.LanguageHandler;
 import com.aesireanempire.eplus.handlers.PluginHandler;
 import com.aesireanempire.eplus.handlers.Version;
 import com.aesireanempire.eplus.inventory.TileEnchantTable;
@@ -109,17 +108,6 @@ public class EnchantingPlus
 
         PluginHandler.init(event.getAsmData().getAll(EplusPlugin.class.getCanonicalName()));
         PluginHandler.initPlugins(event.getModState());
-
-        // Strings.buildDefaultXML("en_US");
-        try
-        {
-            LanguageHandler.getInstance().addLanguages("/assets/eplus/lang/langs.txt");
-        }
-        catch (final NullPointerException e)
-        {
-            log.error(String.format("Can not load %s", "/assets/eplus/lang/langs.txt"));
-        }
-        LanguageHandler.getInstance().loadLangauges();
 
         Blocks.init();
         Items.init();

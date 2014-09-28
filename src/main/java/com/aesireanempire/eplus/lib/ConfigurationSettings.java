@@ -1,7 +1,5 @@
 package com.aesireanempire.eplus.lib;
 
-import net.minecraftforge.common.config.Property;
-
 import java.util.HashMap;
 
 /**

@@ -17,49 +17,19 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "2.0"
+artifact_version = "3.0.1"
 group= "com.aesireanempire.eplus"
 archivesBaseName = "EnchantingPlus"
 
-ext.configFile = file "build.properties"
-
-configFile.withReader {
-    def prop = new Properties()
-    prop.load(it)
-    project.ext.config = new ConfigSlurper().parse prop
-}
+minecraft_version = "1.7.10"
+forge_version = "10.13.0.1180"
 
 minecraft {
-    version = config.minecraft_version + "-" + config.forge_version
+    version = minecraft_version + "-" + forge_version
     assetDir = "eclipse/assets"
 }
 
-task buildInfo() {
-    def cmd = "git rev-parse --short HEAD"
-    def proc = cmd.execute()
-    proc.waitFor()
-    if (proc.exitValue() == 0) {
-        ext.revision = proc.text.trim()
-    } else {
-        ext.revision = "GITBORK"
-    }
-
-    if (System.getenv().BUILD_NUMBER != null) {
-        ext.buildNum = "${System.getenv().BUILD_NUMBER}"
-    } else {
-        ext.buildNum = "${project.buildInfo.revision}"
-    }
-}
-
-ext.artifact_version = 'NFG'
-if (System.getenv().DEV_BUILD != null) {
-    artifact_version = "${config.mod_version}.${project.buildInfo.buildNum}"
-}
-if (System.getenv().DEV_BUILD == null) {
-    artifact_version = "${config.mod_version}"
-}
-
-version = "${config.minecraft_version}-${artifact_version}"
+version = "${minecraft_version}-${artifact_version}"
 
 processResources
 {
@@ -68,10 +38,10 @@ processResources
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
+
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-        
+
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }

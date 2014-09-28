@@ -2,7 +2,6 @@ package com.aesireanempire.eplus.items;
 
 import com.aesireanempire.eplus.EnchantingPlus;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,7 +14,6 @@ public class Items
     {
         EnchantingPlus.log.info("Initializing Items.");
         final Item tableUpgrade = new ItemTableUpgrade().setUnlocalizedName("tableUpgrade");
-        LanguageRegistry.addName(tableUpgrade, "Table Upgrade");
 
         GameRegistry.registerItem(tableUpgrade, tableUpgrade.getUnlocalizedName());
 
