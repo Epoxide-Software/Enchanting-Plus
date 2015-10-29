@@ -8,11 +8,16 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockEnchantTable;
+import net.epoxide.eplus.item.ItemTableUpgrade;
 import net.epoxide.eplus.tileentity.TileEntityEnchantingTable;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 
 public class ContentHandler {
     
@@ -31,7 +36,7 @@ public class ContentHandler {
     
     public static Item tableUpgrade;
     public static Item scroll;
-    
+
     /**
      * Initializes all of the blocks for the Enchanting Plus mod. Used to handle Block
      * construction and registry.
@@ -48,8 +53,10 @@ public class ContentHandler {
      * construction and registry.
      */
     public static void initItems () {
-    
-    }
+
+        tableUpgrade = new ItemTableUpgrade();
+        GameRegistry.registerItem(tableUpgrade, "tableUpgrade");
+        CraftingManager.getInstance().addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot);    }
     
     /**
      * Adds an Enchantment to the blacklist. Enchantments that are on this list can not be
