@@ -8,6 +8,7 @@ import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.epoxide.eplus.client.ProxyClient;
 import net.epoxide.eplus.common.ProxyCommon;
 import net.epoxide.eplus.common.network.GuiHandler;
 import net.epoxide.eplus.handler.ContentHandler;
@@ -40,9 +41,11 @@ public class EnchantingPlus {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
         new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());
-        
+
         ContentHandler.initBlocks();
         ContentHandler.initItems();
+
+        proxy.registerRenderers();
     }
     
     @EventHandler

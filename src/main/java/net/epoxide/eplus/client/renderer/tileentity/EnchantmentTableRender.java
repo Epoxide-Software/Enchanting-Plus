@@ -11,13 +11,14 @@ import org.lwjgl.opengl.GL11;
 public class EnchantmentTableRender extends TileEntitySpecialRenderer {
 
     private ModelBook enchantmentBook = new ModelBook();
-    private ResourceLocation texture = new ResourceLocation("eplus:textures/gui/enchantingplus_book.png");
+    private ResourceLocation texture = new ResourceLocation("eplus:textures/entity/enchantingplus_book.png");
 
     public void renderTileEntityEnchantmentTableAt (TileEntityEnchantTable table, double x, double y, double z, float tickPartial) {
 
+
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.75F, (float) z + 0.5F);
-        float f1 = (float) table.field_145926_a + tickPartial;
+        float f1 = (float) table.tickCount + tickPartial;
         GL11.glTranslatef(0.0F, 0.1F + MathHelper.sin(f1 * 0.1F) * 0.01F, 0.0F);
         float f2;
 
@@ -34,8 +35,8 @@ public class EnchantmentTableRender extends TileEntitySpecialRenderer {
         GL11.glRotatef(-f3 * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(80.0F, 0.0F, 0.0F, 1.0F);
         this.bindTexture(texture);
-        float f4 = table.field_145931_j + (table.field_145933_i - table.field_145931_j) * tickPartial + 0.25F;
-        float f5 = table.field_145931_j + (table.field_145933_i - table.field_145931_j) * tickPartial + 0.75F;
+        float f4 = table.pageFlipPrev + (table.pageFlip - table.pageFlipPrev) * tickPartial + 0.25F;
+        float f5 = table.pageFlipPrev + (table.pageFlip - table.pageFlipPrev) * tickPartial + 0.75F;
         f4 = (f4 - (float) MathHelper.truncateDoubleToInt((double) f4)) * 1.6F - 0.3F;
         f5 = (f5 - (float) MathHelper.truncateDoubleToInt((double) f5)) * 1.6F - 0.3F;
 
