@@ -5,6 +5,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.epoxide.eplus.common.ProxyCommon;
 import net.epoxide.eplus.common.network.GuiHandler;
 import net.epoxide.eplus.handler.ContentHandler;
@@ -20,11 +21,18 @@ public class EnchantingPlus {
     @Mod.Instance(Constants.MOD_ID)
     public static EnchantingPlus instance;
     
+    /**
+     * A SimpleNetworkWrapper that is used to send EnchantingPlus packets.
+     */
+    public SimpleNetworkWrapper network;
+    
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
-        new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());
+        network = NetworkRegistry.INSTANCE.newSimpleChannel("EnchantingPlus");
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+        
+        new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());
         
         ContentHandler.initBlocks();
         ContentHandler.initItems();
