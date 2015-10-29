@@ -4,7 +4,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import net.epoxide.eplus.client.gui.GuiModEnchantmentTable;
 import net.epoxide.eplus.client.gui.GuiVanillaEnchantmentTable;
 import net.epoxide.eplus.inventory.ContainerEnchantTable;
-import net.epoxide.eplus.tileentity.TileEntityEnchantingTable;
+import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.tileentity.TileEntity;
@@ -19,13 +19,13 @@ public class GuiHandler implements IGuiHandler {
         switch (id) {
             case 0:
                 tileEntity = world.getTileEntity(x, y, z);
-                if (tileEntity == null || !(tileEntity instanceof TileEntityEnchantingTable)) {
+                if (tileEntity == null || !(tileEntity instanceof TileEntityEnchantTable)) {
                     return null;
                 }
-                return new ContainerEnchantTable(entityPlayer.inventory, world, x, y, z, (TileEntityEnchantingTable) tileEntity);
+                return new ContainerEnchantTable(entityPlayer.inventory, world, x, y, z, (TileEntityEnchantTable) tileEntity);
             case 1:
                 tileEntity = world.getTileEntity(x, y, z);
-                if (tileEntity == null || !(tileEntity instanceof TileEntityEnchantingTable)) {
+                if (tileEntity == null || !(tileEntity instanceof TileEntityEnchantTable)) {
                     return null;
                 }
                 return new ContainerEnchantment(entityPlayer.inventory, world, x, y, z) {
@@ -47,13 +47,13 @@ public class GuiHandler implements IGuiHandler {
         switch (id) {
             case 0:
                 tileEntity = world.getTileEntity(x, y, z);
-                if (tileEntity == null || !(tileEntity instanceof TileEntityEnchantingTable))
+                if (tileEntity == null || !(tileEntity instanceof TileEntityEnchantTable))
                     return null;
                     
-                return new GuiModEnchantmentTable(entityPlayer.inventory, world, x, y, z, (TileEntityEnchantingTable) tileEntity);
+                return new GuiModEnchantmentTable(entityPlayer.inventory, world, x, y, z, (TileEntityEnchantTable) tileEntity);
             case 1:
                 tileEntity = world.getTileEntity(x, y, z);
-                if (tileEntity == null || !(tileEntity instanceof TileEntityEnchantingTable))
+                if (tileEntity == null || !(tileEntity instanceof TileEntityEnchantTable))
                     return null;
                     
                 return new GuiVanillaEnchantmentTable(entityPlayer.inventory, world, x, y, z, "");

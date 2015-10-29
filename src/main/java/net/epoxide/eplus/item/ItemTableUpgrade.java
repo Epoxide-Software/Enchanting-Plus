@@ -2,7 +2,7 @@ package net.epoxide.eplus.item;
 
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.handler.ContentHandler;
-import net.epoxide.eplus.tileentity.TileEntityEnchantingTable;
+import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -33,7 +33,7 @@ public class ItemTableUpgrade extends Item {
             Block block = world.getBlock(x, y, z);
             if (block instanceof BlockEnchantmentTable) {
                 world.setBlock(x, y, z, ContentHandler.eplusTable);
-                world.setTileEntity(x, y, z, new TileEntityEnchantingTable());
+                world.setTileEntity(x, y, z, new TileEntityEnchantTable());
                 itemStack.stackSize--;
                 return true;
             }

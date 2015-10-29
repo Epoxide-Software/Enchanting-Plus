@@ -9,9 +9,8 @@ import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockEnchantTable;
 import net.epoxide.eplus.item.ItemTableUpgrade;
-import net.epoxide.eplus.tileentity.TileEntityEnchantingTable;
+import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -45,7 +44,7 @@ public class ContentHandler {
         
         eplusTable = new BlockEnchantTable();
         GameRegistry.registerBlock(eplusTable, "advancedEnchantmentTable");
-        GameRegistry.registerTileEntity(TileEntityEnchantingTable.class, "advancedEnchantmentTable");
+        GameRegistry.registerTileEntity(TileEntityEnchantTable.class, "eplus:advancedEnchantmentTable");
     }
     
     /**

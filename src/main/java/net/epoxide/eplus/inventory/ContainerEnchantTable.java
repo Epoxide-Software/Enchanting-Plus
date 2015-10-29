@@ -1,6 +1,6 @@
 package net.epoxide.eplus.inventory;
 
-import net.epoxide.eplus.tileentity.TileEntityEnchantingTable;
+import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -8,28 +8,28 @@ import net.minecraft.world.World;
 
 public class ContainerEnchantTable extends Container {
     
-    public final World worldObj;
-    private final TileEntityEnchantingTable tileEntityTable;
-    private final int xPos;
-    private final int yPos;
-    private final int zPos;
+    public final World world;
+    private final TileEntityEnchantTable tileEntityTable;
+    private final int x;
+    private final int y;
+    private final int z;
     private final EntityPlayer player;
     
-    public ContainerEnchantTable(final InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, TileEntityEnchantingTable tileEntityTable) {
+    public ContainerEnchantTable(final InventoryPlayer inventoryPlayer, World world, int x, int y, int z, TileEntityEnchantTable tileEntityTable) {
         
-        this.worldObj = par2World;
-        this.xPos = par3;
-        this.yPos = par4;
-        this.zPos = par5;
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
         
         this.tileEntityTable = tileEntityTable;
         
-        this.player = par1InventoryPlayer.player;
+        this.player = inventoryPlayer.player;
     }
     
     @Override
     public boolean canInteractWith (EntityPlayer entityPlayer) {
         
-        return entityPlayer.getDistanceSq((double) this.xPos + 0.5D, (double) this.yPos + 0.5D, (double) this.zPos + 0.5D) <= 64.0D && !entityPlayer.isDead;
+        return entityPlayer.getDistanceSq((double) this.x + 0.5D, (double) this.y + 0.5D, (double) this.z + 0.5D) <= 64.0D && !entityPlayer.isDead;
     }
 }
