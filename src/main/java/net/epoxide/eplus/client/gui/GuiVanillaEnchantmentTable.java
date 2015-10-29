@@ -1,4 +1,4 @@
-package net.epoxide.eplus.gui;
+package net.epoxide.eplus.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiEnchantment;

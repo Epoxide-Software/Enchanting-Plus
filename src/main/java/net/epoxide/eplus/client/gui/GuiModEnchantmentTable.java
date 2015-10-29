@@ -1,4 +1,4 @@
-package net.epoxide.eplus.gui;
+package net.epoxide.eplus.client.gui;
 
 import net.epoxide.eplus.inventory.ContainerEnchantTable;
 import net.epoxide.eplus.tileentity.TileEntityEnchantingTable;

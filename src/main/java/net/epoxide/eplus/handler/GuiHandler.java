@@ -1,8 +1,8 @@
 package net.epoxide.eplus.handler;
 
 import cpw.mods.fml.common.network.IGuiHandler;
-import net.epoxide.eplus.gui.GuiModEnchantmentTable;
-import net.epoxide.eplus.gui.GuiVanillaEnchantmentTable;
+import net.epoxide.eplus.client.gui.GuiModEnchantmentTable;
+import net.epoxide.eplus.client.gui.GuiVanillaEnchantmentTable;
 import net.epoxide.eplus.inventory.ContainerEnchantTable;
 import net.epoxide.eplus.tileentity.TileEntityEnchantingTable;
 import net.minecraft.entity.player.EntityPlayer;
