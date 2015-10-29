@@ -14,23 +14,23 @@ import net.epoxide.eplus.util.Constants;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION, guiFactory = Constants.FACTORY, dependencies = "required-after:bookshelf@[1.0.2.56,)")
 public class EnchantingPlus {
-
+    
     @SidedProxy(clientSide = Constants.CLIENT_PROXY_CLASS, serverSide = Constants.SERVER_PROXY_CLASS)
     public static ProxyCommon proxy;
-
+    
     @Mod.Instance(Constants.MOD_ID)
     public static EnchantingPlus instance;
-
+    
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
-
+        
         new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());
         new BlockManager();
     }
-
+    
     @EventHandler
     public void init (FMLInitializationEvent event) {
-
+        
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
     }
 }
