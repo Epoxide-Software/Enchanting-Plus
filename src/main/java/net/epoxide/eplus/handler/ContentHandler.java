@@ -55,11 +55,26 @@ public class ContentHandler {
      * applied by the advanced enchantment table.
      * 
      * @param enchant: The Enchantment to add to the blacklist.
+     * @param blacklister: The name of the person, mod, group or entity that is attempting to
+     *            add this entry to the blacklist.
      */
-    public static void blacklistEnchantment (Enchantment enchant) {
+    public static void blacklistEnchantment (Enchantment enchant, String blacklister) {
         
-        if (!blacklistEnchantments.contains(enchant.effectId))
-            blacklistEnchantments.add(enchant.effectId);
+        blacklistEnchantment(enchant.effectId, blacklister);
+    }
+    
+    /**
+     * Adds an Enchantment to the blacklist. Enchantments that are on this list can not be
+     * applied by the advanced enchantment table.
+     * 
+     * @param enchantID: The Enchantment ID to add to the blacklist.
+     * @param blacklister: The name of the person, mod, group or entity that is attempting to
+     *            add this entry to the blacklist.
+     */
+    public static void blacklistEnchantment (int enchantID, String blacklister) {
+        
+        if (!blacklistEnchantments.contains(enchantID))
+            blacklistEnchantments.add(enchantID);
     }
     
     /**
@@ -67,11 +82,13 @@ public class ContentHandler {
      * the advanced enchanting table.
      * 
      * @param stack: The ItemStack to add to the blacklist. Does not support meta or NBT!
+     * @param blacklister: The name of the person, mod, group or entity that is attempting to
+     *            add this entry to the blacklist.
      */
-    public static void addItemToBlacklist (ItemStack stack) {
+    public static void addItemToBlacklist (ItemStack stack, String blacklister) {
         
         if (ItemStackUtils.isValidStack(stack))
-            addItemToBlacklist(stack.getItem());
+            addItemToBlacklist(stack.getItem(), blacklister);
     }
     
     /**
@@ -79,10 +96,12 @@ public class ContentHandler {
      * the advanced enchantment table.
      * 
      * @param item: The Item to add to the blacklist.
+     * @param blacklister: The name of the person, mod, group or entity that is attempting to
+     *            add this entry to the blacklist.
      */
-    public static void addItemToBlacklist (Item item) {
+    public static void addItemToBlacklist (Item item, String blacklister) {
         
-        addItemToBlacklist(GameData.getItemRegistry().getNameForObject(item));
+        addItemToBlacklist(GameData.getItemRegistry().getNameForObject(item), blacklister);
     }
     
     /**
@@ -90,11 +109,17 @@ public class ContentHandler {
      * enchanted using the advanced enchantment table.
      * 
      * @param name: The name of the item to blacklist. Should be equal to the item ID.
+     * @param blacklister: The name of the person, mod, group or entity that is attempting to
+     *            add this entry to the blacklist.
      */
-    public static void addItemToBlacklist (String name) {
+    public static void addItemToBlacklist (String name, String blacklister) {
         
-        if (!blacklistItems.contains(name))
+        if (!blacklistItems.contains(name)) {
+            
             blacklistItems.add(name);
+            
+            // TODO Blacklist message
+        }
     }
     
     /**
@@ -103,7 +128,7 @@ public class ContentHandler {
      * @param enchant: The enchantment to check for.
      * @return boolean: True if the blacklist contains the ID of the passed enchantment.
      */
-    public static boolean isBlacklisted (Enchantment enchant) {
+    public static boolean isBlacklisted (Enchantment enchant, String blacklister) {
         
         return blacklistEnchantments.contains(enchant.effectId);
     }
