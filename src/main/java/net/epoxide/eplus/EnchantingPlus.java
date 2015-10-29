@@ -3,12 +3,11 @@ package net.epoxide.eplus;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import net.epoxide.eplus.block.BlockManager;
 import net.epoxide.eplus.common.ProxyCommon;
 import net.epoxide.eplus.common.network.GuiHandler;
+import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.handler.EPlusConfigurationHandler;
 import net.epoxide.eplus.lib.Constants;
 
@@ -25,7 +24,9 @@ public class EnchantingPlus {
     public void preInit (FMLPreInitializationEvent event) {
         
         new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());
-        new BlockManager();
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+        
+        ContentHandler.initBlocks();
+        ContentHandler.initItems();
     }
 }
