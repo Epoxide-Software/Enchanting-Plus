@@ -47,4 +47,19 @@ public class EnchantingPlus {
         for (IMCMessage message : event.getMessages())
             IMCHandler.handleMessage(message);
     }
+    
+    /**
+     * Prints a debug message using the Enchanting Plus logger. If debug messages are disabled
+     * in the configuration file, no message will be printed.
+     * 
+     * @param message: The message to print using the Enchanting Plus logger.
+     */
+    public static void printDebugMessage (String message) {
+        
+        // TODO replace to a config value.
+        boolean allowDebug = true;
+        
+        if (allowDebug)
+            Constants.LOG.info(message);
+    }
 }

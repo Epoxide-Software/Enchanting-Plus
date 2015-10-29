@@ -6,6 +6,7 @@ import java.util.List;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockEnchantTable;
 import net.epoxide.eplus.tileentity.TileEntityEnchantingTable;
 import net.minecraft.block.Block;
@@ -73,8 +74,11 @@ public class ContentHandler {
      */
     public static void blacklistEnchantment (int enchantID, String blacklister) {
         
-        if (!blacklistEnchantments.contains(enchantID))
+        if (!blacklistEnchantments.contains(enchantID)) {
+            
             blacklistEnchantments.add(enchantID);
+            EnchantingPlus.printDebugMessage(blacklister + " has succesfullt blocked an enchantment with the ID of " + enchantID);
+        }
     }
     
     /**
@@ -117,8 +121,7 @@ public class ContentHandler {
         if (!blacklistItems.contains(name)) {
             
             blacklistItems.add(name);
-            
-            // TODO Blacklist message
+            EnchantingPlus.printDebugMessage(blacklister + " has successfully blacklisted " + name);
         }
     }
     
