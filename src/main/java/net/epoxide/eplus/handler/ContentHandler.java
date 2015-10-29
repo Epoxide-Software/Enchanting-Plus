@@ -64,13 +64,34 @@ public class ContentHandler {
     
     /**
      * Adds an Item to the blacklist. Items that are on this list can not be enchanted using
+     * the advanced enchanting table.
+     * 
+     * @param stack: The ItemStack to add to the blacklist. Does not support meta or NBT!
+     */
+    public static void addItemToBlacklist (ItemStack stack) {
+        
+        if (ItemStackUtils.isValidStack(stack))
+            addItemToBlacklist(stack.getItem());
+    }
+    
+    /**
+     * Adds an Item to the blacklist. Items that are on this list can not be enchanted using
      * the advanced enchantment table.
      * 
      * @param item: The Item to add to the blacklist.
      */
     public static void addItemToBlacklist (Item item) {
         
-        String name = GameData.getItemRegistry().getNameForObject(item);
+        addItemToBlacklist(GameData.getItemRegistry().getNameForObject(item));
+    }
+    
+    /**
+     * Adds an Item to the blacklist, directly from it's item ID. Items on this list can not be
+     * enchanted using the advanced enchantment table.
+     * 
+     * @param name: The name of the item to blacklist. Should be equal to the item ID.
+     */
+    public static void addItemToBlacklist (String name) {
         
         if (!blacklistItems.contains(name))
             blacklistItems.add(name);
