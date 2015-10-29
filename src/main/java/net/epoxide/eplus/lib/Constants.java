@@ -1,4 +1,4 @@
-package net.epoxide.eplus.util;
+package net.epoxide.eplus.lib;
 
 public class Constants {
     public static final String MOD_ID = "eplus";

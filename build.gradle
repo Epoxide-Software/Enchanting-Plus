@@ -28,7 +28,7 @@ repositories {
 apply plugin: "forge"
 project.ext.mcVersion = "1.7.10"
 
-version = getVersionFromJava(file("src/main/java/net/epoxide/eplus/util/Constants.java"))
+version = getVersionFromJava(file("src/main/java/net/epoxide/eplus/lib/Constants.java"))
 group = "net.darkhax.bookshelf"
 archivesBaseName = "Bookshelf"
 
