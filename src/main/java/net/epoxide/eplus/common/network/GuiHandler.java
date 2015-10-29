@@ -1,4 +1,4 @@
-package net.epoxide.eplus.handler;
+package net.epoxide.eplus.common.network;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.epoxide.eplus.client.gui.GuiModEnchantmentTable;
