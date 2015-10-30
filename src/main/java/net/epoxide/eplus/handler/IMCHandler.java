@@ -65,5 +65,37 @@ public class IMCHandler {
                 }
             }
         }
+        
+        else if (message.key.equalsIgnoreCase("setEnchantmentColor")) {
+            
+            if (message.isStringMessage())
+                setEnchantmentColorFromString(message.getStringValue());
+                
+            if (message.isNBTMessage()) {
+                
+                NBTTagList list = message.getNBTValue().getTagList("setEnchantmentColor", 8);
+                
+                for (int count = 0; count < list.tagCount(); count++)
+                    setEnchantmentColorFromString(list.getStringTagAt(count));
+            }
+        }
+    }
+    
+    /**
+     * Sets an enchantment color using a string message. The message is split into several
+     * parts, using : to seperate the name and the color. For the string to be valid, the
+     * message must only have one : and the text after the : must be an integer.
+     * 
+     * @param message: The string to use for adding the color.
+     */
+    private static void setEnchantmentColorFromString (String message) {
+        
+        if (message.contains(":")) {
+            
+            String[] components = message.split(":");
+            
+            if (components.length == 2 && StringUtils.isNumeric(components[1]))
+                ContentHandler.setEnchantmentColor(components[0], Integer.parseInt(components[1]));
+        }
     }
 }
