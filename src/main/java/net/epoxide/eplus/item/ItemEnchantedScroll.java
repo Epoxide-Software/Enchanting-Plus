@@ -1,19 +1,32 @@
 package net.epoxide.eplus.item;
 
+import java.util.List;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
+import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.handler.ContentHandler;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 public class ItemEnchantedScroll extends Item {
+    
+    public static IIcon[] textures = new IIcon[2];
     
     public ItemEnchantedScroll() {
         
         this.setUnlocalizedName("eplus.scroll");
+        this.setCreativeTab(EnchantingPlus.tabEplus);
+        this.setHasSubtypes(true);
     }
     
     /**
@@ -59,8 +72,45 @@ public class ItemEnchantedScroll extends Item {
     
     @Override
     @SideOnly(Side.CLIENT)
+    public void addInformation (ItemStack stack, EntityPlayer reader, List tip, boolean isDebug) {
+        
+        if (isValidScroll(stack))
+            tip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip.eplus.enchantment") + ": " + EnumChatFormatting.RESET + StatCollector.translateToLocal(readScroll(stack).getName()));
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamageForRenderPass (int meta, int pass) {
+        
+        return (pass == 0) ? this.textures[0] : this.textures[1];
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons (IIconRegister ir) {
+        
+        this.textures[0] = ir.registerIcon("eplus:scroll");
+        this.textures[1] = ir.registerIcon("eplus:scroll_overlay");
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
     public int getColorFromItemStack (ItemStack stack, int pass) {
         
-        return (isValidScroll(stack)) ? ContentHandler.getEnchantmentColor(readScroll(stack).type.name()) : super.getColorFromItemStack(stack, pass);
+        return (isValidScroll(stack) && pass == 1) ? ContentHandler.getEnchantmentColor(readScroll(stack).type.name()) : super.getColorFromItemStack(stack, pass);
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems (Item item, CreativeTabs tab, List itemList) {
+        
+        for (Enchantment enchantment : Utilities.getAvailableEnchantments())
+            itemList.add(createScroll(enchantment));
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public boolean requiresMultipleRenderPasses () {
+        
+        return true;
     }
 }

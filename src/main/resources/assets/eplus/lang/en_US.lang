@@ -1,30 +1,16 @@
+#Enchanting Plus English Language File
+
+#Item Names
+item.tableUpgrade.name=Table Upgrade
+item.eplus.scroll.name=Enchanted Scroll
+
+#Block Names
+tile.advancedEnchantmentTable.name=Advanced Enchantment Table
+
+#Tooltips
+tooltip.eplus.enchantment=Enchantment
+
 repair.cost=Repair Cost
 player.level=Player Level
 enchant.level.max=Max Enchantment Level
 enchanting.cost=Enchanting Cost
-item.tableUpgrade.name=Table Upgrade
-tile.advancedEnchantmentTable.name=Advanced Enchantment Table
-description.enchantment.protection=Reduces damage from all sources
-description.enchantment.silkTouch=Mined blocks will drop themselves instead of the item(s) it should drop
-description.enchantment.featherFalling=Protection against fall damage
-description.enchantment.thorns=Chance of dealing damage to mobs or players attacking the wearer
-description.enchantment.smite=Extra damage to undead mobs
-description.enchantment.power=Increases damage
-description.enchantment.baneOfArthropods=Extra damage to spiders, cave spiders and silverfish
-description.enchantment.protection.projectile=Protection against damage from projectile entities
-description.enchantment.aquaAffinity=Increases underwater mining rate
-description.enchantment.protection.blast=Protection against explosion damage; reduces explosion recoil
-description.enchantment.respiration=Decreases the rate of air loss underwater; increases time between damage while suffocating and drowning
-description.enchantment.fortune=Increases the drop rate of items from blocks
-description.enchantment.infinity=Shooting consumes no arrows
-description.enchantment.punch=Increases knockback
-description.enchantment.looting=Mobs can drop more loot
-description.enchantment.fireAspect=Lights the target on fire
-description.enchantment.sharpness=Extra damage
-description.enchantment.unbreaking=Increases durability
-description.enchantment.knockBack=Increases knockback
-description.enchantment.efficiency=Faster resource gathering while in use
-description.enchantment.protection.fire=Protection against fire damage; fire is extinguished faster
-description.enchantment.flame=Flaming arrows
-error.no.description=PLEASE REPORT THIS: Please add:
-
