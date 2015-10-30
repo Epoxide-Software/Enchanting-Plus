@@ -1,5 +1,7 @@
 package net.epoxide.eplus.item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.epoxide.eplus.handler.ContentHandler;
@@ -53,5 +55,12 @@ public class ItemEnchantedScroll extends Item {
         
         ItemStackUtils.prepareDataTag(stack);
         return (ItemStackUtils.isValidStack(stack) && stack.getItem() instanceof ItemEnchantedScroll && stack.getTagCompound().hasKey("ScrollEnchantment"));
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getColorFromItemStack (ItemStack stack, int pass) {
+        
+        return (isValidScroll(stack)) ? ContentHandler.getEnchantmentColor(readScroll(stack).type.name()) : super.getColorFromItemStack(stack, pass);
     }
 }

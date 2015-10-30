@@ -1,7 +1,9 @@
 package net.epoxide.eplus.handler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -12,6 +14,7 @@ import net.epoxide.eplus.item.ItemTableUpgrade;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -31,11 +34,17 @@ public class ContentHandler {
      */
     private static List<String> blacklistItems = new ArrayList<String>();
     
+    /**
+     * A map of all enchantment type colors. The key is the enchantment type, and the Integer
+     * is a RGB integer. Used when rendering scroll items.
+     */
+    private static Map<String, Integer> colorMap = new HashMap<String, Integer>();
+    
     public static Block eplusTable;
     
     public static Item tableUpgrade;
     public static Item scroll;
-
+    
     /**
      * Initializes all of the blocks for the Enchanting Plus mod. Used to handle Block
      * construction and registry.
@@ -52,10 +61,11 @@ public class ContentHandler {
      * construction and registry.
      */
     public static void initItems () {
-
+        
         tableUpgrade = new ItemTableUpgrade();
         GameRegistry.registerItem(tableUpgrade, "tableUpgrade");
-        CraftingManager.getInstance().addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot);    }
+        CraftingManager.getInstance().addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot);
+    }
     
     /**
      * Adds an Enchantment to the blacklist. Enchantments that are on this list can not be
@@ -163,5 +173,41 @@ public class ContentHandler {
     public static boolean isBlacklisted (Item item) {
         
         return blacklistItems.contains(GameData.getItemRegistry().getNameForObject(item));
+    }
+    
+    /**
+     * Retrieves the color linked to an EnumEnchantmentType. If no color has been set, white
+     * will be used.
+     * 
+     * @param enchType: The name of the EnumEnchantmentType you are getting the color for.
+     * @return int: The color associated to the EnumEnchantmentType. If no color is set, white
+     *         will be used.
+     */
+    public static int getEnchantmentColor (String enchType) {
+        
+        return (colorMap.containsKey(enchType)) ? colorMap.get(enchType) : 16777215;
+    }
+    
+    /**
+     * Sets a color to represent an enchantment type. This color is used in rendering the
+     * scroll items, and possibly in other places.
+     * 
+     * @param enchType: The EnumEnchantmentType you are setting the color for.
+     * @param color: An RGB integer that represents the color to set.
+     */
+    public static void setEnchantmentColor (EnumEnchantmentType enchType, int color) {
+        
+        setEnchantmentColor(enchType.name(), color);
+    }
+    
+    /**
+     * Sets a color to represent an enchantment type. This color is used in rendering the
+     * scroll items, and possibly in other places.
+     * 
+     * @param enchType: The name of the EnumEnchantmentType you are setting the color for.
+     * @param color: An RGB integer that represents the color to set.
+     */
+    public static void setEnchantmentColor (String enchType, int color) {
+    
     }
 }
