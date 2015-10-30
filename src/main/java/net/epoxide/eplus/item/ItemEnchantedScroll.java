@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.common.PlayerProperties;
 import net.epoxide.eplus.handler.ContentHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,9 +15,11 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 public class ItemEnchantedScroll extends Item {
     
@@ -68,6 +71,28 @@ public class ItemEnchantedScroll extends Item {
         
         ItemStackUtils.prepareDataTag(stack);
         return (ItemStackUtils.isValidStack(stack) && stack.getItem() instanceof ItemEnchantedScroll && stack.getTagCompound().hasKey("ScrollEnchantment"));
+    }
+    
+    @Override
+    public ItemStack onItemRightClick (ItemStack stack, World world, EntityPlayer player) {
+        
+        if (isValidScroll(stack)) {
+            
+            PlayerProperties props = PlayerProperties.getProperties(player);
+            int enchantmentID = readScroll(stack).effectId;
+            
+            if (!world.isRemote) {
+                
+                props.unlockedEcnahntments.add(enchantmentID);
+                props.sync();
+                player.addChatComponentMessage(new ChatComponentText("Server: " + props.unlockedEcnahntments.toString() + " Added: " + enchantmentID));
+                return stack;
+            }
+            
+            player.addChatComponentMessage(new ChatComponentText("Client: " + props.unlockedEcnahntments.toString() + " Added: " + enchantmentID));
+        }
+        
+        return stack;
     }
     
     @Override
