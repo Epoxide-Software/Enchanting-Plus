@@ -1,5 +1,6 @@
 package net.epoxide.eplus.handler;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,26 @@ public class ContentHandler {
         tableUpgrade = new ItemTableUpgrade();
         GameRegistry.registerItem(tableUpgrade, "tableUpgrade");
         CraftingManager.getInstance().addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot);
+    }
+    
+    /**
+     * Initializes all of the colors for the vanilla enchantment types. Generic enchantments
+     * are purple, armor enchantments are gray, weapone enchantments are red, fishing
+     * enchantments are blue, and bow enchantments are dark green.
+     */
+    public static void initEnchantmentColors () {
+        
+        setEnchantmentColor(EnumEnchantmentType.all, 15029174);
+        setEnchantmentColor(EnumEnchantmentType.armor, 10394268);
+        setEnchantmentColor(EnumEnchantmentType.armor_feet, 10394268);
+        setEnchantmentColor(EnumEnchantmentType.armor_legs, 10394268);
+        setEnchantmentColor(EnumEnchantmentType.armor_torso, 10394268);
+        setEnchantmentColor(EnumEnchantmentType.armor_head, 10394268);
+        setEnchantmentColor(EnumEnchantmentType.weapon, 16711680);
+        setEnchantmentColor(EnumEnchantmentType.digger, 9127187);
+        setEnchantmentColor(EnumEnchantmentType.fishing_rod, 1596073);
+        setEnchantmentColor(EnumEnchantmentType.breakable, 10394268);
+        setEnchantmentColor(EnumEnchantmentType.bow, 29696);
     }
     
     /**
