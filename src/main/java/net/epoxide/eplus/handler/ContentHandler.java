@@ -11,6 +11,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockEnchantTable;
+import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.item.ItemTableUpgrade;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.block.Block;
@@ -66,6 +67,9 @@ public class ContentHandler {
         tableUpgrade = new ItemTableUpgrade();
         GameRegistry.registerItem(tableUpgrade, "tableUpgrade");
         CraftingManager.getInstance().addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot);
+        
+        scroll = new ItemEnchantedScroll();
+        GameRegistry.registerItem(scroll, "enchantment_scroll");
     }
     
     /**
