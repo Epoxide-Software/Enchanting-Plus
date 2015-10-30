@@ -12,23 +12,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemTableUpgrade extends Item {
-
-    public ItemTableUpgrade () {
-
+    
+    public ItemTableUpgrade() {
+        
         this.setMaxStackSize(16);
         this.setUnlocalizedName("tableUpgrade");
         this.setCreativeTab(EnchantingPlus.tabEplus);
     }
-
+    
     @Override
     public void registerIcons (IIconRegister iconRegister) {
-
+        
         this.itemIcon = iconRegister.registerIcon("eplus:enchanting_table_upgrade");
     }
-
+    
     @Override
     public boolean onItemUse (ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-
+        
         if (!world.isRemote) {
             Block block = world.getBlock(x, y, z);
             if (block instanceof BlockEnchantmentTable) {

@@ -12,13 +12,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BlockEnchantTable extends BlockEnchantmentTable {
-
+    
     @SideOnly(Side.CLIENT)
     private IIcon blockTop;
-
+    
     @SideOnly(Side.CLIENT)
     private IIcon blockBottom;
-
+    
     public BlockEnchantTable() {
         
         this.setBlockName("advancedEnchantmentTable");
@@ -41,16 +41,16 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
         
         return new TileEntityEnchantTable();
     }
-
+    
     @Override
-    public IIcon getIcon(int side, int meta)
-    {
+    public IIcon getIcon (int side, int meta) {
+        
         return side == 0 ? this.blockBottom : (side == 1 ? this.blockTop : this.blockIcon);
     }
-
+    
     @Override
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
+    public void registerBlockIcons (IIconRegister iconRegister) {
+        
         this.blockIcon = iconRegister.registerIcon("eplus:enchanting_table_side");
         this.blockTop = iconRegister.registerIcon("eplus:enchanting_table_top");
         this.blockBottom = iconRegister.registerIcon("eplus:enchanting_table_bottom");

@@ -32,6 +32,6 @@ public class GuiModEnchantmentTable extends GuiContainer {
     
     @Override
     protected void drawGuiContainerBackgroundLayer (float partialTicks, int mouseX, int mouseY) {
-
+    
     }
 }

@@ -6,10 +6,10 @@ import net.epoxide.eplus.common.ProxyCommon;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class ProxyClient extends ProxyCommon {
-
+    
     @Override
     public void registerRenderers () {
-
+        
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnchantTable.class, new EnchantmentTableRender());
     }
 }
