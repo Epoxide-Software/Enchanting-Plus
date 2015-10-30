@@ -8,8 +8,11 @@ import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
+import net.darkhax.bookshelf.lib.util.Utilities;
 import net.epoxide.eplus.common.ProxyCommon;
 import net.epoxide.eplus.common.network.GuiHandler;
+import net.epoxide.eplus.common.network.PacketSyncPlayerProperties;
 import net.epoxide.eplus.handler.*;
 import net.epoxide.eplus.lib.Constants;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,12 +35,13 @@ public class EnchantingPlus {
     /**
      * A SimpleNetworkWrapper that is used to send EnchantingPlus packets.
      */
-    public SimpleNetworkWrapper network;
+    public static SimpleNetworkWrapper network;
     
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
         network = NetworkRegistry.INSTANCE.newSimpleChannel("EnchantingPlus");
+        Utilities.registerMessage(network, PacketSyncPlayerProperties.class, 0, Side.CLIENT);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
         new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());

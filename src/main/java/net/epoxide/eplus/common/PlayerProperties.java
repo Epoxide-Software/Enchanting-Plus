@@ -6,8 +6,10 @@ import java.util.List;
 import com.google.common.primitives.Ints;
 
 import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.common.network.PacketSyncPlayerProperties;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
@@ -66,8 +68,10 @@ public class PlayerProperties implements IExtendedEntityProperties {
     /**
      * Synchronises all property data between the client and server.
      */
-    public static void sync () {
-    
+    public void sync () {
+        
+        if (this.player instanceof EntityPlayerMP)
+            EnchantingPlus.network.sendTo(new PacketSyncPlayerProperties(this), (EntityPlayerMP) player);
     }
     
     /**
