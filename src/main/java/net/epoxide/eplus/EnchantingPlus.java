@@ -26,6 +26,9 @@ public class EnchantingPlus {
     @Mod.Instance(Constants.MOD_ID)
     public static EnchantingPlus instance;
     
+    /**
+     * A CreativeTab used for all EnchantingPlus related items and blocks.
+     */
     public static CreativeTabs tabEplus = new CreativeEPlus();
     
     /**
