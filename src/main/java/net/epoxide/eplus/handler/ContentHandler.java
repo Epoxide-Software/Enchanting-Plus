@@ -208,6 +208,11 @@ public class ContentHandler {
      * @param color: An RGB integer that represents the color to set.
      */
     public static void setEnchantmentColor (String enchType, int color) {
-    
+        
+        if (!colorMap.containsKey(enchType)) {
+            
+            colorMap.put(enchType, color);
+            EnchantingPlus.printDebugMessage("The color of enchantment type " + enchType + " has been set to " + color);
+        }
     }
 }
