@@ -19,7 +19,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
     /**
      * The name of the tag used to store all player data.
      */
-    public static final String PROP_NAME = "TelepadData";
+    public static final String PROP_NAME = "EnchantingPlusData";
     
     /**
      * An instance of the specific player that is being read and written to.
