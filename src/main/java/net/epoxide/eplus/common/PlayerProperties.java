@@ -1,6 +1,7 @@
 package net.epoxide.eplus.common;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.primitives.Ints;
@@ -40,7 +41,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
     private PlayerProperties(EntityPlayer player) {
         
         this.player = player;
-        this.unlockedEcnahntments = new ArrayList<Integer>();
+        this.unlockedEcnahntments = new LinkedList<Integer>();
     }
     
     @Override
@@ -57,7 +58,9 @@ public class PlayerProperties implements IExtendedEntityProperties {
         
         EnchantingPlus.printDebugMessage("Loading Enchanting Plus data");
         NBTTagCompound playerData = compound.getCompoundTag(PROP_NAME);
-        this.unlockedEcnahntments = Ints.asList(playerData.getIntArray("unlockedEnchantments"));
+        List<Integer> enchantments = new ArrayList();
+        enchantments.addAll(Ints.asList(playerData.getIntArray("unlockedEnchantments")));
+        this.unlockedEcnahntments = enchantments;
     }
     
     @Override
