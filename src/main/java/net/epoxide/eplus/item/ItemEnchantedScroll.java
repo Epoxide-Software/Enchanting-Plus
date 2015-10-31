@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.client.ProxyClient;
 import net.epoxide.eplus.common.PlayerProperties;
 import net.epoxide.eplus.handler.ContentHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,7 +16,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -85,11 +85,14 @@ public class ItemEnchantedScroll extends Item {
                 
                 props.unlockedEcnahntments.add(enchantmentID);
                 props.sync();
-                player.addChatComponentMessage(new ChatComponentText("Server: " + props.unlockedEcnahntments.toString() + " Added: " + enchantmentID));
+                // player.addChatComponentMessage(new ChatComponentText("Server: " +
+                // props.unlockedEcnahntments.toString() + " Added: " + enchantmentID));
                 return stack;
             }
             
-            player.addChatComponentMessage(new ChatComponentText("Client: " + props.unlockedEcnahntments.toString() + " Added: " + enchantmentID));
+            // player.addChatComponentMessage(new ChatComponentText("Client: " +
+            // props.unlockedEcnahntments.toString() + " Added: " + enchantmentID));
+            ProxyClient.spawnParticleRing(world, "enchantmenttable", player.posX, player.posY, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
         }
         
         return stack;
