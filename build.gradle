@@ -38,7 +38,7 @@ minecraft {
 }
 
 dependencies {
-    compile "net.darkhax.bookshelf:Bookshelf:1.7.10-1.0.3.65:deobf"
+    compile "net.darkhax.bookshelf:Bookshelf:1.7.10-1.0.3.72:deobf"
 }
 
 processResources {
@@ -76,22 +76,26 @@ String getVersionFromJava(File file) {
 
     if (System.getenv().containsKey("BUILD_NUMBER")) {
         patch = System.getenv("BUILD_NUMBER");
-    } else {
-        patch = 0;
     }
+
+    return "$mcVersion-$projNumber.$major.$revision.$patch";
+}
+
+
+task writeBuildNumber << {
+    def file = file("src/main/java/net/epoxide/eplus/lib/Constants.java");
+    def bn = System.getenv("BUILD_NUMBER") ?: 0;
     def outfile = "";
     def ln = System.getProperty("line.separator")
 
     file.eachLine { String s ->
         if (s.contains("PATCH_VERSION") && s.contains("= \"0\"")) {
-            s = "    public static final String PATCH_VERSION = \"${patch}\";";
+            s = "    public static final String PATCH_VERSION = \"${bn}\";";
         }
         outfile += (s + ln);
     }
 
     file.write(outfile);
-
-    return "$mcVersion-$projNumber.$major.$revision.$patch";
 }
 
 task deobfJar(type: Jar) {
