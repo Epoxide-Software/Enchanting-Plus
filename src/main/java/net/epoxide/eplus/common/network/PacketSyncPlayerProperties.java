@@ -18,7 +18,7 @@ public class PacketSyncPlayerProperties extends AbstractMessage {
     
     public PacketSyncPlayerProperties(PlayerProperties props) {
         
-        this.enchantmentIDs = props.unlockedEcnahntments;
+        this.enchantmentIDs = props.unlockedEnchantments;
     }
     
     @Override
@@ -48,7 +48,7 @@ public class PacketSyncPlayerProperties extends AbstractMessage {
             
             PacketSyncPlayerProperties packet = (PacketSyncPlayerProperties) message;
             PlayerProperties props = PlayerProperties.getProperties(player);
-            props.unlockedEcnahntments = packet.enchantmentIDs;
+            props.unlockedEnchantments = packet.enchantmentIDs;
         }
     }
     

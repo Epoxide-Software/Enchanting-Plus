@@ -30,7 +30,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
     /**
      * A list containing the numeric IDs of all enchantments unlocked by the player.
      */
-    public List<Integer> unlockedEcnahntments;
+    public List<Integer> unlockedEnchantments;
     
     /**
      * Constructs a new PlayerProperties instance, which is the wrapper used for interacting
@@ -41,7 +41,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
     private PlayerProperties(EntityPlayer player) {
         
         this.player = player;
-        this.unlockedEcnahntments = new LinkedList<Integer>();
+        this.unlockedEnchantments = new LinkedList<Integer>();
     }
     
     @Override
@@ -49,7 +49,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
         
         EnchantingPlus.printDebugMessage("Saving Enchanting Plus data");
         NBTTagCompound playerData = new NBTTagCompound();
-        playerData.setIntArray("unlockedEnchantments", Ints.toArray(this.unlockedEcnahntments));
+        playerData.setIntArray("unlockedEnchantments", Ints.toArray(this.unlockedEnchantments));
         compound.setTag(PROP_NAME, playerData);
     }
     
@@ -60,12 +60,12 @@ public class PlayerProperties implements IExtendedEntityProperties {
         NBTTagCompound playerData = compound.getCompoundTag(PROP_NAME);
         List<Integer> enchantments = new ArrayList();
         enchantments.addAll(Ints.asList(playerData.getIntArray("unlockedEnchantments")));
-        this.unlockedEcnahntments = enchantments;
+        this.unlockedEnchantments = enchantments;
     }
     
     @Override
     public void init (Entity entity, World world) {
-    
+
     }
     
     /**
@@ -123,6 +123,6 @@ public class PlayerProperties implements IExtendedEntityProperties {
      */
     public void copy (PlayerProperties properties) {
         
-        properties.unlockedEcnahntments = this.unlockedEcnahntments;
+        properties.unlockedEnchantments = this.unlockedEnchantments;
     }
 }

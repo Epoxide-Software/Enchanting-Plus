@@ -12,6 +12,9 @@ import cpw.mods.fml.relauncher.Side;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.epoxide.eplus.common.ProxyCommon;
 import net.epoxide.eplus.common.network.GuiHandler;
+import net.epoxide.eplus.common.network.PacketEnchant;
+import net.epoxide.eplus.common.network.PacketGui;
+import net.epoxide.eplus.common.network.PacketRepair;
 import net.epoxide.eplus.common.network.PacketSyncPlayerProperties;
 import net.epoxide.eplus.handler.*;
 import net.epoxide.eplus.lib.Constants;
@@ -42,6 +45,10 @@ public class EnchantingPlus {
         
         network = NetworkRegistry.INSTANCE.newSimpleChannel("EnchantingPlus");
         Utilities.registerMessage(network, PacketSyncPlayerProperties.class, 0, Side.CLIENT);
+        Utilities.registerMessage(network, PacketGui.class, 1, Side.SERVER);
+        Utilities.registerMessage(network, PacketEnchant.class, 2, Side.SERVER);
+        Utilities.registerMessage(network, PacketRepair.class, 3, Side.SERVER);
+
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
         new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());
