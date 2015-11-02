@@ -327,7 +327,8 @@ public class ContainerEnchantTable extends Container {
                         final Enchantment enchantment = Utilities.getEnchantment(enc);
                         if (enchantment == null)
                             continue;
-                        if (!EnchantHelper.isEnchantmentsCompatible(obj, enchantment) || !EnchantHelper.isEnchantmentValid(enchantment, player)) {
+
+                        if (!EnchantHelper.isEnchantmentValid(enchantment, player)) {
                             add = false;
                         }
                     }
@@ -356,7 +357,7 @@ public class ContainerEnchantTable extends Container {
 
     private void addEnchantFor (ItemStack itemStack, HashMap<Integer, Integer> temp, Enchantment obj) {
 
-        if (EnchantHelper.isEnchantmentValid(obj, player) && !ContentHandler.isBlacklisted(obj) && obj.canApplyAtEnchantingTable(itemStack)) {
+        if (EnchantHelper.isEnchantmentValid(obj, player)  && !ContentHandler.isBlacklisted(obj) && obj.canApplyAtEnchantingTable(itemStack)) {
             temp.put(obj.effectId, 0);
         }
     }

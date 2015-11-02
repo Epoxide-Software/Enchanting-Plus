@@ -39,7 +39,7 @@ public class EnchantHelper {
 
     public static boolean isItemEnchantable (ItemStack itemStack) {
 
-        boolean            flag = !itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("charge");
+        boolean flag = !itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("charge");
 
         return itemStack.getItem().getItemEnchantability(itemStack) > 0 && (itemStack.getItem() == Items.book || itemStack.isItemEnchantable() && flag);
     }
@@ -59,7 +59,7 @@ public class EnchantHelper {
             nbttagcompound.setShort("lvl", (short) map.get(i).intValue());
             nbttaglist.appendTag(nbttagcompound);
 
-            int startLevel = levels.get(i)==null?map.get(i):levels.get(i);
+            int startLevel = levels.get(i) == null ? map.get(i) : levels.get(i);
 
             for (int y = startLevel; y <= map.get(i); y++) {
                 if (containsEnchantment(restrictions, i, y)) {

@@ -359,12 +359,15 @@ public class GuiModEnchantmentTable extends GuiContainer {
     private void enableEnchantments () {
 
         for (GuiEnchantmentLabel item : enchantmentArray) {
+            item.locked = false;
             if (item.enchantmentLevel != 0) {
                 for (final GuiEnchantmentLabel item2 : enchantmentArray) {
                     if (item == item2)
                         continue;
 
-                    item2.locked = !item.enchantment.canApplyTogether(item2.enchantment) || !item2.enchantment.canApplyTogether(item.enchantment);
+                    if (!EnchantHelper.isEnchantmentsCompatible(item.enchantment, item2.enchantment)) {
+                        item2.locked = true;
+                    }
                 }
             }
         }
