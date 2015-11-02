@@ -171,7 +171,7 @@ public class ContentHandler {
      * @param enchant: The enchantment to check for.
      * @return boolean: True if the blacklist contains the ID of the passed enchantment.
      */
-    public static boolean isBlacklisted (Enchantment enchant, String blacklister) {
+    public static boolean isBlacklisted (Enchantment enchant) {
         
         return blacklistEnchantments.contains(enchant.effectId);
     }

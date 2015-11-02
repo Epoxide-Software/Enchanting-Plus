@@ -13,6 +13,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -108,7 +109,7 @@ public class ContainerEnchantTable extends Container {
         return entityPlayer.getDistanceSq((double) this.x + 0.5D, (double) this.y + 0.5D, (double) this.z + 0.5D) <= 64.0D && !entityPlayer.isDead;
     }
 
-    public boolean canPurchase (EntityPlayer player, int cost) throws Exception {
+    public boolean canPurchase (EntityPlayer player, int cost) {
 
         if (player.capabilities.isCreativeMode) {
             return true;
@@ -116,23 +117,24 @@ public class ContainerEnchantTable extends Container {
 
         if (EPlusConfigurationHandler.needsBookShelves) {
             if (cost > bookCases()) {
-                throw new Exception("Not enough bookcases. Required " + cost);
+                player.addChatMessage(new ChatComponentText("Not enough bookcases. Required " + cost));
+                return false;
             }
         }
 
         if (player.experienceLevel < cost) {
-            throw new Exception("Not enough levels. Required " + cost);
+            player.addChatMessage(new ChatComponentText("Not enough levels. Required " + cost));
+            return false;
         }
         return true;
     }
 
-    public int disenchantmentCost (int enchantmentId, int enchantmentLevel, Integer level) {
+    public int disenchantmentCost (Enchantment enchantment, int enchantmentLevel, Integer level) {
 
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
         if (itemStack == null)
             return 0;
 
-        final Enchantment enchantment = Utilities.getEnchantment(enchantmentId);
         final int maxLevel = enchantment.getMaxLevel();
 
         if (enchantmentLevel > maxLevel)
@@ -160,7 +162,7 @@ public class ContainerEnchantTable extends Container {
         else
             adjustedCost /= 10;
 
-        final int enchantmentCost = enchantmentCost(enchantmentId, level - 1, enchantmentLevel);
+        final int enchantmentCost = enchantmentCost(enchantment, level - 1, enchantmentLevel);
 
         return Math.min(adjustedCost, -enchantmentCost);
     }
@@ -186,12 +188,11 @@ public class ContainerEnchantTable extends Container {
         for (final Integer enchantId : map.keySet()) {
             final Integer level = map.get(enchantId);
             final Integer startingLevel = enchantments.get(enchantId);
-
+            Enchantment enchantment = Utilities.getEnchantment(enchantId);
             if (level > startingLevel)
-                serverCost += enchantmentCost(enchantId, level, startingLevel);
+                serverCost += enchantmentCost(enchantment, level, startingLevel);
             else if (level < startingLevel)
-                serverCost += disenchantmentCost(enchantId, level, startingLevel);
-
+                serverCost += disenchantmentCost(enchantment, level, startingLevel);
         }
 
         if (cost != serverCost) {
@@ -230,13 +231,12 @@ public class ContainerEnchantTable extends Container {
 
     }
 
-    public int enchantmentCost (int enchantmentId, int enchantmentLevel, Integer level) {
+    public int enchantmentCost (Enchantment enchantment, int enchantmentLevel, Integer level) {
 
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
         if (itemStack == null)
             return 0;
 
-        final Enchantment enchantment = Enchantment.enchantmentsList[enchantmentId];
         final int maxLevel = enchantment.getMaxLevel();
 
         if (enchantmentLevel > maxLevel) {
@@ -303,7 +303,6 @@ public class ContainerEnchantTable extends Container {
      * Will read the enchantments on the items and ones the can be added to the
      * items
      */
-    @SuppressWarnings("unchecked")
     private void readItems () {
 
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
@@ -328,7 +327,7 @@ public class ContainerEnchantTable extends Container {
                         final Enchantment enchantment = Utilities.getEnchantment(enc);
                         if (enchantment == null)
                             continue;
-                        if (!obj.canApplyTogether(enchantment) || !enchantment.canApplyTogether(obj)) {
+                        if (!EnchantHelper.isEnchantmentsCompatible(obj, enchantment) || !EnchantHelper.isEnchantmentValid(enchantment, player)) {
                             add = false;
                         }
                     }
@@ -357,7 +356,7 @@ public class ContainerEnchantTable extends Container {
 
     private void addEnchantFor (ItemStack itemStack, HashMap<Integer, Integer> temp, Enchantment obj) {
 
-        if (obj != null && !ContentHandler.isBlacklisted(obj, "") && obj.canApplyAtEnchantingTable(itemStack) && !ContentHandler.isBlacklisted(obj, "")) {
+        if (EnchantHelper.isEnchantmentValid(obj, player) && !ContentHandler.isBlacklisted(obj) && obj.canApplyAtEnchantingTable(itemStack)) {
             temp.put(obj.effectId, 0);
         }
     }
@@ -366,14 +365,10 @@ public class ContainerEnchantTable extends Container {
 
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
 
-        boolean flag = true;
-
         if (itemStack == null)
-
             return;
 
-        if (itemStack.hasTagCompound())
-            flag = !itemStack.getTagCompound().hasKey("charge");
+        boolean flag = !itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("charge");
 
         if ((!itemStack.isItemEnchanted() || cost == 0) && flag)
             return;
@@ -411,7 +406,7 @@ public class ContainerEnchantTable extends Container {
         for (final Integer enchantment : enchantments.keySet()) {
             final Integer enchantmentLevel = enchantments.get(enchantment);
 
-            cost += enchantmentCost(enchantment, enchantmentLevel, 0);
+            cost += enchantmentCost(Utilities.getEnchantment(enchantment), enchantmentLevel, 0);
         }
 
         final int maxDamage = itemStack.getMaxDamage();

@@ -9,6 +9,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import net.darkhax.bookshelf.creativetab.CreativeTabCached;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.epoxide.eplus.common.ProxyCommon;
 import net.epoxide.eplus.common.network.GuiHandler;
@@ -33,7 +34,7 @@ public class EnchantingPlus {
     /**
      * A CreativeTab used for all EnchantingPlus related items and blocks.
      */
-    public static CreativeTabs tabEplus = new CreativeEPlus();
+    public static CreativeTabCached tabEplus = new CreativeEPlus();
     
     /**
      * A SimpleNetworkWrapper that is used to send EnchantingPlus packets.

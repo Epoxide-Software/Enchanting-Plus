@@ -1,5 +1,8 @@
 package net.epoxide.eplus.inventory;
 
+import net.epoxide.eplus.common.PlayerProperties;
+import net.epoxide.eplus.handler.EPlusConfigurationHandler;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -10,6 +13,16 @@ import net.minecraft.nbt.NBTTagList;
 import java.util.HashMap;
 
 public class EnchantHelper {
+
+    public static boolean isEnchantmentValid (Enchantment ench, EntityPlayer entityPlayer) {
+
+        return ench != null && EPlusConfigurationHandler.unlockEnchants && (PlayerProperties.getProperties(entityPlayer).unlockedEnchantments.contains(ench.effectId) || entityPlayer.capabilities.isCreativeMode);
+    }
+
+    public static boolean isEnchantmentsCompatible (Enchantment ench1, Enchantment ench2) {
+
+        return ench1.canApplyTogether(ench2) && ench2.canApplyTogether(ench1);
+    }
 
     public static boolean isItemEnchanted (ItemStack itemStack) {
 
@@ -26,9 +39,7 @@ public class EnchantHelper {
 
     public static boolean isItemEnchantable (ItemStack itemStack) {
 
-        boolean flag = true;
-        if (itemStack.hasTagCompound())
-            flag = !itemStack.getTagCompound().hasKey("charge");
+        boolean            flag = !itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("charge");
 
         return itemStack.getItem().getItemEnchantability(itemStack) > 0 && (itemStack.getItem() == Items.book || itemStack.isItemEnchantable() && flag);
     }
@@ -39,27 +50,19 @@ public class EnchantHelper {
 
         NBTTagList restrictions;
 
-        if (itemStack.hasTagCompound())
-            restrictions = itemStack.getTagCompound().getTagList("restrictions", 10);
-        else
-            restrictions = new NBTTagList();
+        restrictions = itemStack.hasTagCompound() ? itemStack.getTagCompound().getTagList("restrictions", 10) : new NBTTagList();
 
-        for (final Object o : map.keySet()) {
-            final int i = (Integer) o;
+        for (final Integer o : map.keySet()) {
+            final int i = o;
             final NBTTagCompound nbttagcompound = new NBTTagCompound();
             nbttagcompound.setShort("id", (short) i);
             nbttagcompound.setShort("lvl", (short) map.get(i).intValue());
             nbttaglist.appendTag(nbttagcompound);
 
-            int startLevel = map.get(i);
-            try {
-                startLevel = levels.get(i);
-            } catch (NullPointerException e) {
-
-            }
+            int startLevel = levels.get(i)==null?map.get(i):levels.get(i);
 
             for (int y = startLevel; y <= map.get(i); y++) {
-                if (containsKey(restrictions, i, y)) {
+                if (containsEnchantment(restrictions, i, y)) {
                     continue;
                 }
 
@@ -68,37 +71,32 @@ public class EnchantHelper {
                 compound.setShort("lvl", (short) y);
                 compound.setString("player", player.getDisplayName());
                 restrictions.appendTag(compound);
-
             }
         }
 
         if (itemStack.getItem() == Items.book) {
             itemStack = new ItemStack(Items.enchanted_book);
-        }
-
-        if (nbttaglist.tagCount() > 0) {
-            if (itemStack.getItem() != Items.enchanted_book) {
-                itemStack.setTagInfo("ench", nbttaglist);
-            }
-            else {
+            if (nbttaglist.tagCount() > 0) {
                 itemStack.setTagInfo("StoredEnchantments", nbttaglist);
+                itemStack.setTagInfo("restrictions", restrictions);
             }
-            itemStack.setTagInfo("restrictions", restrictions);
-        }
-        else if (itemStack.hasTagCompound()) {
-            if (itemStack.getItem() != Items.enchanted_book) {
-                itemStack.getTagCompound().removeTag("ench");
-            }
-            else {
+            else if (itemStack.hasTagCompound()) {
                 itemStack.getTagCompound().removeTag("StoredEnchantments");
                 itemStack.stackTagCompound = null;
                 itemStack = new ItemStack(Items.book);
             }
         }
+        else if (nbttaglist.tagCount() > 0) {
+            itemStack.setTagInfo("ench", nbttaglist);
+            itemStack.setTagInfo("restrictions", restrictions);
+        }
+        else if (itemStack.hasTagCompound()) {
+            itemStack.getTagCompound().removeTag("ench");
+        }
         return itemStack;
     }
 
-    public static boolean containsKey (NBTTagList restrictions, int id, int y) {
+    public static boolean containsEnchantment (NBTTagList restrictions, int id, int y) {
 
         for (int k = 0; k < restrictions.tagCount(); k++) {
             NBTTagCompound tag = restrictions.getCompoundTagAt(k);
