@@ -328,7 +328,7 @@ public class ContainerEnchantTable extends Container {
                         if (enchantment == null)
                             continue;
 
-                        if (!EnchantHelper.isEnchantmentValid(enchantment, player)) {
+                        if (!EnchantHelper.isEnchantmentsCompatible(enchantment, obj)) {
                             add = false;
                         }
                     }
