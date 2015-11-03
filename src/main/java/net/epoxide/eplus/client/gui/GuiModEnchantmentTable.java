@@ -360,6 +360,9 @@ public class GuiModEnchantmentTable extends GuiContainer {
 
         for (GuiEnchantmentLabel item : enchantmentArray) {
             item.locked = false;
+        }
+
+        for (GuiEnchantmentLabel item : enchantmentArray) {
             if (item.enchantmentLevel != 0) {
                 for (final GuiEnchantmentLabel item2 : enchantmentArray) {
                     if (item == item2)
