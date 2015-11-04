@@ -85,14 +85,11 @@ public class ItemEnchantedScroll extends Item {
                 
                 if (!props.unlockedEnchantments.contains(enchantmentID))
                     props.unlockedEnchantments.add(enchantmentID);
+                
                 props.sync();
-                // player.addChatComponentMessage(new ChatComponentText("Server: " +
-                // props.unlockedEnchantments.toString() + " Added: " + enchantmentID));
                 return stack;
             }
             
-            // player.addChatComponentMessage(new ChatComponentText("Client: " +
-            // props.unlockedEnchantments.toString() + " Added: " + enchantmentID));
             ProxyClient.spawnParticleRing(world, "enchantmenttable", player.posX, player.posY, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
         }
         
