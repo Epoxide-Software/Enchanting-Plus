@@ -102,7 +102,11 @@ public class ContentHandler {
      * Initializes all of the modifiers added by the base mod.
      */
     public static void initModifiers () {
-    
+        
+        addScrollModifier(new ScrollModifier(new ItemStack(Items.blaze_powder), -0.15f, 0.05f, false));
+        addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_pearl), 0.05f, -0.05f, false));
+        addScrollModifier(new ScrollModifier(new ItemStack(Blocks.obsidian), 0.15f, 0.05f, false));
+        addScrollModifier(new ScrollModifier(new ItemStack(Blocks.glowstone), 0f, 0.025f, false));
     }
     
     /**
