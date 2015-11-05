@@ -12,6 +12,7 @@ import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockEnchantTable;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.item.ItemTableUpgrade;
+import net.epoxide.eplus.modifiers.ScrollModifier;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -40,6 +41,12 @@ public class ContentHandler {
      * is a RGB integer. Used when rendering scroll items.
      */
     private static Map<String, Integer> colorMap = new HashMap<String, Integer>();
+    
+    /**
+     * A List of all modifiers that have been registered. Modifiers are used with the Arcane
+     * Inscriber.
+     */
+    private static List<ScrollModifier> modifiers = new ArrayList<ScrollModifier>();
     
     public static Block eplusTable;
     
@@ -89,6 +96,13 @@ public class ContentHandler {
         setEnchantmentColor(EnumEnchantmentType.fishing_rod, 1596073);
         setEnchantmentColor(EnumEnchantmentType.breakable, 10394268);
         setEnchantmentColor(EnumEnchantmentType.bow, 29696);
+    }
+    
+    /**
+     * Initializes all of the modifiers added by the base mod.
+     */
+    public static void initModifiers () {
+    
     }
     
     /**
@@ -238,5 +252,15 @@ public class ContentHandler {
             colorMap.put(enchType, color);
             EnchantingPlus.printDebugMessage("The color of enchantment type " + enchType + " has been set to " + color);
         }
+    }
+    
+    /**
+     * Registers a ScrollModifier with our List of modifiers.
+     * 
+     * @param modifier: The modifier to register.
+     */
+    public static void addScrollModifier (ScrollModifier modifier) {
+        
+        modifiers.add(modifier);
     }
 }
