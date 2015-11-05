@@ -85,7 +85,7 @@ public class ItemEnchantedScroll extends Item {
                 
                 if (!props.unlockedEnchantments.contains(enchantmentID))
                     props.unlockedEnchantments.add(enchantmentID);
-                
+                    
                 props.sync();
                 return stack;
             }
