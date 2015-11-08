@@ -144,8 +144,10 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
                     Enchantment[] enchantments = ItemStackUtils.getEnchantmentsFromStack(enchantmentBook, true);
 
                     ItemStack itemStack = ItemEnchantedScroll.createScroll(enchantments[((int) (Math.random() * enchantments.length))]);
-                    itemStack = modifiers[0].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, modifiers[0].stack, modifiers[1].stack);
-                    itemStack = modifiers[1].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, modifiers[0].stack, modifiers[1].stack);
+                    if (hasModifiers(0))
+                        itemStack = modifiers[0].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, modifiers[0].stack, modifiers[1].stack);
+                    if (hasModifiers(1))
+                        itemStack = modifiers[1].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, modifiers[0].stack, modifiers[1].stack);
                     setOutput(itemStack);
                 }
                 EnchantingPlus.network.sendToAllAround(new PacketArcaneDisenchanter(output != null, this), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150d));
@@ -289,9 +291,9 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
         return modifiers[i] != null;
     }
 
-    public ScrollModifier getModifier (int index) {
+    public ScrollModifier getModifier (int i) {
 
-        return modifiers[index];
+        return modifiers[i];
     }
 
     public void clearModifiers () {
