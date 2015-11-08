@@ -9,6 +9,9 @@ tile.advancedEnchantmentTable.name=Advanced Enchantment Table
 
 #Tooltips
 tooltip.eplus.enchantment=Enchantment
+tooltip.eplus.modifier=Scroll Modifier
+tooltip.eplus.speed=Speed
+tooltip.eplus.stability=Stability
 
 repair.cost=Repair Cost
 player.level=Player Level
