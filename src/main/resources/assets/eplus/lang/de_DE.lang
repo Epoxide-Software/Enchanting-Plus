@@ -1,28 +1,18 @@
-repair.cost=Reparaturkosten
-player.level=Spielerlevel
-enchant.level.max=Max Verzauberungsstufe
-enchanting.cost=Verzauberungskosten
-description.enchantment.protection=Erhöht den Schutz von Rüstungen
-description.enchantment.silkTouch=Abgebaute Blöcke droppen sich selbst, wenn sie eigentlich etwas anderes droppen sollten
-description.enchantment.featherFalling=Vermindert den Fallschaden
-description.enchantment.thorns=Fügt Spielern oder NPCs, die den Träger angreifen, zufallsbedingt Schaden zu
-description.enchantment.smite=Erhöht Schaden gegen untote Monster
-description.enchantment.power=Erhöht Schaden gegen Mobs und Spieler
-description.enchantment.baneOfArthropods=Erhöht Schaden gegen Spinnen, Höhlenspinnen und Silberfische
-description.enchantment.protection.projectile=Erhöht den Schutz gegen Projektile
-description.enchantment.aquaAffinity=Erhöht Abbaugeschwindigkeit unter Wasser
-description.enchantment.protection.blast=Erhöht den Schutz gegen Explosionen
-description.enchantment.respiration=Spieler kann länger die Luft anhalten und erleidet Erstickungsschaden langsamer
-description.enchantment.fortune=Gibt eine Chance, dass abgebaute Blöcke mehr droppen
-description.enchantment.infinity=Bogenschießen verbraucht keine Pfeile
-description.enchantment.punch=Wirft Mobs und Spieler ein Stück zurück, wenn sie getroffen werden
-description.enchantment.looting=NPCs haben eine Chance, mehr Items zu droppen
-description.enchantment.fireAspect=Steckt getroffene Gegner in Brand
-description.enchantment.sharpness=Erhöht Schaden gegen alle Arten von Mobs und Spieler
-description.enchantment.unbreaking=Bei jedem Angriff existiert eine Chance, dass die Rüstung sich nicht abnutzt.
-description.enchantment.knockBack=Wirft Mobs und Spieler beim Schlagen ein Stück zurück
-description.enchantment.efficiency=Erhöht die Abbaugeschwindigkeit
-description.enchantment.protection.fire=Erhöht den Schutz gegen Feuer
-description.enchantment.flame=Setzt getroffene Gegner mithilfe von brennenden Pfeilen in Brand
-error.no.description=BITTE MELDE DIES: Bitte hinzufügen:
+#Enchanting Plus German Language File
 
+#Item Names
+item.tableUpgrade.name=Tisch Verbessern
+item.eplus.scroll.name=Zauberschriftrolle
+
+#Block Names
+tile.advancedEnchantmentTable.name=Erweiterte Zauber Tisch
+
+#Tooltips
+tooltip.eplus.enchantment=Zauber
+tooltip.eplus.modifier=Schriftrolle Modifikator
+tooltip.eplus.speed=Tempo
+tooltip.eplus.stability=Stabilit�t
+tooltip.eplus.repair=Reparieren Preis
+tooltip.eplus.playerlevel=Spielerlevel
+tooltip.eplus.maxlevel=Maximal Zauber Niveau
+tooltip.eplus.enchant=Zauber Preis
