@@ -49,7 +49,7 @@ public class EnchantingPlus {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
         new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());
-        MinecraftForge.EVENT_BUS.register(new PlayerHandler());
+        MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
         ContentHandler.initBlocks();
         ContentHandler.initItems();
