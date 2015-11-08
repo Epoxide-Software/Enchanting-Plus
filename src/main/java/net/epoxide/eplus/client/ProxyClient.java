@@ -3,8 +3,10 @@ package net.epoxide.eplus.client;
 import java.util.Random;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import net.epoxide.eplus.client.renderer.tileentity.ArcaneDisenchanterRender;
 import net.epoxide.eplus.client.renderer.tileentity.EnchantmentTableRender;
 import net.epoxide.eplus.common.ProxyCommon;
+import net.epoxide.eplus.tileentity.TileEntityArcaneDisenchanter;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.world.World;
 
@@ -14,6 +16,8 @@ public class ProxyClient extends ProxyCommon {
     public void registerRenderers () {
         
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnchantTable.class, new EnchantmentTableRender());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArcaneDisenchanter.class, new ArcaneDisenchanterRender());
+
     }
     
     public static Random rand = new Random();
