@@ -48,7 +48,7 @@ public class EnchantingPlus {
         
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
-        new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());
+        EPlusConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
         ContentHandler.initBlocks();
@@ -74,10 +74,7 @@ public class EnchantingPlus {
      */
     public static void printDebugMessage (String message) {
         
-        // TODO replace to a config value.
-        boolean allowDebug = true;
-        
-        if (allowDebug)
+        if (EPlusConfigurationHandler.printDebug)
             Constants.LOG.info(message);
     }
 }
