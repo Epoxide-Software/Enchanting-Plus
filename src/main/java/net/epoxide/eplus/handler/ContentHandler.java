@@ -110,10 +110,13 @@ public class ContentHandler {
      */
     public static void initModifiers () {
 
-        addScrollModifier(new ScrollModifier(new ItemStack(Items.blaze_powder), -0.15f, 0.05f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_pearl), 0.05f, -0.05f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Blocks.obsidian), 0.15f, 0.05f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Blocks.glowstone), 0f, 0.025f, false));
+        addScrollModifier(new ScrollModifier(new ItemStack(Items.blaze_powder), -0.05f, 0.1f, false));
+        addScrollModifier(new ScrollModifier(new ItemStack(Blocks.obsidian), 0.1f, -0.05f, false));
+        addScrollModifier(new ScrollModifier(new ItemStack(Items.diamond), 0.25f, -0.05f, false)); 
+        addScrollModifier(new ScrollModifier(new ItemStack(Items.emerald), -0.05f, 0.25f, false));
+        addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_pearl), 0.05f, 0f, false));
+        addScrollModifier(new ScrollModifier(new ItemStack(Blocks.glowstone), 0f, 0.05f, false));
+        addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_eye), 0f, 0.1f, false));
     }
 
     /**
