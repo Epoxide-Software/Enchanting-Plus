@@ -31,7 +31,7 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
     public boolean onBlockActivated (World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float subX, float subY, float subZ) {
         
         if (!world.isRemote && !entityPlayer.isSneaking())
-            entityPlayer.openGui(EnchantingPlus.instance, 1, world, x, y, z);
+            entityPlayer.openGui(EnchantingPlus.instance, 0, world, x, y, z);
             
         return true;
     }

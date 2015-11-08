@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.darkhax.bookshelf.client.gui.GuiGraphicButton;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -26,17 +27,17 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class GuiModEnchantmentTable extends GuiContainer {
-    
+
     private final ResourceLocation texture = new ResourceLocation("eplus:textures/gui/enchant.png");
-    
+
     private ArrayList<GuiEnchantmentLabel> enchantmentArray = new ArrayList<GuiEnchantmentLabel>();
-    
+
     private final EntityPlayer player;
     private final ContainerEnchantTable container;
     private final int x;
     private final int y;
     private final int z;
-    
+
     private static int guiOffset = 26;
     private double sliderIndex = 0;
     private double enchantingPages = 0;
@@ -45,30 +46,30 @@ public class GuiModEnchantmentTable extends GuiContainer {
     private boolean sliding = false;
     private int totalCost = 0;
     private boolean dirty = false;
-    
+
     public GuiModEnchantmentTable(InventoryPlayer inventory, World world, int x, int y, int z, TileEntityEnchantTable tileEntity) {
-        
+
         super(new ContainerEnchantTable(inventory, world, x, y, z, tileEntity));
         this.player = inventory.player;
-        
+
         this.container = (ContainerEnchantTable) inventorySlots;
-        
+
         this.x = x;
         this.y = y;
         this.z = z;
-        
+
         this.xSize = 235;
         this.ySize = 182;
-        
+
         this.zLevel = -1;
     }
-    
+
     @Override
     protected void actionPerformed (GuiButton par1GuiButton) {
-        
+
         final HashMap<Integer, Integer> enchants = new HashMap<Integer, Integer>();
         final HashMap<Integer, Integer> levels = new HashMap<Integer, Integer>();
-        
+
         for (final GuiEnchantmentLabel item : enchantmentArray) {
             final Integer id = enchantments.get(item.enchantment.effectId);
             if (item.enchantmentLevel != id && !item.locked) {
@@ -76,7 +77,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
                 levels.put(item.enchantment.effectId, item.currentLevel);
             }
         }
-        
+
         switch (par1GuiButton.id) {
             case 0:
                 if (enchants.size() > 0) {
@@ -92,7 +93,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
                 EnchantingPlus.network.sendToServer(new PacketGui(player.getDisplayName(), 1, x, y, z));
         }
     }
-    
+
     /**
      * Converts map to arraylist of gui items
      *
@@ -102,35 +103,35 @@ public class GuiModEnchantmentTable extends GuiContainer {
      * @return the arraylist of gui items
      */
     private ArrayList<GuiEnchantmentLabel> convertMapToGuiItems (final Map<Integer, Integer> map, int x, int y) {
-        
+
         final ArrayList<GuiEnchantmentLabel> temp = new ArrayList<GuiEnchantmentLabel>();
-        
+
         if (map == null)
             return temp;
-            
+
         int i = 0;
         int yPos = y;
         for (Integer obj : map.keySet()) {
             temp.add(new GuiEnchantmentLabel(container, obj, map.get(obj), x, yPos));
-            
+
             i++;
             yPos = y + i * 18;
         }
-        
+
         return temp;
     }
-    
+
     @Override
     protected void drawGuiContainerBackgroundLayer (float partialTicks, int mouseX, int mouseY) {
-        
+
         boolean flag = Mouse.isButtonDown(0);
-        
+
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.renderEngine.bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-        
+
         for (final GuiEnchantmentLabel item : enchantmentArray) {
             if (item.yPos < guiTop + 15 || item.yPos >= guiTop + 87) {
                 item.show(false);
@@ -140,7 +141,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
             item.draw(fontRendererObj);
         }
-        
+
         final int adjustedMouseX = mouseX - guiLeft;
         final int adjustedMouseY = mouseY - guiTop;
         mc.renderEngine.bindTexture(texture);
@@ -152,18 +153,18 @@ public class GuiModEnchantmentTable extends GuiContainer {
             tempY = 57;
         }
         sliderIndex = sliding ? Math.round((tempY / 57D * enchantingPages) / .25) * .25 : sliderIndex;
-        
+
         if (sliderIndex >= enchantingPages) {
             sliderIndex = enchantingPages;
         }
-        
+
         double sliderY = sliding ? tempY : 57 * (sliderIndex / enchantingPages);
-        
+
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         drawTexturedModalRect(guiLeft + guiOffset + 180, guiTop + 16 + (int) sliderY, 0, 182, 12, 15);
-        
+
         if (!clicked && flag) {
             for (final GuiEnchantmentLabel item : enchantmentArray) {
                 if (getItemFromPos(mouseX, mouseY) == item && !item.locked) {
@@ -176,13 +177,13 @@ public class GuiModEnchantmentTable extends GuiContainer {
                 }
             }
         }
-        
+
         for (final GuiEnchantmentLabel item : enchantmentArray) {
             if (item.dragging && getItemFromPos(mouseX, mouseY) != item) {
                 item.dragging = false;
             }
         }
-        
+
         if (!flag) {
             for (final GuiEnchantmentLabel item : enchantmentArray) {
                 if (getItemFromPos(mouseX, mouseY) == item) {
@@ -191,26 +192,26 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
             sliding = false;
         }
-        
+
         clicked = flag;
-        
+
         for (final GuiEnchantmentLabel item : enchantmentArray) {
             if (item.dragging) {
                 item.scroll(adjustedMouseX - 36, guiOffset + guiLeft + 10);
             }
         }
     }
-    
+
     @Override
     public void drawScreen (int mouseX, int mouseY, float partialTicks) {
-        
+
         super.drawScreen(mouseX, mouseY, partialTicks);
         enableEnchantments();
-        
+
         final int maxWidth = guiLeft - 20;
         final List<List<String>> information = new ArrayList<List<String>>();
         information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.playerlevel"), player.experienceLevel), maxWidth));
-        
+
         if (container.tableInventory.getStackInSlot(0) == null || levelChanged() || !levelChanged() && !container.tableInventory.getStackInSlot(0).isItemDamaged()) {
             information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.enchant"), totalCost), maxWidth));
         }
@@ -218,7 +219,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
             information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.repair"), totalCost), maxWidth));
         }
         information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.maxlevel"), container.bookCases()), maxWidth));
-        
+
         for (final List<String> display : information) {
             int height = information.indexOf(display) == 0 ? guiTop + fontRendererObj.FONT_HEIGHT + 8 : guiTop + (fontRendererObj.FONT_HEIGHT + 8) * (information.indexOf(display) + 1);
             if (information.indexOf(display) > 0) {
@@ -226,13 +227,13 @@ public class GuiModEnchantmentTable extends GuiContainer {
                     height += (fontRendererObj.FONT_HEIGHT + 3) * (information.get(i).size() - 1);
                 }
             }
-            
+
             try {
                 drawHoveringText(display, guiLeft - 20 - maxWidth, height, fontRendererObj);
             }
             catch (NoSuchMethodError e) {
                 final StringBuilder sb = new StringBuilder();
-                
+
                 for (final String text : display) {
                     sb.append(text);
                     sb.append(" ");
@@ -240,21 +241,21 @@ public class GuiModEnchantmentTable extends GuiContainer {
                 drawCreativeTabHoveringText(sb.toString(), guiLeft - 20 - maxWidth, height);
             }
         }
-        
+
         GuiEnchantmentLabel guiItem = getItemFromPos(mouseX, mouseY);
         if (isShiftKeyDown() && guiItem != null) {
             final String name = EnumChatFormatting.BOLD + guiItem.getTranslatedName();
             String info = StatCollector.translateToLocal(guiItem.enchantment.getName());
-            
+
             // TODO FIX Strings.errorToolTip
             if (info.isEmpty()) {
                 info = EnumChatFormatting.DARK_RED + String.format("%s ", "ERROR") + guiItem.enchantment.getName();
             }
-            
+
             info = EnumChatFormatting.LIGHT_PURPLE + info;
-            
+
             final List<String> display = new ArrayList<String>();
-            
+
             display.add(name);
             display.addAll(fontRendererObj.listFormattedStringToWidth(info, 150));
             try {
@@ -262,7 +263,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
             catch (NoSuchMethodError e) {
                 final StringBuilder sb = new StringBuilder();
-                
+
                 for (final String text : display) {
                     sb.append(text);
                     sb.append(" ");
@@ -271,7 +272,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
         }
     }
-    
+
     /**
      * Gets a GuiEnchantmentLabel from mouse position
      *
@@ -280,11 +281,11 @@ public class GuiModEnchantmentTable extends GuiContainer {
      * @return the GuiEnchantmentLabel found
      */
     private GuiEnchantmentLabel getItemFromPos (int x, int y) {
-        
+
         if (x < guiLeft + guiOffset + 35 || x > guiLeft + xSize - 32) {
             return null;
         }
-        
+
         for (final GuiEnchantmentLabel item : enchantmentArray) {
             if (!item.show) {
                 continue;
@@ -295,16 +296,16 @@ public class GuiModEnchantmentTable extends GuiContainer {
         }
         return null;
     }
-    
+
     @Override
     public void handleMouseInput () {
-        
+
         super.handleMouseInput();
-        
+
         final int eventDWheel = Mouse.getEventDWheel();
         final int mouseX = Mouse.getEventX() * width / mc.displayWidth - guiLeft;
         final int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1 - guiTop;
-        
+
         if (eventDWheel != 0 && (mouseX >= 35 + guiOffset && mouseX <= xSize + guiOffset - 32 || mouseX >= 180 + guiOffset && mouseX <= 192 + guiOffset)) {
             if (mouseY >= 15 && mouseY <= 87) {
                 if (eventDWheel < 0) {
@@ -322,20 +323,20 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
         }
     }
-    
+
     @Override
     public void initGui () {
-        
+
         super.initGui();
-        buttonList.add(new GuiIcon(0, guiLeft + guiOffset + 9, guiTop + 38, "E").customTexture(0));
-        buttonList.add(new GuiIcon(1, guiLeft + guiOffset + 9, guiTop + 63, "R").customTexture(0));
-        buttonList.add(new GuiButton(2, guiLeft + xSize + 10, guiTop + 5, fontRendererObj.getStringWidth(StatCollector.translateToLocal("Vanilla")) + 10, 20, StatCollector.translateToLocal("Vanilla")));
-        
+        buttonList.add(new GuiGraphicButton(0, guiLeft + guiOffset + 9, guiTop + 38, "eplus:textures/gui/button_enchant"));
+        buttonList.add(new GuiGraphicButton(1, guiLeft + guiOffset + 9, guiTop + 63, "eplus:textures/gui/button_repair"));
+        buttonList.add(new GuiButton(2, guiLeft - 20 , guiTop + 110, fontRendererObj.getStringWidth(StatCollector.translateToLocal("Vanilla")) + 10, 20, StatCollector.translateToLocal("Vanilla")));
+
         dirty = true;
     }
-    
+
     protected boolean levelChanged () {
-        
+
         for (final GuiEnchantmentLabel item : enchantmentArray) {
             if (item.enchantmentLevel != item.currentLevel) {
                 return true;
@@ -343,35 +344,35 @@ public class GuiModEnchantmentTable extends GuiContainer {
         }
         return false;
     }
-    
+
     @Override
     public void updateScreen () {
-        
+
         super.updateScreen();
-        
+
         final Map<Integer, Integer> enchantments = updateEnchantments(container.getEnchantments());
-        
+
         handleChangedScreenSize(enchantments);
         enableEnchantments();
-        
+
         enchantingPages = enchantmentArray.size() / 4.0 > 1 ? enchantmentArray.size() / 4.0 - 1.0 : 0;
         totalCost = 0;
-        
+
         handleChangedEnchantments(enchantments);
     }
-    
+
     private void enableEnchantments () {
-        
+
         for (GuiEnchantmentLabel item : enchantmentArray) {
             item.locked = false;
         }
-        
+
         for (GuiEnchantmentLabel item : enchantmentArray) {
             if (item.enchantmentLevel != 0) {
                 for (final GuiEnchantmentLabel item2 : enchantmentArray) {
                     if (item == item2)
                         continue;
-                        
+
                     if (!EnchantHelper.isEnchantmentsCompatible(item.enchantment, item2.enchantment)) {
                         item2.locked = true;
                     }
@@ -379,9 +380,9 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
         }
     }
-    
+
     private void handleChangedEnchantments (Map<Integer, Integer> enchantments) {
-        
+
         if (!enchantmentArray.isEmpty() && levelChanged()) {
             for (final GuiEnchantmentLabel item : enchantmentArray) {
                 handleChangedEnchantment(enchantments, item);
@@ -389,21 +390,21 @@ public class GuiModEnchantmentTable extends GuiContainer {
         }
         else if (EPlusConfigurationHandler.allowRepairs && !levelChanged()) {
             totalCost += container.repairCostMax();
-            
+
             for (final GuiEnchantmentLabel item : enchantmentArray) {
                 item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);
             }
         }
     }
-    
+
     private void handleChangedEnchantment (Map<Integer, Integer> enchantments, GuiEnchantmentLabel item) {
-        
+
         item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);
-        
+
         final Integer level = enchantments.get(item.enchantment.effectId);
         if (!item.locked && item.enchantmentLevel > level) {
             int temp = totalCost + container.enchantmentCost(item.enchantment, item.enchantmentLevel, level);
-            
+
             if (!container.canPurchase(player, temp)) {
                 while (item.enchantmentLevel > 0) {
                     item.dragging = false;
@@ -412,7 +413,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
                     if (container.canPurchase(player, temp)) {
                         break;
                     }
-                    
+
                 }
             }
             totalCost = temp;
@@ -426,12 +427,12 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
         }
     }
-    
+
     private void handleChangedScreenSize (Map<Integer, Integer> enchantments) {
-        
+
         if (dirty) {
             final ArrayList<GuiEnchantmentLabel> temp = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
-            
+
             for (final GuiEnchantmentLabel item : enchantmentArray) {
                 for (final GuiEnchantmentLabel tempItem : temp) {
                     if (item.enchantment == tempItem.enchantment) {
@@ -443,19 +444,19 @@ public class GuiModEnchantmentTable extends GuiContainer {
             dirty = false;
         }
     }
-    
+
     private Map<Integer, Integer> updateEnchantments (final Map<Integer, Integer> enchantments) {
-        
+
         if (this.enchantments != enchantments) {
             this.enchantments = enchantments;
-            
+
             enchantmentArray = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
-            
+
             sliderIndex = enchantingPages = 0;
             clicked = sliding = false;
             return this.enchantments;
         }
-        
+
         return enchantments;
     }
 }

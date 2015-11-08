@@ -48,6 +48,6 @@ public class GuiVanillaEnchantmentTable extends GuiEnchantment {
         
         super.initGui();
         final String s = "Mod";
-        buttonList.add(new GuiButton(0, guiLeft + xSize + 10, guiTop + 5, fontRendererObj.getStringWidth(s) + 10, 20, s));
+        buttonList.add(new GuiButton(0, guiLeft - 40 , guiTop + 102, fontRendererObj.getStringWidth(s) + 10, 20, s));
     }
 }
