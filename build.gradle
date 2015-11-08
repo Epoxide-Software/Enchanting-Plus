@@ -38,7 +38,7 @@ minecraft {
 }
 
 dependencies {
-    compile "net.darkhax.bookshelf:Bookshelf:1.7.10-1.0.3.96:deobf"
+    compile "net.darkhax.bookshelf:Bookshelf:1.7.10-1.0.3.98:deobf"
 }
 
 processResources {
@@ -80,7 +80,6 @@ String getVersionFromJava(File file) {
 
     return "$mcVersion-$projNumber.$major.$revision.$patch";
 }
-
 
 task writeBuildNumber << {
     def file = file("src/main/java/net/epoxide/eplus/lib/Constants.java");
