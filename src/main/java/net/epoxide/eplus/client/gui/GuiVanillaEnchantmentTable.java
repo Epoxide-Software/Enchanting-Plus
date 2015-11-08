@@ -2,7 +2,6 @@ package net.epoxide.eplus.client.gui;
 
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.common.network.PacketGui;
-import net.epoxide.eplus.handler.EPlusConfigurationHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiEnchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,8 +47,6 @@ public class GuiVanillaEnchantmentTable extends GuiEnchantment {
         
         super.initGui();
         final String s = "Mod";
-        if (EPlusConfigurationHandler.useMod) {
-            buttonList.add(new GuiButton(0, guiLeft + xSize + 10, guiTop + 5, fontRendererObj.getStringWidth(s) + 10, 20, s));
-        }
+        buttonList.add(new GuiButton(0, guiLeft + xSize + 10, guiTop + 5, fontRendererObj.getStringWidth(s) + 10, 20, s));
     }
 }

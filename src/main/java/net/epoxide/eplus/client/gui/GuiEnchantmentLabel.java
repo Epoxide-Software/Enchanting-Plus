@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.enchantment.Enchantment;
 
 public class GuiEnchantmentLabel extends Gui {
+    
     private final ContainerEnchantTable container;
     public final Enchantment enchantment;
     public int enchantmentLevel;
@@ -96,7 +97,7 @@ public class GuiEnchantmentLabel extends Gui {
         float index = xPos / (float) (width + 10);
         final int tempLevel = (int) Math.floor(currentLevel > enchantment.getMaxLevel() ? currentLevel * index : enchantment.getMaxLevel() * index);
         
-        if (tempLevel >= currentLevel || EPlusConfigurationHandler.allowDisenchanting && (!container.tableInventory.getStackInSlot(0).isItemDamaged()) || EPlusConfigurationHandler.allowEnchantDamaged) {
+        if (tempLevel >= currentLevel || EPlusConfigurationHandler.allowDisenchanting && (!container.tableInventory.getStackInSlot(0).isItemDamaged()) || EPlusConfigurationHandler.allowDamagedEnchanting) {
             enchantmentLevel = tempLevel;
         }
         

@@ -17,7 +17,7 @@ public class ForgeEventHandler {
     @SubscribeEvent
     public void onTooltip (ItemTooltipEvent event) {
         
-        if (ItemStackUtils.isValidStack(event.itemStack)) {
+        if (EPlusConfigurationHandler.allowModifierTooltips && ItemStackUtils.isValidStack(event.itemStack)) {
             
             for (ScrollModifier modifier : ContentHandler.modifiers) {
                 

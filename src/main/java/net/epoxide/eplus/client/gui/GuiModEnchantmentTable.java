@@ -82,7 +82,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
                 }
                 return;
             case 1:
-                if (enchants.size() == 0 && EPlusConfigurationHandler.allowRepair) {
+                if (enchants.size() == 0 && EPlusConfigurationHandler.allowRepairs) {
                     EnchantingPlus.network.sendToServer(new PacketRepair(totalCost));
                 }
                 return;
@@ -213,7 +213,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
         if (container.tableInventory.getStackInSlot(0) == null || levelChanged() || !levelChanged() && !container.tableInventory.getStackInSlot(0).isItemDamaged()) {
             information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("enchanting.cost"), totalCost), maxWidth));
         }
-        else if (EPlusConfigurationHandler.allowRepair && !levelChanged() && container.tableInventory.getStackInSlot(0).isItemDamaged()) {
+        else if (EPlusConfigurationHandler.allowRepairs && !levelChanged() && container.tableInventory.getStackInSlot(0).isItemDamaged()) {
             information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("repair.cost"), totalCost), maxWidth));
         }
         information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("enchant.level.max"), container.bookCases()), maxWidth));
@@ -386,7 +386,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
                 handleChangedEnchantment(enchantments, item);
             }
         }
-        else if (EPlusConfigurationHandler.allowRepair && !levelChanged()) {
+        else if (EPlusConfigurationHandler.allowRepairs && !levelChanged()) {
             totalCost += container.repairCostMax();
             
             for (final GuiEnchantmentLabel item : enchantmentArray) {
