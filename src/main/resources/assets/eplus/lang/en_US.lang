@@ -12,8 +12,7 @@ tooltip.eplus.enchantment=Enchantment
 tooltip.eplus.modifier=Scroll Modifier
 tooltip.eplus.speed=Speed
 tooltip.eplus.stability=Stability
-
-repair.cost=Repair Cost
-player.level=Player Level
-enchant.level.max=Max Enchantment Level
-enchanting.cost=Enchanting Cost
+tooltip.eplus.repair=Repair Cost
+tooltip.eplus.playerlevel=Player Level
+tooltip.eplus.maxlevel=Max Enchantment Level
+tooltip.eplus.enchant=Enchanting Cost

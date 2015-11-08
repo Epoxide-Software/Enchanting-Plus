@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiEnchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class GuiVanillaEnchantmentTable extends GuiEnchantment {
@@ -38,7 +39,7 @@ public class GuiVanillaEnchantmentTable extends GuiEnchantment {
     public void drawScreen (int mouseX, int mouseY, float partialTicks) {
         
         super.drawScreen(mouseX, mouseY, partialTicks);
-        final String displayText = String.format("%s: %s", "Player Level", player.experienceLevel);
+        final String displayText = String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.playerlevel"), player.experienceLevel);
         drawCreativeTabHoveringText(displayText, guiLeft - 20 - fontRendererObj.getStringWidth(displayText), guiTop + fontRendererObj.FONT_HEIGHT + 8);
     }
     
