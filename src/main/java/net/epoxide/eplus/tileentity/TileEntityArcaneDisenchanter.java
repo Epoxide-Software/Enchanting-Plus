@@ -5,7 +5,7 @@ import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.darkhax.bookshelf.tileentity.AbstractTileEntity;
 import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.common.network.PacketArcaneDisenchanter;
+import net.epoxide.eplus.common.network.PacketArcaneDisenchanterEffects;
 import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.modifiers.ScrollModifier;
@@ -129,15 +129,22 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
         nbtTag.setTag("Item", nbtTagList);
     }
 
+    int ticker = 0;
+
     @Override
     public void updateEntity () {
 
         if (hasEnchantmentBook()) {
-
+            ticker++;
             updateBook();
 
             float speed = (BASE_SPEED + (hasModifiers(0) ? modifiers[0].speed : 0) + (hasModifiers(1) ? modifiers[1].speed : 0)) / 20f;
             currentPercentage += (speed > 0 ? speed : 0.0000001f);
+
+            if (ticker >= 20) {
+                EnchantingPlus.network.sendToAllAround(new PacketArcaneDisenchanterEffects(output != null, this, currentPercentage), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150d));
+                ticker -= 20;
+            }
 
             if (currentPercentage >= 1) {
                 if (MathsUtils.tryPercentage(0.50d + (hasModifiers(0) ? modifiers[0].stability : 0) + (hasModifiers(1) ? modifiers[1].stability : 0))) {
@@ -145,12 +152,13 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
 
                     ItemStack itemStack = ItemEnchantedScroll.createScroll(enchantments[((int) (Math.random() * enchantments.length))]);
                     if (hasModifiers(0))
-                        itemStack = modifiers[0].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, modifiers[0].stack, modifiers[1].stack);
+                        itemStack = modifiers[0].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, modifiers[0].stack, hasModifiers(1) ? modifiers[1].stack : null);
                     if (hasModifiers(1))
-                        itemStack = modifiers[1].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, modifiers[0].stack, modifiers[1].stack);
+                        itemStack = modifiers[1].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, hasModifiers(0) ? modifiers[0].stack : null, modifiers[1].stack);
                     setOutput(itemStack);
                 }
-                EnchantingPlus.network.sendToAllAround(new PacketArcaneDisenchanter(output != null, this), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150d));
+                EnchantingPlus.network.sendToAllAround(new PacketArcaneDisenchanterEffects(output != null, this, currentPercentage), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150d));
+
                 clearModifiers();
                 enchantmentBook = null;
 
