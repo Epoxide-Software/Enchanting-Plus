@@ -1,5 +1,7 @@
 package net.epoxide.eplus.block;
 
+import java.util.List;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.epoxide.eplus.EnchantingPlus;
@@ -17,35 +19,33 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class BlockArcaneDisenchanter extends BlockContainer {
-
-    public BlockArcaneDisenchanter () {
-
+    
+    public BlockArcaneDisenchanter() {
+        
         super(Material.iron);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
         this.setCreativeTab(EnchantingPlus.tabEplus);
         this.setBlockName("arcaneDisenchanter");
     }
-
+    
     @SideOnly(Side.CLIENT)
     @Override
     public boolean isOpaqueCube () {
-
+        
         return false;
     }
-
+    
     @Override
     public boolean onBlockActivated (World world, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
-
+        
         ItemStack itemStack = player.getHeldItem();
         TileEntityArcaneDisenchanter tileEntity = (TileEntityArcaneDisenchanter) world.getTileEntity(x, y, z);
-
+        
         if (itemStack != null) {
             if (itemStack.getItem() == Items.enchanted_book && tileEntity.getOutput() == null) {
                 if (EnchantHelper.isItemEnchanted(itemStack)) {
-
+                    
                     if (!tileEntity.hasEnchantmentBook()) {
                         tileEntity.setEnchantmentBook(itemStack);
                         itemStack.stackSize--;
@@ -85,16 +85,16 @@ public class BlockArcaneDisenchanter extends BlockContainer {
         }
         return false;
     }
-
+    
     @Override
     public TileEntity createNewTileEntity (World world, int meta) {
-
+        
         return new TileEntityArcaneDisenchanter();
     }
-
+    
     @Override
     public void addCollisionBoxesToList (World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_) {
-
+        
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
         super.addCollisionBoxesToList(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
     }

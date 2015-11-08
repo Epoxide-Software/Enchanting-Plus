@@ -9,8 +9,8 @@ import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.block.BlockEnchantTable;
 import net.epoxide.eplus.block.BlockArcaneDisenchanter;
+import net.epoxide.eplus.block.BlockEnchantTable;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.item.ItemTableUpgrade;
 import net.epoxide.eplus.modifiers.ScrollModifier;
@@ -49,10 +49,10 @@ public class ContentHandler {
      * Inscriber.
      */
     public static List<ScrollModifier> modifiers = new ArrayList<ScrollModifier>();
-
+    
     public static Block eplusTable;
     public static Block eplusArcaneDisenchanter;
-
+    
     public static Item tableUpgrade;
     public static Item scroll;
     
@@ -65,7 +65,7 @@ public class ContentHandler {
         eplusTable = new BlockEnchantTable();
         GameRegistry.registerBlock(eplusTable, "advancedEnchantmentTable");
         GameRegistry.registerTileEntity(TileEntityEnchantTable.class, "eplus:advancedEnchantmentTable");
-
+        
         eplusArcaneDisenchanter = new BlockArcaneDisenchanter();
         GameRegistry.registerBlock(eplusArcaneDisenchanter, "arcaneDisenchanter");
         GameRegistry.registerTileEntity(TileEntityArcaneDisenchanter.class, "eplus:arcaneDisenchanter");
@@ -109,16 +109,16 @@ public class ContentHandler {
      * Initializes all of the modifiers added by the base mod.
      */
     public static void initModifiers () {
-
+        
         addScrollModifier(new ScrollModifier(new ItemStack(Items.blaze_powder), -0.05f, 0.1f, false));
         addScrollModifier(new ScrollModifier(new ItemStack(Blocks.obsidian), 0.1f, -0.05f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Items.diamond), 0.25f, -0.05f, false)); 
+        addScrollModifier(new ScrollModifier(new ItemStack(Items.diamond), 0.25f, -0.05f, false));
         addScrollModifier(new ScrollModifier(new ItemStack(Items.emerald), -0.05f, 0.25f, false));
         addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_pearl), 0.05f, 0f, false));
         addScrollModifier(new ScrollModifier(new ItemStack(Blocks.glowstone), 0f, 0.05f, false));
         addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_eye), 0f, 0.1f, false));
     }
-
+    
     /**
      * Adds an Enchantment to the blacklist. Enchantments that are on this list can not be
      * applied by the advanced enchantment table.
@@ -267,14 +267,14 @@ public class ContentHandler {
             EnchantingPlus.printDebugMessage("The color of enchantment type " + enchType + " has been set to " + color);
         }
     }
-
+    
     /**
      * Registers a ScrollModifier with our List of modifiers.
      *
      * @param modifier: The modifier to register.
      */
     public static void addScrollModifier (ScrollModifier modifier) {
-
+        
         modifiers.add(modifier);
     }
 }

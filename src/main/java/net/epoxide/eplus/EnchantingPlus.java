@@ -45,7 +45,7 @@ public class EnchantingPlus {
         Utilities.registerMessage(network, PacketEnchant.class, 2, Side.SERVER);
         Utilities.registerMessage(network, PacketRepair.class, 3, Side.SERVER);
         Utilities.registerMessage(network, PacketArcaneDisenchanterEffects.class, 4, Side.CLIENT);
-
+        
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
         new EPlusConfigurationHandler(event.getSuggestedConfigurationFile());
@@ -55,7 +55,7 @@ public class EnchantingPlus {
         ContentHandler.initItems();
         ContentHandler.initEnchantmentColors();
         ContentHandler.initModifiers();
-
+        
         proxy.registerRenderers();
     }
     
