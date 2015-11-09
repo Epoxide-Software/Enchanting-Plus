@@ -16,6 +16,7 @@ tooltip.eplus.repair=Repair Cost
 tooltip.eplus.playerlevel=Player Level
 tooltip.eplus.maxlevel=Max Enchantment Level
 tooltip.eplus.enchant=Enchanting Cost
+tooltip.eplus.learned=Learned
 
 #Chat
 chat.eplus.scrollunlock=Enchantment unlocked

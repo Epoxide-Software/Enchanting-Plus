@@ -139,8 +139,16 @@ public class ItemEnchantedScroll extends Item {
     @SideOnly(Side.CLIENT)
     public void addInformation (ItemStack stack, EntityPlayer reader, List tip, boolean isDebug) {
         
-        if (isValidScroll(stack))
+        if (isValidScroll(stack)) {
+            
+            PlayerProperties props = PlayerProperties.getProperties(reader);
+            int enchantmentID = readScroll(stack).effectId;
+            
             tip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip.eplus.enchantment") + ": " + EnumChatFormatting.RESET + StatCollector.translateToLocal(readScroll(stack).getName()));
+            
+            if (props.unlockedEnchantments.contains(enchantmentID))
+                tip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.eplus.learned"));
+        }
     }
     
     @Override
