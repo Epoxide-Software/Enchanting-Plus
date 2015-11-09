@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -78,25 +79,35 @@ public class ItemEnchantedScroll extends Item {
     public ItemStack onEaten (ItemStack stack, World world, EntityPlayer player) {
         
         PlayerProperties props = PlayerProperties.getProperties(player);
-        int enchantmentID = readScroll(stack).effectId;
+        Enchantment ench = readScroll(stack);
         
         if (!world.isRemote) {
             
-            if (!props.unlockedEnchantments.contains(enchantmentID))
-                props.unlockedEnchantments.add(enchantmentID);
-                
+            props.unlockedEnchantments.add(ench.effectId);
             props.sync();
         }
         
+        else
+            player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + StatCollector.translateToLocal("chat.eplus.scrollunlock") + ": " + EnumChatFormatting.RESET + StatCollector.translateToLocal(ench.getName())));
+            
         return null;
     }
     
     @Override
     public ItemStack onItemRightClick (ItemStack stack, World world, EntityPlayer player) {
         
-        if (isValidScroll(stack))
-            player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+        if (isValidScroll(stack)) {
             
+            PlayerProperties props = PlayerProperties.getProperties(player);
+            int enchantmentID = readScroll(stack).effectId;
+            
+            if (!props.unlockedEnchantments.contains(enchantmentID))
+                player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+                
+            else if (world.isRemote)
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + StatCollector.translateToLocal("chat.eplus.scrollunlock.failed")));
+        }
+        
         return stack;
     }
     
