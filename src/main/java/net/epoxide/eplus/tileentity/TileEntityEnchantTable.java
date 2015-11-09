@@ -17,10 +17,10 @@ public class TileEntityEnchantTable extends TileEntity {
     public float pageFlipPrev;
     public float pageFlipRandom;
     public float pageFlipTurn;
-    public float field_145930_m;
-    public float field_145927_n;
-    public float field_145928_o;
-    public float field_145925_p;
+    public float foldAmount;
+    public float prevFoldAmount;
+    public float rotation;
+    public float prevRotation;
     public float bookRotation;
     private static Random random = new Random();
     private String customName;
@@ -90,17 +90,17 @@ public class TileEntityEnchantTable extends TileEntity {
     public void updateEntity () {
         
         super.updateEntity();
-        this.field_145927_n = this.field_145930_m;
-        this.field_145925_p = this.field_145928_o;
+        this.prevFoldAmount = this.foldAmount;
+        this.prevRotation = this.rotation;
         EntityPlayer entityplayer = this.worldObj.getClosestPlayer((double) ((float) this.xCoord + 0.5F), (double) ((float) this.yCoord + 0.5F), (double) ((float) this.zCoord + 0.5F), 3.0D);
         
         if (entityplayer != null) {
             double d0 = entityplayer.posX - (double) ((float) this.xCoord + 0.5F);
             double d1 = entityplayer.posZ - (double) ((float) this.zCoord + 0.5F);
             this.bookRotation = (float) Math.atan2(d1, d0);
-            this.field_145930_m += 0.1F;
+            this.foldAmount += 0.1F;
             
-            if (this.field_145930_m < 0.5F || random.nextInt(40) == 0) {
+            if (this.foldAmount < 0.5F || random.nextInt(40) == 0) {
                 float f1 = this.pageFlipRandom;
                 
                 do {
@@ -111,15 +111,15 @@ public class TileEntityEnchantTable extends TileEntity {
         }
         else {
             this.bookRotation += 0.02F;
-            this.field_145930_m -= 0.1F;
+            this.foldAmount -= 0.1F;
         }
         
-        while (this.field_145928_o >= (float) Math.PI) {
-            this.field_145928_o -= ((float) Math.PI * 2F);
+        while (this.rotation >= (float) Math.PI) {
+            this.rotation -= ((float) Math.PI * 2F);
         }
         
-        while (this.field_145928_o < -(float) Math.PI) {
-            this.field_145928_o += ((float) Math.PI * 2F);
+        while (this.rotation < -(float) Math.PI) {
+            this.rotation += ((float) Math.PI * 2F);
         }
         
         while (this.bookRotation >= (float) Math.PI) {
@@ -132,7 +132,7 @@ public class TileEntityEnchantTable extends TileEntity {
         
         float f2;
         
-        f2 = this.bookRotation - this.field_145928_o;
+        f2 = this.bookRotation - this.rotation;
         while (f2 >= (float) Math.PI) {
             f2 -= ((float) Math.PI * 2F);
         }
@@ -141,14 +141,14 @@ public class TileEntityEnchantTable extends TileEntity {
             f2 += ((float) Math.PI * 2F);
         }
         
-        this.field_145928_o += f2 * 0.4F;
+        this.rotation += f2 * 0.4F;
         
-        if (this.field_145930_m < 0.0F) {
-            this.field_145930_m = 0.0F;
+        if (this.foldAmount < 0.0F) {
+            this.foldAmount = 0.0F;
         }
         
-        if (this.field_145930_m > 1.0F) {
-            this.field_145930_m = 1.0F;
+        if (this.foldAmount > 1.0F) {
+            this.foldAmount = 1.0F;
         }
         
         ++this.tickCount;

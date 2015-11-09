@@ -32,10 +32,10 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
     public float pageFlipPrev;
     public float pageFlipRandom;
     public float pageFlipTurn;
-    public float field_145930_m;
-    public float field_145927_n;
-    public float field_145928_o;
-    public float field_145925_p;
+    public float foldAmount;
+    public float prevFoldAmount;
+    public float rotation;
+    public float prevRotation;
     public float bookRotation;
     private static Random random = new Random();
     
@@ -95,13 +95,12 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
         
         for (ScrollModifier modifier : ContentHandler.modifiers) {
             ItemStack itemStack = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(1));
+            ItemStack itemStack2 = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(2));
             if (modifier.stack == itemStack) {
                 modifiers[0] = modifier;
             }
-        }
-        for (ScrollModifier modifier : ContentHandler.modifiers) {
-            ItemStack itemStack = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(2));
-            if (modifier.stack == itemStack) {
+
+            if (modifier.stack == itemStack2) {
                 modifiers[1] = modifier;
             }
         }
@@ -177,26 +176,26 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
         pageFlipPrev = 0;
         pageFlipRandom = 0;
         pageFlipTurn = 0;
-        field_145930_m = 0;
-        field_145927_n = 0;
-        field_145928_o = 0;
-        field_145925_p = 0;
+        foldAmount = 0;
+        prevFoldAmount = 0;
+        rotation = 0;
+        prevRotation = 0;
         bookRotation = 0;
     }
     
     private void updateBook () {
         
-        this.field_145927_n = this.field_145930_m;
-        this.field_145925_p = this.field_145928_o;
+        this.prevFoldAmount = this.foldAmount;
+        this.prevRotation = this.rotation;
         EntityPlayer entityplayer = this.worldObj.getClosestPlayer((double) ((float) this.xCoord + 0.5F), (double) ((float) this.yCoord + 0.5F), (double) ((float) this.zCoord + 0.5F), 3.0D);
         
         if (entityplayer != null) {
             double d0 = entityplayer.posX - (double) ((float) this.xCoord + 0.5F);
             double d1 = entityplayer.posZ - (double) ((float) this.zCoord + 0.5F);
             this.bookRotation = (float) Math.atan2(d1, d0);
-            this.field_145930_m += 0.1F;
+            this.foldAmount += 0.1F;
             
-            if (this.field_145930_m < 0.5F || random.nextInt(40) == 0) {
+            if (this.foldAmount < 0.5F || random.nextInt(40) == 0) {
                 float f1 = this.pageFlipRandom;
                 
                 do {
@@ -207,15 +206,15 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
         }
         else {
             this.bookRotation += 0.02F;
-            this.field_145930_m -= 0.1F;
+            this.foldAmount -= 0.1F;
         }
         
-        while (this.field_145928_o >= (float) Math.PI) {
-            this.field_145928_o -= ((float) Math.PI * 2F);
+        while (this.rotation >= (float) Math.PI) {
+            this.rotation -= ((float) Math.PI * 2F);
         }
         
-        while (this.field_145928_o < -(float) Math.PI) {
-            this.field_145928_o += ((float) Math.PI * 2F);
+        while (this.rotation < -(float) Math.PI) {
+            this.rotation += ((float) Math.PI * 2F);
         }
         
         while (this.bookRotation >= (float) Math.PI) {
@@ -228,7 +227,7 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
         
         float f2;
         
-        f2 = this.bookRotation - this.field_145928_o;
+        f2 = this.bookRotation - this.rotation;
         while (f2 >= (float) Math.PI) {
             f2 -= ((float) Math.PI * 2F);
         }
@@ -237,14 +236,14 @@ public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
             f2 += ((float) Math.PI * 2F);
         }
         
-        this.field_145928_o += f2 * 0.4F;
+        this.rotation += f2 * 0.4F;
         
-        if (this.field_145930_m < 0.0F) {
-            this.field_145930_m = 0.0F;
+        if (this.foldAmount < 0.0F) {
+            this.foldAmount = 0.0F;
         }
         
-        if (this.field_145930_m > 1.0F) {
-            this.field_145930_m = 1.0F;
+        if (this.foldAmount > 1.0F) {
+            this.foldAmount = 1.0F;
         }
         
         ++this.tickCount;
