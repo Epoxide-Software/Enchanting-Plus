@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -74,26 +75,53 @@ public class ItemEnchantedScroll extends Item {
     }
     
     @Override
-    public ItemStack onItemRightClick (ItemStack stack, World world, EntityPlayer player) {
+    public ItemStack onEaten (ItemStack stack, World world, EntityPlayer player) {
         
-        if (isValidScroll(stack)) {
+        PlayerProperties props = PlayerProperties.getProperties(player);
+        int enchantmentID = readScroll(stack).effectId;
+        
+        if (!world.isRemote) {
             
-            PlayerProperties props = PlayerProperties.getProperties(player);
-            int enchantmentID = readScroll(stack).effectId;
-            
-            if (!world.isRemote) {
+            if (!props.unlockedEnchantments.contains(enchantmentID))
+                props.unlockedEnchantments.add(enchantmentID);
                 
-                if (!props.unlockedEnchantments.contains(enchantmentID))
-                    props.unlockedEnchantments.add(enchantmentID);
-                    
-                props.sync();
-                return stack;
-            }
-            
-            ProxyClient.spawnParticleRing(world, "enchantmenttable", player.posX, player.posY, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
+            props.sync();
         }
         
+        return null;
+    }
+    
+    @Override
+    public ItemStack onItemRightClick (ItemStack stack, World world, EntityPlayer player) {
+        
+        if (isValidScroll(stack))
+            player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+            
         return stack;
+    }
+    
+    @Override
+    public boolean onItemUse (ItemStack stack, EntityPlayer player, World world, int p_77648_4_, int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
+        
+        return false;
+    }
+    
+    @Override
+    public int getMaxItemUseDuration (ItemStack stack) {
+        
+        return 64;
+    }
+    
+    @Override
+    public void onUsingTick (ItemStack stack, EntityPlayer player, int count) {
+        
+        ProxyClient.spawnParticleRing(player.worldObj, "enchantmenttable", player.posX, player.posY, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
+    }
+    
+    @Override
+    public EnumAction getItemUseAction (ItemStack stack) {
+        
+        return EnumAction.bow;
     }
     
     @Override
