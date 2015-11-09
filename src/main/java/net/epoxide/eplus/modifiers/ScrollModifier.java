@@ -1,6 +1,8 @@
 package net.epoxide.eplus.modifiers;
 
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class ScrollModifier {
@@ -76,5 +78,21 @@ public class ScrollModifier {
     public ItemStack onInscription (World world, int x, int y, int z, ItemStack output, ItemStack input, ItemStack firstModifier, ItemStack secondModifier) {
         
         return output;
+    }
+    
+    /**
+     * Writes the ScrollModifier to an NBTTagCompound. The ItemStack, stability, and speed are
+     * all stored.
+     * 
+     * @param tag: The NBTTagCompound to write the ScrollModifier to.
+     * @param tagName: The name to store the tag under.
+     */
+    public void writeModiferToNBT (NBTTagCompound tag, String tagName) {
+        
+        NBTTagCompound modifierTag = new NBTTagCompound();
+        modifierTag.setFloat("speed", this.speed);
+        modifierTag.setFloat("stability", this.stability);
+        ItemStackUtils.writeStackToTag(this.stack, tag, "stackTag");
+        tag.setTag(tagName, modifierTag);
     }
 }
