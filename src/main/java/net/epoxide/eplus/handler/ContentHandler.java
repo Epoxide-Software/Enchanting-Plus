@@ -277,4 +277,20 @@ public class ContentHandler {
         
         modifiers.add(modifier);
     }
+    
+    /**
+     * Retrieves a ScrollModifier using the modifier ItemStack as a key.
+     * 
+     * @param stack: The ItemStack associated with the modifier you are looking for.
+     * @return ScrollModifier: If a valid modifier is found, it will be returned. Otherwise
+     *         null.
+     */
+    public static ScrollModifier findScrollModifier (ItemStack stack) {
+        
+        for (ScrollModifier modifier : modifiers)
+            if (ItemStackUtils.areStacksSimilar(modifier.stack, stack))
+                return modifier;
+                
+        return null;
+    }
 }
