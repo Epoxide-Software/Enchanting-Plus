@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class TileEntityArcaneDisenchanter extends AbstractTileEntity {
+    
     private ItemStack enchantmentBook;
     private ScrollModifier[] modifiers;
     
