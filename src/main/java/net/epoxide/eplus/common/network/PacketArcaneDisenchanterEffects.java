@@ -2,7 +2,7 @@ package net.epoxide.eplus.common.network;
 
 import io.netty.buffer.ByteBuf;
 import net.darkhax.bookshelf.common.network.AbstractMessage;
-import net.epoxide.eplus.client.ProxyClient;
+import net.darkhax.bookshelf.lib.util.Utilities;
 import net.epoxide.eplus.tileentity.TileEntityArcaneDisenchanter;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -30,11 +30,11 @@ public class PacketArcaneDisenchanterEffects extends AbstractMessage<PacketArcan
     public void handleClientMessage (PacketArcaneDisenchanterEffects packet, EntityPlayer player) {
         
         if (packet.isSuccessful && packet.currentPercentage >= 1) {
-            ProxyClient.spawnParticleRing(player.worldObj, "enchantmenttable", packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, 0.0d, 0.0d, 0.0d, 0.15);
+            Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, 0.0d, 0.0d, 0.0d, 0.15);
             player.worldObj.playSound(packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, "", 0.5F, 1f, false);
         }
         else {
-            ProxyClient.spawnParticleRing(player.worldObj, "enchantmenttable", packet.currentPercentage, packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, 0.0d, 0.0d, 0.0d, 0.15);
+            Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", packet.currentPercentage, packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, 0.0d, 0.0d, 0.0d, 0.15);
         }
     }
     

@@ -7,7 +7,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.client.ProxyClient;
 import net.epoxide.eplus.common.PlayerProperties;
 import net.epoxide.eplus.handler.ContentHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -126,7 +125,7 @@ public class ItemEnchantedScroll extends Item {
     @Override
     public void onUsingTick (ItemStack stack, EntityPlayer player, int count) {
         
-        ProxyClient.spawnParticleRing(player.worldObj, "enchantmenttable", player.posX, player.posY, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
+        Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", player.posX, player.posY, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
     }
     
     @Override
