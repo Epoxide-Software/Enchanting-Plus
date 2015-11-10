@@ -259,7 +259,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
      */
     public boolean setEnchantmentBook(ItemStack stack) {
 
-        if (ItemStackUtils.isValidStack(stack)) {
+        if (ItemStackUtils.isValidStack(stack) || stack == null) {
 
             this.enchantmentBook = stack;
             return true;
