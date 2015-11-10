@@ -26,7 +26,7 @@ public class BlockArcaneInscriber extends BlockContainer {
         super(Material.iron);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
         this.setCreativeTab(EnchantingPlus.tabEplus);
-        this.setBlockName("arcaneDisenchanter");
+        this.setBlockName("arcaneInscriber");
     }
 
     @SideOnly(Side.CLIENT)
@@ -71,14 +71,14 @@ public class BlockArcaneInscriber extends BlockContainer {
         else if (player.isSneaking()) {
             if (tileEntity.getEnchantmentBook() != null) {
                 player.inventory.addItemStackToInventory(tileEntity.getEnchantmentBook());
-                tileEntity.setEnchantmentBook(null);
-                tileEntity.clearModifiers();
+                tileEntity.updateTileInfo();
                 return true;
             }
         }
         else if (player.getHeldItem() == null) {
             if (tileEntity.getOutput() != null) {
                 player.inventory.addItemStackToInventory(tileEntity.getOutput());
+                tileEntity.updateTileInfo();
                 tileEntity.setOutput(null);
                 return true;
             }

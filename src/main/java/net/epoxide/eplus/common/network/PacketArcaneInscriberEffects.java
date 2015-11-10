@@ -5,22 +5,19 @@ import net.darkhax.bookshelf.common.network.AbstractMessage;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 
 public class PacketArcaneInscriberEffects extends AbstractMessage<PacketArcaneInscriberEffects> {
     private int x;
     private int y;
     private int z;
-    private boolean isSuccessful;
     private float progression;
 
     public PacketArcaneInscriberEffects () {
 
     }
 
-    public PacketArcaneInscriberEffects (boolean isSuccessful, TileEntityArcaneInscriber tileEntity, float progression) {
+    public PacketArcaneInscriberEffects (TileEntityArcaneInscriber tileEntity, float progression) {
 
-        this.isSuccessful = isSuccessful;
         this.x = tileEntity.xCoord;
         this.y = tileEntity.yCoord;
         this.z = tileEntity.zCoord;
@@ -30,15 +27,10 @@ public class PacketArcaneInscriberEffects extends AbstractMessage<PacketArcaneIn
     @Override
     public void handleClientMessage (PacketArcaneInscriberEffects packet, EntityPlayer player) {
 
-        if (packet.isSuccessful && packet.progression >= 1) {
-            Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, 0.0d, 0.0d, 0.0d, 0.15);
-            player.worldObj.playSound(packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, "", 0.5F, 1f, false);
-        }
-        else {
+        if (packet.progression < 1) {
             Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", packet.progression, packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, 0.0d, 0.0d, 0.0d, 0.15);
         }
     }
-
 
     @Override
     public void handleServerMessage (PacketArcaneInscriberEffects message, EntityPlayer player) {
@@ -51,7 +43,6 @@ public class PacketArcaneInscriberEffects extends AbstractMessage<PacketArcaneIn
         this.x = buf.readInt();
         this.y = buf.readInt();
         this.z = buf.readInt();
-        this.isSuccessful = buf.readBoolean();
         this.progression = buf.readFloat();
     }
 
@@ -61,7 +52,6 @@ public class PacketArcaneInscriberEffects extends AbstractMessage<PacketArcaneIn
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
-        buf.writeBoolean(isSuccessful);
         buf.writeFloat(progression);
     }
 }

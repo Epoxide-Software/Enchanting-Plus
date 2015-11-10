@@ -1,5 +1,6 @@
 package net.epoxide.eplus.inventory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -179,7 +181,7 @@ public class ContainerEnchantTable extends Container {
     public void enchant (EntityPlayer player, HashMap<Integer, Integer> map, HashMap<Integer, Integer> levels, int cost) throws Exception {
         
         final ItemStack itemstack = tableInventory.getStackInSlot(0);
-        final HashMap<Integer, Integer> temp = new HashMap<Integer, Integer>();
+        final ArrayList<Integer> temp = new ArrayList<Integer>();
         int serverCost = 0;
         
         if (itemstack == null)
@@ -213,10 +215,10 @@ public class ContainerEnchantTable extends Container {
             final Integer level = map.get(enchantId);
             
             if (level == 0)
-                temp.put(enchantId, level);
+                temp.add(enchantId);
                 
         }
-        for (Integer object : temp.keySet()) {
+        for (Integer object : temp) {
             map.remove(object);
         }
         
@@ -356,7 +358,7 @@ public class ContainerEnchantTable extends Container {
     
     private void addEnchantFor (ItemStack itemStack, HashMap<Integer, Integer> temp, Enchantment obj) {
         
-        if (EnchantHelper.isEnchantmentValid(obj, player) && !ContentHandler.isBlacklisted(obj) && obj.canApplyAtEnchantingTable(itemStack)) {
+        if (EnchantHelper.isEnchantmentValid(obj, player) && !ContentHandler.isBlacklisted(obj) && (itemStack.getItem()== Items.book || itemStack.getItem() == Items.enchanted_book || obj.canApplyAtEnchantingTable(itemStack))) {
             temp.put(obj.effectId, 0);
         }
     }

@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.common.network.PacketArcaneInscriber;
 import net.epoxide.eplus.common.network.PacketArcaneInscriberEffects;
 import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
@@ -41,14 +42,15 @@ public class TileEntityArcaneInscriber extends TileEntity {
     public float prevRotation;
     public float bookRotation;
     private static Random random = new Random();
+    private int ticker = 0;
 
-    public TileEntityArcaneInscriber() {
+    public TileEntityArcaneInscriber () {
 
         modifiers = new ScrollModifier[2];
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT (NBTTagCompound nbt) {
 
         super.readFromNBT(nbt);
 
@@ -68,7 +70,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public void writeToNBT (NBTTagCompound nbt) {
 
         super.writeToNBT(nbt);
 
@@ -87,62 +89,59 @@ public class TileEntityArcaneInscriber extends TileEntity {
         nbt.setFloat("progression", this.progression);
     }
 
-    int ticker = 0;
-
     @Override
-    public void updateEntity() {
+    public void updateEntity () {
 
         if (getEnchantmentBook() != null) {
-            ticker++;
-            updateBook();
-
-            progression += getSpeed();
-
-            if (ticker >= 20) {
-                EnchantingPlus.network.sendToAllAround(new PacketArcaneInscriberEffects(output != null, this, progression), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150d));
-                ticker -= 20;
+            if (worldObj.isRemote) {
+                updateBook();
             }
+            else {
+                ticker++;
 
-            if (progression >= 1) {
-                if (MathsUtils.tryPercentage(getStability())) {
-                    Enchantment[] enchantments = ItemStackUtils.getEnchantmentsFromStack(enchantmentBook, true);
+                progression += getSpeed();
 
-                    ItemStack itemStack = ItemEnchantedScroll.createScroll(enchantments[((int) (Math.random() * enchantments.length))]);
-                    if (getFirstModifier() != null)
-                        itemStack = modifiers[0].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, modifiers[0].stack, getSecondModifier() != null ? modifiers[1].stack : null);
-                    if (getSecondModifier() != null)
-                        itemStack = modifiers[1].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, getFirstModifier() != null ? modifiers[0].stack : null, modifiers[1].stack);
-                    setOutput(itemStack);
+                if (ticker >= 20) {
+                    EnchantingPlus.network.sendToAllAround(new PacketArcaneInscriberEffects(this, progression), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150d));
+                    ticker -= 20;
                 }
-                EnchantingPlus.network.sendToAllAround(new PacketArcaneInscriberEffects(output != null, this, progression), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150d));
 
-                clearModifiers();
-                enchantmentBook = null;
+                if (progression >= 1) {
+                    if (MathsUtils.tryPercentage(getStability())) {
+                        Enchantment[] enchantments = ItemStackUtils.getEnchantmentsFromStack(enchantmentBook, true);
 
-                updateTileInfo();
+                        ItemStack itemStack = ItemEnchantedScroll.createScroll(enchantments[((int) (Math.random() * enchantments.length))]);
+                        if (getFirstModifier() != null)
+                            itemStack = modifiers[0].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, modifiers[0].stack, getSecondModifier() != null ? modifiers[1].stack : null);
+                        if (getSecondModifier() != null)
+                            itemStack = modifiers[1].onInscription(worldObj, xCoord, yCoord, zCoord, itemStack, enchantmentBook, getFirstModifier() != null ? modifiers[0].stack : null, modifiers[1].stack);
+                        setOutput(itemStack);
+                    }
+                    EnchantingPlus.network.sendToAllAround(new PacketArcaneInscriber(output, this), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150d));
+                    updateTileInfo();
+                }
             }
         }
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket (NetworkManager net, S35PacketUpdateTileEntity pkt) {
 
         this.readFromNBT(pkt.func_148857_g());
         this.worldObj.func_147479_m(xCoord, yCoord, zCoord);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public Packet getDescriptionPacket () {
 
         NBTTagCompound nbt = new NBTTagCompound();
         this.writeToNBT(nbt);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
     }
 
-    public void updateTileInfo() {
+    public void updateTileInfo () {
 
         this.enchantmentBook = null;
-        this.output = null;
         this.modifiers = new ScrollModifier[2];
         this.progression = 0f;
 
@@ -160,7 +159,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
         this.markDirty();
     }
 
-    private void updateBook() {
+    private void updateBook () {
 
         this.prevFoldAmount = this.foldAmount;
         this.prevRotation = this.rotation;
@@ -177,10 +176,10 @@ public class TileEntityArcaneInscriber extends TileEntity {
 
                 do {
                     this.pageFlipRandom += (float) (random.nextInt(4) - random.nextInt(4));
-                }
-                while (f1 == this.pageFlipRandom);
+                } while (f1 == this.pageFlipRandom);
             }
-        } else {
+        }
+        else {
             this.bookRotation += 0.02F;
             this.foldAmount -= 0.1F;
         }
@@ -245,7 +244,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
      * @return ItemStack: The ItemStack used as an EnchantmentBook. May not be an Enchantment
      * Book.
      */
-    public ItemStack getEnchantmentBook() {
+    public ItemStack getEnchantmentBook () {
 
         return this.enchantmentBook;
     }
@@ -257,7 +256,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
      * @param stack: The ItemStack to set as the Enchantment Book item.
      * @return boolean: Whether or not the item was successfully added.
      */
-    public boolean setEnchantmentBook(ItemStack stack) {
+    public boolean setEnchantmentBook (ItemStack stack) {
 
         if (ItemStackUtils.isValidStack(stack) || stack == null) {
 
@@ -273,7 +272,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
      *
      * @return ItemStack: The ItemStack stored in the output slot.
      */
-    public ItemStack getOutput() {
+    public ItemStack getOutput () {
 
         return this.output;
     }
@@ -285,9 +284,9 @@ public class TileEntityArcaneInscriber extends TileEntity {
      * @param output: The ItemStack to set in the output slot.
      * @return boolean: Whether or not the output was set.
      */
-    public boolean setOutput(ItemStack output) {
+    public boolean setOutput (ItemStack output) {
 
-        if (ItemStackUtils.isValidStack(output)) {
+        if (ItemStackUtils.isValidStack(output) || output == null) {
 
             this.output = output;
             return true;
@@ -301,7 +300,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
      *
      * @return ScrollModifier[]: The array of modifiers applied to this Tile Entity.
      */
-    public ScrollModifier[] getModifiers() {
+    public ScrollModifier[] getModifiers () {
 
         return this.modifiers;
     }
@@ -311,7 +310,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
      *
      * @return ItemStack: The modifier in the first slot.
      */
-    public ScrollModifier getFirstModifier() {
+    public ScrollModifier getFirstModifier () {
 
         return this.modifiers[0];
     }
@@ -321,7 +320,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
      *
      * @param modifier: The modifier to apply in the first slot.
      */
-    public void setFirstModifier(ScrollModifier modifier) {
+    public void setFirstModifier (ScrollModifier modifier) {
 
         this.modifiers[0] = modifier;
     }
@@ -331,7 +330,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
      *
      * @return ItemStack: The modifier in the second slot.
      */
-    public ScrollModifier getSecondModifier() {
+    public ScrollModifier getSecondModifier () {
 
         return this.modifiers[1];
     }
@@ -341,17 +340,9 @@ public class TileEntityArcaneInscriber extends TileEntity {
      *
      * @param modifier: The modifier to apply in the second slot.
      */
-    public void setSecondModifier(ScrollModifier modifier) {
+    public void setSecondModifier (ScrollModifier modifier) {
 
         this.modifiers[1] = modifier;
-    }
-
-    /**
-     * Completely clears all modifiers, and sets the array to a new one.
-     */
-    public void clearModifiers() {
-
-        this.modifiers = new ScrollModifier[2];
     }
 
     /**
@@ -362,7 +353,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
      * than 0, 0 will be returned. If the progression is greater than 1, 1 will be
      * returned.
      */
-    public float getProgression() {
+    public float getProgression () {
 
         return (this.progression > 1f) ? 1f : (this.progression < 0f) ? 0f : this.progression;
     }
@@ -375,23 +366,23 @@ public class TileEntityArcaneInscriber extends TileEntity {
      * @param time: The new progression value for the process. If this value is less then 0, it
      *              will be set to 0. If this value is greater than 1, it will be set to 1.
      */
-    public void setProgression(float time) {
+    public void setProgression (float time) {
 
         this.progression = (time > 1f) ? 1f : (time < 0f) ? 0f : time;
     }
 
-    public float getSpeed() {
+    public float getSpeed () {
 
         float speed = (BASE_SPEED + (getFirstModifier() != null ? modifiers[0].speed : 0) + (getSecondModifier() != null ? modifiers[1].speed : 0)) / 20f;
         return speed <= 0.0001f ? 0.0001f : speed;
     }
 
-    public float getStability() {
+    public float getStability () {
 
         return BASE_STABILITY + (getFirstModifier() != null ? modifiers[0].stability : 0) + (getSecondModifier() != null ? modifiers[1].stability : 0);
     }
 
-    public boolean addModifiers(ScrollModifier scrollModifier) {
+    public boolean addModifiers (ScrollModifier scrollModifier) {
 
         if (getFirstModifier() == null) {
             setFirstModifier(scrollModifier);

@@ -419,7 +419,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
             totalCost = temp;
         }
         else if (item.enchantmentLevel < level && !item.locked) {
-            if (EnchantHelper.containsEnchantment(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions", 10), item.enchantment.effectId, item.enchantmentLevel) || EPlusConfigurationHandler.allowDisenUnowned) {
+            if (EnchantHelper.hasRestriction(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions", 10), item.enchantment.effectId, item.enchantmentLevel) || EPlusConfigurationHandler.allowDisenUnowned) {
                 totalCost += container.disenchantmentCost(item.enchantment, item.enchantmentLevel, level);
             }
             else {

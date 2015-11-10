@@ -7,6 +7,7 @@ item.eplus.book.name=Tome: Enchanted Guardian
 
 #Block Names
 tile.advancedEnchantmentTable.name=Advanced Enchantment Table
+tile.arcaneInscriber.name=Arcane Inscriber
 
 #Tooltips
 tooltip.eplus.enchantment=Enchantment
@@ -28,3 +29,6 @@ chat.eplus.scrollunlock.failed=You have already learned this.
 
 #Potions
 potion.eplus.book.name=Guardian Tome
+
+#Misc
+itemGroup.eplus=Enchanting Plus
