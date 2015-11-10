@@ -11,30 +11,30 @@ public class PacketArcaneDisenchanterEffects extends AbstractMessage<PacketArcan
     private int y;
     private int z;
     private boolean isSuccessful;
-    private float currentPercentage;
+    private float progression;
     
     public PacketArcaneDisenchanterEffects() {
     
     }
     
-    public PacketArcaneDisenchanterEffects(boolean isSuccessful, TileEntityArcaneDisenchanter tileEntity, float currentPercentage) {
+    public PacketArcaneDisenchanterEffects(boolean isSuccessful, TileEntityArcaneDisenchanter tileEntity, float progression) {
         
         this.isSuccessful = isSuccessful;
         this.x = tileEntity.xCoord;
         this.y = tileEntity.yCoord;
         this.z = tileEntity.zCoord;
-        this.currentPercentage = currentPercentage;
+        this.progression = progression;
     }
     
     @Override
     public void handleClientMessage (PacketArcaneDisenchanterEffects packet, EntityPlayer player) {
         
-        if (packet.isSuccessful && packet.currentPercentage >= 1) {
+        if (packet.isSuccessful && packet.progression >= 1) {
             Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, 0.0d, 0.0d, 0.0d, 0.15);
             player.worldObj.playSound(packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, "", 0.5F, 1f, false);
         }
         else {
-            Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", packet.currentPercentage, packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, 0.0d, 0.0d, 0.0d, 0.15);
+//            Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", packet.progression, packet.x + 0.5f, packet.y + 1, packet.z + 0.5f, 0.0d, 0.0d, 0.0d, 0.15);
         }
     }
     
@@ -50,7 +50,7 @@ public class PacketArcaneDisenchanterEffects extends AbstractMessage<PacketArcan
         this.y = buf.readInt();
         this.z = buf.readInt();
         this.isSuccessful = buf.readBoolean();
-        this.currentPercentage = buf.readFloat();
+        this.progression = buf.readFloat();
     }
     
     @Override
@@ -60,6 +60,6 @@ public class PacketArcaneDisenchanterEffects extends AbstractMessage<PacketArcan
         buf.writeInt(y);
         buf.writeInt(z);
         buf.writeBoolean(isSuccessful);
-        buf.writeFloat(currentPercentage);
+        buf.writeFloat(progression);
     }
 }

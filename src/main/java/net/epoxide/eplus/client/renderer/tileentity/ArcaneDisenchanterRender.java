@@ -22,21 +22,21 @@ public class ArcaneDisenchanterRender extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
         GL11.glTranslated(x - 0.29, y, z - 0.29);
-        if (tileEntity.hasModifiers(0)) {
-            renderItemStack(tileEntity, tileEntity.getModifier(0).stack);
+        if (tileEntity.getFirstModifier() != null) {
+            renderItemStack(tileEntity, tileEntity.getFirstModifier().stack);
         }
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.29, y, z + 0.29);
-        if (tileEntity.hasModifiers(1)) {
-            renderItemStack(tileEntity, tileEntity.getModifier(1).stack);
+        if (tileEntity.getSecondModifier() != null) {
+            renderItemStack(tileEntity, tileEntity.getSecondModifier().stack);
         }
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
-        if (tileEntity.hasEnchantmentBook()) {
+        if (tileEntity.getEnchantmentBook() != null) {
             RenderUtil.renderBook(texture, tileEntity.tickCount, tileEntity.pageFlipPrev, tileEntity.pageFlip, tileEntity.rotation, tileEntity.prevRotation, tileEntity.foldAmount, tileEntity.prevFoldAmount, tickPartial);
         }
         GL11.glPopMatrix();

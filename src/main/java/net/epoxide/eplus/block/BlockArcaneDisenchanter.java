@@ -46,7 +46,7 @@ public class BlockArcaneDisenchanter extends BlockContainer {
             if (itemStack.getItem() == Items.enchanted_book && tileEntity.getOutput() == null) {
                 if (EnchantHelper.isItemEnchanted(itemStack)) {
                     
-                    if (!tileEntity.hasEnchantmentBook()) {
+                    if (tileEntity.getEnchantmentBook() == null) {
                         tileEntity.setEnchantmentBook(itemStack);
                         itemStack.stackSize--;
                         return false;
@@ -56,7 +56,7 @@ public class BlockArcaneDisenchanter extends BlockContainer {
                     }
                 }
             }
-            else if (tileEntity.hasEnchantmentBook() && tileEntity.getOutput() == null) {
+            else if (tileEntity.getEnchantmentBook()!=null && tileEntity.getOutput() == null) {
                 for (ScrollModifier modifier : ContentHandler.modifiers) {
                     if (modifier.stack.getItem() == itemStack.getItem()) {
                         if (tileEntity.addModifiers(modifier)) {
@@ -69,7 +69,7 @@ public class BlockArcaneDisenchanter extends BlockContainer {
             }
         }
         else if (player.isSneaking()) {
-            if (tileEntity.hasEnchantmentBook()) {
+            if (tileEntity.getEnchantmentBook()!=null) {
                 player.inventory.addItemStackToInventory(tileEntity.getEnchantmentBook());
                 tileEntity.setEnchantmentBook(null);
                 tileEntity.clearModifiers();
@@ -77,7 +77,7 @@ public class BlockArcaneDisenchanter extends BlockContainer {
             }
         }
         else if (player.getHeldItem() == null) {
-            if (tileEntity.hasScroll()) {
+            if (tileEntity.getOutput()!=null) {
                 player.inventory.addItemStackToInventory(tileEntity.getOutput());
                 tileEntity.setOutput(null);
                 return true;
@@ -93,9 +93,9 @@ public class BlockArcaneDisenchanter extends BlockContainer {
     }
     
     @Override
-    public void addCollisionBoxesToList (World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_) {
+    public void addCollisionBoxesToList (World world, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_) {
         
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-        super.addCollisionBoxesToList(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
+        super.addCollisionBoxesToList(world, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
     }
 }
