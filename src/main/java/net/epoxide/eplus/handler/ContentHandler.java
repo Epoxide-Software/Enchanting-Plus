@@ -8,9 +8,13 @@ import java.util.Map;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.potion.Buff;
+import net.darkhax.bookshelf.potion.BuffHelper;
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockArcaneInscriber;
 import net.epoxide.eplus.block.BlockEnchantTable;
+import net.epoxide.eplus.buff.BuffBookFall;
+import net.epoxide.eplus.item.ItemBookSummoner;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.item.ItemTableUpgrade;
 import net.epoxide.eplus.modifiers.ScrollModifier;
@@ -55,6 +59,9 @@ public class ContentHandler {
     
     public static Item tableUpgrade;
     public static Item scroll;
+    public static Item book;
+    
+    public static Buff bookBuff;
     
     /**
      * Initializes all of the blocks for the Enchanting Plus mod. Used to handle Block
@@ -83,6 +90,9 @@ public class ContentHandler {
         
         scroll = new ItemEnchantedScroll();
         GameRegistry.registerItem(scroll, "enchantment_scroll");
+        
+        book = new ItemBookSummoner();
+        GameRegistry.registerItem(book, "tomb_guardian");
     }
     
     /**
@@ -117,6 +127,15 @@ public class ContentHandler {
         addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_pearl), 0.05f, 0f, false));
         addScrollModifier(new ScrollModifier(new ItemStack(Blocks.glowstone), 0f, 0.05f, false));
         addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_eye), 0f, 0.1f, false));
+    }
+    
+    /**
+     * Used to initialize random things.
+     */
+    public static void initMisc () {
+        
+        bookBuff = new BuffBookFall();
+        BuffHelper.registerBuff(bookBuff);
     }
     
     /**

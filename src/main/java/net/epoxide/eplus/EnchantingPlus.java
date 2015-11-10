@@ -55,6 +55,7 @@ public class EnchantingPlus {
         ContentHandler.initItems();
         ContentHandler.initEnchantmentColors();
         ContentHandler.initModifiers();
+        ContentHandler.initMisc();
         
         proxy.registerRenderers();
     }
