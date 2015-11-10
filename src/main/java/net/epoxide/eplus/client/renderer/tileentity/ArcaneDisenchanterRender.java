@@ -1,7 +1,7 @@
 package net.epoxide.eplus.client.renderer.tileentity;
 
 import net.epoxide.eplus.lib.util.RenderUtil;
-import net.epoxide.eplus.tileentity.TileEntityArcaneDisenchanter;
+import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -18,7 +18,7 @@ public class ArcaneDisenchanterRender extends TileEntitySpecialRenderer {
     public static boolean graphicsCache;
     private ResourceLocation texture = new ResourceLocation("eplus:textures/entity/enchantingplus_book.png");
 
-    private void renderTileEntityArcaneDisenchaterAt(TileEntityArcaneDisenchanter tileEntity, double x, double y, double z, float tickPartial) {
+    private void renderTileEntityArcaneDisenchaterAt(TileEntityArcaneInscriber tileEntity, double x, double y, double z, float tickPartial) {
 
         GL11.glPushMatrix();
         GL11.glTranslated(x - 0.29, y, z - 0.29);
@@ -34,12 +34,15 @@ public class ArcaneDisenchanterRender extends TileEntitySpecialRenderer {
         }
         GL11.glPopMatrix();
 
-        GL11.glPushMatrix();
-        GL11.glTranslated(x, y, z);
+
         if (tileEntity.getEnchantmentBook() != null) {
+            GL11.glPushMatrix();
+            GL11.glTranslated(x, y, z);
+            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             RenderUtil.renderBook(texture, tileEntity.tickCount, tileEntity.pageFlipPrev, tileEntity.pageFlip, tileEntity.rotation, tileEntity.prevRotation, tileEntity.foldAmount, tileEntity.prevFoldAmount, tickPartial);
-        }
-        GL11.glPopMatrix();
+            GL11.glPopMatrix();
+       }
+
 
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
@@ -85,7 +88,7 @@ public class ArcaneDisenchanterRender extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float tickPartial) {
 
-        renderTileEntityArcaneDisenchaterAt((TileEntityArcaneDisenchanter) tileEntity, x, y, z, tickPartial);
+        renderTileEntityArcaneDisenchaterAt((TileEntityArcaneInscriber) tileEntity, x, y, z, tickPartial);
     }
 
 }

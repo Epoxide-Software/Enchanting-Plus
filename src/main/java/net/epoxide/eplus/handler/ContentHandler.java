@@ -9,12 +9,12 @@ import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.block.BlockArcaneDisenchanter;
+import net.epoxide.eplus.block.BlockArcaneInscriber;
 import net.epoxide.eplus.block.BlockEnchantTable;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.item.ItemTableUpgrade;
 import net.epoxide.eplus.modifiers.ScrollModifier;
-import net.epoxide.eplus.tileentity.TileEntityArcaneDisenchanter;
+import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -51,7 +51,7 @@ public class ContentHandler {
     public static List<ScrollModifier> modifiers = new ArrayList<ScrollModifier>();
     
     public static Block eplusTable;
-    public static Block eplusArcaneDisenchanter;
+    public static Block eplusArcaneInscriber;
     
     public static Item tableUpgrade;
     public static Item scroll;
@@ -66,9 +66,9 @@ public class ContentHandler {
         GameRegistry.registerBlock(eplusTable, "advancedEnchantmentTable");
         GameRegistry.registerTileEntity(TileEntityEnchantTable.class, "eplus:advancedEnchantmentTable");
         
-        eplusArcaneDisenchanter = new BlockArcaneDisenchanter();
-        GameRegistry.registerBlock(eplusArcaneDisenchanter, "arcaneDisenchanter");
-        GameRegistry.registerTileEntity(TileEntityArcaneDisenchanter.class, "eplus:arcaneDisenchanter");
+        eplusArcaneInscriber = new BlockArcaneInscriber();
+        GameRegistry.registerBlock(eplusArcaneInscriber, "arcaneInscriber");
+        GameRegistry.registerTileEntity(TileEntityArcaneInscriber.class, "eplus:arcaneInscriber");
     }
     
     /**

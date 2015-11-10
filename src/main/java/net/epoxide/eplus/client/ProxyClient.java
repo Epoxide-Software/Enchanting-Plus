@@ -4,16 +4,15 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import net.epoxide.eplus.client.renderer.tileentity.ArcaneDisenchanterRender;
 import net.epoxide.eplus.client.renderer.tileentity.EnchantmentTableRender;
 import net.epoxide.eplus.common.ProxyCommon;
-import net.epoxide.eplus.tileentity.TileEntityArcaneDisenchanter;
+import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class ProxyClient extends ProxyCommon {
-    
+
     @Override
     public void registerRenderers () {
-        
+
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnchantTable.class, new EnchantmentTableRender());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArcaneDisenchanter.class, new ArcaneDisenchanterRender());
-        
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArcaneInscriber.class, new ArcaneDisenchanterRender());
     }
 }

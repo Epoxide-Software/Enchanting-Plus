@@ -44,7 +44,7 @@ public class EnchantingPlus {
         Utilities.registerMessage(network, PacketGui.class, 1, Side.SERVER);
         Utilities.registerMessage(network, PacketEnchant.class, 2, Side.SERVER);
         Utilities.registerMessage(network, PacketRepair.class, 3, Side.SERVER);
-        Utilities.registerMessage(network, PacketArcaneDisenchanterEffects.class, 4, Side.CLIENT);
+        Utilities.registerMessage(network, PacketArcaneInscriberEffects.class, 4, Side.CLIENT);
         
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         

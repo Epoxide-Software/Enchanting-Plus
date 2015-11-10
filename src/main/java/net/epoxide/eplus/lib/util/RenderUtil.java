@@ -16,7 +16,6 @@ public class RenderUtil {
     public static void renderBook(ResourceLocation location, float tickCount, float pageFlipPrev, float pageFlip, float rotation, float prevRotation, float foldAmount, float prevFoldAmount, float tickPartial) {
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(0.5F, 0.75F, 0.5F);
         float f1 = tickCount + tickPartial;
         GL11.glTranslatef(0.0F, 0.1F + MathHelper.sin(f1 * 0.1F) * 0.01F, 0.0F);
         float f2;

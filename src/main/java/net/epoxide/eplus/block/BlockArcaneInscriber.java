@@ -8,7 +8,7 @@ import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.inventory.EnchantHelper;
 import net.epoxide.eplus.modifiers.ScrollModifier;
-import net.epoxide.eplus.tileentity.TileEntityArcaneDisenchanter;
+import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -19,9 +19,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-public class BlockArcaneDisenchanter extends BlockContainer {
+public class BlockArcaneInscriber extends BlockContainer {
     
-    public BlockArcaneDisenchanter() {
+    public BlockArcaneInscriber () {
         
         super(Material.iron);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
@@ -40,7 +40,7 @@ public class BlockArcaneDisenchanter extends BlockContainer {
     public boolean onBlockActivated (World world, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
         
         ItemStack itemStack = player.getHeldItem();
-        TileEntityArcaneDisenchanter tileEntity = (TileEntityArcaneDisenchanter) world.getTileEntity(x, y, z);
+        TileEntityArcaneInscriber tileEntity = (TileEntityArcaneInscriber) world.getTileEntity(x, y, z);
         
         if (itemStack != null) {
             if (itemStack.getItem() == Items.enchanted_book && tileEntity.getOutput() == null) {
@@ -89,7 +89,7 @@ public class BlockArcaneDisenchanter extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity (World world, int meta) {
         
-        return new TileEntityArcaneDisenchanter();
+        return new TileEntityArcaneInscriber();
     }
     
     @Override
