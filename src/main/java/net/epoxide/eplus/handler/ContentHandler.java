@@ -13,13 +13,16 @@ import net.darkhax.bookshelf.potion.BuffHelper;
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockArcaneInscriber;
 import net.epoxide.eplus.block.BlockEnchantTable;
+import net.epoxide.eplus.block.BlockEnchantmentBook;
 import net.epoxide.eplus.buff.BuffBookFall;
+import net.epoxide.eplus.item.ItemBlockEnchantmentBook;
 import net.epoxide.eplus.item.ItemBookSummoner;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.item.ItemTableUpgrade;
 import net.epoxide.eplus.modifiers.ScrollModifier;
 import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
+import net.epoxide.eplus.tileentity.TileEntityEnchantmentBook;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -56,6 +59,7 @@ public class ContentHandler {
     
     public static Block eplusTable;
     public static Block eplusArcaneInscriber;
+    public static Block blockEnchantmentBook;
     
     public static Item tableUpgrade;
     public static Item scroll;
@@ -74,8 +78,13 @@ public class ContentHandler {
         GameRegistry.registerTileEntity(TileEntityEnchantTable.class, "eplus:advancedEnchantmentTable");
         
         eplusArcaneInscriber = new BlockArcaneInscriber();
-        GameRegistry.registerBlock(eplusArcaneInscriber, "arcaneInscriber");
-        GameRegistry.registerTileEntity(TileEntityArcaneInscriber.class, "eplus:arcaneInscriber");
+        GameRegistry.registerBlock(eplusArcaneInscriber, "arcane_inscriber");
+        GameRegistry.registerTileEntity(TileEntityArcaneInscriber.class, "eplus:arcane_inscriber");
+        
+        blockEnchantmentBook = new BlockEnchantmentBook();
+        GameRegistry.registerBlock(blockEnchantmentBook, ItemBlockEnchantmentBook.class, "enchantment_book");
+        GameRegistry.registerTileEntity(TileEntityEnchantmentBook.class, "eplus:enchantment_book");
+        GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[]{" g ", "gbg", " g ", Character.valueOf('g'), Items.glowstone_dust, Character.valueOf('b'), Items.enchanted_book});
     }
     
     /**

@@ -4,10 +4,12 @@
 item.tableUpgrade.name=Table Upgrade
 item.eplus.scroll.name=Enchanted Scroll
 item.eplus.book.name=Tome: Enchanted Guardian
+item.eplus.enchantmentBook.name=Enchanted Book
 
 #Block Names
 tile.advancedEnchantmentTable.name=Advanced Enchantment Table
 tile.arcaneInscriber.name=Arcane Inscriber
+tile.eplus.enchantmentbook.name=Enchanted Book
 
 #Tooltips
 tooltip.eplus.enchantment=Enchantment
@@ -27,8 +29,6 @@ tooltip.eplus.unlimited=Unlimited
 chat.eplus.scrollunlock=Enchantment unlocked
 chat.eplus.scrollunlock.failed=You have already learned this.
 
-#Potions
-potion.eplus.book.name=Guardian Tome
-
 #Misc
 itemGroup.eplus=Enchanting Plus
+potion.eplus.book.name=Guardian Tome
