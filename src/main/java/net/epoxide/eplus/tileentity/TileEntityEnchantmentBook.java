@@ -21,7 +21,7 @@ public class TileEntityEnchantmentBook extends TileEntity {
     private static Random random = new Random();
     
     public TileEntityEnchantmentBook() {
-        
+    
     }
     
     @Override

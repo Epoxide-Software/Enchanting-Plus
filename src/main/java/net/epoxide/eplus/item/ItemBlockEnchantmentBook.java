@@ -12,7 +12,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ItemBlockEnchantmentBook extends ItemBlock {
-
+    
     public ItemBlockEnchantmentBook(Block block) {
         
         super(block);
@@ -22,7 +22,7 @@ public class ItemBlockEnchantmentBook extends ItemBlock {
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List itemList) {
+    public void getSubItems (Item item, CreativeTabs tab, List itemList) {
         
         itemList.add(new ItemStack(item));
     }

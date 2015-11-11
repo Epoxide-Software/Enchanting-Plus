@@ -84,7 +84,7 @@ public class ContentHandler {
         blockEnchantmentBook = new BlockEnchantmentBook();
         GameRegistry.registerBlock(blockEnchantmentBook, ItemBlockEnchantmentBook.class, "enchantment_book");
         GameRegistry.registerTileEntity(TileEntityEnchantmentBook.class, "eplus:enchantment_book");
-        GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[]{" g ", "gbg", " g ", Character.valueOf('g'), Items.glowstone_dust, Character.valueOf('b'), Items.enchanted_book});
+        GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[] { " g ", "gbg", " g ", Character.valueOf('g'), Items.glowstone_dust, Character.valueOf('b'), Items.enchanted_book });
     }
     
     /**
