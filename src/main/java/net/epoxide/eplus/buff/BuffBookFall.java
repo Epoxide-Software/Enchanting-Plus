@@ -1,5 +1,9 @@
 package net.epoxide.eplus.buff;
 
+import java.awt.Color;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,27 +17,24 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
 
 public class BuffBookFall extends Buff {
-
+    
     private static ResourceLocation texture = new ResourceLocation("eplus:textures/entity/enchantingplus_book.png");
     private static ResourceLocation icon = new ResourceLocation("eplus:textures/buffs/enchanted_guardian.png");
-
-    public BuffBookFall () {
-
+    
+    public BuffBookFall() {
+        
         super("eplus.book", false, new Color(128, 0, 128).getRGB(), icon);
         MinecraftForge.EVENT_BUS.register(this);
     }
-
+    
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onPlayerRender (RenderLivingEvent.Specials.Pre event) {
-
+        
         if (shouldUseEffect(event.entity)) {
-
+            
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -45,27 +46,27 @@ public class BuffBookFall extends Buff {
             GL11.glPopMatrix();
         }
     }
-
+    
     @SubscribeEvent
     public void onPlayerUpdate (LivingUpdateEvent event) {
-
+        
         if (shouldUseEffect(event.entityLiving) && event.entityLiving.fallDistance > 2) {
-
+            
             event.entityLiving.motionY *= 0.6D;
             event.entityLiving.fallDistance = 0;
         }
     }
-
+    
     public boolean shouldUseEffect (EntityLivingBase entity) {
-
+        
         if (BuffHelper.hasBuff(entity, ContentHandler.bookBuff) && !entity.onGround) {
-
+            
             if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)
                 return true;
-
+                
             return (entity.motionY < 0.0d);
         }
-
+        
         return false;
     }
 }

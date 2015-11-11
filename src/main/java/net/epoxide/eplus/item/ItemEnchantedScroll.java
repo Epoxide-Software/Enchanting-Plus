@@ -125,7 +125,7 @@ public class ItemEnchantedScroll extends Item {
     @Override
     public void onUsingTick (ItemStack stack, EntityPlayer player, int count) {
         
-        if ((count%4)==0) {
+        if ((count % 4) == 0) {
             
             float percent = 1.0f - (float) ((float) count / (float) this.getMaxItemUseDuration(stack));
             Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", percent, player.posX, player.posY, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);

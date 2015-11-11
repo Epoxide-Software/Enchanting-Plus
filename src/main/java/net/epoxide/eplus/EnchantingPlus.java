@@ -46,7 +46,7 @@ public class EnchantingPlus {
         Utilities.registerMessage(network, PacketRepair.class, 3, Side.SERVER);
         Utilities.registerMessage(network, PacketArcaneInscriberEffects.class, 4, Side.CLIENT);
         Utilities.registerMessage(network, PacketArcaneInscriber.class, 6, Side.CLIENT);
-
+        
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
         EPlusConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());

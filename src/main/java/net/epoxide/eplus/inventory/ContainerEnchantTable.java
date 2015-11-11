@@ -358,7 +358,7 @@ public class ContainerEnchantTable extends Container {
     
     private void addEnchantFor (ItemStack itemStack, HashMap<Integer, Integer> temp, Enchantment obj) {
         
-        if (EnchantHelper.isEnchantmentValid(obj, player) && !ContentHandler.isBlacklisted(obj) && (itemStack.getItem()== Items.book || itemStack.getItem() == Items.enchanted_book || obj.canApplyAtEnchantingTable(itemStack))) {
+        if (EnchantHelper.isEnchantmentValid(obj, player) && !ContentHandler.isBlacklisted(obj) && (itemStack.getItem() == Items.book || itemStack.getItem() == Items.enchanted_book || obj.canApplyAtEnchantingTable(itemStack))) {
             temp.put(obj.effectId, 0);
         }
     }
