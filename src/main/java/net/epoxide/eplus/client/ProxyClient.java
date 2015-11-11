@@ -2,6 +2,7 @@ package net.epoxide.eplus.client;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import net.epoxide.eplus.client.renderer.item.RenderItemEnchantedBook;
+import net.epoxide.eplus.client.renderer.item.RenderItemEnchantedTome;
 import net.epoxide.eplus.client.renderer.tileentity.ArcaneDisenchanterRender;
 import net.epoxide.eplus.client.renderer.tileentity.EnchantmentBookRenderer;
 import net.epoxide.eplus.client.renderer.tileentity.EnchantmentTableRender;
@@ -22,5 +23,6 @@ public class ProxyClient extends ProxyCommon {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArcaneInscriber.class, new ArcaneDisenchanterRender());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnchantmentBook.class, new EnchantmentBookRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ContentHandler.blockEnchantmentBook), new RenderItemEnchantedBook());
+        MinecraftForgeClient.registerItemRenderer(ContentHandler.book, new RenderItemEnchantedTome());
     }
 }
