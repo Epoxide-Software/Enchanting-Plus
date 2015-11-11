@@ -25,7 +25,7 @@ public class ItemBookSummoner extends Item {
         this.setMaxStackSize(1);
         this.setHasSubtypes(true);
         this.setCreativeTab(EnchantingPlus.tabEplus);
-        this.setTextureName("eplus:book");
+        this.setTextureName("minecraft:book");
         this.setUnlocalizedName("eplus.book");
     }
     
