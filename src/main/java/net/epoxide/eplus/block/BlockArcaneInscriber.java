@@ -27,6 +27,7 @@ public class BlockArcaneInscriber extends BlockContainer {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
         this.setCreativeTab(EnchantingPlus.tabEplus);
         this.setBlockName("arcaneInscriber");
+        this.setBlockTextureName("minecraft:bookshelf");
     }
     
     @SideOnly(Side.CLIENT)
