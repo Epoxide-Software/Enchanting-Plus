@@ -28,6 +28,13 @@ public class RenderItemEnchantedBook implements IItemRenderer {
         
         GL11.glPushMatrix();
         GL11.glScalef(2f, 2, 2f);
+        
+        if (type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+            
+            GL11.glTranslatef(0.8f, 0.15f, 0f);
+            GL11.glRotatef(90f, -1f, 1f, 1f);
+        }
+        
         RenderUtil.renderBook(texture, 0f, 1f, 1f, 1f, 1f, 1f, 1f, 0f);
         GL11.glPopMatrix();
     }
