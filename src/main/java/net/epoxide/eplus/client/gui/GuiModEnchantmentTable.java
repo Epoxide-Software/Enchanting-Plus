@@ -51,13 +51,13 @@ public class GuiModEnchantmentTable extends GuiContainer {
         
         super(new ContainerEnchantTable(inventory, world, x, y, z, tileEntity));
         
-        this.player = inventory.player;       
-        this.container = (ContainerEnchantTable) inventorySlots;        
+        this.player = inventory.player;
+        this.container = (ContainerEnchantTable) inventorySlots;
         this.x = x;
         this.y = y;
         this.z = z;
         this.xSize = 235;
-        this.ySize = 182;       
+        this.ySize = 182;
         this.zLevel = -1;
     }
     
@@ -110,7 +110,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
         int yPos = y;
         for (Integer obj : map.keySet()) {
             
-            temp.add(new GuiEnchantmentLabel(container, obj, map.get(obj), x, yPos));         
+            temp.add(new GuiEnchantmentLabel(container, obj, map.get(obj), x, yPos));
             i++;
             yPos = y + i * 18;
         }
@@ -337,7 +337,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
         for (final GuiEnchantmentLabel label : enchantmentArray)
             if (label.enchantmentLevel != label.currentLevel)
                 return true;
-        
+                
         return false;
     }
     
@@ -364,7 +364,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
         
         for (GuiEnchantmentLabel label : enchantmentArray)
             label.locked = false;
-        
+            
         for (GuiEnchantmentLabel mainLabel : enchantmentArray)
             if (mainLabel.enchantmentLevel != 0)
                 for (final GuiEnchantmentLabel otherLabel : enchantmentArray)
@@ -377,7 +377,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
         if (!enchantmentArray.isEmpty() && levelChanged())
             for (final GuiEnchantmentLabel label : enchantmentArray)
                 handleChangedEnchantment(enchantments, label);
-        
+                
         else if (EPlusConfigurationHandler.allowRepairs && !levelChanged()) {
             
             totalCost += container.repairCostMax();
@@ -439,8 +439,8 @@ public class GuiModEnchantmentTable extends GuiContainer {
         
         if (this.enchantments != enchantments) {
             
-            this.enchantments = enchantments;           
-            enchantmentArray = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);          
+            this.enchantments = enchantments;
+            enchantmentArray = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
             sliderIndex = enchantingPages = 0;
             clicked = sliding = false;
             return this.enchantments;

@@ -80,7 +80,7 @@ public class ContentHandler {
         eplusArcaneInscriber = new BlockArcaneInscriber();
         GameRegistry.registerBlock(eplusArcaneInscriber, "arcane_inscriber");
         GameRegistry.registerTileEntity(TileEntityArcaneInscriber.class, "eplus:arcane_inscriber");
-        GameRegistry.addRecipe(new ItemStack(eplusArcaneInscriber), new Object[] {"fpi", "bcb", Character.valueOf('f'), Items.feather, Character.valueOf('p'), Items.paper, Character.valueOf('i'), new ItemStack(Items.dye, 1, 0), Character.valueOf('b'), Blocks.bookshelf, Character.valueOf('c'), Blocks.crafting_table});
+        GameRegistry.addRecipe(new ItemStack(eplusArcaneInscriber), new Object[] { "fpi", "bcb", Character.valueOf('f'), Items.feather, Character.valueOf('p'), Items.paper, Character.valueOf('i'), new ItemStack(Items.dye, 1, 0), Character.valueOf('b'), Blocks.bookshelf, Character.valueOf('c'), Blocks.crafting_table });
         
         blockEnchantmentBook = new BlockEnchantmentBook();
         GameRegistry.registerBlock(blockEnchantmentBook, ItemBlockEnchantmentBook.class, "enchantment_book");
