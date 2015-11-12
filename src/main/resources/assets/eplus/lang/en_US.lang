@@ -28,6 +28,8 @@ tooltip.eplus.unlimited=Unlimited
 #Chat
 chat.eplus.scrollunlock=Enchantment unlocked
 chat.eplus.scrollunlock.failed=You have already learned this.
+chat.eplus.morebooks=Not enough bookcases, Requires
+chat.eplus.morelevels=Not enough levels, Requires
 
 #Misc
 itemGroup.eplus=Enchanting Plus
