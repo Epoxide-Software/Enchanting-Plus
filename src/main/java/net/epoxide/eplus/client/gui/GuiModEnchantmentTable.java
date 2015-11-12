@@ -67,11 +67,11 @@ public class GuiModEnchantmentTable extends GuiContainer {
         final HashMap<Integer, Integer> enchants = new HashMap<Integer, Integer>();
         final HashMap<Integer, Integer> levels = new HashMap<Integer, Integer>();
         
-        for (final GuiEnchantmentLabel item : enchantmentArray) {
-            final Integer id = enchantments.get(item.enchantment.effectId);
-            if (item.enchantmentLevel != id && !item.locked) {
-                enchants.put(item.enchantment.effectId, item.enchantmentLevel);
-                levels.put(item.enchantment.effectId, item.currentLevel);
+        for (final GuiEnchantmentLabel label : enchantmentArray) {
+            final Integer id = enchantments.get(label.enchantment.effectId);
+            if (label.enchantmentLevel != id && !label.locked) {
+                enchants.put(label.enchantment.effectId, label.enchantmentLevel);
+                levels.put(label.enchantment.effectId, label.currentLevel);
             }
         }
         
@@ -129,14 +129,14 @@ public class GuiModEnchantmentTable extends GuiContainer {
         mc.renderEngine.bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         
-        for (final GuiEnchantmentLabel item : enchantmentArray) {
-            if (item.yPos < guiTop + 15 || item.yPos >= guiTop + 87) {
-                item.show(false);
+        for (final GuiEnchantmentLabel label : enchantmentArray) {
+            if (label.yPos < guiTop + 15 || label.yPos >= guiTop + 87) {
+                label.show(false);
             }
             else {
-                item.show(true);
+                label.show(true);
             }
-            item.draw(fontRendererObj);
+            label.draw(fontRendererObj);
         }
         
         final int adjustedMouseX = mouseX - guiLeft;
@@ -163,9 +163,9 @@ public class GuiModEnchantmentTable extends GuiContainer {
         drawTexturedModalRect(guiLeft + guiOffset + 180, guiTop + 16 + (int) sliderY, 0, 182, 12, 15);
         
         if (!clicked && flag) {
-            for (final GuiEnchantmentLabel item : enchantmentArray) {
-                if (getItemFromPos(mouseX, mouseY) == item && !item.locked) {
-                    item.dragging = true;
+            for (final GuiEnchantmentLabel label : enchantmentArray) {
+                if (getItemFromPos(mouseX, mouseY) == label && !label.locked) {
+                    label.dragging = true;
                 }
             }
             if (adjustedMouseX <= 191 + guiOffset && adjustedMouseX >= 180 + guiOffset) {
@@ -175,16 +175,16 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
         }
         
-        for (final GuiEnchantmentLabel item : enchantmentArray) {
-            if (item.dragging && getItemFromPos(mouseX, mouseY) != item) {
-                item.dragging = false;
+        for (final GuiEnchantmentLabel label : enchantmentArray) {
+            if (label.dragging && getItemFromPos(mouseX, mouseY) != label) {
+                label.dragging = false;
             }
         }
         
         if (!flag) {
-            for (final GuiEnchantmentLabel item : enchantmentArray) {
-                if (getItemFromPos(mouseX, mouseY) == item) {
-                    item.dragging = false;
+            for (final GuiEnchantmentLabel label : enchantmentArray) {
+                if (getItemFromPos(mouseX, mouseY) == label) {
+                    label.dragging = false;
                 }
             }
             sliding = false;
@@ -192,9 +192,9 @@ public class GuiModEnchantmentTable extends GuiContainer {
         
         clicked = flag;
         
-        for (final GuiEnchantmentLabel item : enchantmentArray) {
-            if (item.dragging) {
-                item.scroll(adjustedMouseX - 36, guiOffset + guiLeft + 10);
+        for (final GuiEnchantmentLabel label : enchantmentArray) {
+            if (label.dragging) {
+                label.scroll(adjustedMouseX - 36, guiOffset + guiLeft + 10);
             }
         }
     }
@@ -283,12 +283,12 @@ public class GuiModEnchantmentTable extends GuiContainer {
             return null;
         }
         
-        for (final GuiEnchantmentLabel item : enchantmentArray) {
-            if (!item.show) {
+        for (final GuiEnchantmentLabel label : enchantmentArray) {
+            if (!label.show) {
                 continue;
             }
-            if (y >= item.yPos && y <= item.yPos + item.height) {
-                return item;
+            if (y >= label.yPos && y <= label.yPos + label.height) {
+                return label;
             }
         }
         return null;
@@ -382,24 +382,24 @@ public class GuiModEnchantmentTable extends GuiContainer {
             
             totalCost += container.repairCostMax();
             
-            for (final GuiEnchantmentLabel item : enchantmentArray)
-                item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);
+            for (final GuiEnchantmentLabel label : enchantmentArray)
+                label.yPos = label.startingYPos - (int) (18 * 4 * sliderIndex);
         }
     }
     
-    private void handleChangedEnchantment (Map<Integer, Integer> enchantments, GuiEnchantmentLabel item) {
+    private void handleChangedEnchantment (Map<Integer, Integer> enchantments, GuiEnchantmentLabel label) {
         
-        item.yPos = item.startingYPos - (int) (18 * 4 * sliderIndex);
+        label.yPos = label.startingYPos - (int) (18 * 4 * sliderIndex);
         
-        final Integer level = enchantments.get(item.enchantment.effectId);
-        if (!item.locked && item.enchantmentLevel > level) {
-            int temp = totalCost + container.enchantmentCost(item.enchantment, item.enchantmentLevel, level);
+        final Integer level = enchantments.get(label.enchantment.effectId);
+        if (!label.locked && label.enchantmentLevel > level) {
+            int temp = totalCost + container.enchantmentCost(label.enchantment, label.enchantmentLevel, level);
             
             if (!container.canPurchase(player, temp)) {
-                while (item.enchantmentLevel > 0) {
-                    item.dragging = false;
-                    item.enchantmentLevel--;
-                    temp = totalCost + container.enchantmentCost(item.enchantment, item.enchantmentLevel, level);
+                while (label.enchantmentLevel > 0) {
+                    label.dragging = false;
+                    label.enchantmentLevel--;
+                    temp = totalCost + container.enchantmentCost(label.enchantment, label.enchantmentLevel, level);
                     if (container.canPurchase(player, temp)) {
                         break;
                     }
@@ -408,9 +408,9 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
             totalCost = temp;
         }
-        else if (item.enchantmentLevel < level && !item.locked) {
-            if (EnchantHelper.hasRestriction(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions", 10), item.enchantment.effectId, item.enchantmentLevel) || EPlusConfigurationHandler.allowDisenUnowned) {
-                totalCost += container.disenchantmentCost(item.enchantment, item.enchantmentLevel, level);
+        else if (label.enchantmentLevel < level && !label.locked) {
+            if (EnchantHelper.hasRestriction(container.tableInventory.getStackInSlot(0).getTagCompound().getTagList("restrictions", 10), label.enchantment.effectId, label.enchantmentLevel) || EPlusConfigurationHandler.allowDisenUnowned) {
+                totalCost += container.disenchantmentCost(label.enchantment, label.enchantmentLevel, level);
             }
             else {
                 totalCost = 0;
@@ -423,11 +423,11 @@ public class GuiModEnchantmentTable extends GuiContainer {
         if (dirty) {
             final ArrayList<GuiEnchantmentLabel> temp = convertMapToGuiItems(enchantments, 35 + guiOffset + guiLeft, 15 + guiTop);
             
-            for (final GuiEnchantmentLabel item : enchantmentArray) {
+            for (final GuiEnchantmentLabel label : enchantmentArray) {
                 for (final GuiEnchantmentLabel tempItem : temp) {
-                    if (item.enchantment == tempItem.enchantment) {
-                        item.startingXPos = item.xPos = tempItem.xPos;
-                        item.startingYPos = item.yPos = tempItem.yPos;
+                    if (label.enchantment == tempItem.enchantment) {
+                        label.startingXPos = label.xPos = tempItem.xPos;
+                        label.startingYPos = label.yPos = tempItem.yPos;
                     }
                 }
             }
