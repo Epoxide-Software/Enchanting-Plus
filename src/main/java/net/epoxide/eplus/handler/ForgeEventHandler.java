@@ -1,6 +1,7 @@
 package net.epoxide.eplus.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.darkhax.bookshelf.event.ItemEnchantedEvent;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.epoxide.eplus.common.PlayerProperties;
 import net.epoxide.eplus.modifiers.ScrollModifier;
@@ -13,6 +14,13 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class ForgeEventHandler {
+    
+    @SubscribeEvent
+    public void onItemEnchanted (ItemEnchantedEvent event) {
+        
+        if (ItemStackUtils.isValidStack(event.stack) && !event.isCanceled())
+            event.stack.stackTagCompound.setString("enchantedOwnerUUID", event.entityPlayer.getUniqueID().toString());
+    }
     
     @SubscribeEvent
     public void onTooltip (ItemTooltipEvent event) {
