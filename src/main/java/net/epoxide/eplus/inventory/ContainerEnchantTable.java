@@ -5,6 +5,7 @@ import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.handler.EPlusConfigurationHandler;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,6 +23,7 @@ import net.minecraftforge.common.ForgeHooks;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ContainerEnchantTable extends Container {
@@ -170,7 +172,7 @@ public class ContainerEnchantTable extends Container {
         return Math.min(adjustedCost, -enchantmentCost);
     }
 
-    public void enchant (EntityPlayer player, HashMap<Integer, Integer> map, HashMap<Integer, Integer> levels, int cost) throws Exception {
+    public void enchant (EntityPlayer player, HashMap<Integer, Integer> map, int cost) throws Exception {
 
         final ItemStack itemstack = tableInventory.getStackInSlot(0);
         final ArrayList<Integer> temp = new ArrayList<Integer>();
@@ -215,7 +217,11 @@ public class ContainerEnchantTable extends Container {
         }
 
         if (canPurchase(player, serverCost)) {
-            ItemStack itemStack = EnchantHelper.setEnchantments(map, itemstack, levels, player);
+            List<EnchantmentData> enchantmentDataList = new ArrayList<EnchantmentData>();
+            for (Integer i : map.keySet())
+                enchantmentDataList.add(new EnchantmentData(i, map.get(i)));
+
+            ItemStack itemStack = EnchantHelper.setEnchantments(enchantmentDataList, itemstack, player, cost);
             tableInventory.setInventorySlotContents(0, itemStack);
             if (!player.capabilities.isCreativeMode)
                 player.addExperienceLevel(-cost);
@@ -303,40 +309,45 @@ public class ContainerEnchantTable extends Container {
         final HashMap<Integer, Integer> temp = new LinkedHashMap<Integer, Integer>();
         final HashMap<Integer, Integer> temp2 = new LinkedHashMap<Integer, Integer>();
 
-        if (itemStack != null && !ContentHandler.isBlacklisted(itemStack.getItem())) {
-            if (EnchantHelper.isItemEnchantable(itemStack)) {
-                addEnchantsFor(itemStack, temp);
-            }
-            else if (EnchantHelper.isItemEnchanted(itemStack) && EnchantHelper.isNewItemEnchantable(itemStack.getItem())) {
-                temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
+        if (itemStack == null || ContentHandler.isBlacklisted(itemStack.getItem())) {
+            enchantments = temp;
+            return;
+        }
 
-                for (final Enchantment obj : Enchantment.enchantmentsList) {
-                    if (obj == null)
+        if ((EPlusConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(itemStack) && EnchantHelper.isItemEnchanted(itemStack)) || (EPlusConfigurationHandler.secureItems && EnchantHelper.hasRestriction(itemStack) && !EnchantHelper.restrictionMatches(itemStack, player))) {
+            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.eplus.notowner")));
+            return;
+        }
+
+        if (EnchantHelper.isItemEnchantable(itemStack)) {
+            addEnchantsFor(itemStack, temp);
+        }
+        else if (EnchantHelper.isItemEnchanted(itemStack) && EnchantHelper.isNewItemEnchantable(itemStack.getItem())) {
+            temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
+
+            for (final Enchantment obj : Enchantment.enchantmentsList) {
+                if (obj == null)
+                    continue;
+
+                boolean add = true;
+                for (final Integer enc : temp.keySet()) {
+
+                    final Enchantment enchantment = Utilities.getEnchantment(enc);
+                    if (enchantment == null)
                         continue;
 
-                    boolean add = true;
-                    for (final Integer enc : temp.keySet()) {
-
-                        final Enchantment enchantment = Utilities.getEnchantment(enc);
-                        if (enchantment == null)
-                            continue;
-
-                        if (!EnchantHelper.isEnchantmentsCompatible(enchantment, obj)) {
-                            add = false;
-                        }
-                    }
-                    if (add) {
-                        addEnchantFor(itemStack, temp2, obj);
+                    if (!EnchantHelper.isEnchantmentsCompatible(enchantment, obj)) {
+                        add = false;
                     }
                 }
-                temp.putAll(temp2);
+                if (add) {
+                    addEnchantFor(itemStack, temp2, obj);
+                }
             }
-
-            if (enchantments != temp) {
-                enchantments = temp;
-            }
+            temp.putAll(temp2);
         }
-        else {
+
+        if (enchantments != temp) {
             enchantments = temp;
         }
     }

@@ -19,7 +19,7 @@ public class ForgeEventHandler {
     public void onItemEnchanted (ItemEnchantedEvent event) {
         
         if (ItemStackUtils.isValidStack(event.stack) && !event.isCanceled())
-            event.stack.stackTagCompound.setString("enchantedOwnerUUID", event.entityPlayer.getUniqueID().toString());
+            ItemStackUtils.prepareDataTag(event.stack).setString("enchantedOwnerUUID", event.entityPlayer.getUniqueID().toString());
     }
     
     @SubscribeEvent

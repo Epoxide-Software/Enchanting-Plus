@@ -30,6 +30,7 @@ chat.eplus.scrollunlock=Enchantment unlocked
 chat.eplus.scrollunlock.failed=You have already learned this.
 chat.eplus.morebooks=Not enough bookcases, Requires
 chat.eplus.morelevels=Not enough levels, Requires
+chat.eplus.notowner=You are not the owner of this item.
 
 #Misc
 itemGroup.eplus=Enchanting Plus

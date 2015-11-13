@@ -35,7 +35,7 @@ public class EPlusConfigurationHandler {
         allowDamagedEnchanting = config.getBoolean("allowDamagedEnchanting", settings, allowDamagedEnchanting, "If this is true, players will be able to enchant items which are not at full durability.");
         allowModifierTooltips = config.getBoolean("allowModifierTooltips", settings, allowModifierTooltips, "If true, special information will be written to the Scroll Modifier item tooltips.");
         minimumBookshelfs = config.getInt("minBookshelfs", settings, minimumBookshelfs, 0, 24, "The lowest number of bookshelfs required for the table to function properly.");
-        secureItems = config.getBoolean("secureItems", settings, secureItems, "If enabled, players will only be able to enchant enchanted items if they inchanted them first.");
+        secureItems = config.getBoolean("secureItems", settings, secureItems, "If enabled, players will only be able to enchant enchanted items if they enchanted them first.");
         allowUnownedModifications = config.getBoolean("allowUnownedModifications", settings, allowUnownedModifications, "If enabled, players will be able to modify items which are not currently owned by any other player. IE: Dungeon Loot");
         
         if (config.hasChanged())
