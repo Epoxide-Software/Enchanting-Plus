@@ -60,6 +60,11 @@ public class ContentHandler {
      */
     public static List<ScrollModifier> modifiers = new ArrayList<ScrollModifier>();
     
+    /**
+     * An implementation of ChestGenHooks which specifically handles our villager chest.
+     */
+    public static ChestGenHooks eplusChest = new ChestGenHooks("EplusChest", new WeightedRandomChestContent[0], 3, 7);
+    
     public static Block eplusTable;
     public static Block eplusArcaneInscriber;
     public static Block blockEnchantmentBook;
@@ -149,6 +154,7 @@ public class ContentHandler {
         
         bookBuff = new BuffBookFall();
         BuffHelper.registerBuff(bookBuff);
+        new VillagerHandler();
     }
     
     /**
@@ -156,10 +162,24 @@ public class ContentHandler {
      */
     public static void registerDungeonLoot () {
         
-        for (Enchantment enchantment : Utilities.getAvailableEnchantments())
-            if (!isBlacklisted(enchantment))
+        ChestGenHooks contents = ChestGenHooks.getInfo("EPLUSSCROLLS");
+        
+        for (Enchantment enchantment : Utilities.getAvailableEnchantments()) {
+            
+            if (!isBlacklisted(enchantment)) {
+                
+                WeightedRandomChestContent scrollEntry = new WeightedRandomChestContent(ItemEnchantedScroll.createScroll(enchantment), 1, 1, 2);
+                
                 for (String type : Utilities.vanillaLootChests)
-                    ChestGenHooks.addItem(type, new WeightedRandomChestContent(ItemEnchantedScroll.createScroll(enchantment), 1, 1, 2));
+                    ChestGenHooks.addItem(type, scrollEntry);
+                    
+                eplusChest.addItem(scrollEntry);
+            }
+        }
+        
+        eplusChest.addItem(new WeightedRandomChestContent(new ItemStack(blockEnchantmentBook), 1, 3, 2));
+        eplusChest.addItem(new WeightedRandomChestContent(new ItemStack(Items.paper), 1, 3, 2));
+        eplusChest.addItem(new WeightedRandomChestContent(new ItemStack(Items.experience_bottle), 1, 5, 2));
     }
     
     /**

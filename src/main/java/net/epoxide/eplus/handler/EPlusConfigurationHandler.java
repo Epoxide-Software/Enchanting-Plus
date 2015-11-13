@@ -17,6 +17,8 @@ public class EPlusConfigurationHandler {
     public static boolean needsBookShelves = true;
     public static boolean secureItems = true;
     public static boolean allowUnownedModifications = true;
+    public static boolean allowVillagers = true;
+    public static int villagerID = 935153;
     
     // TODO implement these
     public static int costFactor = 5;
@@ -37,6 +39,8 @@ public class EPlusConfigurationHandler {
         minimumBookshelfs = config.getInt("minBookshelfs", settings, minimumBookshelfs, 0, 24, "The lowest number of bookshelfs required for the table to function properly.");
         secureItems = config.getBoolean("secureItems", settings, secureItems, "If enabled, players will only be able to enchant enchanted items if they enchanted them first.");
         allowUnownedModifications = config.getBoolean("allowUnownedModifications", settings, allowUnownedModifications, "If enabled, players will be able to modify items which are not currently owned by any other player. IE: Dungeon Loot");
+        allowVillagers = config.getBoolean("allowVillagers", settings, allowVillagers, "If enabled, a custom E+ villager will spawn and generate in villages.");
+        villagerID = config.getInt("villagerID", settings, villagerID, Integer.MIN_VALUE, Integer.MAX_VALUE, "A unique ID for the E+ villager. This should almost never need to be changed.");
         
         if (config.hasChanged())
             config.save();
