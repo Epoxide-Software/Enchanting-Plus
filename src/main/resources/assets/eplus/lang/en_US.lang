@@ -25,6 +25,10 @@ tooltip.eplus.duration=Duration
 tooltip.eplus.uses=Remaining Uses
 tooltip.eplus.unlimited=Unlimited
 
+#Gui
+gui.button.eplus.mod=Mod
+gui.button.eplus.vanilla=Vanilla
+
 #Chat
 chat.eplus.scrollunlock=Enchantment unlocked
 chat.eplus.scrollunlock.failed=You have already learned this.

@@ -10,6 +10,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class GuiVanillaEnchantmentTable extends GuiEnchantment {
+    
     private final EntityPlayer player;
     private final int xPos;
     private final int yPos;
@@ -47,7 +48,7 @@ public class GuiVanillaEnchantmentTable extends GuiEnchantment {
     public void initGui () {
         
         super.initGui();
-        final String s = "Mod";
-        buttonList.add(new GuiButton(0, guiLeft - 40, guiTop + 102, fontRendererObj.getStringWidth(s) + 10, 20, s));
+        final String displayText = StatCollector.translateToLocal("gui.button.eplus.mod");
+        buttonList.add(new GuiButton(0, guiLeft - 40, guiTop + 102, fontRendererObj.getStringWidth(displayText) + 10, 20, displayText));
     }
 }

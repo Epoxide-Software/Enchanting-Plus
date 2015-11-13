@@ -322,7 +322,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
         super.initGui();
         buttonList.add(new GuiGraphicButton(0, guiLeft + guiOffset + 9, guiTop + 38, "eplus:textures/gui/button_enchant"));
         buttonList.add(new GuiGraphicButton(1, guiLeft + guiOffset + 9, guiTop + 63, "eplus:textures/gui/button_repair"));
-        buttonList.add(new GuiButton(2, guiLeft - 20, guiTop + 110, fontRendererObj.getStringWidth(StatCollector.translateToLocal("Vanilla")) + 10, 20, StatCollector.translateToLocal("Vanilla")));
+        buttonList.add(new GuiButton(2, guiLeft - 20, guiTop + 110, fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.button.eplus.vanilla")) + 10, 20, StatCollector.translateToLocal("Vanilla")));
 
         dirty = true;
     }
