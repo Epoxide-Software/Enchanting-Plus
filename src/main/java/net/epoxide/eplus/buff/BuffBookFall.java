@@ -13,6 +13,7 @@ import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.lib.util.RenderUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,9 +51,9 @@ public class BuffBookFall extends Buff {
     @SubscribeEvent
     public void onPlayerUpdate (LivingUpdateEvent event) {
         
-        if (shouldUseEffect(event.entityLiving) && event.entityLiving.fallDistance > 2) {
+        if (shouldUseEffect(event.entityLiving)) {
             
-            event.entityLiving.motionY *= 0.6D;
+            event.entityLiving.motionY *= 0.45D;
             event.entityLiving.fallDistance = 0;
         }
     }
@@ -61,10 +62,10 @@ public class BuffBookFall extends Buff {
         
         if (BuffHelper.hasBuff(entity, ContentHandler.bookBuff) && !entity.onGround) {
             
-            if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)
+            if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isFlying)
                 return true;
                 
-            return (entity.motionY < 0.0d);
+            return (entity.motionY < 0.0f);
         }
         
         return false;
