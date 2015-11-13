@@ -24,6 +24,7 @@ tooltip.eplus.learned=Learned
 tooltip.eplus.duration=Duration
 tooltip.eplus.uses=Remaining Uses
 tooltip.eplus.unlimited=Unlimited
+tooltip.eplus.nodesc=No description has been provided for this enchantment. 
 
 #Gui
 gui.button.eplus.mod=Mod
@@ -39,3 +40,29 @@ chat.eplus.notowner=You are not the owner of this item.
 #Misc
 itemGroup.eplus=Enchanting Plus
 potion.eplus.book.name=Guardian Tome
+
+#Enchantment Descriptions
+description.enchantment.protect.all=This enchantment reduces damage done to the wearer from many damage sources. It stacks with enchantments such as Fire Resistance and Feather Falling however it is possible to hit a limit on how much damage will be reduced. This enchantment can be applied to all armor types.
+description.enchantment.protect.fire=This enchantment reduces damage taken from fire sources such as fire, blazes and lava. This enchantment also reduces the total amount of time the wearer will stay on fire. This enchantment can be applied to all armor types. 
+description.enchantment.protect.fall=This enchantment reduces damage taken from falling, it also reduces damage taken when using ender pearls. This enchantment is only applicable to boots.
+description.enchantment.protect.explosion=This enchantment reduces damage taken from explosions such as tnt or creepers. This enchantment also reduces the knockback from explosions. This enchantment can be applied to all armor types.
+description.enchantment.protect.projectile=This enchantment reduces damage taken from projectiles such as arrows and fire charges. This enchantment can be applied to all armor types.
+description.enchantment.oxygen=This enchantment improves the vision of the wearer when under water. The enchantment will also increase the total air of the wearer by 15 seconds per level. Time between suffocation damage is also increased by a second per level. This enchantment can only be applied to helmets.
+description.enchantment.waterWorker=This enchantment improves the block breaking speed of the wearer when under water. This enchantment can only be applied to helmets. 
+description.enchantment.thorns=This enchantment has a 15% chance per level to damage mobs that hurt the wearer by half a heart to two hearts. This enchantment can be applied to all armor types. 
+description.enchantment.damage.all=This enchantment increases the damage of the item by 1.25 damage per level. This enchantment can be applied to many tool types however a sword is the primary item. 
+description.enchantment.damage.undead=This enchantment increases damage done to undead mobs such as skeletons, zombies and the wither by 2.5 damage per level. This enchantment can be applied to many tools however a sword is the primary item.
+description.enchantment.damage.arthropods=This enchantment increases damage done to "spider" based mobs such as Spiders, Cave Spiders, Silverfish and Endermites by 2.5 damage per level. This enchantment can be applied to many tools however swords are the primary item.
+description.enchantment.knockback=This enchantment causes mobs hit to knocked away from the player. This enchantment can be applied only to swords.
+description.enchantment.fire=This enchantment causes mobs hit to be set on fire. The mob will receive 3 points of fire damage with an additional 4 points of fire damage for every level afterwards. This enchantment can only be applied to swords. 
+description.enchantment.lootBonus=This enchantment causes mobs to drop more loot. The maximum amount of loot dropped is increased by 1 per level. The chance of rare drops is increased by 3% plus an addition .5% per level afterwards. This enchantment can only be applied to swords.
+description.enchantment.digging=This enchantment causes blocks to break faster by 30%/69%/120%/186%/271%. For the effect to apply the tool must be used on the correct block. This effect be applied to picks, shovels, axes and shears.
+description.enchantment.untouching=This enchantment allows blocks that are normally not obtainable to be obtainable. Examples include ice, grass and ore blocks. This enchantment can be applied to picks, shovels, axes and shears.
+description.enchantment.durability=This enchantment increases the average durability of a tool or piece of armor. This effect can be applied to almost any item in the game as long as it has durability. Examples include flint and steel, fishing rods, all armor types and tools.
+description.enchantment.lootBonusDigger=This enchantment gives certain blocks the chance to drop twice as many items. Each level increases to the amount of chances. The odds that a chance will succeed are decreased however the drop modifier is increased. 33%/25%/20% for 2/3/4 times the drops. For blocks that drop multiple items such as melons the maximum amount of items that could be dropped is increased by 1 per level. The chance to get flint from gravel is also increased offering a 14%/25/100% chance to drop flint. This enchantment can be applied to picks, shovels and axes.
+description.enchantment.arrowDamage=This enchantment increases damage done by a bow by 25% multiplied by the level + 1. Damage is rounded to the nearest half heart. This enchantment is only for bows.
+description.enchantment.arrowKnockback=This enchantment will cause mobs to be knocked away from the player when hit. This enchantment is for bows.
+description.enchantment.arrowFire=This enchantment will set cause arrows launched to be set on fire. Mobs hit will also be set on fire. This fire only affects mobs, players and tnt blocks. This enchantment is only for bows. 
+description.enchantment.arrowInfinite=This enchantment prevents arrows from being consumed when fired. This effect requires that the player has at least one arrow in their inventory. This enchantment is only for bows.
+description.enchantment.lootBonusFishing=This enchantment increases the players odds of getting treasure when fishing by 1% per level. This enchantment is only for fishing rods.
+description.enchantment.fishingSpeed=This enchantment decreases the time it takes for a fish to bite the hook by 5 seconds per level. This also increases the chance to get junk and treasure by 1% per level.

@@ -237,32 +237,38 @@ public class GuiModEnchantmentTable extends GuiContainer {
             }
         }
         
-        GuiEnchantmentLabel guiItem = getItemFromPos(mouseX, mouseY);
-        if (isShiftKeyDown() && guiItem != null) {
-            final String name = EnumChatFormatting.BOLD + guiItem.getTranslatedName();
-            String info = StatCollector.translateToLocal(guiItem.enchantment.getName());
+        GuiEnchantmentLabel label = getItemFromPos(mouseX, mouseY);
+        
+        if (isShiftKeyDown() && label != null && label.enchantment != null) {
             
-            // TODO FIX Strings.errorToolTip
-            if (info.isEmpty()) {
-                info = EnumChatFormatting.DARK_RED + String.format("%s ", "ERROR") + guiItem.enchantment.getName();
-            }
+            final String enchName = EnumChatFormatting.BOLD + label.getTranslatedName();
+            String description = StatCollector.translateToLocal("description." + label.enchantment.getName());
             
-            info = EnumChatFormatting.LIGHT_PURPLE + info;
-            
+            if (description.startsWith("description."))
+                description = EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.eplus.nodesc");
+                
+            else
+                description = EnumChatFormatting.LIGHT_PURPLE + description;
+                
             final List<String> display = new ArrayList<String>();
             
-            display.add(name);
-            display.addAll(fontRendererObj.listFormattedStringToWidth(info, 150));
+            display.add(enchName);
+            display.addAll(fontRendererObj.listFormattedStringToWidth(description, 215));
             try {
+                
                 drawHoveringText(display, mouseX, mouseY, fontRendererObj);
             }
+            
             catch (NoSuchMethodError e) {
+                
                 final StringBuilder sb = new StringBuilder();
                 
                 for (final String text : display) {
+                    
                     sb.append(text);
                     sb.append(" ");
                 }
+                
                 drawCreativeTabHoveringText(sb.toString(), guiLeft - 20 - maxWidth, height);
             }
         }
