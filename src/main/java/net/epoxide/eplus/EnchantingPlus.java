@@ -5,6 +5,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -59,6 +60,12 @@ public class EnchantingPlus {
         ContentHandler.initMisc();
         
         proxy.registerRenderers();
+    }
+    
+    @EventHandler
+    public void postInit (FMLPostInitializationEvent event) {
+        
+        ContentHandler.registerDungeonLoot();
     }
     
     @EventHandler

@@ -8,6 +8,7 @@ import java.util.Map;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.lib.util.Utilities;
 import net.darkhax.bookshelf.potion.Buff;
 import net.darkhax.bookshelf.potion.BuffHelper;
 import net.epoxide.eplus.EnchantingPlus;
@@ -31,6 +32,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 
 public class ContentHandler {
     
@@ -146,6 +149,17 @@ public class ContentHandler {
         
         bookBuff = new BuffBookFall();
         BuffHelper.registerBuff(bookBuff);
+    }
+    
+    /**
+     * Registers all of our dungeon loot.
+     */
+    public static void registerDungeonLoot () {
+        
+        for (Enchantment enchantment : Utilities.getAvailableEnchantments())
+            if (!isBlacklisted(enchantment))
+                for (String type : Utilities.vanillaLootChests)
+                    ChestGenHooks.addItem(type, new WeightedRandomChestContent(ItemEnchantedScroll.createScroll(enchantment), 1, 1, 2));
     }
     
     /**
