@@ -13,7 +13,6 @@ import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.lib.util.RenderUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
