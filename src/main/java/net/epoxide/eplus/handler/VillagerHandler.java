@@ -49,13 +49,21 @@ public class VillagerHandler {
         @Override
         public void manipulateTradesForVillager (EntityVillager villager, MerchantRecipeList recipeList, Random random) {
             
-            for (Enchantment enchantment : Utilities.getAvailableEnchantments())
-                if (!ContentHandler.isBlacklisted(enchantment))
-                    recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, MathsUtils.nextIntInclusive(5, 9)), null, ItemEnchantedScroll.createScroll(enchantment)));
-                    
-            recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, MathsUtils.nextIntInclusive(3, 5)), null, new ItemStack(ContentHandler.blockEnchantmentBook, MathsUtils.nextIntInclusive(1, 3))));
-            
-            //Cheese
+        	if (villager.getProfession() == EPlusConfigurationHandler.villagerID) {
+        		
+        		List<Enchantment> enchants = Utilities.getAvailableEnchantments();
+        		
+        		for (int count = 0; count <=2; count++) {
+        			
+        			Enchantment ench = enchants.get(random.nextInt(enchants.size()));
+        			
+        			if (!ContentHandler.isBlacklisted(ench))
+        				recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, MathsUtils.nextIntInclusive(5, 9)), null, ItemEnchantedScroll.createScroll(ench)));
+        		}
+                        
+        		int bookCount = MathsUtils.nextIntInclusive(1, 3);
+                recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, MathsUtils.nextIntInclusive(3, 5)), new ItemStack(Items.book, bookCount), new ItemStack(ContentHandler.blockEnchantmentBook, bookCount)));
+        	}
         }
     }
     
