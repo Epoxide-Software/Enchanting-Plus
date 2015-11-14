@@ -54,6 +54,8 @@ public class VillagerHandler {
                     recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, MathsUtils.nextIntInclusive(5, 9)), null, ItemEnchantedScroll.createScroll(enchantment)));
                     
             recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, MathsUtils.nextIntInclusive(3, 5)), null, new ItemStack(ContentHandler.blockEnchantmentBook, MathsUtils.nextIntInclusive(1, 3))));
+            
+            //Cheese
         }
     }
     
