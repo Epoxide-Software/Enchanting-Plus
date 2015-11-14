@@ -40,7 +40,7 @@ public class VillagerHandler {
             MapGenStructureIO.func_143031_a(VillagerHandler.ComponentArcaneLibrary.class, "eplus:ArcaneLibrary");
             
             if (FMLCommonHandler.instance().getSide().equals(Side.CLIENT))
-                reg.registerVillagerSkin(EPlusConfigurationHandler.villagerID, new ResourceLocation("eplus", "textures/mob/librarian.png"));
+                reg.registerVillagerSkin(EPlusConfigurationHandler.villagerID, new ResourceLocation("eplus", "textures/entity/villager/librarian.png"));
         }
     }
     
