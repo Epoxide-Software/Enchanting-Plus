@@ -375,7 +375,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
                     }
                 }
             }
-            else if ((player.capabilities.isCreativeMode || (EPlusConfigurationHandler.maxEnchantmentAmount > 0 && i >= EPlusConfigurationHandler.maxEnchantmentAmount))) {
+            else if (!player.capabilities.isCreativeMode && EPlusConfigurationHandler.maxEnchantmentAmount > 0 && i >= EPlusConfigurationHandler.maxEnchantmentAmount) {
                 mainLabel.locked = true;
             }
         }
@@ -418,12 +418,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
             totalCost = temp;
         }
         else if (label.enchantmentLevel < level && !label.locked) {
-            if ((EnchantHelper.hasRestriction(container.tableInventory.getStackInSlot(0)) && EnchantHelper.restrictionMatches(container.tableInventory.getStackInSlot(0), player))/* || EPlusConfigurationHandler.allowDisenUnowned */) {
-                totalCost += container.disenchantmentCost(label.enchantment, label.enchantmentLevel, level);
-            }
-            else {
-                totalCost = 0;
-            }
+            totalCost += container.disenchantmentCost(label.enchantment, label.enchantmentLevel, level);
         }
     }
 
