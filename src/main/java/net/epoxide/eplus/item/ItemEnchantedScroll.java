@@ -84,12 +84,13 @@ public class ItemEnchantedScroll extends Item {
             
             props.unlockedEnchantments.add(ench.effectId);
             props.sync();
+            stack.stackSize--;
         }
         
         else
             player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + StatCollector.translateToLocal("chat.eplus.scrollunlock") + ": " + EnumChatFormatting.RESET + StatCollector.translateToLocal(ench.getName())));
             
-        return null;
+        return stack;
     }
     
     @Override
@@ -127,7 +128,7 @@ public class ItemEnchantedScroll extends Item {
         
         if ((count % 4) == 0) {
             
-            float percent = 1.0f - (float) ((float) count / (float) this.getMaxItemUseDuration(stack));
+            float percent = 1.0f - (float) count / (float) this.getMaxItemUseDuration(stack);
             Utilities.spawnParticleRing(player.worldObj, "enchantmenttable", percent, player.posX, player.posY, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
         }
     }
