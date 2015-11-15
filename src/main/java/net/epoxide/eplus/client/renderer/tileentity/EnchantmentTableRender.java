@@ -2,11 +2,12 @@ package net.epoxide.eplus.client.renderer.tileentity;
 
 import org.lwjgl.opengl.GL11;
 
-import net.epoxide.eplus.lib.util.RenderUtil;
-import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
+import net.epoxide.eplus.lib.util.RenderUtil;
+import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class EnchantmentTableRender extends TileEntitySpecialRenderer {
     

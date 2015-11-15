@@ -1,8 +1,5 @@
 package net.epoxide.eplus.item;
 
-import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.handler.ContentHandler;
-import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,6 +7,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.handler.ContentHandler;
+import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class ItemTableUpgrade extends Item {
     

@@ -2,15 +2,6 @@ package net.epoxide.eplus.tileentity;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.lib.util.MathsUtils;
-import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.common.network.PacketArcaneInscriber;
-import net.epoxide.eplus.common.network.PacketArcaneInscriberEffects;
-import net.epoxide.eplus.handler.ContentHandler;
-import net.epoxide.eplus.item.ItemEnchantedScroll;
-import net.epoxide.eplus.modifiers.ScrollModifier;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,6 +10,18 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+
+import cpw.mods.fml.common.network.NetworkRegistry;
+
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.lib.util.MathsUtils;
+
+import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.common.network.PacketArcaneInscriber;
+import net.epoxide.eplus.common.network.PacketArcaneInscriberEffects;
+import net.epoxide.eplus.handler.ContentHandler;
+import net.epoxide.eplus.item.ItemEnchantedScroll;
+import net.epoxide.eplus.modifiers.ScrollModifier;
 
 public class TileEntityArcaneInscriber extends TileEntity {
     

@@ -2,12 +2,14 @@ package net.epoxide.eplus.handler;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
+
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 
 public class IMCHandler {
     

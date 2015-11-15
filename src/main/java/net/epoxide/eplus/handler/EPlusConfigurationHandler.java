@@ -20,7 +20,7 @@ public class EPlusConfigurationHandler {
     public static boolean allowVillagers = true;
     public static int villagerID = 935153;
     public static int maxEnchantmentAmount = 5;
-
+    
     // TODO implement these
     public static int costFactor = 5;
     public static int repairFactor = 5;

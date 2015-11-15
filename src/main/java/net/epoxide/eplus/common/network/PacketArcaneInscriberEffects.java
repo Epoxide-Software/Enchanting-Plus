@@ -1,10 +1,12 @@
 package net.epoxide.eplus.common.network;
 
-import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+
 import net.darkhax.bookshelf.common.network.AbstractMessage;
 import net.darkhax.bookshelf.lib.util.Utilities;
+
+import io.netty.buffer.ByteBuf;
 import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketArcaneInscriberEffects extends AbstractMessage<PacketArcaneInscriberEffects> {
     private int x;

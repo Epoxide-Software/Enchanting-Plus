@@ -2,13 +2,6 @@ package net.epoxide.eplus.block;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.handler.ContentHandler;
-import net.epoxide.eplus.inventory.EnchantHelper;
-import net.epoxide.eplus.modifiers.ScrollModifier;
-import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -20,6 +13,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.handler.ContentHandler;
+import net.epoxide.eplus.inventory.EnchantHelper;
+import net.epoxide.eplus.modifiers.ScrollModifier;
+import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 
 public class BlockArcaneInscriber extends BlockContainer {
     

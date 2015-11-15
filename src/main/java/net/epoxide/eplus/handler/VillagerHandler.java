@@ -3,12 +3,6 @@ package net.epoxide.eplus.handler;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.Side;
-import net.darkhax.bookshelf.lib.util.MathsUtils;
-import net.darkhax.bookshelf.lib.util.Utilities;
-import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.passive.EntityVillager;
@@ -26,6 +20,15 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraft.world.gen.structure.StructureVillagePieces.PieceWeight;
 import net.minecraft.world.gen.structure.StructureVillagePieces.Start;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.VillagerRegistry;
+import cpw.mods.fml.relauncher.Side;
+
+import net.darkhax.bookshelf.lib.util.MathsUtils;
+import net.darkhax.bookshelf.lib.util.Utilities;
+
+import net.epoxide.eplus.item.ItemEnchantedScroll;
 
 public class VillagerHandler {
     
@@ -49,21 +52,21 @@ public class VillagerHandler {
         @Override
         public void manipulateTradesForVillager (EntityVillager villager, MerchantRecipeList recipeList, Random random) {
             
-        	if (villager.getProfession() == EPlusConfigurationHandler.villagerID) {
-        		
-        		List<Enchantment> enchants = Utilities.getAvailableEnchantments();
-        		
-        		for (int count = 0; count <=2; count++) {
-        			
-        			Enchantment ench = enchants.get(random.nextInt(enchants.size()));
-        			
-        			if (!ContentHandler.isBlacklisted(ench))
-        				recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, MathsUtils.nextIntInclusive(5, 9)), null, ItemEnchantedScroll.createScroll(ench)));
-        		}
-                        
-        		int bookCount = MathsUtils.nextIntInclusive(1, 3);
+            if (villager.getProfession() == EPlusConfigurationHandler.villagerID) {
+                
+                List<Enchantment> enchants = Utilities.getAvailableEnchantments();
+                
+                for (int count = 0; count <= 2; count++) {
+                    
+                    Enchantment ench = enchants.get(random.nextInt(enchants.size()));
+                    
+                    if (!ContentHandler.isBlacklisted(ench))
+                        recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, MathsUtils.nextIntInclusive(5, 9)), null, ItemEnchantedScroll.createScroll(ench)));
+                }
+                
+                int bookCount = MathsUtils.nextIntInclusive(1, 3);
                 recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, MathsUtils.nextIntInclusive(3, 5)), new ItemStack(Items.book, bookCount), new ItemStack(ContentHandler.blockEnchantmentBook, bookCount)));
-        	}
+            }
         }
     }
     

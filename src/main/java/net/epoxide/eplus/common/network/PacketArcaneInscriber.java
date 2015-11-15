@@ -1,12 +1,15 @@
 package net.epoxide.eplus.common.network;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import io.netty.buffer.ByteBuf;
-import net.darkhax.bookshelf.common.network.AbstractMessage;
-import net.darkhax.bookshelf.lib.util.Utilities;
-import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
+import cpw.mods.fml.common.network.ByteBufUtils;
+
+import net.darkhax.bookshelf.common.network.AbstractMessage;
+import net.darkhax.bookshelf.lib.util.Utilities;
+
+import io.netty.buffer.ByteBuf;
+import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 
 public class PacketArcaneInscriber extends AbstractMessage<PacketArcaneInscriber> {
     

@@ -1,9 +1,11 @@
 package net.epoxide.eplus.common.network;
 
-import io.netty.buffer.ByteBuf;
-import net.darkhax.bookshelf.common.network.AbstractMessage;
-import net.epoxide.eplus.EnchantingPlus;
 import net.minecraft.entity.player.EntityPlayer;
+
+import net.darkhax.bookshelf.common.network.AbstractMessage;
+
+import io.netty.buffer.ByteBuf;
+import net.epoxide.eplus.EnchantingPlus;
 
 public class PacketGui extends AbstractMessage {
     

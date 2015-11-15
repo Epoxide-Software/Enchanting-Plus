@@ -1,9 +1,10 @@
 package net.epoxide.eplus.modifiers;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 
 public class ScrollModifier {
     

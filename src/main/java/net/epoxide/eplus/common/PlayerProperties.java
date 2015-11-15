@@ -6,14 +6,16 @@ import java.util.List;
 
 import com.google.common.primitives.Ints;
 
-import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.common.network.PacketSyncPlayerProperties;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
 import net.minecraftforge.common.IExtendedEntityProperties;
+
+import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.common.network.PacketSyncPlayerProperties;
 
 public class PlayerProperties implements IExtendedEntityProperties {
     

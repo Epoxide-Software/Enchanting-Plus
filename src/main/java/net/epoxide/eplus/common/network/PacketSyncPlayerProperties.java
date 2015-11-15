@@ -3,10 +3,12 @@ package net.epoxide.eplus.common.network;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.netty.buffer.ByteBuf;
-import net.darkhax.bookshelf.common.network.AbstractMessage;
-import net.epoxide.eplus.common.PlayerProperties;
 import net.minecraft.entity.player.EntityPlayer;
+
+import net.darkhax.bookshelf.common.network.AbstractMessage;
+
+import io.netty.buffer.ByteBuf;
+import net.epoxide.eplus.common.PlayerProperties;
 
 public class PacketSyncPlayerProperties extends AbstractMessage {
     

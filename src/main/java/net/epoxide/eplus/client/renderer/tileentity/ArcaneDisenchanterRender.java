@@ -2,8 +2,6 @@ package net.epoxide.eplus.client.renderer.tileentity;
 
 import org.lwjgl.opengl.GL11;
 
-import net.epoxide.eplus.lib.util.RenderUtil;
-import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -14,6 +12,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
+import net.epoxide.eplus.lib.util.RenderUtil;
+import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 
 public class ArcaneDisenchanterRender extends TileEntitySpecialRenderer {
     public static boolean graphicsCache;

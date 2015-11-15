@@ -1,15 +1,17 @@
 package net.epoxide.eplus.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.block.BlockEnchantmentTable;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class BlockEnchantTable extends BlockEnchantmentTable {
     

@@ -1,11 +1,13 @@
 package net.epoxide.eplus.client.gui;
 
-import net.darkhax.bookshelf.lib.util.Utilities;
-import net.epoxide.eplus.handler.EPlusConfigurationHandler;
-import net.epoxide.eplus.inventory.ContainerEnchantTable;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.enchantment.Enchantment;
+
+import net.darkhax.bookshelf.lib.util.Utilities;
+
+import net.epoxide.eplus.handler.EPlusConfigurationHandler;
+import net.epoxide.eplus.inventory.ContainerEnchantTable;
 
 public class GuiEnchantmentLabel extends Gui {
     

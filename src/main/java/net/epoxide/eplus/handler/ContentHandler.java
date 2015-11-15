@@ -5,12 +5,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.WeightedRandomChestContent;
+
+import net.minecraftforge.common.ChestGenHooks;
+
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.darkhax.bookshelf.potion.Buff;
 import net.darkhax.bookshelf.potion.BuffHelper;
+
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockArcaneInscriber;
 import net.epoxide.eplus.block.BlockEnchantTable;
@@ -24,16 +38,6 @@ import net.epoxide.eplus.modifiers.ScrollModifier;
 import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.epoxide.eplus.tileentity.TileEntityEnchantmentBook;
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
 
 public class ContentHandler {
     

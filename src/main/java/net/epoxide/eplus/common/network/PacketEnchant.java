@@ -2,10 +2,12 @@ package net.epoxide.eplus.common.network;
 
 import java.util.HashMap;
 
-import io.netty.buffer.ByteBuf;
-import net.darkhax.bookshelf.common.network.AbstractMessage;
-import net.epoxide.eplus.inventory.ContainerEnchantTable;
 import net.minecraft.entity.player.EntityPlayer;
+
+import net.darkhax.bookshelf.common.network.AbstractMessage;
+
+import io.netty.buffer.ByteBuf;
+import net.epoxide.eplus.inventory.ContainerEnchantTable;
 
 /**
  * This class was created on 10/31/2015 by lclc98.

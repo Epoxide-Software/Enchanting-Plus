@@ -1,13 +1,14 @@
 package net.epoxide.eplus.client.gui;
 
-import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.common.network.PacketGui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiEnchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.common.network.PacketGui;
 
 public class GuiVanillaEnchantmentTable extends GuiEnchantment {
     

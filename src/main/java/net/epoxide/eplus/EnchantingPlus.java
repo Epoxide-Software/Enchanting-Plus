@@ -1,5 +1,7 @@
 package net.epoxide.eplus;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -10,13 +12,24 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+
 import net.darkhax.bookshelf.creativetab.CreativeTabCached;
 import net.darkhax.bookshelf.lib.util.Utilities;
+
 import net.epoxide.eplus.common.ProxyCommon;
-import net.epoxide.eplus.common.network.*;
-import net.epoxide.eplus.handler.*;
+import net.epoxide.eplus.common.network.GuiHandler;
+import net.epoxide.eplus.common.network.PacketArcaneInscriber;
+import net.epoxide.eplus.common.network.PacketArcaneInscriberEffects;
+import net.epoxide.eplus.common.network.PacketEnchant;
+import net.epoxide.eplus.common.network.PacketGui;
+import net.epoxide.eplus.common.network.PacketRepair;
+import net.epoxide.eplus.common.network.PacketSyncPlayerProperties;
+import net.epoxide.eplus.handler.ContentHandler;
+import net.epoxide.eplus.handler.CreativeEPlus;
+import net.epoxide.eplus.handler.EPlusConfigurationHandler;
+import net.epoxide.eplus.handler.ForgeEventHandler;
+import net.epoxide.eplus.handler.IMCHandler;
 import net.epoxide.eplus.lib.Constants;
-import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION, guiFactory = Constants.FACTORY, dependencies = "required-after:bookshelf@[1.0.2.56,)")
 public class EnchantingPlus {

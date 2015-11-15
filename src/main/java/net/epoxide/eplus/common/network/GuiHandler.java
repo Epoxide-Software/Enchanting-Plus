@@ -1,14 +1,16 @@
 package net.epoxide.eplus.common.network;
 
-import cpw.mods.fml.common.network.IGuiHandler;
-import net.epoxide.eplus.client.gui.GuiModEnchantmentTable;
-import net.epoxide.eplus.client.gui.GuiVanillaEnchantmentTable;
-import net.epoxide.eplus.inventory.ContainerEnchantTable;
-import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.network.IGuiHandler;
+
+import net.epoxide.eplus.client.gui.GuiModEnchantmentTable;
+import net.epoxide.eplus.client.gui.GuiVanillaEnchantmentTable;
+import net.epoxide.eplus.inventory.ContainerEnchantTable;
+import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class GuiHandler implements IGuiHandler {
     

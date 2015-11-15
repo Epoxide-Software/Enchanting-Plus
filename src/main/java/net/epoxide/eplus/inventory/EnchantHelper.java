@@ -2,9 +2,6 @@ package net.epoxide.eplus.inventory;
 
 import java.util.List;
 
-import net.darkhax.bookshelf.handler.BookshelfHooks;
-import net.epoxide.eplus.common.PlayerProperties;
-import net.epoxide.eplus.handler.EPlusConfigurationHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +10,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import net.darkhax.bookshelf.handler.BookshelfHooks;
+
+import net.epoxide.eplus.common.PlayerProperties;
+import net.epoxide.eplus.handler.EPlusConfigurationHandler;
 
 public class EnchantHelper {
     

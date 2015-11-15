@@ -2,13 +2,6 @@ package net.epoxide.eplus.item;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.lib.util.Utilities;
-import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.common.PlayerProperties;
-import net.epoxide.eplus.handler.ContentHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -21,6 +14,16 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.lib.util.Utilities;
+
+import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.common.PlayerProperties;
+import net.epoxide.eplus.handler.ContentHandler;
 
 public class ItemEnchantedScroll extends Item {
     

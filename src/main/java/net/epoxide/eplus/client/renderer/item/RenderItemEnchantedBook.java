@@ -2,10 +2,12 @@ package net.epoxide.eplus.client.renderer.item;
 
 import org.lwjgl.opengl.GL11;
 
-import net.epoxide.eplus.lib.util.RenderUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import net.minecraftforge.client.IItemRenderer;
+
+import net.epoxide.eplus.lib.util.RenderUtil;
 
 public class RenderItemEnchantedBook implements IItemRenderer {
     

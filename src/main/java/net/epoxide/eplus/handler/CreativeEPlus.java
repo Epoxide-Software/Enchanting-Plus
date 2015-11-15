@@ -1,7 +1,8 @@
 package net.epoxide.eplus.handler;
 
-import net.darkhax.bookshelf.creativetab.CreativeTabCached;
 import net.minecraft.item.Item;
+
+import net.darkhax.bookshelf.creativetab.CreativeTabCached;
 
 public class CreativeEPlus extends CreativeTabCached {
     

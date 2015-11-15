@@ -2,13 +2,6 @@ package net.epoxide.eplus.item;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.potion.BuffEffect;
-import net.darkhax.bookshelf.potion.BuffHelper;
-import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.handler.ContentHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,6 +10,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.potion.BuffEffect;
+import net.darkhax.bookshelf.potion.BuffHelper;
+
+import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.handler.ContentHandler;
 
 public class ItemBookSummoner extends Item {
     

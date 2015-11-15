@@ -1,17 +1,21 @@
 package net.epoxide.eplus.handler;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.darkhax.bookshelf.event.ItemEnchantedEvent;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.epoxide.eplus.common.PlayerProperties;
-import net.epoxide.eplus.modifiers.ScrollModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+import net.darkhax.bookshelf.event.ItemEnchantedEvent;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+
+import net.epoxide.eplus.common.PlayerProperties;
+import net.epoxide.eplus.modifiers.ScrollModifier;
 
 public class ForgeEventHandler {
     
