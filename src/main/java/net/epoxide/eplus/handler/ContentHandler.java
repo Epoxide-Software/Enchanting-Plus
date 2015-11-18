@@ -20,10 +20,10 @@ import net.minecraftforge.common.ChestGenHooks;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.darkhax.bookshelf.buff.Buff;
+import net.darkhax.bookshelf.common.BookshelfRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
-import net.darkhax.bookshelf.potion.Buff;
-import net.darkhax.bookshelf.potion.BuffHelper;
 
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockArcaneInscriber;
@@ -157,7 +157,7 @@ public class ContentHandler {
     public static void initMisc () {
         
         bookBuff = new BuffBookFall();
-        BuffHelper.registerBuff(bookBuff);
+        BookshelfRegistry.registerBuff(bookBuff);
         new VillagerHandler();
     }
     

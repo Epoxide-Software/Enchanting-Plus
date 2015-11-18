@@ -16,8 +16,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.darkhax.bookshelf.potion.Buff;
-import net.darkhax.bookshelf.potion.BuffHelper;
+import net.darkhax.bookshelf.buff.Buff;
+import net.darkhax.bookshelf.buff.BuffHelper;
 
 import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.lib.util.RenderUtil;

@@ -14,9 +14,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.darkhax.bookshelf.buff.BuffEffect;
+import net.darkhax.bookshelf.buff.BuffHelper;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.potion.BuffEffect;
-import net.darkhax.bookshelf.potion.BuffHelper;
 
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.handler.ContentHandler;
