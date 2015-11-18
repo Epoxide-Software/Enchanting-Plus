@@ -3,6 +3,10 @@ package net.epoxide.eplus.tileentity;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityEnchantmentBook extends TileEntity {
@@ -18,10 +22,46 @@ public class TileEntityEnchantmentBook extends TileEntity {
     public float prevRotation;
     public float bookRotation;
     
+    public float yOffset;
+    public int color;
+    
     private static Random random = new Random();
     
     public TileEntityEnchantmentBook() {
+        
+        yOffset = 0.0f;
+        color = 0;
+    }
     
+    @Override
+    public void readFromNBT (NBTTagCompound nbt) {
+        
+        super.readFromNBT(nbt);
+        this.yOffset = nbt.getFloat("bookOffset");
+        this.color = nbt.getInteger("bookColor");
+    }
+    
+    @Override
+    public void writeToNBT (NBTTagCompound nbt) {
+        
+        super.writeToNBT(nbt);
+        nbt.setFloat("bookOffset", this.yOffset);
+        nbt.setInteger("bookColor", this.color);
+    }
+    
+    @Override
+    public void onDataPacket (NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        
+        this.readFromNBT(pkt.func_148857_g());
+        this.worldObj.func_147479_m(xCoord, yCoord, zCoord);
+    }
+    
+    @Override
+    public Packet getDescriptionPacket () {
+        
+        NBTTagCompound nbt = new NBTTagCompound();
+        this.writeToNBT(nbt);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
     }
     
     @Override
@@ -109,5 +149,21 @@ public class TileEntityEnchantmentBook extends TileEntity {
         
         this.pageFlipTurn += (f - this.pageFlipTurn) * 0.9F;
         this.pageFlip += this.pageFlipTurn;
+    }
+    
+    public void increaseHeight () {
+        
+        this.yOffset += 0.05f;
+        
+        if (this.yOffset > 0.5f)
+            this.yOffset = 0.5f;
+    }
+    
+    public void decreaseHeight () {
+        
+        this.yOffset -= 0.05f;
+        
+        if (this.yOffset < -0.5f)
+            this.yOffset = -0.5f;
     }
 }
