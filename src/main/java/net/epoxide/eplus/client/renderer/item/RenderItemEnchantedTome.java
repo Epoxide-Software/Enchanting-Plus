@@ -51,6 +51,9 @@ public class RenderItemEnchantedTome implements IItemRenderer {
             GL11.glRotatef(145f, 0f, -0f, 1f);
         }
         
+        if (type == ItemRenderType.INVENTORY)
+            GL11.glTranslatef(0f, -0.2f, 0f);
+        
         RenderUtil.renderBook(texture, 0f, 1f, 1f, 1f, 1f, 0.01f, 0.01f, 0f);
         GL11.glPopMatrix();
     }
