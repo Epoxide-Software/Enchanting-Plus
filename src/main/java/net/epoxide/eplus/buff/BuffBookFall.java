@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -63,7 +64,7 @@ public class BuffBookFall extends Buff {
     
     public boolean shouldUseEffect (EntityLivingBase entity) {
         
-        if (BuffHelper.hasBuff(entity, ContentHandler.bookBuff) && !entity.onGround) {
+        if (BuffHelper.hasBuff(entity, ContentHandler.bookBuff) && !entity.onGround && !entity.isInWater() && !entity.isInsideOfMaterial(Material.water)) {
             
             if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isFlying)
                 return true;
