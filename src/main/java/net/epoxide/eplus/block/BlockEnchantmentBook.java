@@ -3,6 +3,7 @@ package net.epoxide.eplus.block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -55,6 +56,12 @@ public class BlockEnchantmentBook extends BlockContainer {
         }
         
         return true;
+    }
+    
+    @Override
+    public float getEnchantPowerBonus(World world, int x, int y, int z) {
+        
+        return 1f;
     }
     
     @Override
