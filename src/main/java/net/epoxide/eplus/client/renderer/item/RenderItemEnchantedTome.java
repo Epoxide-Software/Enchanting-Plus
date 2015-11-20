@@ -53,7 +53,7 @@ public class RenderItemEnchantedTome implements IItemRenderer {
         
         if (type == ItemRenderType.INVENTORY)
             GL11.glTranslatef(0f, -0.2f, 0f);
-        
+            
         RenderUtil.renderBook(texture, 0f, 1f, 1f, 1f, 1f, 0.01f, 0.01f, 0f);
         GL11.glPopMatrix();
     }
