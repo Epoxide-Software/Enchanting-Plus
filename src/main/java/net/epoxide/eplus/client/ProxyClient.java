@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.event.FMLInterModComms;
 
 import net.epoxide.eplus.client.renderer.item.RenderItemEnchantedBook;
 import net.epoxide.eplus.client.renderer.item.RenderItemEnchantedTome;
@@ -27,5 +28,6 @@ public class ProxyClient extends ProxyCommon {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnchantmentBook.class, new EnchantmentBookRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ContentHandler.blockEnchantmentBook), new RenderItemEnchantedBook());
         MinecraftForgeClient.registerItemRenderer(ContentHandler.book, new RenderItemEnchantedTome());
+        FMLInterModComms.sendMessage("llibrary", "update-checker", "https://github.com/Epoxide-MC/Enchanting-Plus/master/versions.json");
     }
 }
