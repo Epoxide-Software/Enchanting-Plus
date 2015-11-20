@@ -29,6 +29,7 @@ tooltip.eplus.nodesc=No description has been provided for this enchantment.
 #Gui
 gui.button.eplus.mod=Mod
 gui.button.eplus.vanilla=Vanilla
+gui.notification.eplus.unlocked=Enchantment Unlocked!
 
 #Chat
 chat.eplus.scrollunlock=Enchantment unlocked

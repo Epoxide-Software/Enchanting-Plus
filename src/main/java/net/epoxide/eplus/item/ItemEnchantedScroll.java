@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -23,6 +22,7 @@ import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
 import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.client.ProxyClient;
 import net.epoxide.eplus.common.PlayerProperties;
 import net.epoxide.eplus.handler.ContentHandler;
 
@@ -112,9 +112,12 @@ public class ItemEnchantedScroll extends Item {
             stack.stackSize--;
         }
         
-        else
-            player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + StatCollector.translateToLocal("chat.eplus.scrollunlock") + ": " + EnumChatFormatting.RESET + StatCollector.translateToLocal(ench.getName())));
+        else {
             
+            ProxyClient.notificationHandler.updateNotification(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gui.notification.eplus.unlocked"), StatCollector.translateToLocal(ench.getName()));
+            ProxyClient.notificationHandler.updateNotificationIcon(new ItemStack(ContentHandler.eplusTable));
+        }
+        
         return stack;
     }
     
@@ -128,9 +131,6 @@ public class ItemEnchantedScroll extends Item {
             
             if (!props.unlockedEnchantments.contains(enchantmentID))
                 player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-                
-            else if (world.isRemote)
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + StatCollector.translateToLocal("chat.eplus.scrollunlock.failed")));
         }
         
         return stack;
