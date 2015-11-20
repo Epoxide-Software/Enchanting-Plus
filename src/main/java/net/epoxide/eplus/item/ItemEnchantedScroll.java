@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
@@ -75,6 +76,27 @@ public class ItemEnchantedScroll extends Item {
         
         ItemStackUtils.prepareDataTag(stack);
         return (ItemStackUtils.isValidStack(stack) && stack.getItem() instanceof ItemEnchantedScroll && stack.getTagCompound().hasKey("ScrollEnchantment"));
+    }
+    
+    /**
+     * Attempts to create a random scroll item, which is not blacklisted.
+     * 
+     * @return ItemStack: A scroll which represents a random enchantment.
+     */
+    public static ItemStack createRandomScroll () {
+        
+        ItemStack scroll = null;
+        List<Enchantment> enchants = Utilities.getAvailableEnchantments();
+        
+        while (scroll == null) {
+            
+            Enchantment currentEnchantment = enchants.get(Constants.RANDOM.nextInt(enchants.size()));
+            
+            if (!ContentHandler.isBlacklisted(currentEnchantment))
+                scroll = createScroll(currentEnchantment);
+        }
+        
+        return scroll;
     }
     
     @Override
