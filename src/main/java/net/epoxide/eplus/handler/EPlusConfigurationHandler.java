@@ -23,6 +23,7 @@ public class EPlusConfigurationHandler {
     public static int costFactor = 5;
     public static int repairFactor = 5;
     public static int minimumBookshelfs = 5;
+    public static float scrollDrop = 0.01f;
     
     public static void initConfig (File configFile) {
         
@@ -43,6 +44,8 @@ public class EPlusConfigurationHandler {
         costFactor = config.getInt("costFactor", settings, costFactor, 0, 128, "A number used when calculated enchantment costs. A higher factor means higher enchantment costs.");
         repairFactor = config.getInt("repairFactor", settings, repairFactor, 0, 128, "A number used when calculating the repair costs. A higher factor means higher repair costs.");
         minimumBookshelfs = config.getInt("minimumBookshelfs", settings, minimumBookshelfs, 0, 64, "The minimum amount of Bookshelfs required to use the enchantment table.");
+        scrollDrop = config.getFloat("scrollDropRate", settings, scrollDrop, 0f, 1f, "The percent chance that a hostile mob should drop a scroll. Default is 0.01 which is 1%");
+        
         if (config.hasChanged())
             config.save();
     }
