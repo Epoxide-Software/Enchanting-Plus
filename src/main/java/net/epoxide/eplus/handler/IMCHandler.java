@@ -56,15 +56,8 @@ public class IMCHandler {
             
             if (message.isNBTMessage()) {
                 
-                NBTTagList list = message.getNBTValue().getTagList("blacklistEnchantments", 8);
-                
-                for (int count = 0; count < list.tagCount(); count++) {
-                    
-                    String id = list.getStringTagAt(count);
-                    
-                    if (StringUtils.isNumeric(id))
-                        ContentHandler.blacklistEnchantment(Integer.parseInt(id), sender);
-                }
+                for (int id : message.getNBTValue().getIntArray("blacklistedEnchantments"))
+                    ContentHandler.blacklistEnchantment(id, sender);
             }
         }
         
