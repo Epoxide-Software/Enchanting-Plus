@@ -212,7 +212,7 @@ public class ContentHandler {
         if (!blacklistEnchantments.contains(enchantID)) {
             
             blacklistEnchantments.add(enchantID);
-            EnchantingPlus.printDebugMessage(blacklister + " has succesfullt blocked an enchantment with the ID of " + enchantID);
+            EnchantingPlus.printDebugMessage(blacklister + " has succesfully blacklisted an enchantment with the ID of " + enchantID);
         }
     }
     
