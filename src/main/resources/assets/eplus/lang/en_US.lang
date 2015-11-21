@@ -41,6 +41,7 @@ chat.eplus.notowner=You are not the owner of this item.
 #Misc
 itemGroup.eplus=Enchanting Plus
 potion.eplus.book.name=Guardian Tome
+description.villager.profession.eplus.librarian=Arcane Historian
 
 #Enchantment Descriptions
 description.enchantment.protect.all=This enchantment reduces damage done to the wearer from many damage sources. It stacks with enchantments such as Fire Resistance and Feather Falling however it is possible to hit a limit on how much damage will be reduced. This enchantment can be applied to all armor types.
