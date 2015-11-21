@@ -207,7 +207,8 @@ public class ItemEnchantedScroll extends Item {
     public void getSubItems (Item item, CreativeTabs tab, List itemList) {
         
         for (Enchantment enchantment : Utilities.getAvailableEnchantments())
-            itemList.add(createScroll(enchantment));
+            if (!ContentHandler.isBlacklisted(enchantment))
+                itemList.add(createScroll(enchantment));
     }
     
     @SideOnly(Side.CLIENT)
