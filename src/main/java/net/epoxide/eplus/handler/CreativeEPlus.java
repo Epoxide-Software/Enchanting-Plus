@@ -14,6 +14,6 @@ public class CreativeEPlus extends CreativeTabCached {
     @Override
     public Item getTabIconItem () {
         
-        return Item.getItemFromBlock(ContentHandler.eplusTable);
+        return Item.getItemFromBlock(ContentHandler.blockEnchantmentBook);
     }
 }
