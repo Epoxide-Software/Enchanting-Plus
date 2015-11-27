@@ -1,14 +1,13 @@
 package net.epoxide.eplus.client.gui;
 
-import net.darkhax.bookshelf.client.gui.GuiGraphicButton;
-import net.epoxide.eplus.EnchantingPlus;
-import net.epoxide.eplus.common.network.PacketEnchant;
-import net.epoxide.eplus.common.network.PacketGui;
-import net.epoxide.eplus.common.network.PacketRepair;
-import net.epoxide.eplus.handler.EPlusConfigurationHandler;
-import net.epoxide.eplus.inventory.ContainerEnchantTable;
-import net.epoxide.eplus.inventory.EnchantHelper;
-import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,13 +16,17 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import net.darkhax.bookshelf.client.gui.GuiGraphicButton;
+
+import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.common.network.PacketEnchant;
+import net.epoxide.eplus.common.network.PacketGui;
+import net.epoxide.eplus.common.network.PacketRepair;
+import net.epoxide.eplus.handler.EPlusConfigurationHandler;
+import net.epoxide.eplus.inventory.ContainerEnchantTable;
+import net.epoxide.eplus.inventory.EnchantHelper;
+import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class GuiModEnchantmentTable extends GuiContainer {
     
