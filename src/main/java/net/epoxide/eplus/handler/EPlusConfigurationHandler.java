@@ -20,7 +20,7 @@ public class EPlusConfigurationHandler {
     public static boolean allowVillagers = true;
     public static int villagerID = 935153;
     public static int maxEnchantmentAmount = 5;
-    public static int costFactor = 5;
+    public static float costFactor = 1.0f;
     public static int repairFactor = 5;
     public static int minimumBookshelfs = 5;
     public static float scrollDrop = 0.01f;
@@ -41,7 +41,7 @@ public class EPlusConfigurationHandler {
         allowUnownedModifications = config.getBoolean("allowUnownedModifications", settings, allowUnownedModifications, "If enabled, players will be able to modify items which are not currently owned by any other player. IE: Dungeon Loot");
         allowVillagers = config.getBoolean("allowVillagers", settings, allowVillagers, "If enabled, a custom E+ villager will spawn and generate in villages.");
         villagerID = config.getInt("villagerID", settings, villagerID, Integer.MIN_VALUE, Integer.MAX_VALUE, "A unique ID for the E+ villager. This should almost never need to be changed.");
-        costFactor = config.getInt("costFactor", settings, costFactor, 0, 128, "A number used when calculated enchantment costs. A higher factor means higher enchantment costs.");
+        costFactor = config.getFloat("costFactor", settings, costFactor, 0f, 128f, "A number used when calculated enchantment cost. This number is treated as a % based factor. 0.30 = 30% of the original cost. 1.5 = 150% of the original cost.");
         repairFactor = config.getInt("repairFactor", settings, repairFactor, 0, 128, "A number used when calculating the repair costs. A higher factor means higher repair costs.");
         minimumBookshelfs = config.getInt("minimumBookshelfs", settings, minimumBookshelfs, 0, 64, "The minimum amount of Bookshelfs required to use the enchantment table.");
         scrollDrop = config.getFloat("scrollDropRate", settings, scrollDrop, 0f, 1f, "The percent chance that a hostile mob should drop a scroll. Default is 0.01 which is 1%");
