@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 
 import net.epoxide.eplus.lib.util.RenderUtil;
 
@@ -36,6 +37,9 @@ public class RenderItemEnchantedBook implements IItemRenderer {
             GL11.glTranslatef(0.8f, 0.15f, 0f);
             GL11.glRotatef(90f, -1f, 1f, 1f);
         }
+        
+        if (type == ItemRenderType.INVENTORY)
+            GL11.glTranslatef(0f, -0.14f, 0f);
         
         RenderUtil.renderBook(texture, 0f, 1f, 1f, 1f, 1f, 1f, 1f, 0f);
         GL11.glPopMatrix();
