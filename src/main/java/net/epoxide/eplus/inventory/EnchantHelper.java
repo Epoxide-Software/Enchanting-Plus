@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -109,5 +110,27 @@ public class EnchantHelper {
         
         String enchantedOwner = itemStack.getTagCompound().getString("enchantedOwnerUUID");
         return player.getUniqueID().toString().equals(enchantedOwner);
+    }
+    
+    /**
+     * Calculates the amount of levels that an enchantment should cost. This factors in the
+     * enchantability of the enchantment, the level of the enchantment, the enchantability of
+     * the Item, and the enchantment factor from the config. If the ItemStack passed already
+     * has the enchantment on it, the cost will be adjusted to an upgrade price.
+     * 
+     * @param enchant: The enchantment being applied.
+     * @param level: The level of the enchantment being applied.
+     * @param stack: The ItemStack being enchanted.
+     * @return int: The amount of experience levels that should be charged for the enchantment.
+     */
+    public static int calculateEnchantmentCost (Enchantment enchant, int level, ItemStack stack) {
+        
+        int existingLevel = EnchantmentHelper.getEnchantmentLevel(enchant.effectId, stack);
+        int enchantability = enchant.getMaxEnchantability(level);
+        
+        if (existingLevel > 0 && existingLevel != level)
+            enchantability -= enchant.getMaxEnchantability(existingLevel);
+            
+        return (int) (((enchantability - stack.getItem().getItemEnchantability(stack)) / 2) * EPlusConfigurationHandler.costFactor);
     }
 }
