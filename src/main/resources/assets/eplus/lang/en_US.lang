@@ -43,6 +43,11 @@ itemGroup.eplus=Enchanting Plus
 potion.eplus.book.name=Guardian Tome
 description.villager.profession.eplus.librarian=Arcane Historian
 
+#Commands
+command.eplus.learnenchant.usage=/learnEnchant This command will unlock an enchantment for the given player. The command arguments are playerName and enchantment ID. You can use a or all in place of the id to get all enchantments. 
+command.bookshelf.color.success=sucessfully learned
+command.eplus.learnenchant.all.success=sucesffully learned all enchantments. 
+
 #Enchantment Descriptions
 description.enchantment.protect.all=This enchantment reduces damage done to the wearer from many damage sources. It stacks with enchantments such as Fire Resistance and Feather Falling however it is possible to hit a limit on how much damage will be reduced. This enchantment can be applied to all armor types.
 description.enchantment.protect.fire=This enchantment reduces damage taken from fire sources such as fire, blazes and lava. This enchantment also reduces the total amount of time the wearer will stay on fire. This enchantment can be applied to all armor types. 
