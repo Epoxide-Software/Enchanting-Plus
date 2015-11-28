@@ -33,12 +33,12 @@ group = "net.epoxide.eplus"
 archivesBaseName = "EnchantingPlus"
 
 minecraft {
-    version = "1.7.10-10.13.4.1517-1.7.10"
+    version = "1.7.10-10.13.4.1558-1.7.10"
     runDir = "run"
 }
 
 dependencies {
-    compile "net.darkhax.bookshelf:Bookshelf:1.7.10-1.0.3.120:deobf"
+    compile "net.darkhax.bookshelf:Bookshelf:1.7.10-1.0.3.134:deobf"
 }
 
 processResources {

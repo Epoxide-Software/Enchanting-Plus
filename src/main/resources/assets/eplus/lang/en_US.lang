@@ -25,7 +25,7 @@ tooltip.eplus.duration=Duration
 tooltip.eplus.uses=Remaining Uses
 tooltip.eplus.unlimited=Unlimited
 tooltip.eplus.nodesc=No description has been provided for this enchantment. 
-
+tooltip.eplus.experienceGained=EXP Gained
 #Gui
 gui.button.eplus.mod=Mod
 gui.button.eplus.vanilla=Vanilla

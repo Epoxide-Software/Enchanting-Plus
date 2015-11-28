@@ -3,7 +3,6 @@
     "newestVersion": "4.0.0.0",
     "release": "4.0.0.0",
     "updateUrl": "http://minecraft.curseforge.com/projects/enchanting-plus/files",
-    "directUpdateUrl-1.7.10": "TODO",
     "versions": {
         "4.0.0.0": [
             "Initial release of E+ 4.",
