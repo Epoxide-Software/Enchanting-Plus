@@ -17,7 +17,6 @@ import cpw.mods.fml.relauncher.Side;
 import net.darkhax.bookshelf.creativetab.CreativeTabCached;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
-import net.epoxide.eplus.command.CommandUnlockEnchantments;
 import net.epoxide.eplus.common.ProxyCommon;
 import net.epoxide.eplus.common.network.GuiHandler;
 import net.epoxide.eplus.common.network.PacketArcaneInscriber;
@@ -93,7 +92,7 @@ public class EnchantingPlus {
     @EventHandler
     public void onServerStarting (FMLServerStartingEvent event) {
         
-        //event.registerServerCommand(new CommandUnlockEnchantments());
+        // event.registerServerCommand(new CommandUnlockEnchantments());
     }
     
     /**

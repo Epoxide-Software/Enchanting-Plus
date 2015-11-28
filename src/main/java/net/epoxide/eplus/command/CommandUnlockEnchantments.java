@@ -60,7 +60,7 @@ public class CommandUnlockEnchantments extends CommandBase {
                     if (!ContentHandler.isBlacklisted(ench) && !props.unlockedEnchantments.contains(ench.effectId))
                         props.unlockedEnchantments.add(ench.effectId);
                         
-                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + player.getDisplayName() + EnumChatFormatting.GREEN + " " +StatCollector.translateToLocal("command.eplus.learnenchant.all.success")));
+                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + player.getDisplayName() + EnumChatFormatting.GREEN + " " + StatCollector.translateToLocal("command.eplus.learnenchant.all.success")));
             }
             
             else {
