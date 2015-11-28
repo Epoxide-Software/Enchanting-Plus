@@ -125,6 +125,6 @@ public class PlayerProperties implements IExtendedEntityProperties {
      */
     public void copy (PlayerProperties properties) {
         
-        properties.unlockedEnchantments = this.unlockedEnchantments;
+        this.unlockedEnchantments = properties.unlockedEnchantments;
     }
 }
