@@ -115,7 +115,7 @@ public class ItemEnchantedScroll extends Item {
         else {
             
             ProxyClient.notificationHandler.updateNotification(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gui.notification.eplus.unlocked"), StatCollector.translateToLocal(ench.getName()));
-            ProxyClient.notificationHandler.updateNotificationIcon(new ItemStack(ContentHandler.eplusTable));
+            ProxyClient.notificationHandler.updateNotificationIcon(new ItemStack(ContentHandler.blockEnchantmentBook));
         }
         
         return stack;
