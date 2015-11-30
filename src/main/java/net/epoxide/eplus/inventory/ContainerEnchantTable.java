@@ -199,33 +199,34 @@ public class ContainerEnchantTable extends Container {
         }
         
         for (final Integer enchantId : enchantments.keySet()) {
+            
             final Integer level = enchantments.get(enchantId);
             
-            if (level != 0) {
-                if (!map.containsKey(enchantId)) {
+            if (level != 0)
+                if (!map.containsKey(enchantId))
                     map.put(enchantId, level);
-                }
-            }
         }
         
         for (final Integer enchantId : map.keySet()) {
+            
             final Integer level = map.get(enchantId);
             
             if (level == 0)
-                temp.add(enchantId);
-                
+                temp.add(enchantId);       
         }
+        
         for (Integer object : temp) {
+            
             map.remove(object);
         }
         
         if (canPurchase(player, serverCost)) {
+            
             List<EnchantmentData> enchantmentDataList = new ArrayList<EnchantmentData>();
+            
             for (Integer i : map.keySet())
                 enchantmentDataList.add(new EnchantmentData(i, map.get(i)));
-                
-            ItemStack itemStack = EnchantHelper.updateEnchantments(enchantmentDataList, itemstack, player, cost);
-            tableInventory.setInventorySlotContents(0, itemStack);
+            
             if (!player.capabilities.isCreativeMode) {
                 
                 if (cost < 0) {
@@ -237,10 +238,12 @@ public class ContainerEnchantTable extends Container {
                 if (exp > 0)
                     player.addExperience(exp);
             }
+            
+            ItemStack itemStack = EnchantHelper.updateEnchantments(enchantmentDataList, itemstack, player, cost);            
+            tableInventory.setInventorySlotContents(0, itemStack);
         }
         
-        onCraftMatrixChanged(tableInventory);
-        
+        onCraftMatrixChanged(tableInventory);      
     }
     
     public int enchantmentCost (Enchantment enchantment, int enchantmentLevel, Integer level) {
