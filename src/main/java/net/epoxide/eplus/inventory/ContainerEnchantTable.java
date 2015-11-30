@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
 import net.epoxide.eplus.handler.ContentHandler;
@@ -124,44 +125,40 @@ public class ContainerEnchantTable extends Container {
         if (player.capabilities.isCreativeMode)
             return true;
             
-        int expLevle = EnchantmentUtils.getLevelsFromExperience(cost);
+        int expLevel = EnchantmentUtils.getLevelsFromExperience(cost);
         if (EPlusConfigurationHandler.needsBookShelves) {
-            if (expLevle > bookCases()) {
-                player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.eplus.morebooks") + " " + expLevle));
+            if (expLevel > bookCases()) {
+                player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.eplus.morebooks") + " " + expLevel));
                 return false;
             }
         }
         
-        if (player.experienceLevel < expLevle) {
-            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.eplus.morelevels") + " " + expLevle));
+        if (player.experienceLevel < expLevel) {
+            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.eplus.morelevels") + " " + expLevel));
             return false;
         }
         return true;
     }
     
-    public int disenchantmentCost (Enchantment enchantment, int enchantmentLevel, Integer level) {
+    /**
+     * Calculates the amount of experience to give the player for disenchanting their item.
+     * 
+     * @param enchantment: The enchantment being removed.
+     * @param enchantmentLevel: The new amount of levels for the enchantment effect.
+     * @param existingLevel: The amount of levels for the enchantment effect before updating.
+     * @return int: The amount of experience points to give the player.
+     */
+    public int disenchantmentCost (Enchantment enchantment, int enchantmentLevel, Integer existingLevel) {
         
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
-        if (itemStack == null)
+        
+        if (!ItemStackUtils.isValidStack(itemStack) && enchantmentLevel > enchantment.getMaxLevel())
             return 0;
             
-        final int maxLevel = enchantment.getMaxLevel();
-        
-        if (enchantmentLevel > maxLevel)
-            return 0;
-            
-        int existingLevel = EnchantmentHelper.getEnchantmentLevel(enchantment.effectId, itemStack);
-        int enchantability = enchantment.getMinEnchantability(level);
-        
-        if (existingLevel > 0 && existingLevel != enchantmentLevel)
-            enchantability -= enchantment.getMinEnchantability(enchantmentLevel);
-            
-        if (enchantability <= itemStack.getItem().getItemEnchantability(itemStack)) {
-            return -EnchantmentUtils.getExperienceFromLevel(enchantmentLevel);
-        }
-        int enchantmentCost = (int) (((enchantability - itemStack.getItem().getItemEnchantability(itemStack)) / 2) * EPlusConfigurationHandler.costFactor);
-        
-        return -EnchantmentUtils.getExperienceFromLevel(enchantmentCost);
+        final int oldCost = (int) (((enchantment.getMaxEnchantability(existingLevel) - itemStack.getItem().getItemEnchantability(itemStack)) / 2) * EPlusConfigurationHandler.costFactor);
+        final int newCost = (int) (((enchantment.getMaxEnchantability(enchantmentLevel) - itemStack.getItem().getItemEnchantability(itemStack)) / 2) * EPlusConfigurationHandler.costFactor);
+        final int returnAmount = (oldCost - newCost) / 2;
+        return -EnchantmentUtils.getExperienceFromLevel((returnAmount > 0) ? returnAmount : 0);
     }
     
     /**
@@ -212,7 +209,7 @@ public class ContainerEnchantTable extends Container {
             final Integer level = map.get(enchantId);
             
             if (level == 0)
-                temp.add(enchantId);       
+                temp.add(enchantId);
         }
         
         for (Integer object : temp) {
@@ -226,40 +223,39 @@ public class ContainerEnchantTable extends Container {
             
             for (Integer i : map.keySet())
                 enchantmentDataList.add(new EnchantmentData(i, map.get(i)));
-            
+                
             if (!player.capabilities.isCreativeMode) {
                 
-                if (cost < 0) {
-                
-                }
-                int level = cost < 0 ? -EnchantmentUtils.getLevelsFromExperience(-cost) : EnchantmentUtils.getLevelsFromExperience(cost);
-                player.addExperienceLevel(-level);
-                int exp = -(EnchantmentUtils.getExperienceFromLevel(level) - cost);
-                if (exp > 0)
-                    player.addExperience(exp);
+                if (serverCost < 0)
+                    player.addExperience(-serverCost);
+                    
+                else
+                    player.addExperienceLevel(-EnchantmentUtils.getLevelsFromExperience(serverCost));
             }
             
-            ItemStack itemStack = EnchantHelper.updateEnchantments(enchantmentDataList, itemstack, player, cost);            
+            ItemStack itemStack = EnchantHelper.updateEnchantments(enchantmentDataList, itemstack, player, cost);
             tableInventory.setInventorySlotContents(0, itemStack);
         }
         
-        onCraftMatrixChanged(tableInventory);      
+        onCraftMatrixChanged(tableInventory);
     }
     
+    /**
+     * Calculates the amount of experience to charge for the upgrade.
+     * 
+     * @param enchantment: The enchantment being bought.
+     * @param enchantmentLevel: The existing level of the enchantment.
+     * @param level: The amount of levels being added.
+     * @return int: The amount of experience being charged for this enchantment.
+     */
     public int enchantmentCost (Enchantment enchantment, int enchantmentLevel, Integer level) {
         
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
-        if (itemStack == null)
+        
+        if (itemStack == null || enchantmentLevel > enchantment.getMaxLevel())
             return 0;
             
-        final int maxLevel = enchantment.getMaxLevel();
-        
-        if (enchantmentLevel > maxLevel)
-            return 0;
-            
-        float adjustedCost = EnchantHelper.calculateEnchantmentCost(enchantment, enchantmentLevel + level, itemStack);
-        
-        return EnchantmentUtils.getExperienceFromLevel((int) Math.max(1, adjustedCost));
+        return EnchantmentUtils.getExperienceFromLevel(EnchantHelper.calculateEnchantmentCost(enchantment, enchantmentLevel + level, itemStack));
     }
     
     public Map<Integer, Integer> getEnchantments () {
