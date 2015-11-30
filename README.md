@@ -24,7 +24,7 @@ Darkhax - Current Maintainer
 Lclc98 - Current Maintainer   
 Xkyouchoux - Original Developer   
 odininon - Previous Meaintainer   
-GnRSlash - Previous Constributor   
+GnRSlash - Previous Contributor   
 
 Translators
 ===========
