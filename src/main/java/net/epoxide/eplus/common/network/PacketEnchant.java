@@ -9,10 +9,8 @@ import net.darkhax.bookshelf.common.network.AbstractMessage;
 import io.netty.buffer.ByteBuf;
 import net.epoxide.eplus.inventory.ContainerEnchantTable;
 
-/**
- * This class was created on 10/31/2015 by lclc98.
- */
 public class PacketEnchant extends AbstractMessage {
+    
     protected int totalCost;
     protected HashMap<Integer, Integer> enchants = new HashMap<Integer, Integer>();
     
