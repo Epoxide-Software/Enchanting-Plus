@@ -23,7 +23,7 @@ Credits
 Darkhax - Current Maintainer   
 Lclc98 - Current Maintainer   
 Xkyouchoux - Original Developer   
-odininon - Previous Meaintainer   
+odininon - Previous Maintainer   
 GnRSlash - Previous Contributor   
 
 Translators
