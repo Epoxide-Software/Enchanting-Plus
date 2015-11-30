@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 
+import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 
 public class IMCHandler {
@@ -50,7 +51,7 @@ public class IMCHandler {
                 ItemStack stack = message.getItemStackValue();
                 
                 if (ItemStackUtils.isValidStack(stack))
-                    for (Enchantment enchant : ItemStackUtils.getEnchantmentsFromStack(stack, (stack.getItem() instanceof ItemEnchantedBook)))
+                    for (Enchantment enchant : EnchantmentUtils.getEnchantmentsFromStack(stack, (stack.getItem() instanceof ItemEnchantedBook)))
                         ContentHandler.blacklistEnchantment(enchant, sender);
             }
             

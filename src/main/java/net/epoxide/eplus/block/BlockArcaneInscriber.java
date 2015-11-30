@@ -17,9 +17,10 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
+
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.handler.ContentHandler;
-import net.epoxide.eplus.inventory.EnchantHelper;
 import net.epoxide.eplus.modifiers.ScrollModifier;
 import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 
@@ -49,7 +50,7 @@ public class BlockArcaneInscriber extends BlockContainer {
         
         if (itemStack != null) {
             if (itemStack.getItem() == Items.enchanted_book && tileEntity.getOutput() == null) {
-                if (EnchantHelper.isItemEnchanted(itemStack)) {
+                if (EnchantmentUtils.isStackEnchanted(itemStack)) {
                     
                     if (tileEntity.getEnchantmentBook() == null) {
                         tileEntity.setEnchantmentBook(itemStack);

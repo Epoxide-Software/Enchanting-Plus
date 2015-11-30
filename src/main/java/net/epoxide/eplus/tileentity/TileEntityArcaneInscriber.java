@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 
+import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.MathsUtils;
 
@@ -111,7 +112,7 @@ public class TileEntityArcaneInscriber extends TileEntity {
                 
                 if (progression >= 1) {
                     if (MathsUtils.tryPercentage(getStability())) {
-                        Enchantment[] enchantments = ItemStackUtils.getEnchantmentsFromStack(enchantmentBook, true);
+                        Enchantment[] enchantments = EnchantmentUtils.getEnchantmentsFromStack(enchantmentBook, true);
                         
                         ItemStack itemStack = ItemEnchantedScroll.createScroll(enchantments[((int) (Math.random() * enchantments.length))]);
                         if (getFirstModifier() != null)

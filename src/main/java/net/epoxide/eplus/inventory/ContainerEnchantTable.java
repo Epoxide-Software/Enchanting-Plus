@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.common.ForgeHooks;
 
-import net.darkhax.bookshelf.lib.util.MathsUtils;
+import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
 import net.epoxide.eplus.handler.ContentHandler;
@@ -123,7 +123,7 @@ public class ContainerEnchantTable extends Container {
         if (player.capabilities.isCreativeMode)
             return true;
             
-        int expLevle = EnchantHelper.calculateLevelsFromExp(cost);
+        int expLevle = EnchantmentUtils.getLevelsFromExperience(cost);
         if (EPlusConfigurationHandler.needsBookShelves) {
             if (expLevle > bookCases()) {
                 player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.eplus.morebooks") + " " + expLevle));
@@ -156,11 +156,11 @@ public class ContainerEnchantTable extends Container {
             enchantability -= enchantment.getMinEnchantability(enchantmentLevel);
             
         if (enchantability <= itemStack.getItem().getItemEnchantability(itemStack)) {
-            return -MathsUtils.getExperienceFromLevel(enchantmentLevel);
+            return -EnchantmentUtils.getExperienceFromLevel(enchantmentLevel);
         }
         int enchantmentCost = (int) (((enchantability - itemStack.getItem().getItemEnchantability(itemStack)) / 2) * EPlusConfigurationHandler.costFactor);
         
-        return -MathsUtils.getExperienceFromLevel(enchantmentCost);
+        return -EnchantmentUtils.getExperienceFromLevel(enchantmentCost);
     }
     
     public void enchant (EntityPlayer player, HashMap<Integer, Integer> map, int cost) throws Exception {
@@ -212,16 +212,16 @@ public class ContainerEnchantTable extends Container {
             for (Integer i : map.keySet())
                 enchantmentDataList.add(new EnchantmentData(i, map.get(i)));
                 
-            ItemStack itemStack = EnchantHelper.setEnchantments(enchantmentDataList, itemstack, player, cost);
+            ItemStack itemStack = EnchantHelper.updateEnchantments(enchantmentDataList, itemstack, player, cost);
             tableInventory.setInventorySlotContents(0, itemStack);
             if (!player.capabilities.isCreativeMode) {
                 
                 if (cost < 0) {
                 
                 }
-                int level = cost < 0 ? -EnchantHelper.calculateLevelsFromExp(-cost) : EnchantHelper.calculateLevelsFromExp(cost);
+                int level = cost < 0 ? -EnchantmentUtils.getLevelsFromExperience(-cost) : EnchantmentUtils.getLevelsFromExperience(cost);
                 player.addExperienceLevel(-level);
-                int exp = -(MathsUtils.getExperienceFromLevel(level) - cost);
+                int exp = -(EnchantmentUtils.getExperienceFromLevel(level) - cost);
                 if (exp > 0)
                     player.addExperience(exp);
             }
@@ -244,7 +244,7 @@ public class ContainerEnchantTable extends Container {
             
         float adjustedCost = EnchantHelper.calculateEnchantmentCost(enchantment, enchantmentLevel + level, itemStack);
         
-        return MathsUtils.getExperienceFromLevel((int) Math.max(1, adjustedCost));
+        return EnchantmentUtils.getExperienceFromLevel((int) Math.max(1, adjustedCost));
     }
     
     public Map<Integer, Integer> getEnchantments () {
@@ -291,19 +291,19 @@ public class ContainerEnchantTable extends Container {
             return;
         }
         
-        if ((!EPlusConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(itemStack) && EnchantHelper.isItemEnchanted(itemStack)) || (EPlusConfigurationHandler.secureItems && EnchantHelper.hasRestriction(itemStack) && !EnchantHelper.restrictionMatches(itemStack, player))) {
+        if ((!EPlusConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(itemStack) && EnchantmentUtils.isStackEnchanted(itemStack)) || (EPlusConfigurationHandler.secureItems && EnchantHelper.hasRestriction(itemStack) && !EnchantHelper.isValidOwner(itemStack, player))) {
             player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.eplus.notowner")));
             return;
         }
         
-        if (EnchantHelper.isItemEnchantable(itemStack)) {
+        if (EnchantmentUtils.isItemEnchantable(itemStack)) {
             addEnchantsFor(itemStack, temp);
         }
-        else if (EnchantHelper.isItemEnchanted(itemStack) && EnchantHelper.isNewItemEnchantable(itemStack.getItem())) {
+        else if (EnchantmentUtils.isStackEnchanted(itemStack) && EnchantHelper.isNewItemEnchantable(itemStack.getItem())) {
             temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
             
-            for (final Enchantment obj : Enchantment.enchantmentsList) {
-                if (obj == null)
+            for (final Enchantment enchant : Enchantment.enchantmentsList) {
+                if (enchant == null)
                     continue;
                     
                 boolean add = true;
@@ -313,12 +313,12 @@ public class ContainerEnchantTable extends Container {
                     if (enchantment == null)
                         continue;
                         
-                    if (!EnchantHelper.isEnchantmentsCompatible(enchantment, obj)) {
+                    if (!EnchantmentUtils.areEnchantmentsCompatible(enchantment, enchant)) {
                         add = false;
                     }
                 }
                 if (add) {
-                    addEnchantFor(itemStack, temp2, obj);
+                    addEnchantFor(itemStack, temp2, enchant);
                 }
             }
             temp.putAll(temp2);
@@ -405,7 +405,7 @@ public class ContainerEnchantTable extends Container {
         
         totalCost *= 2 * EPlusConfigurationHandler.repairFactor;
         
-        return MathsUtils.getExperienceFromLevel((int) Math.max(1, totalCost));
+        return EnchantmentUtils.getExperienceFromLevel((int) Math.max(1, totalCost));
     }
     
     @Override

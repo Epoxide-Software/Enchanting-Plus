@@ -18,7 +18,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import net.darkhax.bookshelf.client.gui.GuiGraphicButton;
-import net.darkhax.bookshelf.lib.util.MathsUtils;
+import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.common.network.PacketEnchant;
@@ -26,7 +26,6 @@ import net.epoxide.eplus.common.network.PacketGui;
 import net.epoxide.eplus.common.network.PacketRepair;
 import net.epoxide.eplus.handler.EPlusConfigurationHandler;
 import net.epoxide.eplus.inventory.ContainerEnchantTable;
-import net.epoxide.eplus.inventory.EnchantHelper;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class GuiModEnchantmentTable extends GuiContainer {
@@ -214,13 +213,13 @@ public class GuiModEnchantmentTable extends GuiContainer {
         information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.playerlevel"), player.experienceLevel), maxWidth));
         
         if (container.tableInventory.getStackInSlot(0) == null || levelChanged() || !levelChanged() && !container.tableInventory.getStackInSlot(0).isItemDamaged()) {
-            boolean exp = totalCost <= MathsUtils.getExperienceFromLevel(1) && totalCost >= -MathsUtils.getExperienceFromLevel(1);
+            boolean exp = totalCost <= EnchantmentUtils.getExperienceFromLevel(1) && totalCost >= -EnchantmentUtils.getExperienceFromLevel(1);
             boolean negExp = totalCost < 0;
-            int finalCost = exp ? totalCost : negExp ? -EnchantHelper.calculateLevelsFromExp(-totalCost) : EnchantHelper.calculateLevelsFromExp(totalCost);
+            int finalCost = exp ? totalCost : negExp ? -EnchantmentUtils.getLevelsFromExperience(-totalCost) : EnchantmentUtils.getLevelsFromExperience(totalCost);
             information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", exp ? StatCollector.translateToLocal("tooltip.eplus.experienceGained") : StatCollector.translateToLocal("tooltip.eplus.enchant"), finalCost), maxWidth));
         }
         else if (EPlusConfigurationHandler.allowRepairs && !levelChanged() && container.tableInventory.getStackInSlot(0).isItemDamaged()) {
-            information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.repair"), EnchantHelper.calculateLevelsFromExp(totalCost)), maxWidth));
+            information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.repair"), EnchantmentUtils.getLevelsFromExperience(totalCost)), maxWidth));
         }
         information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.maxlevel"), container.bookCases()), maxWidth));
         
@@ -382,7 +381,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
             if (mainLabel.enchantmentLevel != 0) {
                 i++;
                 for (final GuiEnchantmentLabel otherLabel : enchantmentArray) {
-                    if (mainLabel != otherLabel && !EnchantHelper.isEnchantmentsCompatible(mainLabel.enchantment, otherLabel.enchantment)) {
+                    if (mainLabel != otherLabel && !EnchantmentUtils.areEnchantmentsCompatible(mainLabel.enchantment, otherLabel.enchantment)) {
                         otherLabel.locked = true;
                     }
                 }
