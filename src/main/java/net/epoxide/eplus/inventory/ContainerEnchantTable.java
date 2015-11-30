@@ -28,6 +28,7 @@ import net.darkhax.bookshelf.lib.util.Utilities;
 
 import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.handler.EPlusConfigurationHandler;
+import net.epoxide.eplus.lib.Constants;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class ContainerEnchantTable extends Container {
@@ -163,7 +164,15 @@ public class ContainerEnchantTable extends Container {
         return -EnchantmentUtils.getExperienceFromLevel(enchantmentCost);
     }
     
-    public void enchant (EntityPlayer player, HashMap<Integer, Integer> map, int cost) throws Exception {
+    /**
+     * Updates the ItemStack in the enchantment slot. This method handles the update process
+     * and charges the player.
+     * 
+     * @param player: The player enchanting the item.
+     * @param map: A map of Integer. Used to hold the the level for the various enchantments.
+     * @param cost: The cost for the current update.
+     */
+    public void updateItemStack (EntityPlayer player, HashMap<Integer, Integer> map, int cost) {
         
         final ItemStack itemstack = tableInventory.getStackInSlot(0);
         final ArrayList<Integer> temp = new ArrayList<Integer>();
@@ -173,6 +182,7 @@ public class ContainerEnchantTable extends Container {
             return;
             
         for (final Integer enchantId : map.keySet()) {
+            
             final Integer level = map.get(enchantId);
             final Integer startingLevel = enchantments.get(enchantId);
             Enchantment enchantment = Utilities.getEnchantment(enchantId);
@@ -183,7 +193,9 @@ public class ContainerEnchantTable extends Container {
         }
         
         if (cost != serverCost) {
-            throw new Exception("Cost is different on client and server");
+            
+            Constants.LOG.warn(player.getCommandSenderName() + " tried to enchant " + itemstack.getDisplayName() + " but the costs were not in sync!");
+            return;
         }
         
         for (final Integer enchantId : enchantments.keySet()) {

@@ -35,15 +35,11 @@ public class PacketEnchant extends AbstractMessage {
     public void handleServerMessage (AbstractMessage message, EntityPlayer player) {
         
         if (message instanceof PacketEnchant) {
+            
             PacketEnchant packet = (PacketEnchant) message;
             if (player.openContainer instanceof ContainerEnchantTable) {
-                try {
-                    ((ContainerEnchantTable) player.openContainer).enchant(player, packet.enchants, packet.totalCost);
-                }
-                catch (final Exception e) {
-                    // EnchantingPlus.log.info("Enchanting failed because: " +
-                    // e.getLocalizedMessage());
-                }
+                
+                ((ContainerEnchantTable) player.openContainer).updateItemStack(player, packet.enchants, packet.totalCost);
                 player.openContainer.detectAndSendChanges();
             }
         }
