@@ -40,6 +40,8 @@ public class EPlusConfigurationHandler {
         secureItems = config.getBoolean("secureItems", settings, secureItems, "If enabled, players will only be able to enchant enchanted items if they enchanted them first.");
         allowUnownedModifications = config.getBoolean("allowUnownedModifications", settings, allowUnownedModifications, "If enabled, players will be able to modify items which are not currently owned by any other player. IE: Dungeon Loot");
         allowVillagers = config.getBoolean("allowVillagers", settings, allowVillagers, "If enabled, a custom E+ villager will spawn and generate in villages.");
+        needsBookShelves = config.getBoolean("needBookshelves", settings, needsBookShelves, "Should the table restrict the level of effects based on the amount of bookshelves?");
+        maxEnchantmentAmount = config.getInt("maxEnchantmentAmount", settings, maxEnchantmentAmount, 0, 4096, "What is the maximum number of enchantments that could be applied at the Enchantment Table?");
         villagerID = config.getInt("villagerID", settings, villagerID, Integer.MIN_VALUE, Integer.MAX_VALUE, "A unique ID for the E+ villager. This should almost never need to be changed.");
         costFactor = config.getFloat("costFactor", settings, costFactor, 0f, 128f, "A number used when calculated enchantment cost. This number is treated as a % based factor. 0.30 = 30% of the original cost. 1.5 = 150% of the original cost.");
         repairFactor = config.getInt("repairFactor", settings, repairFactor, 0, 128, "A number used when calculating the repair costs. A higher factor means higher repair costs.");
