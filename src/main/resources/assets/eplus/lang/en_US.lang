@@ -26,6 +26,8 @@ tooltip.eplus.uses=Remaining Uses
 tooltip.eplus.unlimited=Unlimited
 tooltip.eplus.nodesc=No description has been provided for this enchantment. 
 tooltip.eplus.experienceGained=EXP Gained
+tooltip.eplus.invalid=This scroll is invalid!
+
 #Gui
 gui.button.eplus.mod=Mod
 gui.button.eplus.vanilla=Vanilla

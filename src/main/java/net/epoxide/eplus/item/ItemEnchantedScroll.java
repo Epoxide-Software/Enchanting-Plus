@@ -75,7 +75,7 @@ public class ItemEnchantedScroll extends Item {
     public static boolean isValidScroll (ItemStack stack) {
         
         ItemStackUtils.prepareDataTag(stack);
-        return (ItemStackUtils.isValidStack(stack) && stack.getItem() instanceof ItemEnchantedScroll && stack.getTagCompound().hasKey("ScrollEnchantment"));
+        return (ItemStackUtils.isValidStack(stack) && stack.getItem() instanceof ItemEnchantedScroll && stack.getTagCompound().hasKey("ScrollEnchantment") && Utilities.getEnchantment(stack.getTagCompound().getInteger("ScrollEnchantment")) != null);
     }
     
     /**
@@ -178,6 +178,9 @@ public class ItemEnchantedScroll extends Item {
             if (props.unlockedEnchantments.contains(enchantmentID))
                 tip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.eplus.learned"));
         }
+        
+        else
+            tip.add(StatCollector.translateToLocal("tooltip.eplus.invalid"));
     }
     
     @Override
