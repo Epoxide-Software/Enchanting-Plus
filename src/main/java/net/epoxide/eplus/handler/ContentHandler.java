@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -162,6 +164,10 @@ public class ContentHandler {
         
         for (String entry : EPlusConfigurationHandler.blacklistedItems)
             addItemToBlacklist(entry, "Configuration File");
+            
+        for (String entry : EPlusConfigurationHandler.blacklistedEnchantments)
+            if (StringUtils.isNumeric(entry))
+                blacklistEnchantment(Integer.parseInt(entry), "Configuration File");
     }
     
     /**
