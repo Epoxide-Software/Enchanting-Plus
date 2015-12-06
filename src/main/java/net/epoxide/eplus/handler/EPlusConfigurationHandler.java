@@ -24,6 +24,7 @@ public class EPlusConfigurationHandler {
     public static int repairFactor = 5;
     public static int minimumBookshelfs = 5;
     public static float scrollDrop = 0.01f;
+    public static String[] blacklistedItems = new String[] {};
     
     public static void initConfig (File configFile) {
         
@@ -47,6 +48,7 @@ public class EPlusConfigurationHandler {
         repairFactor = config.getInt("repairFactor", settings, repairFactor, 0, 128, "A number used when calculating the repair costs. A higher factor means higher repair costs.");
         minimumBookshelfs = config.getInt("minimumBookshelfs", settings, minimumBookshelfs, 0, 64, "The minimum amount of Bookshelfs required to use the enchantment table.");
         scrollDrop = config.getFloat("scrollDropRate", settings, scrollDrop, 0f, 1f, "The percent chance that a hostile mob should drop a scroll. Default is 0.01 which is 1%");
+        blacklistedItems = config.getStringList("blacklistedItems", settings, blacklistedItems, "A list of blacklisted items and blocks. Things in this list won't be enchantable at the eplus table. The format is the same as minecraft's id system. For example, minecraft:chainmail_helmet will prevent chainmail helmets from becoming enchanted.");
         
         if (config.hasChanged())
             config.save();

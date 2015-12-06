@@ -159,6 +159,9 @@ public class ContentHandler {
         bookBuff = new BuffBookFall();
         BookshelfRegistry.registerBuff(bookBuff);
         new VillagerHandler();
+        
+        for (String entry : EPlusConfigurationHandler.blacklistedItems)
+            addItemToBlacklist(entry, "Configuration File");
     }
     
     /**
