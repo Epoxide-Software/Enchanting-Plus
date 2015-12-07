@@ -94,12 +94,12 @@ public class ContentHandler {
         eplusArcaneInscriber = new BlockArcaneInscriber();
         GameRegistry.registerBlock(eplusArcaneInscriber, "arcane_inscriber");
         GameRegistry.registerTileEntity(TileEntityArcaneInscriber.class, "eplus:arcane_inscriber");
-        GameRegistry.addRecipe(new ItemStack(eplusArcaneInscriber), new Object[] { "fpi", "bcb", Character.valueOf('f'), Items.feather, Character.valueOf('p'), Items.paper, Character.valueOf('i'), new ItemStack(Items.dye, 1, 0), Character.valueOf('b'), Blocks.bookshelf, Character.valueOf('c'), Blocks.crafting_table });
+        GameRegistry.addRecipe(new ItemStack(eplusArcaneInscriber), new Object[] { "fpi", "bcb", 'f', Items.feather, 'p', Items.paper, 'i', new ItemStack(Items.dye, 1, 0), 'b', Blocks.bookshelf, 'c', Blocks.crafting_table });
         
         blockEnchantmentBook = new BlockEnchantmentBook();
         GameRegistry.registerBlock(blockEnchantmentBook, ItemBlockEnchantmentBook.class, "enchantment_book");
         GameRegistry.registerTileEntity(TileEntityEnchantmentBook.class, "eplus:enchantment_book");
-        GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[] { " g ", "gbg", " g ", Character.valueOf('g'), Items.glowstone_dust, Character.valueOf('b'), Items.enchanted_book });
+        GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[] { " g ", "gbg", " g ", 'g', Items.glowstone_dust, 'b', Items.enchanted_book });
     }
     
     /**
@@ -110,7 +110,7 @@ public class ContentHandler {
         
         tableUpgrade = new ItemTableUpgrade();
         GameRegistry.registerItem(tableUpgrade, "tableUpgrade");
-        CraftingManager.getInstance().addRecipe(new ItemStack(tableUpgrade), "gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot);
+        GameRegistry.addRecipe(new ItemStack(tableUpgrade), new Object[] {"gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot});
         
         scroll = new ItemEnchantedScroll();
         GameRegistry.registerItem(scroll, "enchantment_scroll");
