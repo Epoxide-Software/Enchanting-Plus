@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.util.WeightedRandomChestContent;
 
 import net.minecraftforge.common.ChestGenHooks;
@@ -94,12 +93,10 @@ public class ContentHandler {
         eplusArcaneInscriber = new BlockArcaneInscriber();
         GameRegistry.registerBlock(eplusArcaneInscriber, "arcane_inscriber");
         GameRegistry.registerTileEntity(TileEntityArcaneInscriber.class, "eplus:arcane_inscriber");
-        GameRegistry.addRecipe(new ItemStack(eplusArcaneInscriber), new Object[] { "fpi", "bcb", 'f', Items.feather, 'p', Items.paper, 'i', new ItemStack(Items.dye, 1, 0), 'b', Blocks.bookshelf, 'c', Blocks.crafting_table });
         
         blockEnchantmentBook = new BlockEnchantmentBook();
         GameRegistry.registerBlock(blockEnchantmentBook, ItemBlockEnchantmentBook.class, "enchantment_book");
         GameRegistry.registerTileEntity(TileEntityEnchantmentBook.class, "eplus:enchantment_book");
-        GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[] { " g ", "gbg", " g ", 'g', Items.glowstone_dust, 'b', Items.enchanted_book });
     }
     
     /**
@@ -110,7 +107,6 @@ public class ContentHandler {
         
         tableUpgrade = new ItemTableUpgrade();
         GameRegistry.registerItem(tableUpgrade, "tableUpgrade");
-        GameRegistry.addRecipe(new ItemStack(tableUpgrade), new Object[] {"gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot});
         
         scroll = new ItemEnchantedScroll();
         GameRegistry.registerItem(scroll, "enchantment_scroll");
@@ -151,6 +147,15 @@ public class ContentHandler {
         addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_pearl), 0.05f, 0f, false));
         addScrollModifier(new ScrollModifier(new ItemStack(Blocks.glowstone), 0f, 0.05f, false));
         addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_eye), 0f, 0.1f, false));
+    }
+    
+    public static void initRecipes () {
+        
+        GameRegistry.addRecipe(new ItemStack(tableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot });
+        GameRegistry.addRecipe(new ItemStack(eplusTable), new Object[] { "gbg", "oto", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot, 't', Blocks.enchanting_table });
+        GameRegistry.addRecipe(new ItemStack(eplusArcaneInscriber), new Object[] { "fpi", "bcb", 'f', Items.feather, 'p', Items.paper, 'i', new ItemStack(Items.dye, 1, 0), 'b', Blocks.bookshelf, 'c', Blocks.crafting_table });
+        GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[] { " g ", "gbg", " g ", 'g', Items.glowstone_dust, 'b', Items.enchanted_book });
+        GameRegistry.addShapelessRecipe(new ItemStack(eplusTable), new Object[] { Blocks.enchanting_table, tableUpgrade });
     }
     
     /**
