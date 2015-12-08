@@ -49,7 +49,6 @@ public class PlayerProperties implements IExtendedEntityProperties {
     @Override
     public void saveNBTData (NBTTagCompound compound) {
         
-        EnchantingPlus.printDebugMessage("Saving Enchanting Plus data");
         NBTTagCompound playerData = new NBTTagCompound();
         playerData.setIntArray("unlockedEnchantments", Ints.toArray(this.unlockedEnchantments));
         compound.setTag(PROP_NAME, playerData);
@@ -58,7 +57,6 @@ public class PlayerProperties implements IExtendedEntityProperties {
     @Override
     public void loadNBTData (NBTTagCompound compound) {
         
-        EnchantingPlus.printDebugMessage("Loading Enchanting Plus data");
         NBTTagCompound playerData = compound.getCompoundTag(PROP_NAME);
         List<Integer> enchantments = new ArrayList();
         enchantments.addAll(Ints.asList(playerData.getIntArray("unlockedEnchantments")));
