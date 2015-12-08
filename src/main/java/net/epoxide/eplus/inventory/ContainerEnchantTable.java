@@ -302,14 +302,13 @@ public class ContainerEnchantTable extends Container {
             return;
         }
         
-        if ((!EPlusConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(itemStack) && EnchantmentUtils.isStackEnchanted(itemStack)) || (EPlusConfigurationHandler.secureItems && EnchantHelper.hasRestriction(itemStack) && !EnchantHelper.isValidOwner(itemStack, player))) {
-            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.eplus.notowner")));
+        if ((!EPlusConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(itemStack) && EnchantmentUtils.isStackEnchanted(itemStack)) || (EPlusConfigurationHandler.secureItems && EnchantHelper.hasRestriction(itemStack) && !EnchantHelper.isValidOwner(itemStack, player)))
             return;
-        }
-        
+            
         if (EnchantmentUtils.isItemEnchantable(itemStack)) {
             addEnchantsFor(itemStack, temp);
         }
+        
         else if (EnchantmentUtils.isStackEnchanted(itemStack) && EnchantHelper.isNewItemEnchantable(itemStack.getItem())) {
             temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
             
