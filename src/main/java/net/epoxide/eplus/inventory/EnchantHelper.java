@@ -22,7 +22,7 @@ public class EnchantHelper {
     
     public static boolean isEnchantmentValid (Enchantment ench, EntityPlayer entityPlayer) {
         
-        return ench != null && ((EPlusConfigurationHandler.useQuestMode && PlayerProperties.getProperties(entityPlayer).unlockedEnchantments.contains(ench.effectId)) || entityPlayer.capabilities.isCreativeMode);
+        return ench != null && ((EPlusConfigurationHandler.useQuestMode ? PlayerProperties.getProperties(entityPlayer).unlockedEnchantments.contains(ench.effectId) : true) || entityPlayer.capabilities.isCreativeMode);
     }
     
     public static boolean isNewItemEnchantable (Item item) {
