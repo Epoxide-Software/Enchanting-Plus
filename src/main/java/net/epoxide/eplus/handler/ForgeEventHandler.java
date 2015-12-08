@@ -1,5 +1,6 @@
 package net.epoxide.eplus.handler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,10 +16,14 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.darkhax.bookshelf.event.ItemEnchantedEvent;
+import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.MathsUtils;
+import net.darkhax.bookshelf.lib.util.Utilities;
 
+import net.epoxide.eplus.client.gui.GuiModEnchantmentTable;
 import net.epoxide.eplus.common.PlayerProperties;
+import net.epoxide.eplus.inventory.EnchantHelper;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.modifiers.ScrollModifier;
 
@@ -63,6 +68,10 @@ public class ForgeEventHandler {
                 }
             }
         }
+        
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiModEnchantmentTable)
+            if ((!EPlusConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(event.itemStack) && EnchantmentUtils.isStackEnchanted(event.itemStack)) || (EPlusConfigurationHandler.secureItems && EnchantHelper.hasRestriction(event.itemStack) && !EnchantHelper.isValidOwner(event.itemStack, event.entityPlayer)))
+                Utilities.wrapStringToListWithFormat(StatCollector.translateToLocal("tooltip.eplus.notowner"), 30, false, event.toolTip, EnumChatFormatting.RED);
     }
     
     @SubscribeEvent
