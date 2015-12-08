@@ -27,6 +27,7 @@ tooltip.eplus.unlimited=Unlimited
 tooltip.eplus.nodesc=No description has been provided for this enchantment. 
 tooltip.eplus.experienceGained=EXP Gained
 tooltip.eplus.invalid=This scroll is invalid!
+tooltip.eplus.notowner=You do not own this item. You can not enchant it!
 
 #Gui
 gui.button.eplus.mod=Mod
@@ -38,7 +39,6 @@ chat.eplus.scrollunlock=Enchantment unlocked
 chat.eplus.scrollunlock.failed=You have already learned this.
 chat.eplus.morebooks=Not enough bookcases, Requires
 chat.eplus.morelevels=Not enough levels, Requires
-chat.eplus.notowner=You are not the owner of this item.
 
 #Misc
 itemGroup.eplus=Enchanting Plus
