@@ -33,7 +33,7 @@ public class ItemTableUpgrade extends Item {
         if (!world.isRemote) {
             Block block = world.getBlock(x, y, z);
             if (block instanceof BlockEnchantmentTable) {
-                world.setBlock(x, y, z, ContentHandler.eplusTable);
+                world.setBlock(x, y, z, ContentHandler.blockAdvancedTable);
                 world.setTileEntity(x, y, z, new TileEntityEnchantTable());
                 itemStack.stackSize--;
                 return true;

@@ -46,7 +46,7 @@ public class ItemEnchantedScroll extends Item {
      */
     public static ItemStack createScroll (Enchantment ench) {
         
-        ItemStack stack = new ItemStack(ContentHandler.scroll);
+        ItemStack stack = new ItemStack(ContentHandler.itemScroll);
         ItemStackUtils.prepareDataTag(stack);
         stack.getTagCompound().setInteger("ScrollEnchantment", ench.effectId);
         return stack;

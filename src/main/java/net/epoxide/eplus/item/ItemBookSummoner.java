@@ -34,7 +34,7 @@ public class ItemBookSummoner extends Item {
     
     public static ItemStack createSummonerItem (int duration, int uses) {
         
-        ItemStack stack = new ItemStack(ContentHandler.book);
+        ItemStack stack = new ItemStack(ContentHandler.itemFloatingBook);
         ItemStackUtils.prepareDataTag(stack);
         stack.stackTagCompound.setInteger("duration", duration);
         stack.stackTagCompound.setInteger("uses", uses);
@@ -52,7 +52,7 @@ public class ItemBookSummoner extends Item {
         
         if (isValid(stack)) {
             
-            BuffHelper.addOrUpdateBuff(world, player, new BuffEffect(ContentHandler.bookBuff, stack.getTagCompound().getInteger("duration"), 1));
+            BuffHelper.addOrUpdateBuff(world, player, new BuffEffect(ContentHandler.buffFloatingBook, stack.getTagCompound().getInteger("duration"), 1));
             
             NBTTagCompound tag = stack.getTagCompound();
             int uses = tag.getInteger("uses");
@@ -80,7 +80,7 @@ public class ItemBookSummoner extends Item {
         if (isValid(stack)) {
             
             NBTTagCompound tag = stack.getTagCompound();
-            BuffEffect effect = new BuffEffect(ContentHandler.bookBuff, tag.getInteger("duration"), 1);
+            BuffEffect effect = new BuffEffect(ContentHandler.buffFloatingBook, tag.getInteger("duration"), 1);
             int uses = tag.getInteger("uses");
             
             tip.add(StatCollector.translateToLocal("tooltip.eplus.duration") + ": " + effect.getDuration());

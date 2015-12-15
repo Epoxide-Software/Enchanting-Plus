@@ -34,7 +34,7 @@ public class ProxyClient extends ProxyCommon {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArcaneInscriber.class, new ArcaneDisenchanterRender());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnchantmentBook.class, new EnchantmentBookRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ContentHandler.blockEnchantmentBook), new RenderItemEnchantedBook());
-        MinecraftForgeClient.registerItemRenderer(ContentHandler.book, new RenderItemEnchantedTome());
+        MinecraftForgeClient.registerItemRenderer(ContentHandler.itemFloatingBook, new RenderItemEnchantedTome());
         FMLCommonHandler.instance().bus().register(new RenderingHandler());
         FMLInterModComms.sendMessage("llibrary", "update-checker", "https://github.com/Epoxide-MC/Enchanting-Plus/master/versions.json");
     }

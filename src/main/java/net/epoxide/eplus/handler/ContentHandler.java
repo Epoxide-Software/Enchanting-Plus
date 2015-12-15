@@ -70,15 +70,15 @@ public class ContentHandler {
      */
     public static ChestGenHooks eplusChest = new ChestGenHooks("EplusChest", new WeightedRandomChestContent[0], 3, 7);
     
-    public static Block eplusTable;
-    public static Block eplusArcaneInscriber;
+    public static Block blockAdvancedTable;
+    public static Block blockArcaneInscriber;
     public static Block blockEnchantmentBook;
     
-    public static Item tableUpgrade;
-    public static Item scroll;
-    public static Item book;
+    public static Item itemTableUpgrage;
+    public static Item itemScroll;
+    public static Item itemFloatingBook;
     
-    public static Buff bookBuff;
+    public static Buff buffFloatingBook;
     
     /**
      * Initializes all of the blocks for the Enchanting Plus mod. Used to handle Block
@@ -86,12 +86,12 @@ public class ContentHandler {
      */
     public static void initBlocks () {
         
-        eplusTable = new BlockEnchantTable();
-        GameRegistry.registerBlock(eplusTable, "advancedEnchantmentTable");
+        blockAdvancedTable = new BlockEnchantTable();
+        GameRegistry.registerBlock(blockAdvancedTable, "advancedEnchantmentTable");
         GameRegistry.registerTileEntity(TileEntityEnchantTable.class, "eplus:advancedEnchantmentTable");
         
-        eplusArcaneInscriber = new BlockArcaneInscriber();
-        GameRegistry.registerBlock(eplusArcaneInscriber, "arcane_inscriber");
+        blockArcaneInscriber = new BlockArcaneInscriber();
+        GameRegistry.registerBlock(blockArcaneInscriber, "arcane_inscriber");
         GameRegistry.registerTileEntity(TileEntityArcaneInscriber.class, "eplus:arcane_inscriber");
         
         blockEnchantmentBook = new BlockEnchantmentBook();
@@ -105,14 +105,14 @@ public class ContentHandler {
      */
     public static void initItems () {
         
-        tableUpgrade = new ItemTableUpgrade();
-        GameRegistry.registerItem(tableUpgrade, "tableUpgrade");
+        itemTableUpgrage = new ItemTableUpgrade();
+        GameRegistry.registerItem(itemTableUpgrage, "tableUpgrade");
         
-        scroll = new ItemEnchantedScroll();
-        GameRegistry.registerItem(scroll, "enchantment_scroll");
+        itemScroll = new ItemEnchantedScroll();
+        GameRegistry.registerItem(itemScroll, "enchantment_scroll");
         
-        book = new ItemBookSummoner();
-        GameRegistry.registerItem(book, "tomb_guardian");
+        itemFloatingBook = new ItemBookSummoner();
+        GameRegistry.registerItem(itemFloatingBook, "tomb_guardian");
     }
     
     /**
@@ -149,13 +149,16 @@ public class ContentHandler {
         addScrollModifier(new ScrollModifier(new ItemStack(Items.ender_eye), 0f, 0.1f, false));
     }
     
+    /**
+     * Initializes all of the recipes added by the mod. 
+     */
     public static void initRecipes () {
         
-        GameRegistry.addRecipe(new ItemStack(tableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot });
-        GameRegistry.addRecipe(new ItemStack(eplusTable), new Object[] { "gbg", "oto", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot, 't', Blocks.enchanting_table });
-        GameRegistry.addRecipe(new ItemStack(eplusArcaneInscriber), new Object[] { "fpi", "bcb", 'f', Items.feather, 'p', Items.paper, 'i', new ItemStack(Items.dye, 1, 0), 'b', Blocks.bookshelf, 'c', Blocks.crafting_table });
+        GameRegistry.addRecipe(new ItemStack(itemTableUpgrage), new Object[] { "gbg", "o o", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot });
+        GameRegistry.addRecipe(new ItemStack(blockAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.writable_book, 'o', Blocks.obsidian, 'e', Items.ender_eye, 'g', Items.gold_ingot, 't', Blocks.enchanting_table });
+        GameRegistry.addRecipe(new ItemStack(blockArcaneInscriber), new Object[] { "fpi", "bcb", 'f', Items.feather, 'p', Items.paper, 'i', new ItemStack(Items.dye, 1, 0), 'b', Blocks.bookshelf, 'c', Blocks.crafting_table });
         GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[] { " g ", "gbg", " g ", 'g', Items.glowstone_dust, 'b', Items.enchanted_book });
-        GameRegistry.addShapelessRecipe(new ItemStack(eplusTable), new Object[] { Blocks.enchanting_table, tableUpgrade });
+        GameRegistry.addShapelessRecipe(new ItemStack(blockAdvancedTable), new Object[] { Blocks.enchanting_table, itemTableUpgrage });
     }
     
     /**
@@ -163,8 +166,9 @@ public class ContentHandler {
      */
     public static void initMisc () {
         
-        bookBuff = new BuffBookFall();
-        BookshelfRegistry.registerBuff(bookBuff);
+        buffFloatingBook = new BuffBookFall();
+        BookshelfRegistry.registerBuff(buffFloatingBook);
+        
         new VillagerHandler();
         
         for (String entry : EPlusConfigurationHandler.blacklistedItems)

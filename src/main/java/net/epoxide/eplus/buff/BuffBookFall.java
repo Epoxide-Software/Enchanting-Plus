@@ -64,7 +64,7 @@ public class BuffBookFall extends Buff {
     
     public boolean shouldUseEffect (EntityLivingBase entity) {
         
-        if (BuffHelper.hasBuff(entity, ContentHandler.bookBuff) && !entity.onGround && !entity.isInWater() && !entity.isInsideOfMaterial(Material.water)) {
+        if (BuffHelper.hasBuff(entity, ContentHandler.buffFloatingBook) && !entity.onGround && !entity.isInWater() && !entity.isInsideOfMaterial(Material.water)) {
             
             if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isFlying)
                 return true;
