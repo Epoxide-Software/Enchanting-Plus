@@ -12,7 +12,7 @@ import net.epoxide.eplus.client.gui.GuiVanillaEnchantmentTable;
 import net.epoxide.eplus.inventory.ContainerEnchantTable;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
-public class GuiHandler implements IGuiHandler {
+public final class GuiHandler implements IGuiHandler {
     
     @Override
     public Object getServerGuiElement (int id, EntityPlayer entityPlayer, World world, int x, int y, int z) {

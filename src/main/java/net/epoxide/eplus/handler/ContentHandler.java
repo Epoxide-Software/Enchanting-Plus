@@ -40,7 +40,7 @@ import net.epoxide.eplus.tileentity.TileEntityArcaneInscriber;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 import net.epoxide.eplus.tileentity.TileEntityEnchantmentBook;
 
-public class ContentHandler {
+public final class ContentHandler {
     
     /**
      * A blacklist containing all of the numeric IDs of Enchantments that have been

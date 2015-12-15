@@ -18,7 +18,7 @@ import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.epoxide.eplus.common.PlayerProperties;
 import net.epoxide.eplus.handler.ConfigurationHandler;
 
-public class EnchantHelper {
+public final class EnchantHelper {
     
     public static boolean isEnchantmentValid (Enchantment ench, EntityPlayer entityPlayer) {
         

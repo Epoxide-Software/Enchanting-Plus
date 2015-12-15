@@ -12,7 +12,7 @@ import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 
-public class IMCHandler {
+public final class IMCHandler {
     
     /**
      * Processes all incoming IMC messages for the mod. Please read our project README for more

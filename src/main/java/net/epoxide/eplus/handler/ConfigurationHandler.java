@@ -4,7 +4,7 @@ import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
-public class ConfigurationHandler {
+public final class ConfigurationHandler {
     
     public static Configuration config;
     

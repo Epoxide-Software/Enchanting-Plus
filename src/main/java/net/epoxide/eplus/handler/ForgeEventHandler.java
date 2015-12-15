@@ -27,7 +27,7 @@ import net.epoxide.eplus.inventory.EnchantHelper;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.modifiers.ScrollModifier;
 
-public class ForgeEventHandler {
+public final class ForgeEventHandler {
     
     @SubscribeEvent
     public void onMobDrops (LivingDropsEvent event) {

@@ -3,7 +3,7 @@ package net.epoxide.eplus.lib;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Constants {
+public final class Constants {
     
     public static final String MOD_ID = "eplus";
     public static final String MOD_NAME = "Enchanting Plus";

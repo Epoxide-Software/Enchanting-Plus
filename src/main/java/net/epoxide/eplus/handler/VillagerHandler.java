@@ -30,7 +30,7 @@ import net.darkhax.bookshelf.lib.util.Utilities;
 
 import net.epoxide.eplus.item.ItemEnchantedScroll;
 
-public class VillagerHandler {
+public final class VillagerHandler {
     
     public static void initVillageHandler () {
         

@@ -17,7 +17,7 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.common.network.PacketSyncPlayerProperties;
 
-public class PlayerProperties implements IExtendedEntityProperties {
+public final class PlayerProperties implements IExtendedEntityProperties {
     
     /**
      * The name of the tag used to store all player data.
