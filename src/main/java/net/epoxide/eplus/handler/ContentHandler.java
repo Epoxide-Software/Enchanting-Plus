@@ -18,6 +18,7 @@ import net.minecraft.util.WeightedRandomChestContent;
 
 import net.minecraftforge.common.ChestGenHooks;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -177,6 +178,16 @@ public final class ContentHandler {
         for (String entry : ConfigurationHandler.blacklistedEnchantments)
             if (StringUtils.isNumeric(entry))
                 blacklistEnchantment(Integer.parseInt(entry), "Configuration File");
+        
+        if (Loader.isModLoaded("NotEnoughItems")) {
+            
+            addInformation(blockAdvancedTable);
+            addInformation(blockArcaneInscriber);
+            addInformation(blockEnchantmentBook);
+            addInformation(itemTableUpgrage);
+            addInformation(itemScroll);
+            addInformation(itemFloatingBook);
+        }
     }
     
     /**
@@ -377,5 +388,25 @@ public final class ContentHandler {
                 return modifier;
                 
         return null;
+    }
+    
+    /**
+     * Adds information for an EPlus Item.
+     * 
+     * @param item: The Item to add information for.
+     */
+    private static void addInformation (Item item) {
+        
+        BookshelfRegistry.addInformation(item, "info." + item.getUnlocalizedName());
+    }
+    
+    /**
+     * Adds information for an EPlus block.
+     * 
+     * @param block: The block to add information for.
+     */
+    private static void addInformation (Block block) {
+        
+        BookshelfRegistry.addInformation(block, "info." + block.getUnlocalizedName());
     }
 }
