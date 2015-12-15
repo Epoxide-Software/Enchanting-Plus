@@ -1,12 +1,14 @@
-package net.epoxide.eplus.handler;
+package net.epoxide.eplus.creativetab;
 
 import net.minecraft.item.Item;
 
 import net.darkhax.bookshelf.creativetab.CreativeTabCached;
 
-public class CreativeEPlus extends CreativeTabCached {
+import net.epoxide.eplus.handler.ContentHandler;
+
+public class CreativeTabEPlus extends CreativeTabCached {
     
-    public CreativeEPlus() {
+    public CreativeTabEPlus() {
         
         super("eplus");
     }

@@ -25,8 +25,8 @@ import net.epoxide.eplus.common.network.PacketEnchant;
 import net.epoxide.eplus.common.network.PacketGui;
 import net.epoxide.eplus.common.network.PacketRepair;
 import net.epoxide.eplus.common.network.PacketSyncPlayerProperties;
+import net.epoxide.eplus.creativetab.CreativeTabEPlus;
 import net.epoxide.eplus.handler.ContentHandler;
-import net.epoxide.eplus.handler.CreativeEPlus;
 import net.epoxide.eplus.handler.EPlusConfigurationHandler;
 import net.epoxide.eplus.handler.ForgeEventHandler;
 import net.epoxide.eplus.handler.IMCHandler;
@@ -44,7 +44,7 @@ public class EnchantingPlus {
     /**
      * A CreativeTab used for all EnchantingPlus related items and blocks.
      */
-    public static CreativeTabCached tabEplus = new CreativeEPlus();
+    public static CreativeTabCached tabEplus = new CreativeTabEPlus();
     
     /**
      * A SimpleNetworkWrapper that is used to send EnchantingPlus packets.
