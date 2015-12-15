@@ -27,8 +27,8 @@ import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
+import net.epoxide.eplus.handler.ConfigurationHandler;
 import net.epoxide.eplus.handler.ContentHandler;
-import net.epoxide.eplus.handler.EPlusConfigurationHandler;
 import net.epoxide.eplus.lib.Constants;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
@@ -94,7 +94,7 @@ public class ContainerEnchantTable extends Container {
     
     public float bookCases () {
         
-        float temp = EPlusConfigurationHandler.minimumBookshelfs;
+        float temp = ConfigurationHandler.minimumBookshelfs;
         for (int j = -1; j <= 1; ++j) {
             for (int k = -1; k <= 1; ++k) {
                 if ((j != 0 || k != 0) && this.world.isAirBlock(this.x + k, this.y, this.z + j) && this.world.isAirBlock(this.x + k, this.y + 1, this.z + j)) {
@@ -126,7 +126,7 @@ public class ContainerEnchantTable extends Container {
             return true;
             
         int expLevel = EnchantmentUtils.getLevelsFromExperience(cost);
-        if (EPlusConfigurationHandler.needsBookShelves) {
+        if (ConfigurationHandler.needsBookShelves) {
             if (expLevel > bookCases()) {
                 player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.eplus.morebooks") + " " + expLevel));
                 return false;
@@ -155,8 +155,8 @@ public class ContainerEnchantTable extends Container {
         if (!ItemStackUtils.isValidStack(itemStack) && enchantmentLevel > enchantment.getMaxLevel())
             return 0;
             
-        final int oldCost = (int) (((enchantment.getMaxEnchantability(existingLevel) - itemStack.getItem().getItemEnchantability(itemStack)) / 2) * EPlusConfigurationHandler.costFactor);
-        final int newCost = (int) (((enchantment.getMaxEnchantability(enchantmentLevel) - itemStack.getItem().getItemEnchantability(itemStack)) / 2) * EPlusConfigurationHandler.costFactor);
+        final int oldCost = (int) (((enchantment.getMaxEnchantability(existingLevel) - itemStack.getItem().getItemEnchantability(itemStack)) / 2) * ConfigurationHandler.costFactor);
+        final int newCost = (int) (((enchantment.getMaxEnchantability(enchantmentLevel) - itemStack.getItem().getItemEnchantability(itemStack)) / 2) * ConfigurationHandler.costFactor);
         final int returnAmount = (oldCost - newCost) / 2;
         return -EnchantmentUtils.getExperienceFromLevel((returnAmount > 0) ? returnAmount : 0);
     }
@@ -302,7 +302,7 @@ public class ContainerEnchantTable extends Container {
             return;
         }
         
-        if ((!EPlusConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(itemStack) && EnchantmentUtils.isStackEnchanted(itemStack)) || (EPlusConfigurationHandler.secureItems && EnchantHelper.hasRestriction(itemStack) && !EnchantHelper.isValidOwner(itemStack, player)))
+        if ((!ConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(itemStack) && EnchantmentUtils.isStackEnchanted(itemStack)) || (ConfigurationHandler.secureItems && EnchantHelper.hasRestriction(itemStack) && !EnchantHelper.isValidOwner(itemStack, player)))
             return;
             
         if (EnchantmentUtils.isItemEnchantable(itemStack)) {
@@ -413,7 +413,7 @@ public class ContainerEnchantTable extends Container {
         
         double totalCost = (percentDamage * cost) / enchantability;
         
-        totalCost *= 2 * EPlusConfigurationHandler.repairFactor;
+        totalCost *= 2 * ConfigurationHandler.repairFactor;
         
         return (int) Math.max(1, totalCost);
     }

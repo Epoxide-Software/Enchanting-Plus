@@ -6,7 +6,7 @@ import net.minecraft.enchantment.Enchantment;
 
 import net.darkhax.bookshelf.lib.util.Utilities;
 
-import net.epoxide.eplus.handler.EPlusConfigurationHandler;
+import net.epoxide.eplus.handler.ConfigurationHandler;
 import net.epoxide.eplus.inventory.ContainerEnchantTable;
 
 public class GuiEnchantmentLabel extends Gui {
@@ -99,7 +99,7 @@ public class GuiEnchantmentLabel extends Gui {
         float index = xPos / (float) (width + 10);
         final int tempLevel = (int) Math.floor(currentLevel > enchantment.getMaxLevel() ? currentLevel * index : enchantment.getMaxLevel() * index);
         
-        if (tempLevel >= currentLevel || EPlusConfigurationHandler.allowDisenchanting && (!container.tableInventory.getStackInSlot(0).isItemDamaged()) || EPlusConfigurationHandler.allowDamagedEnchanting) {
+        if (tempLevel >= currentLevel || ConfigurationHandler.allowDisenchanting && (!container.tableInventory.getStackInSlot(0).isItemDamaged()) || ConfigurationHandler.allowDamagedEnchanting) {
             enchantmentLevel = tempLevel;
         }
         

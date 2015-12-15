@@ -24,7 +24,7 @@ import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.common.network.PacketEnchant;
 import net.epoxide.eplus.common.network.PacketGui;
 import net.epoxide.eplus.common.network.PacketRepair;
-import net.epoxide.eplus.handler.EPlusConfigurationHandler;
+import net.epoxide.eplus.handler.ConfigurationHandler;
 import net.epoxide.eplus.inventory.ContainerEnchantTable;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
@@ -83,7 +83,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
                 }
                 return;
             case 1:
-                if (enchants.size() == 0 && EPlusConfigurationHandler.allowRepairs) {
+                if (enchants.size() == 0 && ConfigurationHandler.allowRepairs) {
                     EnchantingPlus.network.sendToServer(new PacketRepair(totalCost));
                 }
                 return;
@@ -218,7 +218,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
             int finalCost = exp ? totalCost : negExp ? -EnchantmentUtils.getLevelsFromExperience(-totalCost) : EnchantmentUtils.getLevelsFromExperience(totalCost);
             information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", exp ? StatCollector.translateToLocal("tooltip.eplus.experienceGained") : StatCollector.translateToLocal("tooltip.eplus.enchant"), finalCost), maxWidth));
         }
-        else if (EPlusConfigurationHandler.allowRepairs && !levelChanged() && container.tableInventory.getStackInSlot(0).isItemDamaged()) {
+        else if (ConfigurationHandler.allowRepairs && !levelChanged() && container.tableInventory.getStackInSlot(0).isItemDamaged()) {
             information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.repair"), EnchantmentUtils.getLevelsFromExperience(totalCost)), maxWidth));
         }
         information.add(fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", StatCollector.translateToLocal("tooltip.eplus.maxlevel"), container.bookCases()), maxWidth));
@@ -386,7 +386,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
                     }
                 }
             }
-            else if (!player.capabilities.isCreativeMode && EPlusConfigurationHandler.maxEnchantmentAmount > 0 && i >= EPlusConfigurationHandler.maxEnchantmentAmount) {
+            else if (!player.capabilities.isCreativeMode && ConfigurationHandler.maxEnchantmentAmount > 0 && i >= ConfigurationHandler.maxEnchantmentAmount) {
                 mainLabel.locked = true;
             }
         }
@@ -401,7 +401,7 @@ public class GuiModEnchantmentTable extends GuiContainer {
             if (last != null)
                 handleChangedEnchantment(enchantments, last);
         }
-        else if (EPlusConfigurationHandler.allowRepairs && !levelChanged()) {
+        else if (ConfigurationHandler.allowRepairs && !levelChanged()) {
             
             totalCost += container.repairCostMax();
             

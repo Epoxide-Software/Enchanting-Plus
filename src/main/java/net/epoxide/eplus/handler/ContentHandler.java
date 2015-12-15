@@ -171,10 +171,10 @@ public class ContentHandler {
         
         VillagerHandler.initVillageHandler();
         
-        for (String entry : EPlusConfigurationHandler.blacklistedItems)
+        for (String entry : ConfigurationHandler.blacklistedItems)
             addItemToBlacklist(entry, "Configuration File");
             
-        for (String entry : EPlusConfigurationHandler.blacklistedEnchantments)
+        for (String entry : ConfigurationHandler.blacklistedEnchantments)
             if (StringUtils.isNumeric(entry))
                 blacklistEnchantment(Integer.parseInt(entry), "Configuration File");
     }

@@ -26,8 +26,8 @@ import net.epoxide.eplus.common.network.PacketGui;
 import net.epoxide.eplus.common.network.PacketRepair;
 import net.epoxide.eplus.common.network.PacketSyncPlayerProperties;
 import net.epoxide.eplus.creativetab.CreativeTabEPlus;
+import net.epoxide.eplus.handler.ConfigurationHandler;
 import net.epoxide.eplus.handler.ContentHandler;
-import net.epoxide.eplus.handler.EPlusConfigurationHandler;
 import net.epoxide.eplus.handler.ForgeEventHandler;
 import net.epoxide.eplus.handler.IMCHandler;
 import net.epoxide.eplus.lib.Constants;
@@ -64,7 +64,7 @@ public class EnchantingPlus {
         
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
-        EPlusConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
+        ConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
         ContentHandler.initBlocks();
@@ -104,7 +104,7 @@ public class EnchantingPlus {
      */
     public static void printDebugMessage (String message) {
         
-        if (EPlusConfigurationHandler.printDebug)
+        if (ConfigurationHandler.printDebug)
             Constants.LOG.info(message);
     }
 }

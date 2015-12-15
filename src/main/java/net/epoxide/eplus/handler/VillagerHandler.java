@@ -34,16 +34,16 @@ public class VillagerHandler {
     
     public static void initVillageHandler () {
         
-        if (EPlusConfigurationHandler.allowVillagers) {
+        if (ConfigurationHandler.allowVillagers) {
             
             VillagerRegistry reg = VillagerRegistry.instance();
-            reg.registerVillagerId(EPlusConfigurationHandler.villagerID);
-            reg.registerVillageTradeHandler(EPlusConfigurationHandler.villagerID, new VillageTradeHandler());
+            reg.registerVillagerId(ConfigurationHandler.villagerID);
+            reg.registerVillageTradeHandler(ConfigurationHandler.villagerID, new VillageTradeHandler());
             reg.registerVillageCreationHandler(new VillageBuildingHandler());
             MapGenStructureIO.func_143031_a(VillagerHandler.ComponentArcaneLibrary.class, "eplus:ArcaneLibrary");
             
             if (FMLCommonHandler.instance().getSide().equals(Side.CLIENT))
-                reg.registerVillagerSkin(EPlusConfigurationHandler.villagerID, new ResourceLocation("eplus", "textures/entity/villager/librarian.png"));
+                reg.registerVillagerSkin(ConfigurationHandler.villagerID, new ResourceLocation("eplus", "textures/entity/villager/librarian.png"));
         }
     }
     
@@ -52,7 +52,7 @@ public class VillagerHandler {
         @Override
         public void manipulateTradesForVillager (EntityVillager villager, MerchantRecipeList recipeList, Random random) {
             
-            if (villager.getProfession() == EPlusConfigurationHandler.villagerID) {
+            if (villager.getProfession() == ConfigurationHandler.villagerID) {
                 
                 List<Enchantment> enchants = Utilities.getAvailableEnchantments();
                 
@@ -212,7 +212,7 @@ public class VillagerHandler {
         @Override
         protected int getVillagerType (int par1) {
             
-            return EPlusConfigurationHandler.villagerID;
+            return ConfigurationHandler.villagerID;
         }
         
         @Override

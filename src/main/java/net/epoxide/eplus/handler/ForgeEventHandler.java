@@ -32,7 +32,7 @@ public class ForgeEventHandler {
     @SubscribeEvent
     public void onMobDrops (LivingDropsEvent event) {
         
-        if (event.entityLiving instanceof EntityMob && MathsUtils.tryPercentage(EPlusConfigurationHandler.scrollDrop * (event.lootingLevel + 1)))
+        if (event.entityLiving instanceof EntityMob && MathsUtils.tryPercentage(ConfigurationHandler.scrollDrop * (event.lootingLevel + 1)))
             event.drops.add(new EntityItem(event.entityLiving.worldObj, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.lastTickPosZ, ItemEnchantedScroll.createRandomScroll()));
     }
     
@@ -46,7 +46,7 @@ public class ForgeEventHandler {
     @SubscribeEvent
     public void onTooltip (ItemTooltipEvent event) {
         
-        if (EPlusConfigurationHandler.allowModifierTooltips && ItemStackUtils.isValidStack(event.itemStack)) {
+        if (ConfigurationHandler.allowModifierTooltips && ItemStackUtils.isValidStack(event.itemStack)) {
             
             for (ScrollModifier modifier : ContentHandler.modifiers) {
                 
@@ -70,7 +70,7 @@ public class ForgeEventHandler {
         }
         
         if (Minecraft.getMinecraft().currentScreen instanceof GuiModEnchantmentTable)
-            if ((!EPlusConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(event.itemStack) && EnchantmentUtils.isStackEnchanted(event.itemStack)) || (EPlusConfigurationHandler.secureItems && EnchantHelper.hasRestriction(event.itemStack) && !EnchantHelper.isValidOwner(event.itemStack, event.entityPlayer)))
+            if ((!ConfigurationHandler.allowUnownedModifications && !EnchantHelper.hasRestriction(event.itemStack) && EnchantmentUtils.isStackEnchanted(event.itemStack)) || (ConfigurationHandler.secureItems && EnchantHelper.hasRestriction(event.itemStack) && !EnchantHelper.isValidOwner(event.itemStack, event.entityPlayer)))
                 Utilities.wrapStringToListWithFormat(StatCollector.translateToLocal("tooltip.eplus.notowner"), 30, false, event.toolTip, EnumChatFormatting.RED);
     }
     

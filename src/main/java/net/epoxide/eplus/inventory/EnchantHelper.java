@@ -16,13 +16,13 @@ import net.darkhax.bookshelf.handler.BookshelfHooks;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 
 import net.epoxide.eplus.common.PlayerProperties;
-import net.epoxide.eplus.handler.EPlusConfigurationHandler;
+import net.epoxide.eplus.handler.ConfigurationHandler;
 
 public class EnchantHelper {
     
     public static boolean isEnchantmentValid (Enchantment ench, EntityPlayer entityPlayer) {
         
-        return ench != null && ((EPlusConfigurationHandler.useQuestMode ? PlayerProperties.getProperties(entityPlayer).unlockedEnchantments.contains(ench.effectId) : true) || entityPlayer.capabilities.isCreativeMode);
+        return ench != null && ((ConfigurationHandler.useQuestMode ? PlayerProperties.getProperties(entityPlayer).unlockedEnchantments.contains(ench.effectId) : true) || entityPlayer.capabilities.isCreativeMode);
     }
     
     public static boolean isNewItemEnchantable (Item item) {
@@ -130,6 +130,6 @@ public class EnchantHelper {
         if (existingLevel > 0 && existingLevel != level)
             enchantability -= enchant.getMaxEnchantability(existingLevel);
             
-        return (int) (((enchantability - stack.getItem().getItemEnchantability(stack)) / 2) * EPlusConfigurationHandler.costFactor);
+        return (int) (((enchantability - stack.getItem().getItemEnchantability(stack)) / 2) * ConfigurationHandler.costFactor);
     }
 }
