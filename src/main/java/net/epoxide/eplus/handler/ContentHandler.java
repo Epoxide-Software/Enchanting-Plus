@@ -150,7 +150,7 @@ public class ContentHandler {
     }
     
     /**
-     * Initializes all of the recipes added by the mod. 
+     * Initializes all of the recipes added by the mod.
      */
     public static void initRecipes () {
         
@@ -169,7 +169,7 @@ public class ContentHandler {
         buffFloatingBook = new BuffBookFall();
         BookshelfRegistry.registerBuff(buffFloatingBook);
         
-        new VillagerHandler();
+        VillagerHandler.initVillageHandler();
         
         for (String entry : EPlusConfigurationHandler.blacklistedItems)
             addItemToBlacklist(entry, "Configuration File");

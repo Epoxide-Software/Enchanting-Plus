@@ -32,7 +32,7 @@ import net.epoxide.eplus.item.ItemEnchantedScroll;
 
 public class VillagerHandler {
     
-    public VillagerHandler() {
+    public static void initVillageHandler () {
         
         if (EPlusConfigurationHandler.allowVillagers) {
             
@@ -47,7 +47,7 @@ public class VillagerHandler {
         }
     }
     
-    public class VillageTradeHandler implements VillagerRegistry.IVillageTradeHandler {
+    public static class VillageTradeHandler implements VillagerRegistry.IVillageTradeHandler {
         
         @Override
         public void manipulateTradesForVillager (EntityVillager villager, MerchantRecipeList recipeList, Random random) {
@@ -70,7 +70,7 @@ public class VillagerHandler {
         }
     }
     
-    public class VillageBuildingHandler implements VillagerRegistry.IVillageCreationHandler {
+    public static class VillageBuildingHandler implements VillagerRegistry.IVillageCreationHandler {
         
         @Override
         public PieceWeight getVillagePieceWeight (Random random, int i) {
@@ -215,12 +215,14 @@ public class VillagerHandler {
             return EPlusConfigurationHandler.villagerID;
         }
         
+        @Override
         protected void func_143012_a (NBTTagCompound par1NBTTagCompound) {
             
             super.func_143012_a(par1NBTTagCompound);
             par1NBTTagCompound.setBoolean("Chest", this.hasMadeChest);
         }
         
+        @Override
         protected void func_143011_b (NBTTagCompound par1NBTTagCompound) {
             
             super.func_143011_b(par1NBTTagCompound);
