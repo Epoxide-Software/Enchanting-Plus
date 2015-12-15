@@ -17,7 +17,7 @@ public class ItemTableUpgrade extends Item {
     public ItemTableUpgrade() {
         
         this.setMaxStackSize(16);
-        this.setUnlocalizedName("tableUpgrade");
+        this.setUnlocalizedName("eplus.tableUpgrade");
         this.setCreativeTab(EnchantingPlus.tabEplus);
     }
     

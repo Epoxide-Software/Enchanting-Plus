@@ -23,7 +23,7 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
     
     public BlockEnchantTable() {
         
-        this.setBlockName("advancedEnchantmentTable");
+        this.setBlockName("eplus.advancedEnchantmentTable");
         this.setCreativeTab(EnchantingPlus.tabEplus);
         this.setResistance(2000.0F);
         this.setHardness(5.0F);
