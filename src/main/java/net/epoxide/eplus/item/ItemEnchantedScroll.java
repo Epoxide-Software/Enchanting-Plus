@@ -202,7 +202,15 @@ public class ItemEnchantedScroll extends Item {
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack (ItemStack stack, int pass) {
         
-        return (isValidScroll(stack) && pass == 1) ? ContentHandler.getEnchantmentColor(readScroll(stack).type.name()) : super.getColorFromItemStack(stack, pass);
+        if (isValidScroll(stack) && pass == 1) {
+            
+            Enchantment enchant = readScroll(stack);
+            
+            if (enchant != null && enchant.type != null)
+                return ContentHandler.getEnchantmentColor(enchant.type.name());
+        }
+        
+        return super.getColorFromItemStack(stack, pass);
     }
     
     @Override
