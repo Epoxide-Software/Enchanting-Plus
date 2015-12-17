@@ -23,6 +23,10 @@ repositories {
         name = "Epoxide"
         url = "http://maven.cubedlc.com"
     }
+    maven {
+        name = "Chickenbones"
+        url = "http://chickenbones.net/maven/"
+    }
 }
 
 apply plugin: "forge"
