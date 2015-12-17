@@ -14,8 +14,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.WeightedRandomChestContent;
 
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.ChestGenHooks;
 
 import cpw.mods.fml.common.Loader;
@@ -71,6 +73,12 @@ public final class ContentHandler {
      */
     public static ChestGenHooks eplusChest = new ChestGenHooks("EplusChest", new WeightedRandomChestContent[0], 3, 7);
     
+    /**
+     * An integer used to keep track of how many achievements have been registered under this
+     * mod. This is used to automatically position the achievements within the GUI.
+     */
+    public static int achievementCount = 0;
+    
     public static Block blockAdvancedTable;
     public static Block blockArcaneInscriber;
     public static Block blockEnchantmentBook;
@@ -80,6 +88,13 @@ public final class ContentHandler {
     public static Item itemFloatingBook;
     
     public static Buff buffFloatingBook;
+    
+    public static AchievementPage achievementPageEplus;
+    public static Achievement achievementEnchanter;
+    public static Achievement achievementRepair;
+    public static Achievement achievementStudies;
+    public static Achievement achievementResearch;
+    public static Achievement achievementEnlightened;
     
     /**
      * Initializes all of the blocks for the Enchanting Plus mod. Used to handle Block
@@ -178,7 +193,7 @@ public final class ContentHandler {
         for (String entry : ConfigurationHandler.blacklistedEnchantments)
             if (StringUtils.isNumeric(entry))
                 blacklistEnchantment(Integer.parseInt(entry), "Configuration File");
-        
+                
         if (Loader.isModLoaded("NotEnoughItems")) {
             
             addInformation(blockAdvancedTable);
@@ -188,6 +203,21 @@ public final class ContentHandler {
             addInformation(itemScroll);
             addInformation(itemFloatingBook);
         }
+    }
+    
+    /**
+     * Registers all of the achievements for Enchanting Plus.
+     */
+    public static void initAchievements () {
+        
+        achievementEnchanter = registerAchievement("eplus.enchanter", Item.getItemFromBlock(blockAdvancedTable));
+        achievementRepair = registerAchievement("eplus.repair", Item.getItemFromBlock(Blocks.anvil));
+        achievementStudies = registerAchievement("eplus.study", Item.getItemFromBlock(blockArcaneInscriber));
+        achievementResearch = registerAchievement("eplus.research", itemScroll);
+        achievementEnlightened = registerAchievement("eplus.enlightened", Item.getItemFromBlock(blockEnchantmentBook));
+        
+        achievementPageEplus = new AchievementPage("Enchanting Plus", new Achievement[] {achievementEnchanter, achievementRepair, achievementStudies, achievementResearch, achievementEnlightened});
+        AchievementPage.registerAchievementPage(achievementPageEplus);
     }
     
     /**
@@ -408,5 +438,22 @@ public final class ContentHandler {
     private static void addInformation (Block block) {
         
         BookshelfRegistry.addInformation(block, "info." + block.getUnlocalizedName());
+    }
+    
+    /**
+     * Creates a new Achievement to be used in the mod. The posX and posY are automatically
+     * generated.
+     * 
+     * @param key: The localization key to use for both the description and the title.
+     * @param item: The Item to show in the tab. Also works for blocks.
+     * @return Achievement: The instance of Achievement created.
+     */
+    public static Achievement registerAchievement (String key, Item item) {
+        
+        final int posX = achievementCount % 8;
+        final int posY = achievementCount / 8;
+        achievementCount++;
+        
+        return new Achievement(key, key, posX, posY + 1, item, null).registerStat();
     }
 }
