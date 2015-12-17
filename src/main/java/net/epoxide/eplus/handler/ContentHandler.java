@@ -216,7 +216,7 @@ public final class ContentHandler {
         achievementResearch = registerAchievement("eplus.research", itemScroll);
         achievementEnlightened = registerAchievement("eplus.enlightened", Item.getItemFromBlock(blockEnchantmentBook));
         
-        achievementPageEplus = new AchievementPage("Enchanting Plus", new Achievement[] {achievementEnchanter, achievementRepair, achievementStudies, achievementResearch, achievementEnlightened});
+        achievementPageEplus = new AchievementPage("Enchanting Plus", new Achievement[] { achievementEnchanter, achievementRepair, achievementStudies, achievementResearch, achievementEnlightened });
         AchievementPage.registerAchievementPage(achievementPageEplus);
     }
     

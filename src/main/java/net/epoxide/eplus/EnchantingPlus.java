@@ -2,6 +2,7 @@ package net.epoxide.eplus;
 
 import net.minecraftforge.common.MinecraftForge;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -66,6 +67,7 @@ public final class EnchantingPlus {
         
         ConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
+        FMLCommonHandler.instance().bus().register(new ForgeEventHandler());
         
         ContentHandler.initBlocks();
         ContentHandler.initItems();

@@ -45,6 +45,7 @@ public class BlockArcaneInscriber extends BlockContainer {
     @Override
     public boolean onBlockActivated (World world, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
         
+        player.triggerAchievement(ContentHandler.achievementStudies);
         ItemStack itemStack = player.getHeldItem();
         TileEntityArcaneInscriber tileEntity = (TileEntityArcaneInscriber) world.getTileEntity(x, y, z);
         

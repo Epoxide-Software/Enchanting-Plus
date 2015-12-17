@@ -355,6 +355,7 @@ public class ContainerEnchantTable extends Container {
     
     public void repair (EntityPlayer player, int cost) throws Exception {
         
+        player.triggerAchievement(ContentHandler.achievementRepair);
         final ItemStack itemStack = tableInventory.getStackInSlot(0);
         
         if (itemStack == null)

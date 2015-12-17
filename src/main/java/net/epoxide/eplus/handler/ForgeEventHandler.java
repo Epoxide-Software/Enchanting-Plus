@@ -1,5 +1,6 @@
 package net.epoxide.eplus.handler;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
@@ -14,6 +15,8 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemPickupEvent;
 
 import net.darkhax.bookshelf.event.ItemEnchantedEvent;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
@@ -21,6 +24,7 @@ import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
+import net.epoxide.eplus.block.BlockEnchantmentBook;
 import net.epoxide.eplus.client.gui.GuiModEnchantmentTable;
 import net.epoxide.eplus.common.PlayerProperties;
 import net.epoxide.eplus.inventory.EnchantHelper;
@@ -28,6 +32,20 @@ import net.epoxide.eplus.item.ItemEnchantedScroll;
 import net.epoxide.eplus.modifiers.ScrollModifier;
 
 public final class ForgeEventHandler {
+    
+    @SubscribeEvent
+    public void onItemCrafted (ItemCraftedEvent event) {
+        
+        if (ItemStackUtils.isValidStack(event.crafting) && Block.getBlockFromItem(event.crafting.getItem()) instanceof BlockEnchantmentBook)
+            event.player.triggerAchievement(ContentHandler.achievementEnlightened);
+    }
+    
+    @SubscribeEvent
+    public void onItemPickedUp (ItemPickupEvent event) {
+        
+        if (ItemStackUtils.isValidStack(event.pickedUp.getEntityItem()) && event.pickedUp.getEntityItem().getItem() instanceof ItemEnchantedScroll)
+            event.player.triggerAchievement(ContentHandler.achievementResearch);
+    }
     
     @SubscribeEvent
     public void onMobDrops (LivingDropsEvent event) {

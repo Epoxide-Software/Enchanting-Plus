@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.epoxide.eplus.EnchantingPlus;
+import net.epoxide.eplus.handler.ContentHandler;
 import net.epoxide.eplus.tileentity.TileEntityEnchantTable;
 
 public class BlockEnchantTable extends BlockEnchantmentTable {
@@ -30,10 +31,12 @@ public class BlockEnchantTable extends BlockEnchantmentTable {
     }
     
     @Override
-    public boolean onBlockActivated (World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float subX, float subY, float subZ) {
+    public boolean onBlockActivated (World world, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
         
-        if (!world.isRemote && !entityPlayer.isSneaking())
-            entityPlayer.openGui(EnchantingPlus.instance, 0, world, x, y, z);
+        player.triggerAchievement(ContentHandler.achievementEnchanter);
+        
+        if (!world.isRemote && !player.isSneaking())
+            player.openGui(EnchantingPlus.instance, 0, world, x, y, z);
             
         return true;
     }
