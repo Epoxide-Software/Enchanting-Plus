@@ -45,6 +45,25 @@ itemGroup.eplus=Enchanting Plus
 potion.eplus.book.name=Guardian Tome
 description.villager.profession.eplus.librarian=Arcane Historian
 
+#Commands
+command.eplus.learnenchant.usage=/learnEnchant This command will unlock an enchantment for the given player. The command arguments are playerName and enchantment ID. You can use a or all in place of the id to get all enchantments. 
+command.bookshelf.color.success=sucessfully learned
+command.eplus.learnenchant.all.success=sucesffully learned all enchantments. 
+
+#Achievement Titles
+achievement.eplus.enchanter=Arcane Enchanter
+achievement.eplus.repair=Mystic Repair
+achievement.eplus.study=Ancient Studies
+achievement.eplus.research=Arcane Research
+achievement.eplus.enlightened=Enlightened
+
+#Achievement Descriptions
+achievement.eplus.enchanter.desc=Use the Advanced Enchantment Table
+achievement.eplus.repair.desc=Repair a tool at the Advanced Enchantment Table
+achievement.eplus.study.desc=Craft an Arcane Inscriber
+achievement.eplus.research.desc=Collect an Enchanted Scroll
+achievement.eplus.enlightened.desc=Craft an Enchanted Book decoration. 
+
 #Information
 info.tile.eplus.advancedEnchantmentTable=This upgraded Enchantment Table will allow players to control how their item is enchanted. The player will be given access to any enchantment that they have unlocked. Enchantments are unlocked by using scrolls.
 info.tile.eplus.arcaneInscriber=This block will allow players to convert enchanted books into enchanted scrolls. There is a 50% success rate, however this can be increased with modifiers, such as Obsidian, or the Eye of Ender.
@@ -52,11 +71,6 @@ info.tile.eplus.enchantmentbook=A decorative enchantment book. You can dye this 
 info.item.eplus.scroll=Enchanted scrolls can be used to unlock enchantments. You can find these scrolls in dungeon chests, or as a trade from some villagers. You can also get them as a rare drop from hostile mobs. The Arcane Inscriber can also be used to convert enchanted books into enchanted scrolls. 
 info.item.eplus.tableUpgrade=The Table Upgrade can be used to convert a normal Enchantment Table into an Advanced Enchantment Table. It can be used by right clicking on the table. If that does not work, you can also craft it with the normal table. 
 info.item.eplus.book=The Tome of the Enchanted Guardian will give the player a special effect when used. This item is not available in normal gameplay. 
-
-#Commands
-command.eplus.learnenchant.usage=/learnEnchant This command will unlock an enchantment for the given player. The command arguments are playerName and enchantment ID. You can use a or all in place of the id to get all enchantments. 
-command.bookshelf.color.success=sucessfully learned
-command.eplus.learnenchant.all.success=sucesffully learned all enchantments. 
 
 #Enchantment Descriptions
 description.enchantment.protect.all=This enchantment reduces damage done to the wearer from many damage sources. It stacks with enchantments such as Fire Resistance and Feather Falling however it is possible to hit a limit on how much damage will be reduced. This enchantment can be applied to all armor types.
