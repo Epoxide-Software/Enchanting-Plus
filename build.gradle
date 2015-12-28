@@ -42,7 +42,7 @@ minecraft {
 }
 
 dependencies {
-    compile "net.darkhax.bookshelf:Bookshelf:1.7.10-1.0.3.160:deobf"
+    compile "net.darkhax.bookshelf:Bookshelf:1.7.10-1.0.4.172:deobf"
 }
 
 processResources {
