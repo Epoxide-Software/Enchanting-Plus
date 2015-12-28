@@ -47,7 +47,6 @@ public final class ConfigurationHandler {
         villagerID = config.getInt("villagerID", settings, villagerID, Integer.MIN_VALUE, Integer.MAX_VALUE, "A unique ID for the E+ villager. This should almost never need to be changed.");
         costFactor = config.getFloat("costFactor", settings, costFactor, 0f, 128f, "A number used when calculated enchantment cost. This number is treated as a % based factor. 0.30 = 30% of the original cost. 1.5 = 150% of the original cost.");
         repairFactor = config.getInt("repairFactor", settings, repairFactor, 0, 128, "A number used when calculating the repair costs. A higher factor means higher repair costs.");
-        minimumBookshelfs = config.getInt("minimumBookshelfs", settings, minimumBookshelfs, 0, 64, "The minimum amount of Bookshelfs required to use the enchantment table.");
         scrollDrop = config.getFloat("scrollDropRate", settings, scrollDrop, 0f, 1f, "The percent chance that a hostile mob should drop a scroll. Default is 0.01 which is 1%");
         blacklistedItems = config.getStringList("blacklistedItems", settings, blacklistedItems, "A list of blacklisted items and blocks. Things in this list won't be enchantable at the eplus table. The format is the same as minecraft's id system. For example, minecraft:chainmail_helmet will prevent chainmail helmets from becoming enchanted.");
         blacklistedEnchantments = config.getStringList("blacklistedEnchantments", settings, blacklistedEnchantments, "A list of blacklisted enchantment ids. Each entry should be an integer.");
