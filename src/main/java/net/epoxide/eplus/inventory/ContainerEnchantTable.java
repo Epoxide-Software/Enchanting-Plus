@@ -94,7 +94,7 @@ public class ContainerEnchantTable extends Container {
     
     public float bookCases () {
         
-        float temp = ConfigurationHandler.minimumBookshelfs;
+        float temp = ConfigurationHandler.bonusShelves;
         for (int j = -1; j <= 1; ++j) {
             for (int k = -1; k <= 1; ++k) {
                 if ((j != 0 || k != 0) && this.world.isAirBlock(this.x + k, this.y, this.z + j) && this.world.isAirBlock(this.x + k, this.y + 1, this.z + j)) {

@@ -22,7 +22,7 @@ public final class ConfigurationHandler {
     public static int maxEnchantmentAmount = 5;
     public static float costFactor = 1.0f;
     public static int repairFactor = 5;
-    public static int minimumBookshelfs = 5;
+    public static int bonusShelves = 2;
     public static float scrollDrop = 0.01f;
     public static String[] blacklistedItems = new String[] {};
     public static String[] blacklistedEnchantments = new String[] {};
@@ -38,7 +38,7 @@ public final class ConfigurationHandler {
         allowDisenchanting = config.getBoolean("allowDisenchanting", settings, allowDisenchanting, "If this is true, players will be able to disenchant enchanted items they come across.");
         allowDamagedEnchanting = config.getBoolean("allowDamagedEnchanting", settings, allowDamagedEnchanting, "If this is true, players will be able to enchant items which are not at full durability.");
         allowModifierTooltips = config.getBoolean("allowModifierTooltips", settings, allowModifierTooltips, "If true, special information will be written to the Scroll Modifier item tooltips.");
-        minimumBookshelfs = config.getInt("minBookshelfs", settings, minimumBookshelfs, 0, 24, "The lowest number of bookshelfs required for the table to function properly.");
+        bonusShelves = config.getInt("bonusShelves", settings, bonusShelves, 0, 128, "An additional amount of bookshelves to factor in to the max level calculation. For each bonus shelf, 2 additional levels will be added to the max level cap of the table.");
         secureItems = config.getBoolean("secureItems", settings, secureItems, "If enabled, players will only be able to enchant enchanted items if they enchanted them first.");
         allowUnownedModifications = config.getBoolean("allowUnownedModifications", settings, allowUnownedModifications, "If enabled, players will be able to modify items which are not currently owned by any other player. IE: Dungeon Loot");
         allowVillagers = config.getBoolean("allowVillagers", settings, allowVillagers, "If enabled, a custom E+ villager will spawn and generate in villages.");
