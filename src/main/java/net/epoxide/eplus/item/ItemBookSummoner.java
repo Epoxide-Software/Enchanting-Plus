@@ -52,7 +52,7 @@ public class ItemBookSummoner extends Item {
         
         if (isValid(stack)) {
             
-            BuffHelper.addOrUpdateBuff(world, player, new BuffEffect(ContentHandler.buffFloatingBook, stack.getTagCompound().getInteger("duration"), 1));
+            BuffHelper.addBuff(world, player, new BuffEffect(ContentHandler.buffFloatingBook, stack.getTagCompound().getInteger("duration"), 1));
             
             NBTTagCompound tag = stack.getTagCompound();
             int uses = tag.getInteger("uses");
