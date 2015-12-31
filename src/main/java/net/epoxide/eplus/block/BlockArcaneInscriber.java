@@ -106,4 +106,17 @@ public class BlockArcaneInscriber extends BlockContainer {
         
         return side != 1 && side != 0 ? super.getIcon(side, meta) : Blocks.planks.getBlockTextureFromSide(side);
     }
+    
+    @Override
+    public boolean isOpaqueCube () {
+        
+        return false;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getAmbientOcclusionLightValue () {
+        
+        return 1.0F;
+    }
 }
