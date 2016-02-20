@@ -31,6 +31,7 @@ import net.darkhax.bookshelf.lib.util.Utilities;
 
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockArcaneInscriber;
+import net.epoxide.eplus.block.BlockBarrier;
 import net.epoxide.eplus.block.BlockEnchantTable;
 import net.epoxide.eplus.block.BlockEnchantmentBook;
 import net.epoxide.eplus.buff.BuffBookFall;
@@ -82,6 +83,7 @@ public final class ContentHandler {
     public static Block blockAdvancedTable;
     public static Block blockArcaneInscriber;
     public static Block blockEnchantmentBook;
+    public static Block blockBarrier;
     
     public static Item itemTableUpgrage;
     public static Item itemScroll;
@@ -113,6 +115,9 @@ public final class ContentHandler {
         blockEnchantmentBook = new BlockEnchantmentBook();
         GameRegistry.registerBlock(blockEnchantmentBook, ItemBlockEnchantmentBook.class, "enchantment_book");
         GameRegistry.registerTileEntity(TileEntityEnchantmentBook.class, "eplus:enchantment_book");
+        
+        blockBarrier = new BlockBarrier();
+        GameRegistry.registerBlock(blockBarrier, "barrier");
     }
     
     /**
@@ -181,9 +186,6 @@ public final class ContentHandler {
      * Used to initialize random things.
      */
     public static void initMisc () {
-        
-        buffFloatingBook = new BuffBookFall();
-        BookshelfRegistry.registerBuff(buffFloatingBook);
         
         VillagerHandler.initVillageHandler();
         
