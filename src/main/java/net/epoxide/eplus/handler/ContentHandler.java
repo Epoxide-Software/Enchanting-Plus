@@ -230,8 +230,9 @@ public final class ContentHandler {
                 
                 WeightedRandomChestContent scrollEntry = new WeightedRandomChestContent(ItemEnchantedScroll.createScroll(enchantment), 1, 1, 1);
                 
-                for (String type : Utilities.vanillaLootChests)
-                    ChestGenHooks.addItem(type, scrollEntry);
+                if (ConfigurationHandler.allowScrollLoot)
+                    for (String type : Utilities.vanillaLootChests)
+                        ChestGenHooks.addItem(type, scrollEntry);
                     
                 eplusChest.addItem(scrollEntry);
             }
