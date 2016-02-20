@@ -228,7 +228,7 @@ public final class ContentHandler {
             
             if (!isBlacklisted(enchantment)) {
                 
-                WeightedRandomChestContent scrollEntry = new WeightedRandomChestContent(ItemEnchantedScroll.createScroll(enchantment), 1, 1, 2);
+                WeightedRandomChestContent scrollEntry = new WeightedRandomChestContent(ItemEnchantedScroll.createScroll(enchantment), 1, 1, 1);
                 
                 for (String type : Utilities.vanillaLootChests)
                     ChestGenHooks.addItem(type, scrollEntry);
