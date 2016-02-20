@@ -31,10 +31,8 @@ import net.darkhax.bookshelf.lib.util.Utilities;
 
 import net.epoxide.eplus.EnchantingPlus;
 import net.epoxide.eplus.block.BlockArcaneInscriber;
-import net.epoxide.eplus.block.BlockBarrier;
 import net.epoxide.eplus.block.BlockEnchantTable;
 import net.epoxide.eplus.block.BlockEnchantmentBook;
-import net.epoxide.eplus.buff.BuffBookFall;
 import net.epoxide.eplus.item.ItemBlockEnchantmentBook;
 import net.epoxide.eplus.item.ItemBookSummoner;
 import net.epoxide.eplus.item.ItemEnchantedScroll;
@@ -115,9 +113,6 @@ public final class ContentHandler {
         blockEnchantmentBook = new BlockEnchantmentBook();
         GameRegistry.registerBlock(blockEnchantmentBook, ItemBlockEnchantmentBook.class, "enchantment_book");
         GameRegistry.registerTileEntity(TileEntityEnchantmentBook.class, "eplus:enchantment_book");
-        
-        blockBarrier = new BlockBarrier();
-        GameRegistry.registerBlock(blockBarrier, "barrier");
     }
     
     /**
