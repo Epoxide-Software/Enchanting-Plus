@@ -32,7 +32,7 @@ public final class ConfigurationHandler {
         
         config = new Configuration(configFile);
         
-        String settings = "settings";
+        final String settings = "settings";
         printDebug = config.getBoolean("printDebug", settings, printDebug, "If true, Enchanting Plus will ocasionally write messages to the console.");
         useQuestMode = config.getBoolean("useQuestMode", settings, useQuestMode, "Quest Mode requires that users collect scrolls to unlock enchantments, before they can make use of them at the table.");
         allowRepairs = config.getBoolean("allowRepairs", settings, allowRepairs, "If this is true, players will be able to repair damaged items at the advanced enchanting table, using experience points");
