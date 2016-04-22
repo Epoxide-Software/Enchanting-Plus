@@ -1,119 +1,216 @@
 buildscript {
+
     repositories {
-        mavenCentral()
+
+        jcenter()
+
         maven {
+
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
 
         maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+
+            url "https://plugins.gradle.org/m2/"
         }
     }
 
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-    }
 
-}
-
-repositories {
-    maven {
-        name = "Epoxide"
-        url = "http://maven.cubedlc.com"
-    }
-    maven {
-        name = "Chickenbones"
-        url = "http://chickenbones.net/maven/"
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.7"
     }
 }
 
-apply plugin: "forge"
-project.ext.mcVersion = "1.7.10"
+apply plugin: "maven"
 
-version = getVersionFromJava(file("src/main/java/net/epoxide/eplus/lib/Constants.java"))
-group = "net.epoxide.eplus"
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: "com.matthewprenger.cursegradle"
+
+group = "net.darkhax.eplus"
 archivesBaseName = "EnchantingPlus"
+version = getVersionFromJava(file("src/main/java/net/darkhax/eplus/libs/Constants.java"))
 
+//Defines the MC environment information.
 minecraft {
-    version = "1.7.10-10.13.4.1558-1.7.10"
+
+    useDepAts = true
+    version = "1.9-12.16.0.1863-1.9"
     runDir = "run"
+    mappings = 'snapshot_20160412'
+}
+
+//Defines basic patterns for pulling various dependencies.
+repositories {
+
+    maven {
+
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+
+    maven {
+
+        url = "http://maven.rubbix.net"
+    }
 }
 
 dependencies {
-    compile "net.darkhax.bookshelf:Bookshelf:1.7.10-1.0.4.172:deobf"
+
+    deobfCompile "mezz.jei:jei_1.9:3.2.10.185"
+    deobfCompile "net.darkhax.bookshelf:Bookshelf:1.9-1.2.0.219"
 }
 
+//Handles basic resources such as mcmod.info
 processResources {
+
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
-        expand "version": project.version, "mcversion": project.minecraft.version
+
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
+
+        exclude 'mcmod.info'
     }
 }
 
+//Pulls the build version from a Java file.
 String getVersionFromJava(File file) {
-    String projNumber = "0";
-    String major = "0";
-    String revision = "0";
+
+    String release = "0";
+    String update = "0";
     String patch = "0";
-    String prefix = "public static final String VERSION = \"";
-    file.eachLine { String s ->
 
-        s = s.trim();
-        if (s.startsWith(prefix)) {
-            s = s.substring(prefix.length(), s.length() - 2);
-            String[] pts = s.split("\\.");
-
-            projNumber = pts[0];
-            major = pts[1];
-            revision = pts[2];
-        }
-    }
-
-    if (System.getenv().containsKey("BUILD_NUMBER")) {
-        patch = System.getenv("BUILD_NUMBER");
-    }
-
-    return "$mcVersion-$projNumber.$major.$revision.$patch";
-}
-
-task writeBuildNumber << {
-    def file = file("src/main/java/net/epoxide/eplus/lib/Constants.java");
-    def bn = System.getenv("BUILD_NUMBER") ?: 0;
+    String build = System.getenv("BUILD_NUMBER") ? System.getenv("BUILD_NUMBER") : "0";
     def outfile = "";
     def ln = System.getProperty("line.separator")
 
-    file.eachLine { String s ->
-        if (s.contains("PATCH_VERSION") && s.contains("= \"0\"")) {
-            s = "    public static final String PATCH_VERSION = \"${bn}\";";
+    String prefix = "public static final String VERSION_NUMBER = \"";
+    file.eachLine {
+        String s ->
+
+            String v = s.trim();
+
+        if (v.startsWith(prefix)) {
+
+            v = v.substring(prefix.length(), v.length() - 2);
+            String[] pts = v.split("\\.");
+
+            release = pts[0];
+            update = pts[1];
+            patch = pts[2];
+            s = s.replaceAll(".0\";", ".${build}\";");
         }
+
         outfile += (s + ln);
     }
 
     file.write(outfile);
+
+    return "1.9-$release.$update.$patch.$build";
 }
 
+//Creates the source jar.
+task sourcesJar(type: Jar, dependsOn: classes) {
+
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+//Creates the JavaDoc jar.
+task javadocJar(type: Jar, dependsOn: javadoc) {
+
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+
+//Creates the deobfuscated jar.
 task deobfJar(type: Jar) {
+
     from sourceSets.main.output
     classifier = "deobf"
 }
 
+//Adds the deobf, source and javadoc jars to the build artifacts.
 artifacts {
+
     archives deobfJar
+    archives sourcesJar
+    archives javadocJar
 }
 
+//Uploads the artifacts to the maven server.
 uploadArchives {
+
     repositories {
+
         mavenDeployer {
+
             repository(url: "file:///var/www/html/maven")
         }
+    }
+}
+
+task setCurseForgeInfo() {
+
+    def proc = "git log --pretty=format:%s -1".execute();
+    proc.waitFor();
+    def message = "${proc.in.text}"
+
+    //Changes the type of release. Default is alpha release. #beta and #release can be added into the commit message to change it.
+    project.ext.releaseType = message.toLowerCase().contains("#release") ? "release" : message.toLowerCase().contains("#beta") ? "beta" : "alpha";
+
+    //Sets the Changelog to direct the reader to the GitHub commit log.
+    proc = "git log --pretty=format:%H -1".execute();
+    proc.waitFor();
+    project.ext.changelog = "All changes can be found here: " + "https://github.com/Darkhax-Minecraft/Dark-Utilities/commits/master/" + "${proc.in.text}";
+}
+
+//Prevents incomplete JavaDocs from preventing a build on Java 8.
+if (JavaVersion.current().isJava8Compatible()) {
+
+    allprojects {
+
+        tasks.withType(Javadoc) {
+
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
+//Provides the basic CurseForge upload details
+curseforge {
+
+    //Sets the API from the system environment, if available.
+    apiKey = System.getenv("curseForgeApiKey") ? System.getenv("curseForgeApiKey") : "0";
+
+    project {
+
+        //Sets the Project ID from the system environment, if available.
+        id = System.getenv("projectId") ? System.getenv("projectId") : "0";
+
+        releaseType = project.releaseType;
+        changelog = project.changelog;
+
+        addGameVersion "1.9"
+        
+        //Adds main jar, deobf jar, source jar, and javadoc jar to the upload.
+        mainArtifact(jar) {
+          
+            relations {
+
+                //Adds the file relations to the upload.
+                requiredLibrary 'bookshelf'
+            }
+        }
+        
+        addArtifact(deobfJar)
+        addArtifact(sourcesJar)
+        addArtifact(javadocJar)
     }
 }
