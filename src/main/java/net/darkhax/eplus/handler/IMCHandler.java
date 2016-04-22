@@ -1,4 +1,4 @@
-package net.epoxide.eplus.handler;
+package net.darkhax.eplus.handler;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;

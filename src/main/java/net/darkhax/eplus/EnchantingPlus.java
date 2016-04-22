@@ -1,13 +1,13 @@
-package net.epoxide.eplus;
+package net.darkhax.eplus;
 
-import net.epoxide.eplus.common.ProxyCommon;
-import net.epoxide.eplus.common.network.GuiHandler;
-import net.epoxide.eplus.creativetab.CreativeTabEPlus;
-import net.epoxide.eplus.handler.ConfigurationHandler;
-import net.epoxide.eplus.handler.ContentHandler;
-import net.epoxide.eplus.handler.ForgeEventHandler;
-import net.epoxide.eplus.handler.IMCHandler;
-import net.epoxide.eplus.lib.Constants;
+import net.darkhax.eplus.common.ProxyCommon;
+import net.darkhax.eplus.common.network.GuiHandler;
+import net.darkhax.eplus.creativetab.CreativeTabEPlus;
+import net.darkhax.eplus.handler.ConfigurationHandler;
+import net.darkhax.eplus.handler.ContentHandler;
+import net.darkhax.eplus.handler.ForgeEventHandler;
+import net.darkhax.eplus.handler.IMCHandler;
+import net.darkhax.eplus.lib.Constants;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
-@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION, guiFactory = Constants.FACTORY, dependencies = Constants.DEPENDENCIES)
+@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER, guiFactory = Constants.FACTORY, dependencies = Constants.DEPENDENCIES)
 public final class EnchantingPlus {
     
     @SidedProxy(clientSide = Constants.CLIENT_PROXY_CLASS, serverSide = Constants.SERVER_PROXY_CLASS)

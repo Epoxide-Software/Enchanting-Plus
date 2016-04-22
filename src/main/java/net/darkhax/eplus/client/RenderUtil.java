@@ -1,4 +1,4 @@
-package net.epoxide.eplus.client;
+package net.darkhax.eplus.client;
 
 import org.lwjgl.opengl.GL11;
 

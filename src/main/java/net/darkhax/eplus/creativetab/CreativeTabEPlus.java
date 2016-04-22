@@ -1,6 +1,6 @@
-package net.epoxide.eplus.creativetab;
+package net.darkhax.eplus.creativetab;
 
-import net.epoxide.eplus.handler.ContentHandler;
+import net.darkhax.eplus.handler.ContentHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 

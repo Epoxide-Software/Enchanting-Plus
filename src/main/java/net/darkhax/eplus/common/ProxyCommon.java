@@ -1,4 +1,4 @@
-package net.epoxide.eplus.common;
+package net.darkhax.eplus.common;
 
 public class ProxyCommon {
     

@@ -1,4 +1,4 @@
-package net.epoxide.eplus.common.network;
+package net.darkhax.eplus.common.network;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

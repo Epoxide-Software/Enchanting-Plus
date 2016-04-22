@@ -1,4 +1,4 @@
-package net.epoxide.eplus.handler;
+package net.darkhax.eplus.handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.epoxide.eplus.modifiers.ScrollModifier;
+import net.darkhax.eplus.modifiers.ScrollModifier;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;

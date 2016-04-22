@@ -1,4 +1,4 @@
-package net.epoxide.eplus.handler;
+package net.darkhax.eplus.handler;
 
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;

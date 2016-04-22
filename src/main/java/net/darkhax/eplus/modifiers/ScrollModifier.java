@@ -1,4 +1,4 @@
-package net.epoxide.eplus.modifiers;
+package net.darkhax.eplus.modifiers;
 
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraft.item.ItemStack;

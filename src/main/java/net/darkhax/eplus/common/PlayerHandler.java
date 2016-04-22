@@ -1,4 +1,4 @@
-package net.epoxide.eplus.common;
+package net.darkhax.eplus.common;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import com.google.common.io.Files;
 
-import net.epoxide.eplus.lib.Constants;
+import net.darkhax.eplus.lib.Constants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;

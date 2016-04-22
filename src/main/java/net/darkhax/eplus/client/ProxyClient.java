@@ -1,6 +1,6 @@
-package net.epoxide.eplus.client;
+package net.darkhax.eplus.client;
 
-import net.epoxide.eplus.common.ProxyCommon;
+import net.darkhax.eplus.common.ProxyCommon;
 
 public class ProxyClient extends ProxyCommon {
     
