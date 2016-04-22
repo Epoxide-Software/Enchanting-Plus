@@ -77,7 +77,7 @@ public final class EnchantingPlus {
      * Prints a debug message using the Enchanting Plus logger. If debug messages are disabled
      * in the configuration file, no message will be printed.
      *
-     * @param message: The message to print using the Enchanting Plus logger.
+     * @param message The message to print using the Enchanting Plus logger.
      */
     public static void printDebugMessage (String message) {
         

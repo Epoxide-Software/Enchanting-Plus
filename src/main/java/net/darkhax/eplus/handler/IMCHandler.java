@@ -12,7 +12,7 @@ public final class IMCHandler {
      * Processes all incoming IMC messages for the mod. Please read our project README for more
      * information on what IMC messages are accepted.
      * 
-     * @param message: A message that has been sent to the Enchanting Plus mod.
+     * @param message A message that has been sent to the Enchanting Plus mod.
      */
     public static void handleMessage (IMCMessage message) {
         
