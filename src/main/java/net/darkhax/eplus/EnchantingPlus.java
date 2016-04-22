@@ -7,7 +7,7 @@ import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.ForgeEventHandler;
 import net.darkhax.eplus.handler.IMCHandler;
-import net.darkhax.eplus.lib.Constants;
+import net.darkhax.eplus.libs.Constants;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;

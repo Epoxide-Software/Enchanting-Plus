@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import com.google.common.io.Files;
 
-import net.darkhax.eplus.lib.Constants;
+import net.darkhax.eplus.libs.Constants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
