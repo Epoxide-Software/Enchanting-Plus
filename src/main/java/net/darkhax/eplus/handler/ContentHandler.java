@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.eplus.block.BlockAdvancedTable;
 import net.darkhax.eplus.item.ItemTableUpgrade;
 import net.darkhax.eplus.modifiers.ScrollModifier;
+import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -77,7 +79,10 @@ public final class ContentHandler {
      * construction and registry.
      */
     public static void initBlocks () {
-    
+        
+        blockAdvancedTable = new BlockAdvancedTable();
+        registerBlock(blockAdvancedTable, "advanced_table");
+        GameRegistry.registerTileEntity(TileEntityAdvancedTable.class, "advanced_table");
     }
     
     /**

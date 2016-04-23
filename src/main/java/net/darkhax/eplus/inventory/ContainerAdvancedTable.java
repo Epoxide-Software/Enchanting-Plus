@@ -42,12 +42,12 @@ public class ContainerAdvancedTable extends Container {
     public final IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
     private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
     
-    public ContainerAdvancedTable(final InventoryPlayer player, World world, BlockPos pos, TileEntityAdvancedTable table) {
+    public ContainerAdvancedTable(final InventoryPlayer inventory, World world, BlockPos pos, TileEntityAdvancedTable table) {
         
         this.world = world;
         this.pos = pos;
         this.tileEnchantTable = table;
-        this.player = player.player;
+        this.player = inventory.player;
         
         final int guiOffest = 26;
         
@@ -57,15 +57,15 @@ public class ContainerAdvancedTable extends Container {
         // Player Inventory
         for (int invRow = 0; invRow < 3; invRow++)
             for (int slotCount = 0; slotCount < 9; slotCount++)
-                this.addSlotToContainer(new Slot(player, slotCount + invRow * 9 + 9, 17 + slotCount * 18 + guiOffest, 91 + invRow * 18));
+                this.addSlotToContainer(new Slot(inventory, slotCount + invRow * 9 + 9, 17 + slotCount * 18 + guiOffest, 91 + invRow * 18));
                 
         // Hotbar
         for (int slotCount = 0; slotCount < 9; slotCount++)
-            this.addSlotToContainer(new Slot(player, slotCount, 17 + slotCount * 18 + guiOffest, 149));
+            this.addSlotToContainer(new Slot(inventory, slotCount, 17 + slotCount * 18 + guiOffest, 149));
             
         // Armor Slots
         for (int slotIndex = 0; slotIndex < 4; slotIndex++)
-            this.addSlotToContainer(new SlotArmor(player.player, Utilities.getEquipmentSlot(slotIndex), player, 39 - slotIndex, 7, 24 + slotIndex * 19));
+            this.addSlotToContainer(new SlotArmor(inventory.player, Utilities.getEquipmentSlot(slotIndex), inventory, 39 - slotIndex, 7, 24 + slotIndex * 19));
             
         // TODO drop items
         /*
@@ -295,7 +295,7 @@ public class ContainerAdvancedTable extends Container {
         final HashMap<Enchantment, Integer> temp = new LinkedHashMap<Enchantment, Integer>();
         final HashMap<Enchantment, Integer> temp2 = new LinkedHashMap<Enchantment, Integer>();
         
-        if (ItemStackUtils.isValidStack(itemStack) || ContentHandler.isItemBlacklisted(itemStack.getItem())) {
+        if (!ItemStackUtils.isValidStack(itemStack) || ContentHandler.isItemBlacklisted(itemStack.getItem())) {
             
             this.enchantments = temp;
             return;
