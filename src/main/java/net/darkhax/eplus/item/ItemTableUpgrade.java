@@ -22,12 +22,10 @@ public class ItemTableUpgrade extends Item {
     @Override
     public EnumActionResult onItemUse (ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         
-        if (!worldIn.isRemote) {
-            
+        if (!worldIn.isRemote)
             // TODO Add code to upgrade a vanilla table.
             return EnumActionResult.SUCCESS;
-        }
-        
+            
         return EnumActionResult.PASS;
     }
 }
