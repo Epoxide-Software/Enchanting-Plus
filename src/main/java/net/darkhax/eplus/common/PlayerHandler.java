@@ -27,6 +27,18 @@ public class PlayerHandler {
     private static HashMap<UUID, List<Enchantment>> playerEnchantments = new HashMap<UUID, List<Enchantment>>();
     
     /**
+     * Checks if a player knows an enchantment.
+     * 
+     * @param player The player to check for.
+     * @param enchant The enchantment to check for.
+     * @return boolean Whether or not the player has access to the enchantment.
+     */
+    public static boolean knowsEnchantment (EntityPlayer player, Enchantment enchant) {
+        
+        return getEnchantments(player).contains(enchant);
+    }
+    
+    /**
      * Clears all enchantments that are unlocked for a specific player.
      * 
      * @param player The EntityPlayer to clear the data of.
