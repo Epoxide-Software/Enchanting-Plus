@@ -51,7 +51,7 @@ public final class EnchantingPlus {
         
         ContentHandler.initBlocks();
         ContentHandler.initItems();
-        ContentHandler.initRecipes();
+        // ContentHandler.initRecipes();
         ContentHandler.initAchievements();
         ContentHandler.initEnchantmentColors();
         ContentHandler.initModifiers();
