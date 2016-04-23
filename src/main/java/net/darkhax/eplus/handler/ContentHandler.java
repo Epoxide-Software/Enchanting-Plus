@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.eplus.item.ItemTableUpgrade;
 import net.darkhax.eplus.modifiers.ScrollModifier;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -13,6 +14,7 @@ import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
@@ -59,7 +61,7 @@ public final class ContentHandler {
     public static Block blockEnchantmentBook;
     public static Block blockBarrier;
     
-    public static Item itemTableUpgrage;
+    public static Item itemTableUpgrade;
     public static Item itemScroll;
     public static Item itemFloatingBook;
     
@@ -83,7 +85,9 @@ public final class ContentHandler {
      * construction and registry.
      */
     public static void initItems () {
-    
+        
+        itemTableUpgrade = new ItemTableUpgrade();
+        registerItem(itemTableUpgrade, "table_upgrade");
     }
     
     /**
@@ -123,11 +127,11 @@ public final class ContentHandler {
      */
     public static void initRecipes () {
         
-        GameRegistry.addRecipe(new ItemStack(itemTableUpgrage), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', Blocks.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', Items.GOLD_INGOT });
+        GameRegistry.addRecipe(new ItemStack(itemTableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', Blocks.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', Items.GOLD_INGOT });
         GameRegistry.addRecipe(new ItemStack(blockAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.WRITABLE_BOOK, 'o', Blocks.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', Items.GOLD_INGOT, 't', Blocks.ENCHANTING_TABLE });
         GameRegistry.addRecipe(new ItemStack(blockArcaneInscriber), new Object[] { "fpi", "bcb", 'f', Items.FEATHER, 'p', Items.PAPER, 'i', new ItemStack(Items.DYE, 1, 0), 'b', Blocks.BOOKSHELF, 'c', Blocks.CRAFTING_TABLE });
         GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[] { " g ", "gbg", " g ", 'g', Items.GLOWSTONE_DUST, 'b', Items.ENCHANTED_BOOK });
-        GameRegistry.addShapelessRecipe(new ItemStack(blockAdvancedTable), new Object[] { Blocks.ENCHANTING_TABLE, itemTableUpgrage });
+        GameRegistry.addShapelessRecipe(new ItemStack(blockAdvancedTable), new Object[] { Blocks.ENCHANTING_TABLE, itemTableUpgrade });
     }
     
     /**
@@ -256,5 +260,45 @@ public final class ContentHandler {
         achievementCount++;
         
         return new Achievement(key, key, posX, posY + 1, item, null).registerStat();
+    }
+    
+    /**
+     * Provides the same functionality as older forge tile registration.
+     * 
+     * @param block The block to register.
+     * @param ID The ID to register the block with.
+     */
+    private static void registerBlock (Block block, String ID) {
+        
+        block.setRegistryName(ID);
+        GameRegistry.register(block);
+        GameRegistry.register(new ItemBlock(block), block.getRegistryName());
+    }
+    
+    /**
+     * Provides the same functionality as older forge tile registration.
+     * 
+     * @param block The block to register.
+     * @param ID The ID to register the block with.
+     */
+    private static void registerBlock (Block block, ItemBlock item, String ID) {
+        
+        block.setRegistryName(ID);
+        GameRegistry.register(block);
+        GameRegistry.register(item, block.getRegistryName());
+    }
+    
+    /**
+     * Provides the same functionality as older forge item registration.
+     * 
+     * @param item The item to register.
+     * @param ID The ID to register the item with.
+     */
+    private static void registerItem (Item item, String ID) {
+        
+        if (item.getRegistryName() == null)
+            item.setRegistryName(ID);
+            
+        GameRegistry.register(item);
     }
 }
