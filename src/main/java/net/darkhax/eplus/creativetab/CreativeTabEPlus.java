@@ -14,6 +14,6 @@ public class CreativeTabEPlus extends CreativeTabs {
     @Override
     public Item getTabIconItem () {
         
-        return Item.getItemFromBlock(ContentHandler.blockEnchantmentBook);
+        return ContentHandler.itemTableUpgrade;
     }
 }
