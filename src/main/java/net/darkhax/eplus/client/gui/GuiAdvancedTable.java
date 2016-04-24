@@ -358,9 +358,7 @@ public class GuiAdvancedTable extends GuiContainer {
         
         super.initGui();
         this.buttonList.add(new GuiGraphicButton(0, this.guiLeft + guiOffset + 9, this.guiTop + 38, new ResourceLocation("eplus:textures/gui/button_enchant.png")));
-        this.buttonList.add(new GuiGraphicButton(1, this.guiLeft + guiOffset + 9, this.guiTop + 63, new ResourceLocation("eplus:textures/gui/button_repair.png")));
-        this.buttonList.add(new GuiButton(2, this.guiLeft - 20, this.guiTop + 110, this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.button.eplus.vanilla")) + 10, 20, I18n.translateToLocal("Vanilla")));
-        
+        this.buttonList.add(new GuiGraphicButton(1, this.guiLeft + guiOffset + 9, this.guiTop + 63, new ResourceLocation("eplus:textures/gui/button_repair.png")));        
         this.dirty = true;
     }
     
