@@ -13,6 +13,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.client.gui.GuiGraphicButton;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
+import net.darkhax.bookshelf.lib.util.Utilities;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
@@ -221,7 +222,7 @@ public class GuiAdvancedTable extends GuiContainer {
             String description = I18n.translateToLocal("description." + label.enchantment.getName());
             
             if (description.startsWith("description."))
-                description = ChatFormatting.RED + I18n.translateToLocal("tooltip.eplus.nodesc");
+                description = ChatFormatting.RED + I18n.translateToLocal("tooltip.eplus.nodesc") + ": description." + label.enchantment.getName();
                 
             else
                 description = ChatFormatting.LIGHT_PURPLE + description;
@@ -230,10 +231,13 @@ public class GuiAdvancedTable extends GuiContainer {
             
             display.add(enchName);
             display.addAll(this.fontRendererObj.listFormattedStringToWidth(description, 215));
+            display.add(ChatFormatting.BLUE + "" + ChatFormatting.ITALIC + Utilities.getModName(label.enchantment));
+            
             try {
                 
                 this.drawHoveringText(display, mouseX, mouseY, this.fontRendererObj);
             }
+            
             catch (final NoSuchMethodError e) {
                 
                 final StringBuilder sb = new StringBuilder();
