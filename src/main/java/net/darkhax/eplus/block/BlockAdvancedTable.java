@@ -37,25 +37,21 @@ public class BlockAdvancedTable extends BlockContainer {
     }
     
     @Override
-    public boolean onBlockActivated (World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public TileEntity createNewTileEntity (World worldIn, int meta) {
         
-        if (!worldIn.isRemote) {
-            
-            final TileEntity tileentity = worldIn.getTileEntity(pos);
-            
-            if (tileentity instanceof TileEntityAdvancedTable)
-                playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
-                
-            return true;
-        }
-        
-        return true;
+        return new TileEntityAdvancedTable();
     }
     
     @Override
     public AxisAlignedBB getBoundingBox (IBlockState state, IBlockAccess source, BlockPos pos) {
         
         return BOUNDS;
+    }
+    
+    @Override
+    public EnumBlockRenderType getRenderType (IBlockState state) {
+        
+        return EnumBlockRenderType.MODEL;
     }
     
     @Override
@@ -71,15 +67,19 @@ public class BlockAdvancedTable extends BlockContainer {
     }
     
     @Override
-    public EnumBlockRenderType getRenderType (IBlockState state) {
+    public boolean onBlockActivated (World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         
-        return EnumBlockRenderType.MODEL;
-    }
-    
-    @Override
-    public TileEntity createNewTileEntity (World worldIn, int meta) {
+        if (!worldIn.isRemote) {
+            
+            final TileEntity tileentity = worldIn.getTileEntity(pos);
+            
+            if (tileentity instanceof TileEntityAdvancedTable)
+                playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                
+            return true;
+        }
         
-        return new TileEntityAdvancedTable();
+        return true;
     }
     
     @Override

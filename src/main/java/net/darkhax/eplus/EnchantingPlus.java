@@ -39,6 +39,25 @@ public final class EnchantingPlus {
      */
     public static SimpleNetworkWrapper network;
     
+    /**
+     * Prints a debug message using the Enchanting Plus logger. If debug messages are disabled
+     * in the configuration file, no message will be printed.
+     *
+     * @param message The message to print using the Enchanting Plus logger.
+     */
+    public static void printDebugMessage (String message) {
+        
+        if (ConfigurationHandler.printDebug)
+            Constants.LOG.info(message);
+    }
+    
+    @EventHandler
+    public void postInit (FMLPostInitializationEvent event) {
+        
+        ContentHandler.initBlacklist();
+        proxy.onInit();
+    }
+    
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
@@ -60,28 +79,9 @@ public final class EnchantingPlus {
     }
     
     @EventHandler
-    public void postInit (FMLPostInitializationEvent event) {
-        
-        ContentHandler.initBlacklist();
-        proxy.onInit();
-    }
-    
-    @EventHandler
     public void processIMC (IMCEvent event) {
         
         for (final IMCMessage message : event.getMessages())
             IMCHandler.handleMessage(message);
-    }
-    
-    /**
-     * Prints a debug message using the Enchanting Plus logger. If debug messages are disabled
-     * in the configuration file, no message will be printed.
-     *
-     * @param message The message to print using the Enchanting Plus logger.
-     */
-    public static void printDebugMessage (String message) {
-        
-        if (ConfigurationHandler.printDebug)
-            Constants.LOG.info(message);
     }
 }

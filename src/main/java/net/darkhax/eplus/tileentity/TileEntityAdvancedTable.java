@@ -29,6 +29,36 @@ public class TileEntityAdvancedTable extends TileEntity implements ITickable, II
     public float offset;
     
     @Override
+    public Container createContainer (InventoryPlayer playerInventory, EntityPlayer playerIn) {
+        
+        return new ContainerEnchantment(playerInventory, this.worldObj, this.pos);
+    }
+    
+    @Override
+    public ITextComponent getDisplayName () {
+        
+        return new TextComponentString(this.getName());
+    }
+    
+    @Override
+    public String getGuiID () {
+        
+        return "darkutils:enchanting_table";
+    }
+    
+    @Override
+    public String getName () {
+        
+        return "container.enchant";
+    }
+    
+    @Override
+    public boolean hasCustomName () {
+        
+        return false;
+    }
+    
+    @Override
     public void update () {
         
         this.bookSpreadPrev = this.bookSpread;
@@ -86,35 +116,5 @@ public class TileEntityAdvancedTable extends TileEntity implements ITickable, II
         f = MathHelper.clamp_float(f, -f3, f3);
         this.flipTurn += (f - this.flipTurn) * 0.9F;
         this.pageFlip += this.flipTurn;
-    }
-    
-    @Override
-    public String getName () {
-        
-        return "container.enchant";
-    }
-    
-    @Override
-    public boolean hasCustomName () {
-        
-        return false;
-    }
-    
-    @Override
-    public ITextComponent getDisplayName () {
-        
-        return new TextComponentString(this.getName());
-    }
-    
-    @Override
-    public Container createContainer (InventoryPlayer playerInventory, EntityPlayer playerIn) {
-        
-        return new ContainerEnchantment(playerInventory, this.worldObj, this.pos);
-    }
-    
-    @Override
-    public String getGuiID () {
-        
-        return "darkutils:enchanting_table";
     }
 }

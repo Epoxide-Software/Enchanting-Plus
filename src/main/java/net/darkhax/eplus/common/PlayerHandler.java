@@ -27,18 +27,6 @@ public class PlayerHandler {
     private static HashMap<UUID, List<Enchantment>> playerEnchantments = new HashMap<UUID, List<Enchantment>>();
     
     /**
-     * Checks if a player knows an enchantment.
-     * 
-     * @param player The player to check for.
-     * @param enchant The enchantment to check for.
-     * @return boolean Whether or not the player has access to the enchantment.
-     */
-    public static boolean knowsEnchantment (EntityPlayer player, Enchantment enchant) {
-        
-        return getEnchantments(player).contains(enchant);
-    }
-    
-    /**
      * Clears all enchantments that are unlocked for a specific player.
      * 
      * @param player The EntityPlayer to clear the data of.
@@ -64,28 +52,15 @@ public class PlayerHandler {
     }
     
     /**
-     * Unlocks an enchantment for a player.
+     * Checks if a player knows an enchantment.
      * 
-     * @param player The player to unlock the enchantment for.
-     * @param enchant The enchantment to ublock.
+     * @param player The player to check for.
+     * @param enchant The enchantment to check for.
+     * @return boolean Whether or not the player has access to the enchantment.
      */
-    public static void unlockEnchantment (EntityPlayer player, Enchantment enchant) {
+    public static boolean knowsEnchantment (EntityPlayer player, Enchantment enchant) {
         
-        final List<Enchantment> enchants = getEnchantments(player);
-        
-        if (!enchants.contains(enchants))
-            enchants.add(enchant);
-    }
-    
-    /**
-     * Locks an enchantment by removing it from the players list of unlocked enchantments.
-     * 
-     * @param player The player to lock the enchantment for.
-     * @param enchant The enchantment to lock.
-     */
-    public static void lockEnchantment (EntityPlayer player, Enchantment enchant) {
-        
-        getEnchantments(player).remove(enchant);
+        return getEnchantments(player).contains(enchant);
     }
     
     /**
@@ -165,6 +140,17 @@ public class PlayerHandler {
     }
     
     /**
+     * Locks an enchantment by removing it from the players list of unlocked enchantments.
+     * 
+     * @param player The player to lock the enchantment for.
+     * @param enchant The enchantment to lock.
+     */
+    public static void lockEnchantment (EntityPlayer player, Enchantment enchant) {
+        
+        getEnchantments(player).remove(enchant);
+    }
+    
+    /**
      * Saves data for a player to a file. This will save the file to disk, and attempt to save
      * it to a backup in case the save fails.
      * 
@@ -220,5 +206,19 @@ public class PlayerHandler {
                 Constants.LOG.fatal("Data saving failed for " + player.getDisplayNameString());
                 exception.printStackTrace();
             }
+    }
+    
+    /**
+     * Unlocks an enchantment for a player.
+     * 
+     * @param player The player to unlock the enchantment for.
+     * @param enchant The enchantment to ublock.
+     */
+    public static void unlockEnchantment (EntityPlayer player, Enchantment enchant) {
+        
+        final List<Enchantment> enchants = getEnchantments(player);
+        
+        if (!enchants.contains(enchants))
+            enchants.add(enchant);
     }
 }

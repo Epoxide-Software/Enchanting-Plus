@@ -7,9 +7,12 @@ import java.util.Map;
 
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.eplus.block.BlockAdvancedTable;
+import net.darkhax.eplus.block.BlockBookDecoration;
+import net.darkhax.eplus.item.ItemBook;
 import net.darkhax.eplus.item.ItemTableUpgrade;
 import net.darkhax.eplus.modifiers.ScrollModifier;
 import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
+import net.darkhax.eplus.tileentity.TileEntityDecoration;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -60,12 +63,12 @@ public final class ContentHandler {
     
     public static Block blockAdvancedTable;
     public static Block blockArcaneInscriber;
-    public static Block blockEnchantmentBook;
+    public static Block blockDecoration;
     public static Block blockBarrier;
     
     public static Item itemTableUpgrade;
     public static Item itemScroll;
-    public static Item itemFloatingBook;
+    public static Item itemDecoration;
     
     public static AchievementPage achievementPageEplus;
     public static Achievement achievementEnchanter;
@@ -73,6 +76,83 @@ public final class ContentHandler {
     public static Achievement achievementStudies;
     public static Achievement achievementResearch;
     public static Achievement achievementEnlightened;
+    
+    /**
+     * Registers a ScrollModifier with our List of modifiers.
+     *
+     * @param modifier The modifier to register.
+     */
+    public static void addScrollModifier (ScrollModifier modifier) {
+        
+        modifiers.add(modifier);
+    }
+    
+    /**
+     * Attempts to blacklist an enchantment. If the enchantment has already been blacklisted,
+     * or the enchantment is null, it will fail.
+     * 
+     * @param enchant The Enchantment to blacklist.
+     */
+    public static void blacklistEnchantment (Enchantment enchant) {
+        
+        if (enchant != null && !enchantBlacklist.contains(enchant.getRegistryName()))
+            enchantBlacklist.add(enchant.getRegistryName());
+    }
+    
+    /**
+     * Attempts to blacklist an item. If the item has already been blacklisted, or the item is
+     * null, it will fail.
+     * 
+     * @param item The Item to blacklist.
+     */
+    public static void blacklistItem (Item item) {
+        
+        if (item != null && !itemBlacklist.contains(item.getRegistryName()))
+            itemBlacklist.add(item.getRegistryName());
+    }
+    
+    /**
+     * Retrieves a ScrollModifier using the modifier ItemStack as a key.
+     * 
+     * @param stack The ItemStack associated with the modifier you are looking for.
+     * @return ScrollModifier If a valid modifier is found, it will be returned. Otherwise
+     *         null.
+     */
+    public static ScrollModifier findScrollModifier (ItemStack stack) {
+        
+        for (final ScrollModifier modifier : modifiers)
+            if (ItemStackUtils.areStacksSimilar(modifier.stack, stack))
+                return modifier;
+                
+        return null;
+    }
+    
+    /**
+     * Initializes all achievements.
+     */
+    public static void initAchievements () {
+        
+        achievementEnchanter = registerAchievement("eplus.enchanter", Item.getItemFromBlock(blockAdvancedTable));
+        achievementRepair = registerAchievement("eplus.repair", Item.getItemFromBlock(Blocks.ANVIL));
+        achievementStudies = registerAchievement("eplus.study", Item.getItemFromBlock(blockArcaneInscriber));
+        achievementResearch = registerAchievement("eplus.research", itemScroll);
+        achievementEnlightened = registerAchievement("eplus.enlightened", Item.getItemFromBlock(blockDecoration));
+        
+        achievementPageEplus = new AchievementPage("Enchanting Plus", new Achievement[] { achievementEnchanter, achievementRepair, achievementStudies, achievementResearch, achievementEnlightened });
+        AchievementPage.registerAchievementPage(achievementPageEplus);
+    }
+    
+    /**
+     * Initializes the blacklist for both enchantments and items.
+     */
+    public static void initBlacklist () {
+        
+        for (final String entry : ConfigurationHandler.blacklistedItems)
+            blacklistItem(Item.REGISTRY.getObject(new ResourceLocation(entry)));
+            
+        for (final String entry : ConfigurationHandler.blacklistedEnchantments)
+            blacklistEnchantment(Enchantment.REGISTRY.getObject(new ResourceLocation(entry)));
+    }
     
     /**
      * Initializes all of the blocks for the Enchanting Plus mod. Used to handle Block
@@ -83,16 +163,11 @@ public final class ContentHandler {
         blockAdvancedTable = new BlockAdvancedTable();
         registerBlock(blockAdvancedTable, "advanced_table");
         GameRegistry.registerTileEntity(TileEntityAdvancedTable.class, "advanced_table");
-    }
-    
-    /**
-     * Initializes all of the items for the Enchanting Plus mod. Used to handle Item
-     * construction and registry.
-     */
-    public static void initItems () {
         
-        itemTableUpgrade = new ItemTableUpgrade();
-        registerItem(itemTableUpgrade, "table_upgrade");
+        blockDecoration = new BlockBookDecoration();
+        itemDecoration = new ItemBook();
+        registerBlock(blockDecoration, (ItemBlock) itemDecoration, "decoration");
+        GameRegistry.registerTileEntity(TileEntityDecoration.class, "decoration");
     }
     
     /**
@@ -111,6 +186,16 @@ public final class ContentHandler {
         setEnchantmentColor(EnumEnchantmentType.FISHING_ROD, 1596073);
         setEnchantmentColor(EnumEnchantmentType.BREAKABLE, 10394268);
         setEnchantmentColor(EnumEnchantmentType.BOW, 29696);
+    }
+    
+    /**
+     * Initializes all of the items for the Enchanting Plus mod. Used to handle Item
+     * construction and registry.
+     */
+    public static void initItems () {
+        
+        itemTableUpgrade = new ItemTableUpgrade();
+        registerItem(itemTableUpgrade, "table_upgrade");
     }
     
     /**
@@ -135,47 +220,8 @@ public final class ContentHandler {
         GameRegistry.addRecipe(new ItemStack(itemTableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', Blocks.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', Items.GOLD_INGOT });
         GameRegistry.addRecipe(new ItemStack(blockAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.WRITABLE_BOOK, 'o', Blocks.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', Items.GOLD_INGOT, 't', Blocks.ENCHANTING_TABLE });
         GameRegistry.addRecipe(new ItemStack(blockArcaneInscriber), new Object[] { "fpi", "bcb", 'f', Items.FEATHER, 'p', Items.PAPER, 'i', new ItemStack(Items.DYE, 1, 0), 'b', Blocks.BOOKSHELF, 'c', Blocks.CRAFTING_TABLE });
-        GameRegistry.addRecipe(new ItemStack(blockEnchantmentBook), new Object[] { " g ", "gbg", " g ", 'g', Items.GLOWSTONE_DUST, 'b', Items.ENCHANTED_BOOK });
+        GameRegistry.addRecipe(new ItemStack(blockDecoration), new Object[] { " g ", "gbg", " g ", 'g', Items.GLOWSTONE_DUST, 'b', Items.ENCHANTED_BOOK });
         GameRegistry.addShapelessRecipe(new ItemStack(blockAdvancedTable), new Object[] { Blocks.ENCHANTING_TABLE, itemTableUpgrade });
-    }
-    
-    /**
-     * Initializes the blacklist for both enchantments and items.
-     */
-    public static void initBlacklist () {
-        
-        for (final String entry : ConfigurationHandler.blacklistedItems)
-            blacklistItem(Item.REGISTRY.getObject(new ResourceLocation(entry)));
-            
-        for (final String entry : ConfigurationHandler.blacklistedEnchantments)
-            blacklistEnchantment(Enchantment.REGISTRY.getObject(new ResourceLocation(entry)));
-    }
-    
-    /**
-     * Initializes all achievements.
-     */
-    public static void initAchievements () {
-        
-        achievementEnchanter = registerAchievement("eplus.enchanter", Item.getItemFromBlock(blockAdvancedTable));
-        achievementRepair = registerAchievement("eplus.repair", Item.getItemFromBlock(Blocks.ANVIL));
-        achievementStudies = registerAchievement("eplus.study", Item.getItemFromBlock(blockArcaneInscriber));
-        achievementResearch = registerAchievement("eplus.research", itemScroll);
-        achievementEnlightened = registerAchievement("eplus.enlightened", Item.getItemFromBlock(blockEnchantmentBook));
-        
-        achievementPageEplus = new AchievementPage("Enchanting Plus", new Achievement[] { achievementEnchanter, achievementRepair, achievementStudies, achievementResearch, achievementEnlightened });
-        AchievementPage.registerAchievementPage(achievementPageEplus);
-    }
-    
-    /**
-     * Attempts to blacklist an enchantment. If the enchantment has already been blacklisted,
-     * or the enchantment is null, it will fail.
-     * 
-     * @param enchant The Enchantment to blacklist.
-     */
-    public static void blacklistEnchantment (Enchantment enchant) {
-        
-        if (enchant != null && !enchantBlacklist.contains(enchant.getRegistryName()))
-            enchantBlacklist.add(enchant.getRegistryName());
     }
     
     /**
@@ -190,18 +236,6 @@ public final class ContentHandler {
     }
     
     /**
-     * Attempts to blacklist an item. If the item has already been blacklisted, or the item is
-     * null, it will fail.
-     * 
-     * @param item The Item to blacklist.
-     */
-    public static void blacklistItem (Item item) {
-        
-        if (item != null && !itemBlacklist.contains(item.getRegistryName()))
-            itemBlacklist.add(item.getRegistryName());
-    }
-    
-    /**
      * Checks if an item is blacklisted.
      * 
      * @param item The item to check for.
@@ -210,44 +244,6 @@ public final class ContentHandler {
     public static boolean isItemBlacklisted (Item item) {
         
         return item != null && itemBlacklist.contains(item.getRegistryName());
-    }
-    
-    /**
-     * Sets the color of an enchantment type.
-     * 
-     * @param type The type of enchantment to set color for.
-     * @param color The packed RGB color to use.
-     */
-    public static void setEnchantmentColor (EnumEnchantmentType type, int color) {
-        
-        if (!enchantmentColors.containsKey(type.name()))
-            enchantmentColors.put(type.name(), color);
-    }
-    
-    /**
-     * Registers a ScrollModifier with our List of modifiers.
-     *
-     * @param modifier The modifier to register.
-     */
-    public static void addScrollModifier (ScrollModifier modifier) {
-        
-        modifiers.add(modifier);
-    }
-    
-    /**
-     * Retrieves a ScrollModifier using the modifier ItemStack as a key.
-     * 
-     * @param stack The ItemStack associated with the modifier you are looking for.
-     * @return ScrollModifier If a valid modifier is found, it will be returned. Otherwise
-     *         null.
-     */
-    public static ScrollModifier findScrollModifier (ItemStack stack) {
-        
-        for (final ScrollModifier modifier : modifiers)
-            if (ItemStackUtils.areStacksSimilar(modifier.stack, stack))
-                return modifier;
-                
-        return null;
     }
     
     /**
@@ -273,11 +269,11 @@ public final class ContentHandler {
      * @param block The block to register.
      * @param ID The ID to register the block with.
      */
-    private static void registerBlock (Block block, String ID) {
+    private static void registerBlock (Block block, ItemBlock item, String ID) {
         
         block.setRegistryName(ID);
         GameRegistry.register(block);
-        GameRegistry.register(new ItemBlock(block), block.getRegistryName());
+        GameRegistry.register(item, block.getRegistryName());
     }
     
     /**
@@ -286,11 +282,11 @@ public final class ContentHandler {
      * @param block The block to register.
      * @param ID The ID to register the block with.
      */
-    private static void registerBlock (Block block, ItemBlock item, String ID) {
+    private static void registerBlock (Block block, String ID) {
         
         block.setRegistryName(ID);
         GameRegistry.register(block);
-        GameRegistry.register(item, block.getRegistryName());
+        GameRegistry.register(new ItemBlock(block), block.getRegistryName());
     }
     
     /**
@@ -305,5 +301,17 @@ public final class ContentHandler {
             item.setRegistryName(ID);
             
         GameRegistry.register(item);
+    }
+    
+    /**
+     * Sets the color of an enchantment type.
+     * 
+     * @param type The type of enchantment to set color for.
+     * @param color The packed RGB color to use.
+     */
+    public static void setEnchantmentColor (EnumEnchantmentType type, int color) {
+        
+        if (!enchantmentColors.containsKey(type.name()))
+            enchantmentColors.put(type.name(), color);
     }
 }

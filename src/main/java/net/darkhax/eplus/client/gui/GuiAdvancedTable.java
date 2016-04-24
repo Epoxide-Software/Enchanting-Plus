@@ -28,14 +28,14 @@ import net.minecraft.world.World;
 
 public class GuiAdvancedTable extends GuiContainer {
     
+    private static int guiOffset = 26;
+    
     private final ResourceLocation texture = new ResourceLocation("eplus:textures/gui/enchant.png");
     
     private ArrayList<GuiEnchantmentLabel> enchantmentArray = new ArrayList<GuiEnchantmentLabel>();
-    
     private final EntityPlayer player;
-    private final ContainerAdvancedTable container;
     
-    private static int guiOffset = 26;
+    private final ContainerAdvancedTable container;
     private double sliderIndex = 0;
     private double enchantingPages = 0;
     private Map<Enchantment, Integer> enchantments;
@@ -270,6 +270,62 @@ public class GuiAdvancedTable extends GuiContainer {
         return null;
     }
     
+    private void handleChangedEnchantment (Map<Enchantment, Integer> enchantments, GuiEnchantmentLabel label) {
+        
+        label.yPos = label.startingYPos - (int) (18 * 4 * this.sliderIndex);
+        
+        final Integer level = enchantments.get(label.enchantment);
+        if (!label.locked && label.enchantmentLevel > level) {
+            int temp = this.totalCost + this.container.enchantmentCost(label.enchantment, label.enchantmentLevel, level);
+            
+            if (!this.container.canPurchase(this.player, temp))
+                while (label.enchantmentLevel > 0) {
+                    label.dragging = false;
+                    label.enchantmentLevel--;
+                    temp = this.totalCost + this.container.enchantmentCost(label.enchantment, label.enchantmentLevel, level);
+                    if (this.container.canPurchase(this.player, temp))
+                        break;
+                        
+                }
+            this.totalCost = temp;
+        }
+        else if (label.enchantmentLevel < level && !label.locked)
+            this.totalCost += this.container.getRebate(label.enchantment, label.enchantmentLevel, level);
+    }
+    
+    private void handleChangedEnchantments (Map<Enchantment, Integer> enchantments) {
+        
+        if (!this.enchantmentArray.isEmpty() && this.levelChanged()) {
+            for (final GuiEnchantmentLabel label : this.enchantmentArray)
+                if (label != this.last)
+                    this.handleChangedEnchantment(enchantments, label);
+            if (this.last != null)
+                this.handleChangedEnchantment(enchantments, this.last);
+        }
+        else if (ConfigurationHandler.allowRepairs && !this.levelChanged()) {
+            
+            this.totalCost += this.container.getRepairCost();
+            
+            for (final GuiEnchantmentLabel label : this.enchantmentArray)
+                label.yPos = label.startingYPos - (int) (18 * 4 * this.sliderIndex);
+        }
+    }
+    
+    private void handleChangedScreenSize (Map<Enchantment, Integer> enchantments) {
+        
+        if (this.dirty) {
+            final ArrayList<GuiEnchantmentLabel> temp = this.convertMapToGuiItems(enchantments, 35 + guiOffset + this.guiLeft, 15 + this.guiTop);
+            
+            for (final GuiEnchantmentLabel label : this.enchantmentArray)
+                for (final GuiEnchantmentLabel tempItem : temp)
+                    if (label.enchantment == tempItem.enchantment) {
+                        label.startingXPos = label.xPos = tempItem.xPos;
+                        label.startingYPos = label.yPos = tempItem.yPos;
+                    }
+            this.dirty = false;
+        }
+    }
+    
     @Override
     public void handleMouseInput () throws IOException {
         
@@ -313,22 +369,6 @@ public class GuiAdvancedTable extends GuiContainer {
         return false;
     }
     
-    @Override
-    public void updateScreen () {
-        
-        super.updateScreen();
-        
-        final Map<Enchantment, Integer> enchantments = this.updateEnchantments(this.container.getEnchantments());
-        
-        this.handleChangedScreenSize(enchantments);
-        this.updateEnchantmentLabels();
-        
-        this.enchantingPages = this.enchantmentArray.size() / 4.0 > 1 ? this.enchantmentArray.size() / 4.0 - 1.0 : 0;
-        this.totalCost = 0;
-        
-        this.handleChangedEnchantments(enchantments);
-    }
-    
     /**
      * Updates the locked status of every single enchantment label.
      */
@@ -349,62 +389,6 @@ public class GuiAdvancedTable extends GuiContainer {
                 mainLabel.locked = true;
     }
     
-    private void handleChangedEnchantments (Map<Enchantment, Integer> enchantments) {
-        
-        if (!this.enchantmentArray.isEmpty() && this.levelChanged()) {
-            for (final GuiEnchantmentLabel label : this.enchantmentArray)
-                if (label != this.last)
-                    this.handleChangedEnchantment(enchantments, label);
-            if (this.last != null)
-                this.handleChangedEnchantment(enchantments, this.last);
-        }
-        else if (ConfigurationHandler.allowRepairs && !this.levelChanged()) {
-            
-            this.totalCost += this.container.getRepairCost();
-            
-            for (final GuiEnchantmentLabel label : this.enchantmentArray)
-                label.yPos = label.startingYPos - (int) (18 * 4 * this.sliderIndex);
-        }
-    }
-    
-    private void handleChangedEnchantment (Map<Enchantment, Integer> enchantments, GuiEnchantmentLabel label) {
-        
-        label.yPos = label.startingYPos - (int) (18 * 4 * this.sliderIndex);
-        
-        final Integer level = enchantments.get(label.enchantment);
-        if (!label.locked && label.enchantmentLevel > level) {
-            int temp = this.totalCost + this.container.enchantmentCost(label.enchantment, label.enchantmentLevel, level);
-            
-            if (!this.container.canPurchase(this.player, temp))
-                while (label.enchantmentLevel > 0) {
-                    label.dragging = false;
-                    label.enchantmentLevel--;
-                    temp = this.totalCost + this.container.enchantmentCost(label.enchantment, label.enchantmentLevel, level);
-                    if (this.container.canPurchase(this.player, temp))
-                        break;
-                        
-                }
-            this.totalCost = temp;
-        }
-        else if (label.enchantmentLevel < level && !label.locked)
-            this.totalCost += this.container.getRebate(label.enchantment, label.enchantmentLevel, level);
-    }
-    
-    private void handleChangedScreenSize (Map<Enchantment, Integer> enchantments) {
-        
-        if (this.dirty) {
-            final ArrayList<GuiEnchantmentLabel> temp = this.convertMapToGuiItems(enchantments, 35 + guiOffset + this.guiLeft, 15 + this.guiTop);
-            
-            for (final GuiEnchantmentLabel label : this.enchantmentArray)
-                for (final GuiEnchantmentLabel tempItem : temp)
-                    if (label.enchantment == tempItem.enchantment) {
-                        label.startingXPos = label.xPos = tempItem.xPos;
-                        label.startingYPos = label.yPos = tempItem.yPos;
-                    }
-            this.dirty = false;
-        }
-    }
-    
     private Map<Enchantment, Integer> updateEnchantments (final Map<Enchantment, Integer> enchantments) {
         
         if (this.enchantments != enchantments) {
@@ -417,5 +401,21 @@ public class GuiAdvancedTable extends GuiContainer {
         }
         
         return enchantments;
+    }
+    
+    @Override
+    public void updateScreen () {
+        
+        super.updateScreen();
+        
+        final Map<Enchantment, Integer> enchantments = this.updateEnchantments(this.container.getEnchantments());
+        
+        this.handleChangedScreenSize(enchantments);
+        this.updateEnchantmentLabels();
+        
+        this.enchantingPages = this.enchantmentArray.size() / 4.0 > 1 ? this.enchantmentArray.size() / 4.0 - 1.0 : 0;
+        this.totalCost = 0;
+        
+        this.handleChangedEnchantments(enchantments);
     }
 }

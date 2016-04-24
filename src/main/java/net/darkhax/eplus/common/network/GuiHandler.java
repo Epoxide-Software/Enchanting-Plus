@@ -14,21 +14,6 @@ public final class GuiHandler implements IGuiHandler {
     public static final int ADVANCED_TABLE = 0;
     
     @Override
-    public Object getServerGuiElement (int id, EntityPlayer entityPlayer, World world, int x, int y, int z) {
-        
-        final TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-        
-        switch (id) {
-            case ADVANCED_TABLE:
-                if (tileEntity instanceof TileEntityAdvancedTable)
-                    return new ContainerAdvancedTable(entityPlayer.inventory, world, new BlockPos(x, y, z), (TileEntityAdvancedTable) tileEntity);
-                    
-            default:
-                return null;
-        }
-    }
-    
-    @Override
     public Object getClientGuiElement (int id, EntityPlayer entityPlayer, World world, int x, int y, int z) {
         
         final TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
@@ -37,6 +22,21 @@ public final class GuiHandler implements IGuiHandler {
             case ADVANCED_TABLE:
                 if (tileEntity instanceof TileEntityAdvancedTable)
                     return new GuiAdvancedTable(entityPlayer.inventory, world, new BlockPos(x, y, z), (TileEntityAdvancedTable) tileEntity);
+                    
+            default:
+                return null;
+        }
+    }
+    
+    @Override
+    public Object getServerGuiElement (int id, EntityPlayer entityPlayer, World world, int x, int y, int z) {
+        
+        final TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+        
+        switch (id) {
+            case ADVANCED_TABLE:
+                if (tileEntity instanceof TileEntityAdvancedTable)
+                    return new ContainerAdvancedTable(entityPlayer.inventory, world, new BlockPos(x, y, z), (TileEntityAdvancedTable) tileEntity);
                     
             default:
                 return null;
