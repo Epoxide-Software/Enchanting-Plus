@@ -58,7 +58,7 @@ repositories {
 dependencies {
 
     deobfCompile "mezz.jei:jei_1.9:3.2.10.185"
-    deobfCompile "net.darkhax.bookshelf:Bookshelf:1.9-1.2.0.219"
+    deobfCompile "net.darkhax.bookshelf:Bookshelf:1.9-1.2.0.237"
 }
 
 //Handles basic resources such as mcmod.info
