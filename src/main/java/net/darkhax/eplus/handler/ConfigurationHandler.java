@@ -14,8 +14,6 @@ public final class ConfigurationHandler {
     public static boolean allowDisenchanting = true;
     public static boolean allowModifierTooltips = true;
     public static boolean needsBookShelves = true;
-    public static boolean allowVillagers = true;
-    public static int villagerID = 935153;
     public static int maxEnchantmentAmount = 5;
     public static float costFactor = 1.0f;
     public static int repairFactor = 5;
@@ -36,10 +34,8 @@ public final class ConfigurationHandler {
         allowDisenchanting = config.getBoolean("allowDisenchanting", settings, allowDisenchanting, "If this is true, players will be able to disenchant enchanted items they come across.");
         allowModifierTooltips = config.getBoolean("allowModifierTooltips", settings, allowModifierTooltips, "If true, special information will be written to the Scroll Modifier item tooltips.");
         bonusShelves = config.getInt("bonusShelves", settings, bonusShelves, 0, 128, "An additional amount of bookshelves to factor in to the max level calculation. For each bonus shelf, 2 additional levels will be added to the max level cap of the table.");
-        allowVillagers = config.getBoolean("allowVillagers", settings, allowVillagers, "If enabled, a custom E+ villager will spawn and generate in villages.");
         needsBookShelves = config.getBoolean("needBookshelves", settings, needsBookShelves, "Should the table restrict the level of effects based on the amount of bookshelves?");
         maxEnchantmentAmount = config.getInt("maxEnchantmentAmount", settings, maxEnchantmentAmount, 0, 4096, "What is the maximum number of enchantments that could be applied at the Enchantment Table?");
-        villagerID = config.getInt("villagerID", settings, villagerID, Integer.MIN_VALUE, Integer.MAX_VALUE, "A unique ID for the E+ villager. This should almost never need to be changed.");
         costFactor = config.getFloat("costFactor", settings, costFactor, 0f, 128f, "A number used when calculated enchantment cost. This number is treated as a % based factor. 0.30 = 30% of the original cost. 1.5 = 150% of the original cost.");
         repairFactor = config.getInt("repairFactor", settings, repairFactor, 0, 128, "A number used when calculating the repair costs. A higher factor means higher repair costs.");
         scrollDrop = config.getFloat("scrollDropRate", settings, scrollDrop, 0f, 1f, "The percent chance that a hostile mob should drop a scroll. Default is 0.01 which is 1%");
