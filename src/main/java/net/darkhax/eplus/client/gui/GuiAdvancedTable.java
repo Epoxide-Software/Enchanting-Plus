@@ -13,6 +13,9 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import net.darkhax.bookshelf.client.gui.GuiGraphicButton;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
+import net.darkhax.eplus.EnchantingPlus;
+import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
+import net.darkhax.eplus.common.network.packet.PacketRepairItem;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
@@ -69,16 +72,14 @@ public class GuiAdvancedTable extends GuiContainer {
                 enchants.put(label.enchantment, label.enchantmentLevel);
                 
         switch (button.id) {
-        
+            
+            case 0:
+                if (enchants.size() > 0)
+                    EnchantingPlus.network.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
+            case 1:
+                if (enchants.size() == 0 && ConfigurationHandler.allowRepairs)
+                    EnchantingPlus.network.sendToServer(new PacketRepairItem(this.totalCost));
         }
-        /*
-         * TODO fix packets switch (par1GuiButton.id) { case 0: if (enchants.size() > 0) {
-         * EnchantingPlus.network.sendToServer(new PacketEnchant(enchants, totalCost)); }
-         * return; case 1: if (enchants.size() == 0 && ConfigurationHandler.allowRepairs) {
-         * EnchantingPlus.network.sendToServer(new PacketRepair(totalCost)); } return; case 2:
-         * EnchantingPlus.network.sendToServer(new PacketGui(player.getDisplayName(), 1, x, y,
-         * z)); }
-         */
     }
     
     @Override

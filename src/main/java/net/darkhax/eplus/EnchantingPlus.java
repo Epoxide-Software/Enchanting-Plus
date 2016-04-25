@@ -65,8 +65,8 @@ public final class EnchantingPlus {
     public void preInit (FMLPreInitializationEvent event) {
         
         network = NetworkRegistry.INSTANCE.newSimpleChannel("EnchantingPlus");
-        network.registerMessage(PacketEnchantItem.PacketHandler.class, PacketEnchantItem.class, 1, Side.SERVER);
-        network.registerMessage(PacketRepairItem.PacketHandler.class, PacketRepairItem.class, 2, Side.SERVER);
+        network.registerMessage(PacketEnchantItem.PacketHandler.class, PacketEnchantItem.class, 0, Side.SERVER);
+        network.registerMessage(PacketRepairItem.PacketHandler.class, PacketRepairItem.class, 1, Side.SERVER);
         
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
