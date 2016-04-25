@@ -2,6 +2,7 @@ package net.darkhax.eplus;
 
 import net.darkhax.eplus.common.ProxyCommon;
 import net.darkhax.eplus.common.network.GuiHandler;
+import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
 import net.darkhax.eplus.common.network.packet.PacketRepairItem;
 import net.darkhax.eplus.creativetab.CreativeTabEPlus;
 import net.darkhax.eplus.handler.ConfigurationHandler;
@@ -64,6 +65,7 @@ public final class EnchantingPlus {
     public void preInit (FMLPreInitializationEvent event) {
         
         network = NetworkRegistry.INSTANCE.newSimpleChannel("EnchantingPlus");
+        network.registerMessage(PacketEnchantItem.PacketHandler.class, PacketEnchantItem.class, 1, Side.SERVER);
         network.registerMessage(PacketRepairItem.PacketHandler.class, PacketRepairItem.class, 2, Side.SERVER);
         
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
