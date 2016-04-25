@@ -123,7 +123,7 @@ public class ContainerAdvancedTable extends Container {
         for (final EnchantmentData data : enchantmentData) {
             
             final NBTTagCompound nbttagcompound = new NBTTagCompound();
-            nbttagcompound.setString("id", data.enchantmentobj.getRegistryName().toString());
+            nbttagcompound.setShort("id", (short) Enchantment.getEnchantmentID(data.enchantmentobj));
             nbttagcompound.setInteger("lvl", data.enchantmentLevel);
             nbttaglist.appendTag(nbttagcompound);
         }
@@ -494,9 +494,9 @@ public class ContainerAdvancedTable extends Container {
      *
      * @param player: The player enchanting the item.
      * @param map: A map of Integer. Used to hold the the level for the various enchantments.
-     * @param cost: The cost for the current update.
+     * @param clientCost: The cost for the current update.
      */
-    public void updateItemStack (EntityPlayer player, HashMap<Enchantment, Integer> map, int cost) {
+    public void updateItemStack (EntityPlayer player, HashMap<Enchantment, Integer> map, int clientCost) {
         
         final ItemStack itemstack = this.tableInventory.getStackInSlot(0);
         final ArrayList<Enchantment> toRemove = new ArrayList<Enchantment>();
@@ -518,7 +518,7 @@ public class ContainerAdvancedTable extends Container {
                 serverCost += this.getRebate(enchantment, level, startingLevel);
         }
         
-        if (cost != serverCost) {
+        if (clientCost != serverCost) {
             
             Constants.LOG.warn(player.getDisplayNameString() + " tried to enchant " + itemstack.getDisplayName() + " but the costs were not in sync!");
             return;
@@ -558,8 +558,7 @@ public class ContainerAdvancedTable extends Container {
                 else
                     player.addExperienceLevel(-EnchantmentUtils.getLevelsFromExperience(serverCost));
                     
-            final ItemStack itemStack = updateEnchantments(enchantmentDataList, itemstack, player, cost);
-            this.tableInventory.setInventorySlotContents(0, itemStack);
+            this.tableInventory.setInventorySlotContents(0, updateEnchantments(enchantmentDataList, itemstack, player, clientCost));
         }
         
         this.onCraftMatrixChanged(this.tableInventory);
