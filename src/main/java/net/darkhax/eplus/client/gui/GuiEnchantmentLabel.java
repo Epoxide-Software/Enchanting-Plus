@@ -87,7 +87,7 @@ public class GuiEnchantmentLabel extends Gui {
         final float index = xPos / (float) (this.width + 10);
         final int tempLevel = (int) Math.floor(this.currentLevel > this.enchantment.getMaxLevel() ? this.currentLevel * index : this.enchantment.getMaxLevel() * index);
         
-        if (tempLevel >= this.currentLevel || ConfigurationHandler.allowDisenchanting && !this.container.tableInventory.getStackInSlot(0).isItemDamaged() || ConfigurationHandler.allowDamagedEnchanting)
+        if (tempLevel >= this.currentLevel || ConfigurationHandler.allowDisenchanting && !this.container.tableInventory.getStackInSlot(0).isItemDamaged())
             this.enchantmentLevel = tempLevel;
             
         if (this.enchantmentLevel <= 0)

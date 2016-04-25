@@ -12,6 +12,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.client.gui.GuiGraphicButton;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
@@ -25,6 +26,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
@@ -77,7 +79,7 @@ public class GuiAdvancedTable extends GuiContainer {
                 if (enchants.size() > 0)
                     EnchantingPlus.network.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
             case 1:
-                if (enchants.size() == 0 && ConfigurationHandler.allowRepairs)
+                if (enchants.size() == 0 && this.totalCost > 0 && ConfigurationHandler.allowRepairs)
                     EnchantingPlus.network.sendToServer(new PacketRepairItem(this.totalCost));
         }
     }
@@ -173,19 +175,23 @@ public class GuiAdvancedTable extends GuiContainer {
         
         final int maxWidth = this.guiLeft - 20;
         final List<List<String>> information = new ArrayList<List<String>>();
+        final ItemStack stack = this.container.tableInventory.getStackInSlot(0);
+        
         information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.translateToLocal("tooltip.eplus.playerlevel"), this.player.experienceLevel), maxWidth));
         
-        if (this.container.tableInventory.getStackInSlot(0) == null || this.hasLevelChanged() || !this.hasLevelChanged() && !this.container.tableInventory.getStackInSlot(0).isItemDamaged()) {
+        if (ItemStackUtils.isValidStack(stack))
+            if (this.hasLevelChanged()) {
+                
+                final boolean exp = this.totalCost <= EnchantmentUtils.getExperienceFromLevel(1) && this.totalCost >= -EnchantmentUtils.getExperienceFromLevel(1);
+                final boolean negExp = this.totalCost < 0;
+                final int finalCost = exp ? this.totalCost : negExp ? -EnchantmentUtils.getLevelsFromExperience(-this.totalCost) : EnchantmentUtils.getLevelsFromExperience(this.totalCost);
+                information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", exp ? I18n.translateToLocal("tooltip.eplus.experienceGained") : I18n.translateToLocal("tooltip.eplus.enchant"), finalCost), maxWidth));
+            }
             
-            final boolean exp = this.totalCost <= EnchantmentUtils.getExperienceFromLevel(1) && this.totalCost >= -EnchantmentUtils.getExperienceFromLevel(1);
-            final boolean negExp = this.totalCost < 0;
-            final int finalCost = exp ? this.totalCost : negExp ? -EnchantmentUtils.getLevelsFromExperience(-this.totalCost) : EnchantmentUtils.getLevelsFromExperience(this.totalCost);
-            information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", exp ? I18n.translateToLocal("tooltip.eplus.experienceGained") : I18n.translateToLocal("tooltip.eplus.enchant"), finalCost), maxWidth));
-        }
-        else if (ConfigurationHandler.allowRepairs && !this.hasLevelChanged() && this.container.tableInventory.getStackInSlot(0).isItemDamaged())
-            information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.translateToLocal("tooltip.eplus.repair"), EnchantmentUtils.getLevelsFromExperience(this.totalCost)), maxWidth));
-            
-        information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.translateToLocal("tooltip.eplus.maxlevel"), this.container.bookCases()), maxWidth));
+            else if (ConfigurationHandler.allowRepairs && stack.isItemEnchanted() && stack.isItemDamaged())
+                information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.translateToLocal("tooltip.eplus.repair"), EnchantmentUtils.getLevelsFromExperience(this.totalCost)), maxWidth));
+                
+        information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.translateToLocal("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
         
         for (final List<String> display : information) {
             

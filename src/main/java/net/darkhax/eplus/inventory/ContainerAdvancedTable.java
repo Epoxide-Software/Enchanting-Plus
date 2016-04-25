@@ -35,126 +35,6 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class ContainerAdvancedTable extends Container {
     
-    /**
-     * Calculates the amount of levels that an enchantment should cost. This factors in the
-     * enchantability of the enchantment, the level of the enchantment, the enchantability of
-     * the Item, and the enchantment factor from the config. If the ItemStack passed already
-     * has the enchantment on it, the cost will be adjusted to an upgrade price.
-     *
-     * @param enchant: The enchantment being applied.
-     * @param level: The level of the enchantment being applied.
-     * @param stack: The ItemStack being enchanted.
-     * @return int: The amount of experience levels that should be charged for the enchantment.
-     */
-    public static int calculateEnchantmentCost (Enchantment enchant, int level, ItemStack stack) {
-        
-        final int existingLevel = EnchantmentHelper.getEnchantmentLevel(enchant, stack);
-        int enchantability = enchant.getMaxEnchantability(level);
-        
-        if (existingLevel > 0 && existingLevel != level)
-            enchantability -= enchant.getMaxEnchantability(existingLevel);
-            
-        return (int) ((enchantability - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
-    }
-    
-    /**
-     * Checks to see if an ItemStack has a restriction set on it. A restriction is classified
-     * as a populated enchantedOwnerUUID tag.
-     * 
-     * @param itemStack: The ItemStack to check.
-     * @return boolean: Whether or not the passed ItemStack has a restriction on it.
-     */
-    public static boolean hasRestriction (ItemStack itemStack) {
-        
-        if (itemStack.hasTagCompound()) {
-            
-            final String enchantedOwner = itemStack.getTagCompound().getString("enchantedOwnerUUID");
-            return !enchantedOwner.equals("");
-        }
-        
-        return false;
-    }
-    
-    /**
-     * Checks if an enchantment is valid and can be applied. Checks if quest mode is on and
-     * that player has unlocked the enchantment.
-     * 
-     * @param enchantment The enchantment to check for.
-     * @param player The player to check for.
-     * @return boolean Whether or not the enchantment is valid.
-     */
-    public static boolean isEnchantmentValid (Enchantment enchantment, EntityPlayer player) {
-        
-        return enchantment != null && ((ConfigurationHandler.useQuestMode ? PlayerHandler.knowsEnchantment(player, enchantment) : true) || player.capabilities.isCreativeMode);
-    }
-    
-    /**
-     * Checks to see if a player is the valid owner of an ItemStack.
-     * 
-     * @param itemStack: The ItemStack to check against.
-     * @param player: The player to check.
-     * @return boolean: Whether or not the player passed is a valid owner for the ItemStack.
-     */
-    public static boolean isValidOwner (ItemStack itemStack, EntityPlayer player) {
-        
-        final String enchantedOwner = itemStack.getTagCompound().getString("enchantedOwnerUUID");
-        return player.getUniqueID().toString().equals(enchantedOwner);
-    }
-    
-    /**
-     * Updates the enchantments of an ItemStack.
-     * 
-     * @param enchantmentData: A List of EnchantmentData being set to the ItemStack.
-     * @param itemStack: The ItemStack being updated.
-     * @param player: The player doing the enchanting.
-     * @param cost: The cost of the enchanting.
-     * @return ItemStack: The enchanted ItemStack.
-     */
-    public static ItemStack updateEnchantments (List<EnchantmentData> enchantmentData, ItemStack itemStack, EntityPlayer player, int cost) {
-        
-        if (hasRestriction(itemStack) && !isValidOwner(itemStack, player))
-            return itemStack;
-            
-        // TODO enchantmentData = BookshelfHooks.onItemEnchanted(player, itemStack, cost,
-        // enchantmentData);
-        
-        final NBTTagList nbttaglist = new NBTTagList();
-        
-        for (final EnchantmentData data : enchantmentData) {
-            
-            final NBTTagCompound nbttagcompound = new NBTTagCompound();
-            nbttagcompound.setShort("id", (short) Enchantment.getEnchantmentID(data.enchantmentobj));
-            nbttagcompound.setInteger("lvl", data.enchantmentLevel);
-            nbttaglist.appendTag(nbttagcompound);
-        }
-        
-        if (itemStack.getItem() == Items.BOOK)
-            itemStack = new ItemStack(Items.ENCHANTED_BOOK);
-            
-        if (itemStack.getItem() == Items.ENCHANTED_BOOK) {
-            
-            if (nbttaglist.tagCount() > 0)
-                itemStack.setTagInfo("StoredEnchantments", nbttaglist);
-                
-            else if (itemStack.hasTagCompound()) {
-                
-                itemStack.getTagCompound().removeTag("StoredEnchantments");
-                itemStack.setTagCompound(new NBTTagCompound());
-                itemStack = new ItemStack(Items.BOOK);
-            }
-        }
-        else if (nbttaglist.tagCount() > 0)
-            itemStack.setTagInfo("ench", nbttaglist);
-            
-        else if (itemStack.hasTagCompound()) {
-            
-            itemStack.getTagCompound().removeTag("ench");
-            itemStack.getTagCompound().removeTag("enchantedOwnerUUID");
-        }
-        
-        return itemStack;
-    }
-    
     private final World world;
     
     private final TileEntityAdvancedTable tileEnchantTable;
@@ -200,155 +80,10 @@ public class ContainerAdvancedTable extends Container {
          */
     }
     
-    private void addAllEnchatments (ItemStack itemStack, HashMap<Enchantment, Integer> validEnchantments) {
-        
-        for (final Enchantment enchantment : Enchantment.REGISTRY)
-            this.addEnchantment(itemStack, validEnchantments, enchantment);
-    }
-    
-    private void addEnchantment (ItemStack itemStack, HashMap<Enchantment, Integer> validEnchantments, Enchantment enchantment) {
-        
-        if (isEnchantmentValid(enchantment, this.player) && !ContentHandler.isEnchantmentBlacklisted(enchantment) && (itemStack.getItem() == Items.BOOK || itemStack.getItem() == Items.ENCHANTED_BOOK || enchantment.canApplyAtEnchantingTable(itemStack)))
-            validEnchantments.put(enchantment, 0);
-    }
-    
-    public float bookCases () {
-        
-        final int x = this.pos.getX();
-        final int y = this.pos.getY();
-        final int z = this.pos.getZ();
-        
-        float cost = ConfigurationHandler.bonusShelves;
-        
-        for (int zOffset = -1; zOffset <= 1; zOffset++)
-            for (int xOffset = -1; xOffset <= 1; xOffset++)
-                if ((zOffset != 0 || xOffset != 0) && this.world.isAirBlock(new BlockPos(x + xOffset, y, z + zOffset)) && this.world.isAirBlock(new BlockPos(x + xOffset, y + 1, z + zOffset))) {
-                    
-                    cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y, z + zOffset * 2));
-                    cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y + 1, z + zOffset * 2));
-                    
-                    if (xOffset != 0 && zOffset != 0) {
-                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y, z + zOffset));
-                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y + 1, z + zOffset));
-                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset, y, z + zOffset * 2));
-                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset, y + 1, z + zOffset * 2));
-                    }
-                }
-                
-        return cost * 2;
-    }
-    
     @Override
     public boolean canInteractWith (EntityPlayer entityPlayer) {
         
         return entityPlayer.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D && !entityPlayer.isDead;
-    }
-    
-    /**
-     * Checks if a player can purchase an enchantment through the table. This will only return
-     * true if the player is in creative mode, or they have enough EXP to buy it. If the
-     * bookshelf requirement is turned on in configs, they must also have the amount of
-     * required bookshelves.
-     * 
-     * @param player The player that is buying.
-     * @param cost The cost of the enchantments.
-     * @return boolean Whether or not they can afford the cost.
-     */
-    public boolean canPurchase (EntityPlayer player, int cost) {
-        
-        if (player.capabilities.isCreativeMode)
-            return true;
-            
-        final int levelCost = EnchantmentUtils.getLevelsFromExperience(cost);
-        
-        if (ConfigurationHandler.needsBookShelves)
-            if (levelCost > this.bookCases()) {
-                
-                player.addChatMessage(new TextComponentTranslation("chat.eplus.morebooks" + " " + levelCost));
-                return false;
-            }
-            
-        if (player.experienceLevel < levelCost) {
-            
-            player.addChatMessage(new TextComponentTranslation("chat.eplus.morelevels" + " " + levelCost));
-            return false;
-        }
-        
-        return true;
-    }
-    
-    /**
-     * Calculates the amount of experience to charge for the upgrade.
-     *
-     * @param enchantment: The enchantment being bought.
-     * @param enchantmentLevel: The existing level of the enchantment.
-     * @param level: The amount of levels being added.
-     * @return int: The amount of experience being charged for this enchantment.
-     */
-    public int enchantmentCost (Enchantment enchantment, int enchantmentLevel, Integer level) {
-        
-        final ItemStack itemStack = this.tableInventory.getStackInSlot(0);
-        
-        if (itemStack == null || enchantmentLevel > enchantment.getMaxLevel())
-            return 0;
-            
-        return EnchantmentUtils.getExperienceFromLevel(calculateEnchantmentCost(enchantment, enchantmentLevel + level, itemStack));
-    }
-    
-    public Map<Enchantment, Integer> getEnchantments () {
-        
-        return this.enchantments;
-    }
-    
-    /**
-     * Calculates the amount of experience to give the player for disenchanting their item.
-     *
-     * @param enchantment: The enchantment being removed.
-     * @param enchantmentLevel: The new amount of levels for the enchantment effect.
-     * @param existingLevel: The amount of levels for the enchantment effect before updating.
-     * @return int: The amount of experience points to give the player.
-     */
-    public int getRebate (Enchantment enchantment, int enchantmentLevel, Integer existingLevel) {
-        
-        final ItemStack stack = this.tableInventory.getStackInSlot(0);
-        
-        if (!ItemStackUtils.isValidStack(stack) && enchantmentLevel > enchantment.getMaxLevel())
-            return 0;
-            
-        final int oldCost = (int) ((enchantment.getMaxEnchantability(existingLevel) - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
-        final int newCost = (int) ((enchantment.getMaxEnchantability(enchantmentLevel) - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
-        final int returnAmount = (oldCost - newCost) / 2;
-        return -EnchantmentUtils.getExperienceFromLevel(returnAmount > 0 ? returnAmount : 0);
-    }
-    
-    public int getRepairCost () {
-        
-        final ItemStack itemStack = this.tableInventory.getStackInSlot(0);
-        int cost = 0;
-        
-        if (itemStack == null || !itemStack.isItemEnchanted() || !itemStack.isItemDamaged())
-            return cost;
-            
-        final Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
-        
-        for (final Enchantment enchantment : enchantments.keySet()) {
-            
-            final Integer level = enchantments.get(enchantment);
-            cost += this.enchantmentCost(enchantment, level, 0);
-        }
-        
-        int enchantability = itemStack.getItem().getItemEnchantability(itemStack);
-        
-        if (enchantability <= 1)
-            enchantability = 10;
-            
-        final double percentDamage = 1 - (itemStack.getMaxDamage() - itemStack.getItemDamage()) / (double) itemStack.getMaxDamage();
-        
-        double totalCost = percentDamage * cost / enchantability;
-        
-        totalCost *= 2 * ConfigurationHandler.repairFactor;
-        
-        return (int) Math.max(1, totalCost);
     }
     
     @Override
@@ -372,13 +107,14 @@ public class ContainerAdvancedTable extends Container {
         
         final IBlockState state = this.world.getBlockState(this.pos);
         this.world.notifyBlockUpdate(this.pos, state, state, 8);
-        this.readItems();
+        this.readItemStack();
     }
     
     /**
-     * Will read the enchantments on the items and ones the can be added to the items
+     * Reads the held ItemStack for enchantment data and then populates the default maps with
+     * that info.
      */
-    private void readItems () {
+    private void readItemStack () {
         
         final ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         
@@ -391,9 +127,6 @@ public class ContainerAdvancedTable extends Container {
             return;
         }
         
-        if (!ConfigurationHandler.allowUnownedModifications && !hasRestriction(itemStack) && itemStack.isItemEnchanted() || ConfigurationHandler.secureItems && hasRestriction(itemStack) && !isValidOwner(itemStack, this.player))
-            return;
-            
         if (EnchantmentUtils.isItemEnchantable(itemStack))
             this.addAllEnchatments(itemStack, temp);
             
@@ -426,21 +159,12 @@ public class ContainerAdvancedTable extends Container {
         if (itemStack == null)
             return;
             
-        final boolean flag = !itemStack.hasTagCompound() || !itemStack.getTagCompound().hasKey("charge");
-        
-        if ((!itemStack.isItemEnchanted() || cost == 0) && flag)
+        if (!itemStack.isItemEnchanted() || cost == 0)
             return;
             
         if (this.canPurchase(player, cost)) {
             
-            final int maxCost = this.getRepairCost();
-            final double percAmnt = cost / (double) maxCost;
-            
-            final int remain = itemStack.getItemDamage();
-            double newDamage = remain - remain * percAmnt;
-            newDamage = newDamage <= 0 ? 0 : newDamage;
-            
-            itemStack.setItemDamage((int) newDamage);
+            itemStack.setItemDamage(0);
             
             if (!player.capabilities.isCreativeMode)
                 player.addExperienceLevel(-cost);
@@ -501,23 +225,11 @@ public class ContainerAdvancedTable extends Container {
         final ItemStack itemstack = this.tableInventory.getStackInSlot(0);
         final ArrayList<Enchantment> toRemove = new ArrayList<Enchantment>();
         
-        int serverCost = 0;
+        final int serverCost = this.getEnchantmentCost(map);
         
         if (itemstack == null)
             return;
             
-        for (final Enchantment enchantment : map.keySet()) {
-            
-            final Integer level = map.get(enchantment);
-            final Integer startingLevel = this.enchantments.get(enchantment);
-            
-            if (level > startingLevel)
-                serverCost += this.enchantmentCost(enchantment, level, startingLevel);
-                
-            else if (level < startingLevel)
-                serverCost += this.getRebate(enchantment, level, startingLevel);
-        }
-        
         if (clientCost != serverCost) {
             
             Constants.LOG.warn(player.getDisplayNameString() + " tried to enchant " + itemstack.getDisplayName() + " but the costs were not in sync!");
@@ -558,9 +270,245 @@ public class ContainerAdvancedTable extends Container {
                 else
                     player.addExperienceLevel(-EnchantmentUtils.getLevelsFromExperience(serverCost));
                     
-            this.tableInventory.setInventorySlotContents(0, updateEnchantments(enchantmentDataList, itemstack, player, clientCost));
+            this.tableInventory.setInventorySlotContents(0, this.applyChanges(enchantmentDataList, itemstack, player, clientCost));
         }
         
         this.onCraftMatrixChanged(this.tableInventory);
+    }
+    
+    private int getEnchantmentCost (Map<Enchantment, Integer> map) {
+        
+        int cost = 0;
+        
+        for (final Enchantment enchantment : map.keySet()) {
+            
+            final Integer level = map.get(enchantment);
+            final Integer startingLevel = this.enchantments.get(enchantment);
+            
+            if (level > startingLevel)
+                cost += this.enchantmentCost(enchantment, level, startingLevel);
+                
+            else if (level < startingLevel)
+                cost += this.getRebate(enchantment, level, startingLevel);
+        }
+        
+        return cost;
+    }
+    
+    /**
+     * Calculates the amount of levels that an enchantment should cost. This factors in the
+     * enchantability of the enchantment, the level of the enchantment, the enchantability of
+     * the Item, and the enchantment factor from the config. If the ItemStack passed already
+     * has the enchantment on it, the cost will be adjusted to an upgrade price.
+     *
+     * @param enchant: The enchantment being applied.
+     * @param level: The level of the enchantment being applied.
+     * @param stack: The ItemStack being enchanted.
+     * @return int: The amount of experience levels that should be charged for the enchantment.
+     */
+    public static int calculateEnchantmentCost (Enchantment enchant, int level, ItemStack stack) {
+        
+        final int existingLevel = EnchantmentHelper.getEnchantmentLevel(enchant, stack);
+        int enchantability = enchant.getMaxEnchantability(level);
+        
+        if (existingLevel > 0 && existingLevel != level)
+            enchantability -= enchant.getMaxEnchantability(existingLevel);
+            
+        return (int) ((enchantability - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
+    }
+    
+    /**
+     * Checks if an enchantment is valid and can be applied. Checks if quest mode is on and
+     * that player has unlocked the enchantment.
+     * 
+     * @param enchantment The enchantment to check for.
+     * @param player The player to check for.
+     * @return boolean Whether or not the enchantment is valid.
+     */
+    private boolean isEnchantmentValid (Enchantment enchantment, EntityPlayer player) {
+        
+        return enchantment != null && ((ConfigurationHandler.useQuestMode ? PlayerHandler.knowsEnchantment(player, enchantment) : true) || player.capabilities.isCreativeMode);
+    }
+    
+    /**
+     * Updates the enchantments of an ItemStack.
+     * 
+     * @param enchantmentData: A List of EnchantmentData being set to the ItemStack.
+     * @param itemStack: The ItemStack being updated.
+     * @param player: The player doing the enchanting.
+     * @param cost: The cost of the enchanting.
+     * @return ItemStack: The enchanted ItemStack.
+     */
+    private ItemStack applyChanges (List<EnchantmentData> enchantmentData, ItemStack itemStack, EntityPlayer player, int cost) {
+        
+        final NBTTagList nbttaglist = new NBTTagList();
+        
+        for (final EnchantmentData data : enchantmentData) {
+            
+            final NBTTagCompound nbttagcompound = new NBTTagCompound();
+            nbttagcompound.setShort("id", (short) Enchantment.getEnchantmentID(data.enchantmentobj));
+            nbttagcompound.setInteger("lvl", data.enchantmentLevel);
+            nbttaglist.appendTag(nbttagcompound);
+        }
+        
+        if (itemStack.getItem() == Items.BOOK)
+            itemStack.setItem(Items.ENCHANTED_BOOK);
+            
+        if (itemStack.getItem() == Items.ENCHANTED_BOOK) {
+            
+            if (nbttaglist.tagCount() > 0)
+                itemStack.setTagInfo("StoredEnchantments", nbttaglist);
+                
+            else if (itemStack.hasTagCompound()) {
+                
+                itemStack.getTagCompound().removeTag("StoredEnchantments");
+                itemStack.setTagCompound(new NBTTagCompound());
+                itemStack = new ItemStack(Items.BOOK);
+            }
+        }
+        
+        else if (nbttaglist.tagCount() > 0)
+            itemStack.setTagInfo("ench", nbttaglist);
+            
+        else if (itemStack.hasTagCompound())
+            itemStack.getTagCompound().removeTag("ench");
+            
+        return itemStack;
+    }
+    
+    /**
+     * Checks if a player can purchase an enchantment through the table. This will only return
+     * true if the player is in creative mode, or they have enough EXP to buy it. If the
+     * bookshelf requirement is turned on in configs, they must also have the amount of
+     * required bookshelves.
+     * 
+     * @param player The player that is buying.
+     * @param cost The cost of the enchantments.
+     * @return boolean Whether or not they can afford the cost.
+     */
+    public boolean canPurchase (EntityPlayer player, int cost) {
+        
+        if (player.capabilities.isCreativeMode)
+            return true;
+            
+        final int levelCost = EnchantmentUtils.getLevelsFromExperience(cost);
+        
+        if (ConfigurationHandler.needsBookShelves)
+            if (levelCost > this.getEnchantingPower()) {
+                
+                player.addChatMessage(new TextComponentTranslation("chat.eplus.morebooks" + " " + levelCost));
+                return false;
+            }
+            
+        if (player.experienceLevel < levelCost) {
+            
+            player.addChatMessage(new TextComponentTranslation("chat.eplus.morelevels" + " " + levelCost));
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Calculates the amount of experience to charge for the upgrade.
+     *
+     * @param enchantment: The enchantment being bought.
+     * @param enchantmentLevel: The existing level of the enchantment.
+     * @param level: The amount of levels being added.
+     * @return int: The amount of experience being charged for this enchantment.
+     */
+    public int enchantmentCost (Enchantment enchantment, int enchantmentLevel, Integer level) {
+        
+        final ItemStack itemStack = this.tableInventory.getStackInSlot(0);
+        
+        if (itemStack == null || enchantmentLevel > enchantment.getMaxLevel())
+            return 0;
+            
+        return EnchantmentUtils.getExperienceFromLevel(calculateEnchantmentCost(enchantment, enchantmentLevel + level, itemStack));
+    }
+    
+    public Map<Enchantment, Integer> getEnchantments () {
+        
+        return this.enchantments;
+    }
+    
+    /**
+     * Calculates the amount of experience to give the player for disenchanting their item.
+     *
+     * @param enchantment: The enchantment being removed.
+     * @param enchantmentLevel: The new amount of levels for the enchantment effect.
+     * @param existingLevel: The amount of levels for the enchantment effect before updating.
+     * @return int: The amount of experience points to give the player.
+     */
+    public int getRebate (Enchantment enchantment, int enchantmentLevel, Integer existingLevel) {
+        
+        final ItemStack stack = this.tableInventory.getStackInSlot(0);
+        
+        if (!ItemStackUtils.isValidStack(stack) && enchantmentLevel > enchantment.getMaxLevel())
+            return 0;
+            
+        final int oldCost = (int) ((enchantment.getMaxEnchantability(existingLevel) - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
+        final int newCost = (int) ((enchantment.getMaxEnchantability(enchantmentLevel) - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
+        final int returnAmount = (oldCost - newCost) / 2;
+        return -EnchantmentUtils.getExperienceFromLevel(returnAmount > 0 ? returnAmount : 0);
+    }
+    
+    public int getRepairCost () {
+        
+        final ItemStack stack = this.tableInventory.getStackInSlot(0);
+        int cost = 0;
+        
+        if (!ItemStackUtils.isValidStack(stack) || !stack.isItemEnchanted() || !stack.isItemDamaged())
+            return cost;
+            
+        final Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack);
+        
+        for (final Enchantment enchantment : map.keySet()) {
+            
+            final Integer level = map.get(enchantment);
+            cost += this.enchantmentCost(enchantment, level, 0);
+        }
+        
+        final float repairPercent = (float) stack.getItemDamage() / (float) stack.getMaxDamage();
+        
+        return Math.max(1, (int) (Math.abs(cost) * repairPercent));
+    }
+    
+    private void addAllEnchatments (ItemStack itemStack, HashMap<Enchantment, Integer> validEnchantments) {
+        
+        for (final Enchantment enchantment : Enchantment.REGISTRY)
+            this.addEnchantment(itemStack, validEnchantments, enchantment);
+    }
+    
+    private void addEnchantment (ItemStack itemStack, HashMap<Enchantment, Integer> validEnchantments, Enchantment enchantment) {
+        
+        if (this.isEnchantmentValid(enchantment, this.player) && !ContentHandler.isEnchantmentBlacklisted(enchantment) && (itemStack.getItem() == Items.BOOK || itemStack.getItem() == Items.ENCHANTED_BOOK || enchantment.canApplyAtEnchantingTable(itemStack)))
+            validEnchantments.put(enchantment, 0);
+    }
+    
+    public float getEnchantingPower () {
+        
+        final int x = this.pos.getX();
+        final int y = this.pos.getY();
+        final int z = this.pos.getZ();
+        
+        float cost = ConfigurationHandler.bonusShelves;
+        
+        for (int zOffset = -1; zOffset <= 1; zOffset++)
+            for (int xOffset = -1; xOffset <= 1; xOffset++)
+                if ((zOffset != 0 || xOffset != 0) && this.world.isAirBlock(new BlockPos(x + xOffset, y, z + zOffset)) && this.world.isAirBlock(new BlockPos(x + xOffset, y + 1, z + zOffset))) {
+                    
+                    cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y, z + zOffset * 2));
+                    cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y + 1, z + zOffset * 2));
+                    
+                    if (xOffset != 0 && zOffset != 0) {
+                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y, z + zOffset));
+                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y + 1, z + zOffset));
+                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset, y, z + zOffset * 2));
+                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset, y + 1, z + zOffset * 2));
+                    }
+                }
+                
+        return cost * 2;
     }
 }
