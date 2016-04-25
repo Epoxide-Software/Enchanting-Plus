@@ -418,7 +418,7 @@ public class ContainerAdvancedTable extends Container {
             this.enchantments = temp;
     }
     
-    public void repair (EntityPlayer player, int cost) throws Exception {
+    public void repair (EntityPlayer player, int cost) {
         
         player.addStat(ContentHandler.achievementRepair);
         final ItemStack itemStack = this.tableInventory.getStackInSlot(0);
