@@ -158,17 +158,7 @@ uploadArchives {
 
 task setCurseForgeInfo() {
 
-    def proc = "git log --pretty=format:%s -1".execute();
-    proc.waitFor();
-    def message = "${proc.in.text}"
-
-    //Changes the type of release. Default is alpha release. #beta and #release can be added into the commit message to change it.
-    project.ext.releaseType = message.toLowerCase().contains("#release") ? "release" : message.toLowerCase().contains("#beta") ? "beta" : "alpha";
-
-    //Sets the Changelog to direct the reader to the GitHub commit log.
-    proc = "git log --pretty=format:%H -1".execute();
-    proc.waitFor();
-    project.ext.changelog = "All changes can be found here: " + "https://github.com/Darkhax-Minecraft/Enchanting-Plus/" + "${proc.in.text}";
+    project.ext.changelog = "All changes can be found here: https://github.com/Darkhax-Minecraft/Enchanting-Plus/";
 }
 
 //Prevents incomplete JavaDocs from preventing a build on Java 8.
