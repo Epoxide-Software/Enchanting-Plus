@@ -184,7 +184,7 @@ curseforge {
         //Sets the Project ID from the system environment, if available.
         id = System.getenv("projectId") ? System.getenv("projectId") : "0";
 
-        releaseType = project.releaseType;
+        releaseType = "alpha";
         changelog = project.changelog;
 
         addGameVersion "1.9"
