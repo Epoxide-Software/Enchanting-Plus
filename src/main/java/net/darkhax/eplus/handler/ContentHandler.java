@@ -1,21 +1,19 @@
 package net.darkhax.eplus.handler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.eplus.block.BlockAdvancedTable;
 import net.darkhax.eplus.block.BlockBookDecoration;
 import net.darkhax.eplus.item.ItemBook;
+import net.darkhax.eplus.item.ItemScroll;
 import net.darkhax.eplus.item.ItemTableUpgrade;
 import net.darkhax.eplus.modifiers.ScrollModifier;
 import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.tileentity.TileEntityDecoration;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -157,7 +155,7 @@ public final class ContentHandler {
         GameRegistry.registerTileEntity(TileEntityAdvancedTable.class, "advanced_table");
         
         blockDecoration = new BlockBookDecoration();
-        registerBlock(blockDecoration, (ItemBlock) new ItemBook(), "decoration");
+        registerBlock(blockDecoration, new ItemBook(), "decoration");
         GameRegistry.registerTileEntity(TileEntityDecoration.class, "decoration");
     }
     
@@ -169,6 +167,9 @@ public final class ContentHandler {
         
         itemTableUpgrade = new ItemTableUpgrade();
         registerItem(itemTableUpgrade, "table_upgrade");
+        
+        itemScroll = new ItemScroll();
+        registerItem(itemScroll, "scroll");
     }
     
     /**

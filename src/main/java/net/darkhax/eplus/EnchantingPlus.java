@@ -15,6 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -55,13 +56,6 @@ public final class EnchantingPlus {
     }
     
     @EventHandler
-    public void postInit (FMLPostInitializationEvent event) {
-        
-        ContentHandler.initBlacklist();
-        proxy.onInit();
-    }
-    
-    @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
         network = NetworkRegistry.INSTANCE.newSimpleChannel("EnchantingPlus");
@@ -80,6 +74,19 @@ public final class EnchantingPlus {
         ContentHandler.initModifiers();
         
         proxy.onPreInit();
+    }
+    
+    @EventHandler
+    public void init (FMLInitializationEvent event) {
+        
+        proxy.onInit();
+    }
+    
+    @EventHandler
+    public void postInit (FMLPostInitializationEvent event) {
+        
+        ContentHandler.initBlacklist();
+        proxy.onPostInit();
     }
     
     @EventHandler
