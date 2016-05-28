@@ -58,7 +58,7 @@ public class ItemScroll extends Item {
     public ActionResult<ItemStack> onItemRightClick (ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         
         playerIn.setActiveHand(hand);
-        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
     }
     
     @Override
@@ -77,7 +77,7 @@ public class ItemScroll extends Item {
         if (count % 4 == 0) {
             
             final float percent = 1.0f - (float) count / (float) this.getMaxItemUseDuration(stack);
-            RenderUtils.spawnPercentageParticleRing(player.worldObj, EnumParticleTypes.ENCHANTMENT_TABLE, percent, player.posX, player.posY, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
+            RenderUtils.spawnPercentageParticleRing(player.worldObj, EnumParticleTypes.ENCHANTMENT_TABLE, percent, player.posX, player.posY + player.height, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
         }
     }
     
@@ -95,7 +95,7 @@ public class ItemScroll extends Item {
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems (Item item, CreativeTabs tab, List itemList) {
+    public void getSubItems (Item item, CreativeTabs tab, List<ItemStack> itemList) {
         
         for (final Enchantment enchantment : ForgeRegistries.ENCHANTMENTS.getValues())
             if (!ContentHandler.isEnchantmentBlacklisted(enchantment))
