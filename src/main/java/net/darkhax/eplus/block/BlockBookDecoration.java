@@ -107,12 +107,6 @@ public class BlockBookDecoration extends BlockContainer {
     }
     
     @Override
-    public Item getItemDropped (IBlockState state, Random rand, int fortune) {
-        
-        return ContentHandler.itemDecoration;
-    }
-    
-    @Override
     public ItemStack getItem (World worldIn, BlockPos pos, IBlockState state) {
         
         final ItemStack itemstack = this.getData((TileEntityDecoration) worldIn.getTileEntity(pos));

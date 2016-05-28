@@ -77,7 +77,6 @@ public final class EnchantingPlus {
         ContentHandler.initItems();
         // ContentHandler.initRecipes();
         ContentHandler.initAchievements();
-        ContentHandler.initEnchantmentColors();
         ContentHandler.initModifiers();
         
         proxy.onPreInit();

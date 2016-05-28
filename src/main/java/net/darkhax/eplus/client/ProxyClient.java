@@ -32,7 +32,7 @@ public class ProxyClient extends ProxyCommon {
         ModelLoader.setCustomModelResourceLocation(ContentHandler.itemTableUpgrade, 0, new ModelResourceLocation("eplus:table_upgrade", "inventory"));
         
         for (int meta = 0; meta < ItemBook.TYPES.length; meta++)
-            ModelLoader.setCustomModelResourceLocation(ContentHandler.itemDecoration, meta, new ModelResourceLocation("eplus:book_" + ItemBook.getName(meta), "inventory"));
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ContentHandler.blockDecoration), meta, new ModelResourceLocation("eplus:book_" + ItemBook.getName(meta), "inventory"));
             
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedTable.class, new TileEntityAdvancedTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecoration.class, new TileEntityDecorationRenderer());

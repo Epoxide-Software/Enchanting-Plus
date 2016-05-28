@@ -44,12 +44,6 @@ public final class ContentHandler {
      */
     
     /**
-     * A map of colors that have been linked to enchantment types. The key is the enchantment
-     * type and the value is a packed RGB integer.
-     */
-    private static Map<String, Integer> enchantmentColors = new HashMap<String, Integer>();
-    
-    /**
      * A List of all modifiers that have been registered. Modifiers are used with the Arcane
      * Inscriber.
      */
@@ -64,11 +58,9 @@ public final class ContentHandler {
     public static Block blockAdvancedTable;
     public static Block blockArcaneInscriber;
     public static Block blockDecoration;
-    public static Block blockBarrier;
     
     public static Item itemTableUpgrade;
     public static Item itemScroll;
-    public static Item itemDecoration;
     
     public static AchievementPage achievementPageEplus;
     public static Achievement achievementEnchanter;
@@ -165,27 +157,8 @@ public final class ContentHandler {
         GameRegistry.registerTileEntity(TileEntityAdvancedTable.class, "advanced_table");
         
         blockDecoration = new BlockBookDecoration();
-        itemDecoration = new ItemBook();
-        registerBlock(blockDecoration, (ItemBlock) itemDecoration, "decoration");
+        registerBlock(blockDecoration, (ItemBlock) new ItemBook(), "decoration");
         GameRegistry.registerTileEntity(TileEntityDecoration.class, "decoration");
-    }
-    
-    /**
-     * Initializes the enchantment color map with default enchantment color values.
-     */
-    public static void initEnchantmentColors () {
-        
-        setEnchantmentColor(EnumEnchantmentType.ALL, 15029174);
-        setEnchantmentColor(EnumEnchantmentType.ARMOR, 10394268);
-        setEnchantmentColor(EnumEnchantmentType.ARMOR_FEET, 10394268);
-        setEnchantmentColor(EnumEnchantmentType.ARMOR_LEGS, 10394268);
-        setEnchantmentColor(EnumEnchantmentType.ARMOR_CHEST, 10394268);
-        setEnchantmentColor(EnumEnchantmentType.ARMOR_HEAD, 10394268);
-        setEnchantmentColor(EnumEnchantmentType.WEAPON, 16711680);
-        setEnchantmentColor(EnumEnchantmentType.DIGGER, 9127187);
-        setEnchantmentColor(EnumEnchantmentType.FISHING_ROD, 1596073);
-        setEnchantmentColor(EnumEnchantmentType.BREAKABLE, 10394268);
-        setEnchantmentColor(EnumEnchantmentType.BOW, 29696);
     }
     
     /**
@@ -301,17 +274,5 @@ public final class ContentHandler {
             item.setRegistryName(ID);
             
         GameRegistry.register(item);
-    }
-    
-    /**
-     * Sets the color of an enchantment type.
-     * 
-     * @param type The type of enchantment to set color for.
-     * @param color The packed RGB color to use.
-     */
-    public static void setEnchantmentColor (EnumEnchantmentType type, int color) {
-        
-        if (!enchantmentColors.containsKey(type.name()))
-            enchantmentColors.put(type.name(), color);
     }
 }
