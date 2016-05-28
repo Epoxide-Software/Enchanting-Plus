@@ -18,7 +18,7 @@ public class ScrollColorHandler implements IItemColor {
             
             if (enchant != null) {
                 
-                final int hash = enchant.getRegistryName().toString().hashCode() + Color.white.getRGB();
+                final int hash = enchant.getRegistryName().hashCode();
                 return new Color(hash >> 16 & 0xFF, hash >> 8 & 0xFF, hash & 0xFF).getRGB();
             }
         }
