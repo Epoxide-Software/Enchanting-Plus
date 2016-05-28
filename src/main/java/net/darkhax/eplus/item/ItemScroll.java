@@ -8,6 +8,7 @@ import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.ContentHandler;
+import net.darkhax.eplus.handler.PlayerHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -64,9 +65,11 @@ public class ItemScroll extends Item {
     @Override
     public ItemStack onItemUseFinish (ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
         
-        if (entityLiving instanceof EntityPlayer)
-            // unlock
+        if (!worldIn.isRemote && entityLiving instanceof EntityPlayer && isValidScroll(stack)) {
+            
             --stack.stackSize;
+            PlayerHandler.unlockEnchantment((EntityPlayer) entityLiving, readScroll(stack));
+        }
             
         return stack;
     }
