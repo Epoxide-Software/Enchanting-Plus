@@ -8,8 +8,8 @@ import java.util.Map;
 
 import net.darkhax.bookshelf.inventory.SlotArmor;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
+import net.darkhax.bookshelf.lib.util.EntityUtils;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.lib.util.Utilities;
 import net.darkhax.eplus.common.PlayerHandler;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
@@ -70,14 +70,7 @@ public class ContainerAdvancedTable extends Container {
             
         // Armor Slots
         for (int slotIndex = 0; slotIndex < 4; slotIndex++)
-            this.addSlotToContainer(new SlotArmor(inventory.player, Utilities.getEquipmentSlot(slotIndex), inventory, 39 - slotIndex, 7, 24 + slotIndex * 19));
-            
-        // TODO drop items
-        /*
-         * if (tileEnchantTable.itemInTable != null) {
-         * player.entityDropItem(tileEnchantTable.itemInTable, 0.2f);
-         * tileEnchantTable.itemInTable.stackSize = 0; }
-         */
+            this.addSlotToContainer(new SlotArmor(inventory.player, EntityUtils.getEquipmentSlot(slotIndex), inventory, 39 - slotIndex, 7, 24 + slotIndex * 19));
     }
     
     @Override
@@ -92,11 +85,13 @@ public class ContainerAdvancedTable extends Container {
         super.onContainerClosed(player);
         
         for (int i = 0; i < this.tableInventory.getSizeInventory(); i++) {
+            
             final ItemStack stack = this.tableInventory.getStackInSlot(i);
             
             if (ItemStackUtils.isValidStack(stack))
                 if (!player.inventory.addItemStackToInventory(stack))
-                    player.entityDropItem(stack, 0.2f);
+                    if (!player.worldObj.isRemote)
+                        player.entityDropItem(stack, 0.2f);
         }
     }
     

@@ -13,7 +13,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import net.darkhax.bookshelf.client.gui.GuiGraphicButton;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.lib.util.Utilities;
+import net.darkhax.bookshelf.lib.util.ModUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
 import net.darkhax.eplus.common.network.packet.PacketRepairItem;
@@ -221,7 +221,7 @@ public class GuiAdvancedTable extends GuiContainer {
             
             display.add(enchName);
             display.addAll(this.fontRendererObj.listFormattedStringToWidth(description, 215));
-            display.add(ChatFormatting.BLUE + "" + ChatFormatting.ITALIC + Utilities.getModName(label.enchantment));
+            display.add(ChatFormatting.BLUE + "" + ChatFormatting.ITALIC + ModUtils.getModName(label.enchantment));
             this.drawHoveringText(display, mouseX, mouseY, this.fontRendererObj);
         }
     }
