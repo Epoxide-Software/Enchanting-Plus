@@ -170,7 +170,9 @@ public final class ContentHandler {
         
         GameRegistry.addRecipe(new ItemStack(itemTableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', Blocks.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', Items.GOLD_INGOT });
         GameRegistry.addRecipe(new ItemStack(blockAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.WRITABLE_BOOK, 'o', Blocks.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', Items.GOLD_INGOT, 't', Blocks.ENCHANTING_TABLE });
-        GameRegistry.addRecipe(new ItemStack(blockArcaneInscriber), new Object[] { "fpi", "bcb", 'f', Items.FEATHER, 'p', Items.PAPER, 'i', new ItemStack(Items.DYE, 1, 0), 'b', Blocks.BOOKSHELF, 'c', Blocks.CRAFTING_TABLE });
+        // GameRegistry.addRecipe(new ItemStack(blockArcaneInscriber), new Object[] { "fpi",
+        // "bcb", 'f', Items.FEATHER, 'p', Items.PAPER, 'i', new ItemStack(Items.DYE, 1, 0),
+        // 'b', Blocks.BOOKSHELF, 'c', Blocks.CRAFTING_TABLE });
         GameRegistry.addRecipe(new ItemStack(blockDecoration), new Object[] { " g ", "gbg", " g ", 'g', Items.GLOWSTONE_DUST, 'b', Items.ENCHANTED_BOOK });
         GameRegistry.addShapelessRecipe(new ItemStack(blockAdvancedTable), new Object[] { Blocks.ENCHANTING_TABLE, itemTableUpgrade });
     }

@@ -14,10 +14,8 @@ public class ScrollColorHandler implements IItemColor {
             
             final Enchantment enchant = ItemScroll.readScroll(stack);
             
-            if (enchant != null) {
-                
+            if (enchant != null)
                 return enchant.getRegistryName().hashCode();
-            }
         }
         
         return 16777215;
