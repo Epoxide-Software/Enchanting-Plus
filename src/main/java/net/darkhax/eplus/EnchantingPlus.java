@@ -9,6 +9,7 @@ import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.ForgeEventHandler;
 import net.darkhax.eplus.handler.IMCHandler;
+import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.libs.Constants;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -66,6 +67,7 @@ public final class EnchantingPlus {
         
         ConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
+        MinecraftForge.EVENT_BUS.register(new PlayerHandler());
         
         ContentHandler.initBlocks();
         ContentHandler.initItems();

@@ -17,6 +17,8 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerHandler {
     
@@ -123,6 +125,12 @@ public class PlayerHandler {
      */
     public static NBTTagCompound loadPlayerFile (EntityPlayer player, File dataFile, boolean isBackup) {
         
+        if (!dataFile.exists()) {
+            
+            Constants.LOG.info((isBackup ? "Backup" : "Primary") + " data for " + player.getDisplayNameString() + " could not be found. Player may not have a save.");
+            return null;
+        }
+        
         try {
             
             final FileInputStream fileStream = new FileInputStream(dataFile);
@@ -220,5 +228,36 @@ public class PlayerHandler {
         
         if (!enchants.contains(enchants))
             enchants.add(enchant);
+    }
+    
+    /**
+     * Creates a File object that represents a players file.
+     * 
+     * @param extension The extension to use for the file.
+     * @param directory The base directory for the file.
+     * @param username The username to use.
+     * @return
+     */
+    public File getPlayerFile (String extension, File directory, String id) {
+        
+        final File saveFolder = new File(directory, Constants.MOD_ID);
+        
+        if (!saveFolder.exists())
+            saveFolder.mkdirs();
+            
+        return new File(saveFolder, id.toString() + "." + extension);
+    }
+    
+    @SubscribeEvent
+    public void playerLoad (PlayerEvent.LoadFromFile event) {
+        
+        clearEnchantments(event.getEntityPlayer());
+        loadPlayerData(event.getEntityPlayer(), this.getPlayerFile("eplus", event.getPlayerDirectory(), event.getPlayerUUID()), this.getPlayerFile("eplusbak", event.getPlayerDirectory(), event.getPlayerUUID()));
+    }
+    
+    @SubscribeEvent
+    public void playerSave (PlayerEvent.SaveToFile event) {
+        
+        savePlayerData(event.getEntityPlayer(), this.getPlayerFile("eplus", event.getPlayerDirectory(), event.getPlayerUUID()), this.getPlayerFile("eplusbak", event.getPlayerDirectory(), event.getPlayerUUID()));
     }
 }
