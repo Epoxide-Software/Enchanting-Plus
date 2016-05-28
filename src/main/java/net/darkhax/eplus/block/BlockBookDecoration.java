@@ -1,9 +1,6 @@
 package net.darkhax.eplus.block;
 
-import java.util.Random;
-
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.tileentity.TileEntityDecoration;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -11,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

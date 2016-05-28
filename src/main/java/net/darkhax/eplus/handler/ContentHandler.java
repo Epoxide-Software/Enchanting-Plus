@@ -21,7 +21,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public final class ContentHandler {
@@ -59,13 +58,6 @@ public final class ContentHandler {
     
     public static Item itemTableUpgrade;
     public static Item itemScroll;
-    
-    public static AchievementPage achievementPageEplus;
-    public static Achievement achievementEnchanter;
-    public static Achievement achievementRepair;
-    public static Achievement achievementStudies;
-    public static Achievement achievementResearch;
-    public static Achievement achievementEnlightened;
     
     /**
      * Registers a ScrollModifier with our List of modifiers.
@@ -115,21 +107,6 @@ public final class ContentHandler {
                 return modifier;
                 
         return null;
-    }
-    
-    /**
-     * Initializes all achievements.
-     */
-    public static void initAchievements () {
-        
-        achievementEnchanter = registerAchievement("eplus.enchanter", Item.getItemFromBlock(blockAdvancedTable));
-        achievementRepair = registerAchievement("eplus.repair", Item.getItemFromBlock(Blocks.ANVIL));
-        achievementStudies = registerAchievement("eplus.study", Item.getItemFromBlock(blockArcaneInscriber));
-        achievementResearch = registerAchievement("eplus.research", itemScroll);
-        achievementEnlightened = registerAchievement("eplus.enlightened", Item.getItemFromBlock(blockDecoration));
-        
-        achievementPageEplus = new AchievementPage("Enchanting Plus", new Achievement[] { achievementEnchanter, achievementRepair, achievementStudies, achievementResearch, achievementEnlightened });
-        AchievementPage.registerAchievementPage(achievementPageEplus);
     }
     
     /**

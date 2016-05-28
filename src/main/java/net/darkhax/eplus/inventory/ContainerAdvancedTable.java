@@ -148,7 +148,6 @@ public class ContainerAdvancedTable extends Container {
     
     public void repair (EntityPlayer player, int cost) {
         
-        player.addStat(ContentHandler.achievementRepair);
         final ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         
         if (itemStack == null)
