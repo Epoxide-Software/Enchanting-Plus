@@ -1,4 +1,4 @@
-package net.darkhax.eplus.common;
+package net.darkhax.eplus.handler;
 
 import java.io.File;
 import java.io.FileInputStream;
