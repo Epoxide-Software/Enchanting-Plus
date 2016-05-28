@@ -10,9 +10,12 @@ import java.util.UUID;
 
 import com.google.common.io.Files;
 
+import net.darkhax.eplus.EnchantingPlus;
+import net.darkhax.eplus.common.network.packet.PacketSyncUnlockedEnchantments;
 import net.darkhax.eplus.libs.Constants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -21,6 +24,12 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerHandler {
+    
+    /**
+     * A map that holds scheduled sync packets. Packets are distributed and removed when a
+     * player is actually in the world.
+     */
+    private static HashMap<UUID, PacketSyncUnlockedEnchantments> scheduledSyncing = new HashMap<UUID, PacketSyncUnlockedEnchantments>();
     
     /**
      * A map of all unlocked enchantment data. The key is the UUID of the player, and the value
@@ -228,6 +237,9 @@ public class PlayerHandler {
         
         if (!enchants.contains(enchants))
             enchants.add(enchant);
+            
+        if (player instanceof EntityPlayerMP)
+            EnchantingPlus.network.sendTo(new PacketSyncUnlockedEnchantments(enchant.getRegistryName().toString()), (EntityPlayerMP) player);
     }
     
     /**
@@ -253,11 +265,25 @@ public class PlayerHandler {
         
         clearEnchantments(event.getEntityPlayer());
         loadPlayerData(event.getEntityPlayer(), this.getPlayerFile("eplus", event.getPlayerDirectory(), event.getPlayerUUID()), this.getPlayerFile("eplusbak", event.getPlayerDirectory(), event.getPlayerUUID()));
+        
+        if (event.getEntityPlayer() instanceof EntityPlayerMP)
+            scheduledSyncing.put(event.getEntityPlayer().getUniqueID(), new PacketSyncUnlockedEnchantments(getEnchantments(event.getEntityPlayer())));
     }
     
     @SubscribeEvent
     public void playerSave (PlayerEvent.SaveToFile event) {
         
         savePlayerData(event.getEntityPlayer(), this.getPlayerFile("eplus", event.getPlayerDirectory(), event.getPlayerUUID()), this.getPlayerFile("eplusbak", event.getPlayerDirectory(), event.getPlayerUUID()));
+    }
+    
+    @SubscribeEvent
+    public void playerTick (PlayerEvent.LivingUpdateEvent event) {
+        
+        if (event.getEntity() instanceof EntityPlayerMP && scheduledSyncing.containsKey(event.getEntity().getUniqueID())) {
+            
+            final EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
+            EnchantingPlus.network.sendTo(new PacketSyncUnlockedEnchantments(getEnchantments(player)), player);
+            scheduledSyncing.remove(player.getUniqueID());
+        }
     }
 }
