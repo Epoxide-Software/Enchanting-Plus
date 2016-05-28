@@ -70,7 +70,7 @@ public class ItemScroll extends Item {
             --stack.stackSize;
             PlayerHandler.unlockEnchantment((EntityPlayer) entityLiving, readScroll(stack));
         }
-            
+        
         return stack;
     }
     
@@ -109,8 +109,15 @@ public class ItemScroll extends Item {
     @SideOnly(Side.CLIENT)
     public void addInformation (ItemStack stack, EntityPlayer reader, List tip, boolean isDebug) {
         
-        if (isValidScroll(stack))
-            tip.add(ChatFormatting.AQUA + I18n.translateToLocal("tooltip.eplus.enchantment") + ": " + ChatFormatting.RESET + I18n.translateToLocal(readScroll(stack).getName()));
+        if (isValidScroll(stack)) {
+            
+            final Enchantment enchant = readScroll(stack);
+            tip.add(ChatFormatting.AQUA + I18n.translateToLocal("tooltip.eplus.enchantment") + ": " + ChatFormatting.RESET + I18n.translateToLocal(enchant.getName()));
+            
+            if (PlayerHandler.knowsEnchantment(reader, enchant))
+                tip.add(ChatFormatting.RED + I18n.translateToLocal("tooltip.eplus.learned"));
+        }
+        
         else
             tip.add(I18n.translateToLocal("tooltip.eplus.invalid"));
     }
