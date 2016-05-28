@@ -1,7 +1,5 @@
 package net.darkhax.eplus.client.renderer.color;
 
-import java.awt.Color;
-
 import net.darkhax.eplus.item.ItemScroll;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.enchantment.Enchantment;
@@ -18,8 +16,7 @@ public class ScrollColorHandler implements IItemColor {
             
             if (enchant != null) {
                 
-                final int hash = enchant.getRegistryName().hashCode();
-                return new Color(hash >> 16 & 0xFF, hash >> 8 & 0xFF, hash & 0xFF).getRGB();
+                return enchant.getRegistryName().hashCode();
             }
         }
         
