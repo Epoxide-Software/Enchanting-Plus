@@ -1,7 +1,11 @@
 package net.darkhax.eplus.item;
 
 import net.darkhax.eplus.EnchantingPlus;
+import net.darkhax.eplus.handler.ContentHandler;
+import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -22,10 +26,18 @@ public class ItemTableUpgrade extends Item {
     @Override
     public EnumActionResult onItemUse (ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         
-        if (!worldIn.isRemote)
-            // TODO Add code to upgrade a vanilla table.
-            return EnumActionResult.SUCCESS;
+        if (!worldIn.isRemote) {
             
+            final Block block = worldIn.getBlockState(pos).getBlock();
+            
+            if (block == Blocks.ENCHANTING_TABLE) {
+                
+                worldIn.setBlockState(pos, ContentHandler.blockAdvancedTable.getDefaultState());
+                worldIn.setTileEntity(pos, new TileEntityAdvancedTable());
+            }
+            return EnumActionResult.SUCCESS;
+        }
+        
         return EnumActionResult.PASS;
     }
 }
