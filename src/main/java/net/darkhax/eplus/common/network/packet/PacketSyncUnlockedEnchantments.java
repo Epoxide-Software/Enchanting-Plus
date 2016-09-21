@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.netty.buffer.ByteBuf;
+import net.darkhax.bookshelf.lib.util.PlayerUtils;
 import net.darkhax.eplus.handler.PlayerHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -58,7 +58,7 @@ public class PacketSyncUnlockedEnchantments implements IMessage {
         @Override
         public IMessage onMessage (PacketSyncUnlockedEnchantments packet, MessageContext ctx) {
             
-            final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            final EntityPlayer player = PlayerUtils.getClientPlayer();
             final List<Enchantment> enchants = PlayerHandler.getUnlockedEnchantments(player);
             
             for (final String enchant : packet.enchantments) {
