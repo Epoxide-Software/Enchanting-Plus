@@ -19,17 +19,16 @@ import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
 import net.darkhax.eplus.common.network.packet.PacketRepairItem;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
-import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class GuiAdvancedTable extends GuiContainer {
@@ -53,9 +52,9 @@ public class GuiAdvancedTable extends GuiContainer {
     private boolean dirty = false;
     private GuiEnchantmentLabel last;
     
-    public GuiAdvancedTable(InventoryPlayer inventory, World world, BlockPos pos, TileEntityAdvancedTable tileEntity) {
+    public GuiAdvancedTable(InventoryPlayer inventory, World world, BlockPos pos) {
         
-        super(new ContainerAdvancedTable(inventory, world, pos, tileEntity));
+        super(new ContainerAdvancedTable(inventory, world, pos));
         
         this.player = inventory.player;
         this.container = (ContainerAdvancedTable) this.inventorySlots;
@@ -177,7 +176,7 @@ public class GuiAdvancedTable extends GuiContainer {
         final List<List<String>> information = new ArrayList<List<String>>();
         final ItemStack stack = this.container.tableInventory.getStackInSlot(0);
         
-        information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.translateToLocal("tooltip.eplus.playerlevel"), this.player.experienceLevel), maxWidth));
+        information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.playerlevel"), this.player.experienceLevel), maxWidth));
         
         if (ItemStackUtils.isValidStack(stack))
             if (this.hasLevelChanged()) {
@@ -185,13 +184,13 @@ public class GuiAdvancedTable extends GuiContainer {
                 final boolean exp = this.totalCost <= EnchantmentUtils.getExperienceFromLevel(1) && this.totalCost >= -EnchantmentUtils.getExperienceFromLevel(1);
                 final boolean negExp = this.totalCost < 0;
                 final int finalCost = exp ? this.totalCost : negExp ? -EnchantmentUtils.getLevelsFromExperience(-this.totalCost) : EnchantmentUtils.getLevelsFromExperience(this.totalCost);
-                information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", exp ? I18n.translateToLocal("tooltip.eplus.experienceGained") : I18n.translateToLocal("tooltip.eplus.enchant"), finalCost), maxWidth));
+                information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", exp ? I18n.format("tooltip.eplus.experienceGained") : I18n.format("tooltip.eplus.enchant"), finalCost), maxWidth));
             }
             
             else if (ConfigurationHandler.allowRepairs && stack.isItemEnchanted() && stack.isItemDamaged())
-                information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.translateToLocal("tooltip.eplus.repair"), EnchantmentUtils.getLevelsFromExperience(this.totalCost)), maxWidth));
+                information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.repair"), EnchantmentUtils.getLevelsFromExperience(this.totalCost)), maxWidth));
                 
-        information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.translateToLocal("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
+        information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
         
         for (final List<String> display : information) {
             
@@ -209,10 +208,10 @@ public class GuiAdvancedTable extends GuiContainer {
         if (isShiftKeyDown() && label != null && label.enchantment != null) {
             
             final String enchName = ChatFormatting.BOLD + label.getTranslatedName();
-            String description = I18n.translateToLocal("description." + label.enchantment.getName());
+            String description = I18n.format("description." + label.enchantment.getName());
             
             if (description.startsWith("description."))
-                description = ChatFormatting.RED + I18n.translateToLocal("tooltip.eplus.nodesc") + ": description." + label.enchantment.getName();
+                description = ChatFormatting.RED + I18n.format("tooltip.eplus.nodesc") + ": description." + label.enchantment.getName();
                 
             else
                 description = ChatFormatting.LIGHT_PURPLE + description;
@@ -342,7 +341,7 @@ public class GuiAdvancedTable extends GuiContainer {
      * list.
      * 
      * @param enchantments The current map of enchantments where the key is an Enchantment and
-     *            the value is the level of the enchantment.
+     *        the value is the level of the enchantment.
      */
     private void updateEnchantmentLabels (Map<Enchantment, Integer> enchantments) {
         
@@ -369,7 +368,7 @@ public class GuiAdvancedTable extends GuiContainer {
      * Resizes all of the enchantment labels to reflect the new size of the screen.
      * 
      * @param enchantments The current map of enchantments where the key is the enchantment and
-     *            the value is the level of the enchantment.
+     *        the value is the level of the enchantment.
      */
     private void handleChangedScreenSize (Map<Enchantment, Integer> enchantments) {
         
@@ -433,7 +432,7 @@ public class GuiAdvancedTable extends GuiContainer {
      * enchantment map.
      * 
      * @param map A map of enchantments where the key is an enchantment and the value is the
-     *            level of that enchantment.
+     *        level of that enchantment.
      * @param x The X position to start the list at.
      * @param y The Y position to start the list at.
      * @return ArrayList<GuiEnchantmentLable> The list of enchantment labels.

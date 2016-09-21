@@ -4,6 +4,7 @@ import net.darkhax.eplus.common.ProxyCommon;
 import net.darkhax.eplus.common.network.GuiHandler;
 import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
 import net.darkhax.eplus.common.network.packet.PacketRepairItem;
+import net.darkhax.eplus.common.network.packet.PacketSyncUnlockedEnchantments;
 import net.darkhax.eplus.creativetab.CreativeTabEPlus;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
@@ -62,12 +63,14 @@ public final class EnchantingPlus {
         network = NetworkRegistry.INSTANCE.newSimpleChannel("EnchantingPlus");
         network.registerMessage(PacketEnchantItem.PacketHandler.class, PacketEnchantItem.class, 0, Side.SERVER);
         network.registerMessage(PacketRepairItem.PacketHandler.class, PacketRepairItem.class, 1, Side.SERVER);
+        network.registerMessage(PacketSyncUnlockedEnchantments.PacketHandler.class, PacketSyncUnlockedEnchantments.class, 2, Side.CLIENT);
         
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         
         ConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
-        MinecraftForge.EVENT_BUS.register(new PlayerHandler());
+        
+        PlayerHandler.init();
         
         ContentHandler.initBlocks();
         ContentHandler.initItems();

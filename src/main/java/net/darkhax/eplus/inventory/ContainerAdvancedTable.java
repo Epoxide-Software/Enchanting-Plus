@@ -14,7 +14,6 @@ import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.libs.Constants;
-import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -37,8 +36,6 @@ public class ContainerAdvancedTable extends Container {
     
     private final World world;
     
-    private final TileEntityAdvancedTable tileEnchantTable;
-    
     private final BlockPos pos;
     
     private final EntityPlayer player;
@@ -47,11 +44,10 @@ public class ContainerAdvancedTable extends Container {
     
     private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
     
-    public ContainerAdvancedTable(final InventoryPlayer inventory, World world, BlockPos pos, TileEntityAdvancedTable table) {
+    public ContainerAdvancedTable(final InventoryPlayer inventory, World world, BlockPos pos) {
         
         this.world = world;
         this.pos = pos;
-        this.tileEnchantTable = table;
         this.player = inventory.player;
         
         final int guiOffest = 26;
@@ -303,12 +299,12 @@ public class ContainerAdvancedTable extends Container {
     public static int calculateEnchantmentCost (Enchantment enchant, int level, ItemStack stack) {
         
         final int existingLevel = EnchantmentHelper.getEnchantmentLevel(enchant, stack);
-        int enchantability = enchant.getMaxEnchantability(level);
+        int enchantability = enchant.getMinEnchantability(level);
         
         if (existingLevel > 0 && existingLevel != level)
-            enchantability -= enchant.getMaxEnchantability(existingLevel);
+            enchantability -= enchant.getMinEnchantability(existingLevel);
             
-        return (int) ((enchantability - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
+        return (int) (enchantability + Math.min(0, 15 - stack.getItem().getItemEnchantability(stack)) * ConfigurationHandler.costFactor);
     }
     
     /**

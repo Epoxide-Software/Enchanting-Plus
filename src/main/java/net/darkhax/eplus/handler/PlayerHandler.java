@@ -1,289 +1,219 @@
 package net.darkhax.eplus.handler;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-
-import com.google.common.io.Files;
 
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.common.network.packet.PacketSyncUnlockedEnchantments;
 import net.darkhax.eplus.libs.Constants;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class PlayerHandler {
     
     /**
-     * A map that holds scheduled sync packets. Packets are distributed and removed when a
-     * player is actually in the world.
+     * The capability field. Used for checks and references. Initialized when the capability is
+     * initialized.
      */
-    private static HashMap<UUID, PacketSyncUnlockedEnchantments> scheduledSyncing = new HashMap<UUID, PacketSyncUnlockedEnchantments>();
+    @CapabilityInject(ICustomData.class)
+    public static final Capability<ICustomData> CUSTOM_DATA = null;
     
     /**
-     * A map of all unlocked enchantment data. The key is the UUID of the player, and the value
-     * is a List of Enchantment which have been unlocked.
+     * Initializes the CustomDataHandler and sets everything up. Should be called in the
+     * preInit loading phase.
      */
-    private static HashMap<UUID, List<Enchantment>> playerEnchantments = new HashMap<UUID, List<Enchantment>>();
-    
-    /**
-     * Clears all enchantments that are unlocked for a specific player.
-     * 
-     * @param player The EntityPlayer to clear the data of.
-     * @return List<Enchantment> A list of the cleared enchantments.
-     */
-    public static List<Enchantment> clearEnchantments (EntityPlayer player) {
+    public static void init () {
         
-        return playerEnchantments.remove(player.getUniqueID());
+        CapabilityManager.INSTANCE.register(ICustomData.class, new Storage(), Default.class);
+        MinecraftForge.EVENT_BUS.register(new PlayerHandler());
     }
     
     /**
-     * Gets all enchantments that are unlocked for a specific player.
+     * Used to get easy access to the unlock list.
      * 
-     * @param player The EntityPlayer to get the unlocked enchantments of.
-     * @return List<Enchantment> A list of the cleared enchantments.
+     * @param player Player to get data for.
+     * @return The list of enchantments found.
      */
-    public static List<Enchantment> getEnchantments (EntityPlayer player) {
+    public static List<Enchantment> getUnlockedEnchantments (EntityPlayer player) {
         
-        if (!playerEnchantments.containsKey(player.getUniqueID()))
-            playerEnchantments.put(player.getUniqueID(), new ArrayList<Enchantment>());
+        if (player.hasCapability(CUSTOM_DATA, EnumFacing.DOWN))
+            return player.getCapability(CUSTOM_DATA, EnumFacing.DOWN).getUnlockedEnchantments();
             
-        return playerEnchantments.get(player.getUniqueID());
+        return null;
+    }
+    
+    public static boolean knowsEnchantment (EntityPlayer player, Enchantment enchantment) {
+        
+        final List<Enchantment> enchants = getUnlockedEnchantments(player);
+        return enchants != null && enchants.contains(enchants);
     }
     
     /**
-     * Checks if a player knows an enchantment.
+     * Unlocks an enchantment for the player.
      * 
-     * @param player The player to check for.
-     * @param enchant The enchantment to check for.
-     * @return boolean Whether or not the player has access to the enchantment.
-     */
-    public static boolean knowsEnchantment (EntityPlayer player, Enchantment enchant) {
-        
-        return getEnchantments(player).contains(enchant);
-    }
-    
-    /**
-     * Loads the data for a player. Attempts to load from the dataFile, if that fails a backup
-     * data file will be used. If the backup file is loaded, an attempt will be made to save
-     * the file again.
-     * 
-     * @param player The player to load data for.
-     * @param dataFile The data file to load data from.
-     * @param backupData The backup data file, in case of emergency.
-     */
-    public static void loadPlayerData (EntityPlayer player, File dataFile, File backupData) {
-        
-        if (player != null && !player.worldObj.isRemote)
-            try {
-                
-                NBTTagCompound dataTag = loadPlayerFile(player, dataFile, false);
-                boolean shouldSave = false;
-                
-                if (dataTag == null || dataTag.hasNoTags()) {
-                    
-                    Constants.LOG.warn("Attempting to load backup data for " + player.getDisplayNameString());
-                    dataTag = loadPlayerFile(player, backupData, true);
-                    shouldSave = true;
-                }
-                
-                if (dataTag != null && dataTag.hasKey("UnlockedEnchants")) {
-                    
-                    final List<Enchantment> enchantments = new ArrayList<Enchantment>();
-                    final NBTTagList enchIDs = dataTag.getTagList("UnlockedEnchants", 8);
-                    
-                    for (int index = 0; index < enchIDs.tagCount(); index++) {
-                        
-                        final Enchantment enchantment = Enchantment.getEnchantmentByLocation(enchIDs.getStringTagAt(index));
-                        
-                        if (enchantment != null && !enchantments.contains(enchantment))
-                            enchantments.add(enchantment);
-                    }
-                    
-                    playerEnchantments.put(player.getUniqueID(), enchantments);
-                    
-                    if (shouldSave)
-                        savePlayerData(player, dataFile, backupData);
-                }
-            }
-            catch (final Exception exception) {
-                
-                Constants.LOG.fatal("Could not load data for " + player.getDisplayNameString());
-                exception.printStackTrace();
-            }
-    }
-    
-    /**
-     * Loads a player NBTTagCompound data file for a player.
-     * 
-     * @param player The EntityPlayer to load data for.
-     * @param dataFile The file to load the data from.
-     * @param isBackup Whether or not a data backup is being loaded.
-     * @return NBTTagCompound The data tag that was read.
-     */
-    public static NBTTagCompound loadPlayerFile (EntityPlayer player, File dataFile, boolean isBackup) {
-        
-        if (!dataFile.exists()) {
-            
-            Constants.LOG.info((isBackup ? "Backup" : "Primary") + " data for " + player.getDisplayNameString() + " could not be found. Player may not have a save.");
-            return null;
-        }
-        
-        try {
-            
-            final FileInputStream fileStream = new FileInputStream(dataFile);
-            final NBTTagCompound dataTag = CompressedStreamTools.readCompressed(fileStream);
-            fileStream.close();
-            return dataTag;
-        }
-        
-        catch (final Exception exception) {
-            
-            Constants.LOG.warn("Error loading " + (isBackup ? "backup" : "primary") + " player data for " + player.getDisplayNameString());
-            exception.printStackTrace();
-            return null;
-        }
-    }
-    
-    /**
-     * Locks an enchantment by removing it from the players list of unlocked enchantments.
-     * 
-     * @param player The player to lock the enchantment for.
-     * @param enchant The enchantment to lock.
-     */
-    public static void lockEnchantment (EntityPlayer player, Enchantment enchant) {
-        
-        getEnchantments(player).remove(enchant);
-    }
-    
-    /**
-     * Saves data for a player to a file. This will save the file to disk, and attempt to save
-     * it to a backup in case the save fails.
-     * 
-     * @param player The player to save data for.
-     * @param dataFile The data file to save to.
-     * @param backupData The backup data file to save to.
-     */
-    public static void savePlayerData (EntityPlayer player, File dataFile, File backupData) {
-        
-        if (player != null && !player.worldObj.isRemote)
-            try {
-                
-                if (dataFile != null && dataFile.exists())
-                    try {
-                        
-                        Files.copy(dataFile, backupData);
-                    }
-                    
-                    catch (final Exception exception) {
-                        
-                        Constants.LOG.warn("Could not write backup file for " + player.getDisplayNameString());
-                    }
-                    
-                try {
-                    if (dataFile != null) {
-                        
-                        final NBTTagCompound dataTag = new NBTTagCompound();
-                        final NBTTagList enchantments = new NBTTagList();
-                        
-                        for (final Enchantment enchant : getEnchantments(player))
-                            enchantments.appendTag(new NBTTagString(enchant.getRegistryName().toString()));
-                            
-                        dataTag.setTag("UnlockedEnchants", enchantments);
-                        
-                        final FileOutputStream fileStream = new FileOutputStream(dataFile);
-                        CompressedStreamTools.writeCompressed(dataTag, fileStream);
-                        fileStream.close();
-                    }
-                }
-                
-                catch (final Exception exception) {
-                    
-                    Constants.LOG.warn("Could not save data file for " + player.getDisplayNameString());
-                    exception.printStackTrace();
-                    
-                    if (dataFile.exists())
-                        dataFile.delete();
-                }
-            }
-            
-            catch (final Exception exception) {
-                
-                Constants.LOG.fatal("Data saving failed for " + player.getDisplayNameString());
-                exception.printStackTrace();
-            }
-    }
-    
-    /**
-     * Unlocks an enchantment for a player.
-     * 
-     * @param player The player to unlock the enchantment for.
-     * @param enchant The enchantment to ublock.
+     * @param player The player.
+     * @param enchant The enchantment to unlock.
      */
     public static void unlockEnchantment (EntityPlayer player, Enchantment enchant) {
         
-        final List<Enchantment> enchants = getEnchantments(player);
-        
-        if (!enchants.contains(enchants))
-            enchants.add(enchant);
+        if (player.hasCapability(CUSTOM_DATA, EnumFacing.DOWN)) {
             
-        if (player instanceof EntityPlayerMP)
-            EnchantingPlus.network.sendTo(new PacketSyncUnlockedEnchantments(enchant.getRegistryName().toString()), (EntityPlayerMP) player);
+            player.getCapability(CUSTOM_DATA, EnumFacing.DOWN).unlockEnchantment(enchant);
+            PlayerHandler.syncEnchantmentData(player);
+        }
     }
     
     /**
-     * Creates a File object that represents a players file.
+     * The list of unlocked enchantment to sync.
      * 
-     * @param extension The extension to use for the file.
-     * @param directory The base directory for the file.
-     * @param username The username to use.
-     * @return
+     * @param player The player to sync enchantments to.
      */
-    public File getPlayerFile (String extension, File directory, String id) {
+    public static void syncEnchantmentData (EntityPlayer player) {
         
-        final File saveFolder = new File(directory, Constants.MOD_ID);
+        if (!player.getEntityWorld().isRemote)
+            EnchantingPlus.network.sendTo(new PacketSyncUnlockedEnchantments(getUnlockedEnchantments(player)), (EntityPlayerMP) player);
+    }
+    
+    @SubscribeEvent
+    public void attachCapabilities (AttachCapabilitiesEvent<Entity> event) {
         
-        if (!saveFolder.exists())
-            saveFolder.mkdirs();
+        if (event.getObject() instanceof EntityPlayer)
+            event.addCapability(new ResourceLocation(Constants.MOD_ID, "playerData"), new Provider());
+    }
+    
+    /**
+     * Interface for holding various getter and setter methods.
+     */
+    public static interface ICustomData {
+        
+        List<Enchantment> getUnlockedEnchantments ();
+        
+        boolean hasEnchantment (Enchantment enchant);
+        
+        void unlockEnchantment (Enchantment enchant);
+        
+        void lockEnchantment (Enchantment enchant);
+    }
+    
+    /**
+     * Default implementation of the custom data.
+     */
+    public static class Default implements ICustomData {
+        
+        private final List<Enchantment> unlockedEnchants = new ArrayList<Enchantment>();
+        
+        @Override
+        public List<Enchantment> getUnlockedEnchantments () {
             
-        return new File(saveFolder, id.toString() + "." + extension);
-    }
-    
-    @SubscribeEvent
-    public void playerLoad (PlayerEvent.LoadFromFile event) {
+            return this.unlockedEnchants;
+        }
         
-        clearEnchantments(event.getEntityPlayer());
-        loadPlayerData(event.getEntityPlayer(), this.getPlayerFile("eplus", event.getPlayerDirectory(), event.getPlayerUUID()), this.getPlayerFile("eplusbak", event.getPlayerDirectory(), event.getPlayerUUID()));
-        
-        if (event.getEntityPlayer() instanceof EntityPlayerMP)
-            scheduledSyncing.put(event.getEntityPlayer().getUniqueID(), new PacketSyncUnlockedEnchantments(getEnchantments(event.getEntityPlayer())));
-    }
-    
-    @SubscribeEvent
-    public void playerSave (PlayerEvent.SaveToFile event) {
-        
-        savePlayerData(event.getEntityPlayer(), this.getPlayerFile("eplus", event.getPlayerDirectory(), event.getPlayerUUID()), this.getPlayerFile("eplusbak", event.getPlayerDirectory(), event.getPlayerUUID()));
-    }
-    
-    @SubscribeEvent
-    public void playerTick (PlayerEvent.LivingUpdateEvent event) {
-        
-        if (event.getEntity() instanceof EntityPlayerMP && scheduledSyncing.containsKey(event.getEntity().getUniqueID())) {
+        @Override
+        public boolean hasEnchantment (Enchantment enchant) {
             
-            final EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
-            EnchantingPlus.network.sendTo(new PacketSyncUnlockedEnchantments(getEnchantments(player)), player);
-            scheduledSyncing.remove(player.getUniqueID());
+            return this.unlockedEnchants.contains(enchant);
+        }
+        
+        @Override
+        public void unlockEnchantment (Enchantment enchant) {
+            
+            if (!this.hasEnchantment(enchant))
+                this.unlockedEnchants.add(enchant);
+        }
+        
+        @Override
+        public void lockEnchantment (Enchantment enchant) {
+            
+            this.unlockedEnchants.remove(enchant);
+        }
+    }
+    
+    /**
+     * Handles reand/write of custom data.
+     */
+    public static class Storage implements Capability.IStorage<ICustomData> {
+        
+        @Override
+        public NBTBase writeNBT (Capability<ICustomData> capability, ICustomData instance, EnumFacing side) {
+            
+            final NBTTagCompound tag = new NBTTagCompound();
+            
+            final NBTTagList list = new NBTTagList();
+            
+            for (final Enchantment enchant : instance.getUnlockedEnchantments())
+                list.appendTag(new NBTTagString(enchant.getRegistryName().toString()));
+                
+            tag.setTag("unlocked", list);
+            
+            return tag;
+        }
+        
+        @Override
+        public void readNBT (Capability<ICustomData> capability, ICustomData instance, EnumFacing side, NBTBase nbt) {
+            
+            final NBTTagCompound tag = (NBTTagCompound) nbt;
+            
+            final NBTTagList list = tag.getTagList("unlocked", 8);
+            
+            for (int i = 0; i < list.tagCount(); i++) {
+                
+                final String id = list.getStringTagAt(i);
+                final Enchantment enchant = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(id));
+                
+                if (enchant != null)
+                    instance.unlockEnchantment(enchant);
+                    
+                else
+                    EnchantingPlus.printDebugMessage("The enchantment " + id + " does not exist. It will not be loaded.");
+            }
+        }
+    }
+    
+    /**
+     * Handles all the checks and delegate methods for the capability.
+     */
+    public static class Provider implements ICapabilitySerializable<NBTTagCompound> {
+        
+        ICustomData instance = CUSTOM_DATA.getDefaultInstance();
+        
+        @Override
+        public boolean hasCapability (Capability<?> capability, EnumFacing facing) {
+            
+            return capability == CUSTOM_DATA;
+        }
+        
+        @Override
+        public <T> T getCapability (Capability<T> capability, EnumFacing facing) {
+            
+            return this.hasCapability(capability, facing) ? CUSTOM_DATA.<T> cast(this.instance) : null;
+        }
+        
+        @Override
+        public NBTTagCompound serializeNBT () {
+            
+            return (NBTTagCompound) CUSTOM_DATA.getStorage().writeNBT(CUSTOM_DATA, this.instance, null);
+        }
+        
+        @Override
+        public void deserializeNBT (NBTTagCompound nbt) {
+            
+            CUSTOM_DATA.getStorage().readNBT(CUSTOM_DATA, this.instance, null, nbt);
         }
     }
 }

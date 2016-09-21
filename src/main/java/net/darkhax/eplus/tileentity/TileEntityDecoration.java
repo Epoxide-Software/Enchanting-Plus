@@ -3,12 +3,12 @@ package net.darkhax.eplus.tileentity;
 import java.awt.Color;
 import java.util.Random;
 
-import net.darkhax.bookshelf.tileentity.TileEntityBasic;
+import net.darkhax.bookshelf.tileentity.TileEntityBasicTickable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 
-public class TileEntityDecoration extends TileEntityBasic {
+public class TileEntityDecoration extends TileEntityBasicTickable {
     
     private static Random rand = new Random();
     

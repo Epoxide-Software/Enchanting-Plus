@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.common.network.GuiHandler;
+import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
@@ -69,9 +70,12 @@ public class BlockAdvancedTable extends BlockContainer {
     @Override
     public boolean onBlockActivated (World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         
+        System.out.println(PlayerHandler.getUnlockedEnchantments(playerIn).toString());
+        
         if (!worldIn.isRemote) {
             
             final TileEntity tileentity = worldIn.getTileEntity(pos);
+            PlayerHandler.syncEnchantmentData(playerIn);
             
             if (tileentity instanceof TileEntityAdvancedTable)
                 playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
