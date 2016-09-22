@@ -31,16 +31,16 @@ public class TileEntityDecoration extends TileEntityBasicTickable {
         
         this.height -= 0.05f;
         
-        if (this.height < -0.5f)
-            this.height = -0.5f;
+        if (this.height < -0.35f)
+            this.height = -0.35f;
     }
     
     public void increaseHeight () {
         
         this.height += 0.05f;
         
-        if (this.height > 0.5f)
-            this.height = 0.5f;
+        if (this.height > 0.35f)
+            this.height = 0.35f;
     }
     
     @Override
