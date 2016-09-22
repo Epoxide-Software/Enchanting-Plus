@@ -61,7 +61,7 @@ public class PlayerHandler {
     public static boolean knowsEnchantment (EntityPlayer player, Enchantment enchantment) {
         
         final List<Enchantment> enchants = getUnlockedEnchantments(player);
-        return enchants != null && enchants.contains(enchants);
+        return enchants != null && enchants.contains(enchantment);
     }
     
     /**
