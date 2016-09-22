@@ -9,6 +9,7 @@ import java.util.Map;
 import net.darkhax.bookshelf.inventory.SlotArmor;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.EntityUtils;
+import net.darkhax.bookshelf.lib.util.GuiUtils;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
@@ -40,7 +41,7 @@ public class ContainerAdvancedTable extends Container {
     
     private final EntityPlayer player;
     
-    public final IInventory tableInventory = new SlotEnchantTable(this, "Enchant", true, 1);
+    public final IInventory tableInventory = new InventoryTable(this, "Enchant", true, 1);
     
     private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
     
@@ -55,15 +56,9 @@ public class ContainerAdvancedTable extends Container {
         // Item input
         this.addSlotToContainer(new SlotEnchant(this, this.tableInventory, 0, 11 + guiOffest, 17));
         
-        // Player Inventory
-        for (int invRow = 0; invRow < 3; invRow++)
-            for (int slotCount = 0; slotCount < 9; slotCount++)
-                this.addSlotToContainer(new Slot(inventory, slotCount + invRow * 9 + 9, 17 + slotCount * 18 + guiOffest, 91 + invRow * 18));
-                
-        // Hotbar
-        for (int slotCount = 0; slotCount < 9; slotCount++)
-            this.addSlotToContainer(new Slot(inventory, slotCount, 17 + slotCount * 18 + guiOffest, 149));
-            
+        // Player Inv
+        GuiUtils.addPlayerInvToContainer(this, inventory);
+        
         // Armor Slots
         for (int slotIndex = 0; slotIndex < 4; slotIndex++)
             this.addSlotToContainer(new SlotArmor(inventory.player, EntityUtils.getEquipmentSlot(slotIndex), inventory, 39 - slotIndex, 7, 24 + slotIndex * 19));
