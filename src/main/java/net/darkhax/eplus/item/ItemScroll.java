@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +22,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
@@ -58,8 +58,12 @@ public class ItemScroll extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick (ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         
-        playerIn.setActiveHand(hand);
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+        if (isValidScroll(itemStackIn) && !PlayerHandler.knowsEnchantment(playerIn, readScroll(itemStackIn))) {
+            playerIn.setActiveHand(hand);
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+        }
+        
+        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
     }
     
     @Override
@@ -107,18 +111,18 @@ public class ItemScroll extends Item {
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation (ItemStack stack, EntityPlayer reader, List tip, boolean isDebug) {
+    public void addInformation (ItemStack stack, EntityPlayer reader, List<String> tip, boolean isDebug) {
         
         if (isValidScroll(stack)) {
             
             final Enchantment enchant = readScroll(stack);
-            tip.add(ChatFormatting.AQUA + I18n.translateToLocal("tooltip.eplus.enchantment") + ": " + ChatFormatting.RESET + I18n.translateToLocal(enchant.getName()));
+            tip.add(ChatFormatting.AQUA + I18n.format("tooltip.eplus.enchantment") + ": " + ChatFormatting.RESET + I18n.format(enchant.getName()));
             
             if (PlayerHandler.knowsEnchantment(reader, enchant))
-                tip.add(ChatFormatting.RED + I18n.translateToLocal("tooltip.eplus.learned"));
+                tip.add(ChatFormatting.RED + I18n.format("tooltip.eplus.learned"));
         }
         
         else
-            tip.add(I18n.translateToLocal("tooltip.eplus.invalid"));
+            tip.add(I18n.format("tooltip.eplus.invalid"));
     }
 }
