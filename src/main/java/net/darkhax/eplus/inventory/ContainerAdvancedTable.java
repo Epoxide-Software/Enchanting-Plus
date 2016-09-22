@@ -9,7 +9,6 @@ import java.util.Map;
 import net.darkhax.bookshelf.inventory.SlotArmor;
 import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
 import net.darkhax.bookshelf.lib.util.EntityUtils;
-import net.darkhax.bookshelf.lib.util.GuiUtils;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
@@ -36,12 +35,9 @@ import net.minecraftforge.common.ForgeHooks;
 public class ContainerAdvancedTable extends Container {
     
     private final World world;
-    
     private final BlockPos pos;
-    
     private final EntityPlayer player;
-    
-    public final IInventory tableInventory = new InventoryTable(this, "Enchant", true, 1);
+    private final IInventory tableInventory = new InventoryTable(this, "Enchant", true, 1);
     
     private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
     
@@ -56,9 +52,15 @@ public class ContainerAdvancedTable extends Container {
         // Item input
         this.addSlotToContainer(new SlotEnchant(this, this.tableInventory, 0, 11 + guiOffest, 17));
         
-        // Player Inv
-        GuiUtils.addPlayerInvToContainer(this, inventory);
-        
+        // Player Inventory
+        for (int invRow = 0; invRow < 3; invRow++)
+            for (int slotCount = 0; slotCount < 9; slotCount++)
+                this.addSlotToContainer(new Slot(inventory, slotCount + invRow * 9 + 9, 17 + slotCount * 18 + guiOffest, 91 + invRow * 18));
+                
+        // Hotbar
+        for (int slotCount = 0; slotCount < 9; slotCount++)
+            this.addSlotToContainer(new Slot(inventory, slotCount, 17 + slotCount * 18 + guiOffest, 149));
+            
         // Armor Slots
         for (int slotIndex = 0; slotIndex < 4; slotIndex++)
             this.addSlotToContainer(new SlotArmor(inventory.player, EntityUtils.getEquipmentSlot(slotIndex), inventory, 39 - slotIndex, 7, 24 + slotIndex * 19));
@@ -210,7 +212,7 @@ public class ContainerAdvancedTable extends Container {
         final ItemStack itemstack = this.tableInventory.getStackInSlot(0);
         final ArrayList<Enchantment> toRemove = new ArrayList<Enchantment>();
         
-        final int serverCost = this.getEnchantmentCost(map);
+        final int serverCost = this.getTotalEnchantmentCost(map);
         
         if (itemstack == null)
             return;
@@ -261,13 +263,19 @@ public class ContainerAdvancedTable extends Container {
         this.onCraftMatrixChanged(this.tableInventory);
     }
     
-    private int getEnchantmentCost (Map<Enchantment, Integer> map) {
+    /**
+     * Calculates the total enchantment cost.
+     * 
+     * @param enchants The enchantments being applied.
+     * @return The total cost.
+     */
+    private int getTotalEnchantmentCost (Map<Enchantment, Integer> enchants) {
         
         int cost = 0;
         
-        for (final Enchantment enchantment : map.keySet()) {
+        for (final Enchantment enchantment : enchants.keySet()) {
             
-            final Integer level = map.get(enchantment);
+            final Integer level = enchants.get(enchantment);
             final Integer startingLevel = this.enchantments.get(enchantment);
             
             if (level > startingLevel)
@@ -412,6 +420,11 @@ public class ContainerAdvancedTable extends Container {
         return EnchantmentUtils.getExperienceFromLevel(calculateEnchantmentCost(enchantment, enchantmentLevel + level, itemStack));
     }
     
+    /**
+     * Returns the list of enchantments to display.
+     * 
+     * @return The list of enchantments to display.
+     */
     public Map<Enchantment, Integer> getEnchantments () {
         
         return this.enchantments;
@@ -438,6 +451,11 @@ public class ContainerAdvancedTable extends Container {
         return -EnchantmentUtils.getExperienceFromLevel(returnAmount > 0 ? returnAmount : 0);
     }
     
+    /**
+     * Calculates the EXP cost to repair the held ItemStack.
+     * 
+     * @return The amount of EXP to repair the held stack.
+     */
     public int getRepairCost () {
         
         final ItemStack stack = this.tableInventory.getStackInSlot(0);
@@ -459,18 +477,48 @@ public class ContainerAdvancedTable extends Container {
         return Math.max(1, (int) (Math.abs(cost) * repairPercent));
     }
     
+    /**
+     * Attempts to add all enchantments to the list of enchantments. If the enchantment is not
+     * valid, this will fail.
+     * 
+     * @param itemStack The stack to show enchantments for.
+     * @param validEnchantments The list of valid enchantments.
+     */
     private void addAllEnchatments (ItemStack itemStack, HashMap<Enchantment, Integer> validEnchantments) {
         
         for (final Enchantment enchantment : Enchantment.REGISTRY)
             this.addEnchantment(itemStack, validEnchantments, enchantment);
     }
     
+    /**
+     * Attempts to an an enchantment to the list of enchantments. If the enchantment is not
+     * valid, this will fail.
+     * 
+     * @param itemStack The item stack to add.
+     * @param validEnchantments The list of existing enchantments.
+     * @param enchantment The enchantment to add.
+     */
     private void addEnchantment (ItemStack itemStack, HashMap<Enchantment, Integer> validEnchantments, Enchantment enchantment) {
         
         if (this.isEnchantmentValid(enchantment, this.player) && !ContentHandler.isEnchantmentBlacklisted(enchantment) && (itemStack.getItem() == Items.BOOK || itemStack.getItem() == Items.ENCHANTED_BOOK || enchantment.canApplyAtEnchantingTable(itemStack)))
             validEnchantments.put(enchantment, 0);
     }
     
+    /**
+     * Gets the item held it the table inventory.
+     * 
+     * @return The item in the table inventory.
+     */
+    public ItemStack getItem () {
+        
+        return this.tableInventory.getStackInSlot(0);
+    }
+    
+    /**
+     * Calculates the enchantment power in the surrounding blocks.
+     * 
+     * @return The total enchanting power in the nearby blocks.
+     */
     public float getEnchantingPower () {
         
         final int x = this.pos.getX();
