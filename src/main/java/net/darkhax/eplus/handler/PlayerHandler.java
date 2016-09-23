@@ -22,6 +22,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -95,6 +96,13 @@ public class PlayerHandler {
         
         if (event.getObject() instanceof EntityPlayer)
             event.addCapability(new ResourceLocation(Constants.MOD_ID, "playerData"), new Provider());
+    }
+    
+    @SubscribeEvent
+    public void onPlayerClonning (PlayerEvent.Clone event) {
+        
+        for (final Enchantment enchantment : getUnlockedEnchantments(event.getOriginal()))
+            unlockEnchantment(event.getEntityPlayer(), enchantment);
     }
     
     /**
