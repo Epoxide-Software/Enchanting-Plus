@@ -204,10 +204,10 @@ public class GuiAdvancedTable extends GuiContainer {
         if (isShiftKeyDown() && label != null && label.enchantment != null) {
             
             final String enchName = ChatFormatting.BOLD + label.getDisplayName();
-            String description = I18n.format("description." + label.enchantment.getName());
+            String description = I18n.format("enchantment." + label.enchantment.getRegistryName().getResourceDomain() + "." + label.enchantment.getRegistryName().getResourcePath() + ".desc");
             
-            if (description.startsWith("description."))
-                description = ChatFormatting.RED + I18n.format("tooltip.eplus.nodesc") + ": description." + label.enchantment.getName();
+            if (description.startsWith("enchantment."))
+                description = ChatFormatting.RED + I18n.format("tooltip.eplus.nodesc") + " " + description;
                 
             else
                 description = ChatFormatting.LIGHT_PURPLE + description;
