@@ -1,9 +1,11 @@
 package net.darkhax.eplus.item;
 
 import java.util.List;
+import java.util.Random;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
+import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.darkhax.eplus.EnchantingPlus;
@@ -23,6 +25,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -124,5 +129,21 @@ public class ItemScroll extends Item {
         
         else
             tip.add(I18n.format("tooltip.eplus.invalid"));
+    }
+    
+    public static class Function extends LootFunction {
+        
+        public Function() {
+            
+            super(new LootCondition[0]);
+        }
+        
+        @Override
+        public ItemStack apply (ItemStack stack, Random rand, LootContext context) {
+            
+            ItemStackUtils.prepareDataTag(stack);
+            stack.getTagCompound().setString("ScrollEnchantment", Enchantment.REGISTRY.getRandomObject(Constants.RANDOM).getRegistryName().toString());
+            return stack;
+        }
     }
 }
