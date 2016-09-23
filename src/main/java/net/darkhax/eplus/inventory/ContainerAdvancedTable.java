@@ -386,13 +386,12 @@ public class ContainerAdvancedTable extends Container {
             
         final int levelCost = EnchantmentUtils.getLevelsFromExperience(cost);
         
-        if (ConfigurationHandler.needsBookShelves)
-            if (levelCost > this.getEnchantingPower()) {
-                
-                player.addChatMessage(new TextComponentTranslation("chat.eplus.morebooks" + " " + levelCost));
-                return false;
-            }
+        if (levelCost > this.getEnchantingPower()) {
             
+            player.addChatMessage(new TextComponentTranslation("chat.eplus.morebooks" + " " + levelCost));
+            return false;
+        }
+        
         if (player.experienceLevel < levelCost) {
             
             player.addChatMessage(new TextComponentTranslation("chat.eplus.morelevels" + " " + levelCost));
