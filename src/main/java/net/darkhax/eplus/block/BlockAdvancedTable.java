@@ -70,8 +70,6 @@ public class BlockAdvancedTable extends BlockContainer {
     @Override
     public boolean onBlockActivated (World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         
-        System.out.println(PlayerHandler.getUnlockedEnchantments(playerIn).toString());
-        
         if (!worldIn.isRemote) {
             
             final TileEntity tileentity = worldIn.getTileEntity(pos);
