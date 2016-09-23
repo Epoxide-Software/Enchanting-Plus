@@ -14,16 +14,15 @@ public final class ConfigurationHandler {
     public static boolean allowDisenchanting = true;
     public static int maxEnchantmentAmount = 5;
     public static float costFactor = 1.0f;
-    public static int repairFactor = 5;
     public static int bonusShelves = 2;
     public static String[] blacklistedItems = new String[] {};
     public static String[] blacklistedEnchantments = new String[] {};
-    
     public static boolean allowScrollLoot = true;
     public static int scrollWeight = 2;
     
     public static boolean allowScrollDrop = true;
     public static float scrollDropChance = 0.01f;
+    public static int repairFactor = 5;
     
     public static void initConfig (File configFile) {
         
