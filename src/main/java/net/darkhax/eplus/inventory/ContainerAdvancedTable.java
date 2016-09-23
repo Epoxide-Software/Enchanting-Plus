@@ -16,6 +16,7 @@ import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.libs.Constants;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -294,20 +295,17 @@ public class ContainerAdvancedTable extends Container {
      * the Item, and the enchantment factor from the config. If the ItemStack passed already
      * has the enchantment on it, the cost will be adjusted to an upgrade price.
      *
-     * @param enchant: The enchantment being applied.
+     * @param enchantment: The enchantment being applied.
      * @param level: The level of the enchantment being applied.
      * @param stack: The ItemStack being enchanted.
      * @return int: The amount of experience levels that should be charged for the enchantment.
      */
-    public static int calculateEnchantmentCost (Enchantment enchant, int level, ItemStack stack) {
+    public static int calculateEnchantmentCost (Enchantment enchantment, int level) {
         
-        final int existingLevel = EnchantmentHelper.getEnchantmentLevel(enchant, stack);
-        int enchantability = enchant.getMinEnchantability(level);
-        
-        if (existingLevel > 0 && existingLevel != level)
-            enchantability -= enchant.getMinEnchantability(existingLevel);
-            
-        return (int) (enchantability + Math.min(0, 15 - stack.getItem().getItemEnchantability(stack)) * ConfigurationHandler.costFactor);
+        int cost = (int) Math.floor(Math.max(1F, 1F + 2F * level * ((float) level / enchantment.getMaxLevel()) + (10 - enchantment.getRarity().getWeight()) * 0.2F));
+        cost = cost + (int) (cost * ConfigurationHandler.costFactor);
+        cost = cost + (enchantment.getRarity() == Rarity.COMMON ? 1 : enchantment.getRarity() == Rarity.UNCOMMON ? 5 : enchantment.getRarity() == Rarity.RARE ? 10 : 20);
+        return cost;
     }
     
     /**
@@ -416,7 +414,7 @@ public class ContainerAdvancedTable extends Container {
         if (itemStack == null || enchantmentLevel > enchantment.getMaxLevel())
             return 0;
             
-        return EnchantmentUtils.getExperienceFromLevel(calculateEnchantmentCost(enchantment, enchantmentLevel + level, itemStack));
+        return EnchantmentUtils.getExperienceFromLevel(calculateEnchantmentCost(enchantment, enchantmentLevel + level));
     }
     
     /**

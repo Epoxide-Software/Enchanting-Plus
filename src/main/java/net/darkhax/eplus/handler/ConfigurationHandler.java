@@ -13,7 +13,7 @@ public final class ConfigurationHandler {
     public static boolean allowRepairs = true;
     public static boolean allowDisenchanting = true;
     public static int maxEnchantmentAmount = 5;
-    public static float costFactor = 1.0f;
+    public static float costFactor = 1.5f;
     public static int bonusShelves = 2;
     public static String[] blacklistedItems = new String[] {};
     public static String[] blacklistedEnchantments = new String[] {};
