@@ -32,6 +32,8 @@ tooltip.eplus.unlimited=Unlimited
 tooltip.eplus.nodesc=Please ask mod author to maintain enchantment descriptions.
 tooltip.eplus.experienceGained=EXP Gained
 tooltip.eplus.invalid=This scroll is invalid!
+tooltip.eplus.additem=Place an item in the table to begin!
+tooltip.eplus.noench=You have not learned any enchantments for this item!
 
 #Chat
 chat.eplus.scrollunlock=Enchantment unlocked

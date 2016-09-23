@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class GuiAdvancedTable extends GuiContainer {
     
@@ -187,6 +188,12 @@ public class GuiAdvancedTable extends GuiContainer {
                 information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.repair", EnchantmentUtils.getExpForDisplay(this.totalCost)), maxWidth));
                 
         information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
+        
+        if (!ItemStackUtils.isValidStack(this.container.getItem()))
+            information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.additem"), maxWidth));
+        
+        else if (this.enchantments.size() == 0 && ConfigurationHandler.useQuestMode)
+            information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.noench"), maxWidth));
         
         for (final List<String> display : information) {
             
