@@ -124,10 +124,6 @@ public class ContainerAdvancedTable extends Container {
             temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
             
             for (final Enchantment potentialEnchant : Enchantment.REGISTRY) {
-                
-                if (potentialEnchant == null)
-                    continue;
-                    
                 for (final Enchantment existingEnchant : temp.keySet())
                     if (existingEnchant != null && EnchantmentUtils.areEnchantmentsCompatible(existingEnchant, potentialEnchant))
                         this.addEnchantment(itemStack, temp2, potentialEnchant);
@@ -498,7 +494,7 @@ public class ContainerAdvancedTable extends Container {
     private void addEnchantment (ItemStack itemStack, HashMap<Enchantment, Integer> validEnchantments, Enchantment enchantment) {
         
         if (this.isEnchantmentValid(enchantment, this.player) && !ContentHandler.isEnchantmentBlacklisted(enchantment) && (itemStack.getItem() == Items.BOOK || itemStack.getItem() == Items.ENCHANTED_BOOK || enchantment.canApplyAtEnchantingTable(itemStack)))
-            validEnchantments.put(enchantment, 0);
+            validEnchantments.put(enchantment, EnchantmentHelper.getEnchantmentLevel(enchantment, itemStack));
     }
     
     /**
