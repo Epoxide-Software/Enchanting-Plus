@@ -72,15 +72,11 @@ public class GuiAdvancedTable extends GuiContainer {
             if (label.currentLevel != this.enchantments.get(label.enchantment) && !label.locked)
                 enchants.put(label.enchantment, label.currentLevel);
                 
-        switch (button.id) {
-            
-            case 0:
-                if (enchants.size() > 0)
-                    EnchantingPlus.network.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
-            case 1:
-                if (enchants.size() == 0 && this.totalCost > 0 && ConfigurationHandler.allowRepairs)
-                    EnchantingPlus.network.sendToServer(new PacketRepairItem(this.totalCost));
-        }
+        if (button.id == 0 && enchants.size() > 0)
+            EnchantingPlus.network.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
+        
+        else if (button.id == 1 && enchants.size() == 0 && this.totalCost > 0 && ConfigurationHandler.allowRepairs)
+            EnchantingPlus.network.sendToServer(new PacketRepairItem(this.totalCost));
     }
     
     @Override
