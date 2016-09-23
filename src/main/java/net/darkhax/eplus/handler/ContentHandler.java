@@ -170,8 +170,8 @@ public final class ContentHandler {
      */
     public static void initRecipes () {
         
-        GameRegistry.addRecipe(new ItemStack(itemTableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', Blocks.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', Items.GOLD_INGOT });
-        GameRegistry.addRecipe(new ItemStack(blockAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.WRITABLE_BOOK, 'o', Blocks.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', Items.GOLD_INGOT, 't', Blocks.ENCHANTING_TABLE });
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(itemTableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD }));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD, 't', Blocks.ENCHANTING_TABLE }));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockDecoration, 1, 0), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.DUST_GLOWSTONE, 'b', Items.ENCHANTED_BOOK }));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockDecoration, 1, 1), new Object[] { " g ", "gbg", " g ", 'g', Items.BOOK, 'b', Items.ENCHANTED_BOOK }));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockDecoration, 1, 2), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.GEM_PRISMARINE, 'b', Items.ENCHANTED_BOOK }));
