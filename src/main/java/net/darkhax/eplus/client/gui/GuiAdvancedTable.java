@@ -74,7 +74,7 @@ public class GuiAdvancedTable extends GuiContainer {
                 
         if (button.id == 0 && enchants.size() > 0)
             EnchantingPlus.network.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
-        
+            
         else if (button.id == 1 && enchants.size() == 0 && this.totalCost > 0 && ConfigurationHandler.allowRepairs)
             EnchantingPlus.network.sendToServer(new PacketRepairItem(this.totalCost));
     }
@@ -184,7 +184,7 @@ public class GuiAdvancedTable extends GuiContainer {
             }
             
             else if (ConfigurationHandler.allowRepairs && stack.isItemEnchanted() && stack.isItemDamaged())
-                information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.repair"), EnchantmentUtils.getLevelsFromExperience(this.totalCost)), maxWidth));
+                information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.repair", EnchantmentUtils.getExpForDisplay(this.totalCost)), maxWidth));
                 
         information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
         

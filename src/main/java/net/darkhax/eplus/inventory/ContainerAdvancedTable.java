@@ -123,12 +123,11 @@ public class ContainerAdvancedTable extends Container {
             
             temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
             
-            for (final Enchantment potentialEnchant : Enchantment.REGISTRY) {
+            for (final Enchantment potentialEnchant : Enchantment.REGISTRY)
                 for (final Enchantment existingEnchant : temp.keySet())
                     if (existingEnchant != null && EnchantmentUtils.areEnchantmentsCompatible(existingEnchant, potentialEnchant))
                         this.addEnchantment(itemStack, temp2, potentialEnchant);
-            }
-            
+                        
             temp.putAll(temp2);
         }
         
@@ -140,10 +139,7 @@ public class ContainerAdvancedTable extends Container {
         
         final ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         
-        if (itemStack == null)
-            return;
-            
-        if (!itemStack.isItemEnchanted() || cost == 0)
+        if (itemStack == null || !itemStack.isItemEnchanted() || cost == 0)
             return;
             
         if (this.canPurchase(player, cost)) {
@@ -151,7 +147,7 @@ public class ContainerAdvancedTable extends Container {
             itemStack.setItemDamage(0);
             
             if (!player.capabilities.isCreativeMode)
-                player.addExperienceLevel(-cost);
+                player.addExperience(-cost);
         }
         
         this.onCraftMatrixChanged(this.tableInventory);

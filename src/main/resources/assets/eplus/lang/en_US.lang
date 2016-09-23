@@ -21,7 +21,7 @@ tooltip.eplus.enchantment=Enchantment
 tooltip.eplus.modifier=Scroll Modifier
 tooltip.eplus.speed=Speed
 tooltip.eplus.stability=Stability
-tooltip.eplus.repair=Repair Cost
+tooltip.eplus.repair=Repair Cost %s
 tooltip.eplus.playerlevel=Player Level
 tooltip.eplus.maxlevel=Max Enchantment Level
 tooltip.eplus.enchant=Enchanting Cost
@@ -32,7 +32,6 @@ tooltip.eplus.unlimited=Unlimited
 tooltip.eplus.nodesc=Please ask mod author to maintain enchantment descriptions.
 tooltip.eplus.experienceGained=EXP Gained
 tooltip.eplus.invalid=This scroll is invalid!
-tooltip.eplus.notowner=You do not own this item. You can not enchant it!
 
 #Chat
 chat.eplus.scrollunlock=Enchantment unlocked
