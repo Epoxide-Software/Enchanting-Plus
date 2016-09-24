@@ -7,6 +7,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.lib.util.ParticleUtils;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.ContentHandler;
@@ -89,7 +90,7 @@ public class ItemScroll extends Item {
         if (count % 4 == 0) {
             
             final float percent = 1.0f - (float) count / (float) this.getMaxItemUseDuration(stack);
-            RenderUtils.spawnPercentageParticleRing(player.worldObj, EnumParticleTypes.ENCHANTMENT_TABLE, percent, player.posX, player.posY + player.height, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
+            ParticleUtils.spawnPercentageParticleRing(player.worldObj, EnumParticleTypes.ENCHANTMENT_TABLE, percent, player.posX, player.posY + player.height, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
         }
     }
     
