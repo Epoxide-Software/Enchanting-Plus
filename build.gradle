@@ -60,7 +60,7 @@ repositories {
 
 dependencies {
 
-    compile "net.darkhax.bookshelf:Bookshelf:1.10.2-1.4.0.318"
+    compile "net.darkhax.bookshelf:Bookshelf:1.10.2-1.4.1.320"
     deobfCompile "mezz.jei:jei_1.10.2:3.9.5.257"
 }
 
