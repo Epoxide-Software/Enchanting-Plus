@@ -55,7 +55,7 @@ public class PlayerHandler {
         
         if (player.hasCapability(CUSTOM_DATA, EnumFacing.DOWN))
             return player.getCapability(CUSTOM_DATA, EnumFacing.DOWN).getUnlockedEnchantments();
-            
+        
         return null;
     }
     
@@ -124,7 +124,7 @@ public class PlayerHandler {
      */
     public static class Default implements ICustomData {
         
-        private final List<Enchantment> unlockedEnchants = new ArrayList<Enchantment>();
+        private final List<Enchantment> unlockedEnchants = new ArrayList<>();
         
         @Override
         public List<Enchantment> getUnlockedEnchantments () {
@@ -166,7 +166,7 @@ public class PlayerHandler {
             
             for (final Enchantment enchant : instance.getUnlockedEnchantments())
                 list.appendTag(new NBTTagString(enchant.getRegistryName().toString()));
-                
+            
             tag.setTag("unlocked", list);
             
             return tag;
@@ -186,7 +186,7 @@ public class PlayerHandler {
                 
                 if (enchant != null)
                     instance.unlockEnchantment(enchant);
-                    
+                
                 else
                     EnchantingPlus.printDebugMessage("The enchantment " + id + " does not exist. It will not be loaded.");
             }

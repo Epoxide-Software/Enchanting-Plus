@@ -30,12 +30,12 @@ public final class ContentHandler {
     /**
      * A list of all blacklisted enchantment IDs.
      */
-    private static List<ResourceLocation> enchantBlacklist = new ArrayList<ResourceLocation>();
+    private static List<ResourceLocation> enchantBlacklist = new ArrayList<>();
     
     /**
      * A list of all blacklisted item IDs.
      */
-    private static List<ResourceLocation> itemBlacklist = new ArrayList<ResourceLocation>();
+    private static List<ResourceLocation> itemBlacklist = new ArrayList<>();
     
     /**
      * A map of all enchantment type colors. The key is the enchantment type, and the Integer
@@ -46,7 +46,7 @@ public final class ContentHandler {
      * A List of all modifiers that have been registered. Modifiers are used with the Arcane
      * Inscriber.
      */
-    public static List<ScrollModifier> modifiers = new ArrayList<ScrollModifier>();
+    public static List<ScrollModifier> modifiers = new ArrayList<>();
     
     /**
      * The amount of achievements added by the mod. This is used purely for calculating the
@@ -107,7 +107,7 @@ public final class ContentHandler {
         for (final ScrollModifier modifier : modifiers)
             if (ItemStackUtils.areStacksSimilar(modifier.stack, stack))
                 return modifier;
-                
+            
         return null;
     }
     
@@ -118,7 +118,7 @@ public final class ContentHandler {
         
         for (final String entry : ConfigurationHandler.blacklistedItems)
             blacklistItem(Item.REGISTRY.getObject(new ResourceLocation(entry)));
-            
+        
         for (final String entry : ConfigurationHandler.blacklistedEnchantments)
             blacklistEnchantment(Enchantment.REGISTRY.getObject(new ResourceLocation(entry)));
     }
@@ -256,7 +256,7 @@ public final class ContentHandler {
         
         if (item.getRegistryName() == null)
             item.setRegistryName(ID);
-            
+        
         GameRegistry.register(item);
     }
 }

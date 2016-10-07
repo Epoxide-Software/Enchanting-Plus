@@ -20,7 +20,7 @@ public final class IMCHandler {
             
             if (message.isStringMessage())
                 ContentHandler.blacklistItem(Item.REGISTRY.getObject(new ResourceLocation(message.getStringValue())));
-                
+            
             if (message.isItemStackMessage())
                 ContentHandler.blacklistItem(message.getItemStackValue().getItem());
             ;
@@ -38,7 +38,7 @@ public final class IMCHandler {
             
             if (message.isStringMessage())
                 ContentHandler.blacklistEnchantment(Enchantment.REGISTRY.getObject(new ResourceLocation(message.getStringValue())));
-                
+            
             if (message.isNBTMessage()) {
                 
                 final NBTTagList list = message.getNBTValue().getTagList("blacklistEnchantments", 8);

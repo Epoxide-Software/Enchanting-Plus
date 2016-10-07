@@ -89,24 +89,24 @@ public class TileEntityAdvancedTable extends TileEntity implements ITickable, II
         
         while (this.bookRotation >= (float) Math.PI)
             this.bookRotation -= (float) Math.PI * 2F;
-            
+        
         while (this.bookRotation < -(float) Math.PI)
             this.bookRotation += (float) Math.PI * 2F;
-            
+        
         while (this.offset >= (float) Math.PI)
             this.offset -= (float) Math.PI * 2F;
-            
+        
         while (this.offset < -(float) Math.PI)
             this.offset += (float) Math.PI * 2F;
-            
+        
         float f2;
         
         for (f2 = this.offset - this.bookRotation; f2 >= (float) Math.PI; f2 -= (float) Math.PI * 2F)
             ;
-            
+        
         while (f2 < -(float) Math.PI)
             f2 += (float) Math.PI * 2F;
-            
+        
         this.bookRotation += f2 * 0.4F;
         this.bookSpread = MathHelper.clamp_float(this.bookSpread, 0.0F, 1.0F);
         ++this.tickCount;

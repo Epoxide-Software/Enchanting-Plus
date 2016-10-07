@@ -39,7 +39,7 @@ public class GuiAdvancedTable extends GuiContainer {
     private static final ResourceLocation BUTTON_ENCHANT = new ResourceLocation("eplus", "textures/gui/button_enchant.png");
     private static final ResourceLocation BUTTON_REPAIR = new ResourceLocation("eplus", "textures/gui/button_repair.png");
     
-    private List<GuiEnchantmentLabel> enchantmentList = new ArrayList<GuiEnchantmentLabel>();
+    private List<GuiEnchantmentLabel> enchantmentList = new ArrayList<>();
     private final EntityPlayer player;
     
     private final ContainerAdvancedTable container;
@@ -66,15 +66,15 @@ public class GuiAdvancedTable extends GuiContainer {
     @Override
     protected void actionPerformed (GuiButton button) {
         
-        final HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+        final HashMap<Enchantment, Integer> enchants = new HashMap<>();
         
         for (final GuiEnchantmentLabel label : this.enchantmentList)
             if (label.currentLevel != this.enchantments.get(label.enchantment) && !label.locked)
                 enchants.put(label.enchantment, label.currentLevel);
-                
+            
         if (button.id == 0 && enchants.size() > 0)
             EnchantingPlus.network.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
-            
+        
         else if (button.id == 1 && enchants.size() == 0 && this.totalCost > 0 && ConfigurationHandler.allowRepairs)
             EnchantingPlus.network.sendToServer(new PacketRepairItem(this.totalCost));
     }
@@ -95,10 +95,10 @@ public class GuiAdvancedTable extends GuiContainer {
             
             if (label.yPos < this.guiTop + 15 || label.yPos >= this.guiTop + 87)
                 label.setVisible(false);
-                
+            
             else
                 label.setVisible(true);
-                
+            
             label.draw(this.fontRendererObj);
         }
         
@@ -109,15 +109,15 @@ public class GuiAdvancedTable extends GuiContainer {
         
         if (tempY <= 0)
             tempY = 0;
-            
+        
         else if (tempY >= 57)
             tempY = 57;
-            
+        
         this.sliderIndex = this.sliding ? Math.round(tempY / 57D * this.enchantingPages / .25) * .25 : this.sliderIndex;
         
         if (this.sliderIndex >= this.enchantingPages)
             this.sliderIndex = this.enchantingPages;
-            
+        
         final double sliderY = this.sliding ? tempY : 57 * (this.sliderIndex / this.enchantingPages);
         
         GlStateManager.color(1.0f, 1.0f, 1.0f);
@@ -128,7 +128,7 @@ public class GuiAdvancedTable extends GuiContainer {
             for (final GuiEnchantmentLabel label : this.enchantmentList)
                 if (this.getSelectedLabel(mouseX, mouseY) == label && !label.locked)
                     label.dragging = true;
-                    
+                
             if (adjustedMouseX <= 191 + guiOffset && adjustedMouseX >= 180 + guiOffset)
                 if (this.enchantingPages != 0)
                     this.sliding = true;
@@ -140,7 +140,7 @@ public class GuiAdvancedTable extends GuiContainer {
                 label.dragging = false;
                 this.last = label;
             }
-            
+        
         if (!flag) {
             for (final GuiEnchantmentLabel label : this.enchantmentList)
                 if (this.getSelectedLabel(mouseX, mouseY) == label) {
@@ -148,7 +148,7 @@ public class GuiAdvancedTable extends GuiContainer {
                     label.dragging = false;
                     this.last = label;
                 }
-                
+            
             this.sliding = false;
         }
         
@@ -157,7 +157,7 @@ public class GuiAdvancedTable extends GuiContainer {
         for (final GuiEnchantmentLabel label : this.enchantmentList)
             if (label.dragging)
                 label.updateSlider(adjustedMouseX - 36, guiOffset + this.guiLeft + 10);
-                
+            
         GlStateManager.enableLighting();
         GlStateManager.enableDepth();
     }
@@ -169,7 +169,7 @@ public class GuiAdvancedTable extends GuiContainer {
         this.updateEnchantmentLabels();
         
         final int maxWidth = this.guiLeft - 20;
-        final List<List<String>> information = new ArrayList<List<String>>();
+        final List<List<String>> information = new ArrayList<>();
         final ItemStack stack = this.container.getItem();
         
         information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.playerlevel"), this.player.experienceLevel), maxWidth));
@@ -185,15 +185,15 @@ public class GuiAdvancedTable extends GuiContainer {
             
             else if (ConfigurationHandler.allowRepairs && stack.isItemEnchanted() && stack.isItemDamaged())
                 information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.repair", EnchantmentUtils.getExpForDisplay(this.totalCost)), maxWidth));
-                
+            
         information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
         
         if (!ItemStackUtils.isValidStack(this.container.getItem()))
             information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.additem"), maxWidth));
-            
+        
         else if (this.enchantments.size() == 0 && ConfigurationHandler.useQuestMode)
             information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.noench"), maxWidth));
-            
+        
         for (final List<String> display : information) {
             
             int height = information.indexOf(display) == 0 ? this.guiTop + this.fontRendererObj.FONT_HEIGHT + 8 : this.guiTop + (this.fontRendererObj.FONT_HEIGHT + 8) * (information.indexOf(display) + 1);
@@ -201,7 +201,7 @@ public class GuiAdvancedTable extends GuiContainer {
             if (information.indexOf(display) > 0)
                 for (int i = information.indexOf(display) - 1; i >= 0; i--)
                     height += (this.fontRendererObj.FONT_HEIGHT + 3) * (information.get(i).size() - 1);
-                    
+                
             this.drawHoveringText(display, this.guiLeft - 20 - maxWidth, height, this.fontRendererObj);
         }
         
@@ -214,11 +214,11 @@ public class GuiAdvancedTable extends GuiContainer {
             
             if (description.startsWith("enchantment."))
                 description = ChatFormatting.RED + I18n.format("tooltip.eplus.nodesc") + " " + description;
-                
+            
             else
                 description = ChatFormatting.LIGHT_PURPLE + description;
-                
-            final List<String> display = new ArrayList<String>();
+            
+            final List<String> display = new ArrayList<>();
             
             display.add(enchName);
             display.addAll(this.fontRendererObj.listFormattedStringToWidth(description, 215));
@@ -289,12 +289,12 @@ public class GuiAdvancedTable extends GuiContainer {
         
         if (mouseX < this.guiLeft + guiOffset + 35 || mouseX > this.guiLeft + this.xSize - 32)
             return null;
-            
+        
         for (final GuiEnchantmentLabel label : this.enchantmentList) {
             
             if (!label.visible)
                 continue;
-                
+            
             if (mouseY >= label.yPos && mouseY <= label.yPos + label.height)
                 return label;
         }
@@ -328,7 +328,7 @@ public class GuiAdvancedTable extends GuiContainer {
                     if (this.container.canPurchase(this.player, cost))
                         break;
                 }
-                
+            
             this.totalCost = cost;
         }
         
@@ -350,7 +350,7 @@ public class GuiAdvancedTable extends GuiContainer {
             for (final GuiEnchantmentLabel label : this.enchantmentList)
                 if (label != this.last)
                     this.updateEnchantmentLabel(enchantments.get(label.enchantment), label);
-                    
+                
             if (this.last != null)
                 this.updateEnchantmentLabel(enchantments.get(this.last.enchantment), this.last);
         }
@@ -382,7 +382,7 @@ public class GuiAdvancedTable extends GuiContainer {
                         label.startingXPos = label.xPos = tempItem.xPos;
                         label.startingYPos = label.yPos = tempItem.yPos;
                     }
-                    
+                
             this.dirty = false;
         }
     }
@@ -397,7 +397,7 @@ public class GuiAdvancedTable extends GuiContainer {
         for (final GuiEnchantmentLabel label : this.enchantmentList)
             if (label.currentLevel != label.initialLevel)
                 return true;
-                
+            
         return false;
     }
     
@@ -411,7 +411,7 @@ public class GuiAdvancedTable extends GuiContainer {
         
         for (final GuiEnchantmentLabel label : this.enchantmentList)
             label.locked = false;
-            
+        
         for (final GuiEnchantmentLabel mainLabel : this.enchantmentList)
             
             if (mainLabel.currentLevel != 0) {
@@ -439,11 +439,11 @@ public class GuiAdvancedTable extends GuiContainer {
      */
     private List<GuiEnchantmentLabel> getEnchantmentLabels (final Map<Enchantment, Integer> map, int x, int y) {
         
-        final List<GuiEnchantmentLabel> labels = new ArrayList<GuiEnchantmentLabel>();
+        final List<GuiEnchantmentLabel> labels = new ArrayList<>();
         
         if (map == null)
             return labels;
-            
+        
         int pixelHeight = 0;
         int yPos = y;
         

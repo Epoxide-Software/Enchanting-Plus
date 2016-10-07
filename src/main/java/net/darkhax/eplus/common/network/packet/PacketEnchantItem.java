@@ -24,10 +24,10 @@ public class PacketEnchantItem implements IMessage {
      */
     protected int enchantCost;
     
-    protected HashMap<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+    protected HashMap<Enchantment, Integer> enchantments = new HashMap<>();
     
     public PacketEnchantItem() {
-    
+        
     }
     
     public PacketEnchantItem(int cost, HashMap<Enchantment, Integer> enchants) {
@@ -41,7 +41,7 @@ public class PacketEnchantItem implements IMessage {
         
         this.enchantCost = buf.readInt();
         
-        this.enchantments = new HashMap<Enchantment, Integer>();
+        this.enchantments = new HashMap<>();
         final int size = buf.readInt();
         
         for (int index = 0; index < size; index++)

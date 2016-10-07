@@ -20,7 +20,7 @@ public class PacketRepairItem implements IMessage {
     protected int repairCost;
     
     public PacketRepairItem() {
-    
+        
     }
     
     public PacketRepairItem(int repairCost) {

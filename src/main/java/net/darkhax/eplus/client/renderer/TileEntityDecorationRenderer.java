@@ -35,10 +35,10 @@ public class TileEntityDecorationRenderer extends TileEntitySpecialRenderer<Tile
         
         for (f1 = te.bookRotation - te.bookRotationPrev; f1 >= (float) Math.PI; f1 -= (float) Math.PI * 2F)
             ;
-            
+        
         while (f1 < -(float) Math.PI)
             f1 += (float) Math.PI * 2F;
-            
+        
         final float f2 = te.bookRotationPrev + f1 * partialTicks;
         GlStateManager.rotate(-f2 * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(80.0F, 0.0F, 0.0F, 1.0F);
@@ -50,16 +50,16 @@ public class TileEntityDecorationRenderer extends TileEntitySpecialRenderer<Tile
         
         if (f3 < 0.0F)
             f3 = 0.0F;
-            
+        
         if (f4 < 0.0F)
             f4 = 0.0F;
-            
+        
         if (f3 > 1.0F)
             f3 = 1.0F;
-            
+        
         if (f4 > 1.0F)
             f4 = 1.0F;
-            
+        
         final float f5 = te.bookSpreadPrev + (te.bookSpread - te.bookSpreadPrev) * partialTicks;
         GlStateManager.enableCull();
         this.modelBook.render((Entity) null, f, f3, f4, f5, 0.0F, 0.0625F);

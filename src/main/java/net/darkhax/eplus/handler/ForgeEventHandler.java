@@ -3,6 +3,7 @@ package net.darkhax.eplus.handler;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.darkhax.eplus.item.ItemScroll;
+import net.darkhax.eplus.loot.EnchantScroll;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
@@ -20,14 +21,13 @@ public final class ForgeEventHandler {
     @SubscribeEvent
     public void onLootTableLoad (LootTableLoadEvent event) {
         
-        if (ConfigurationHandler.allowScrollLoot)
-            if (event.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON)) {
-                
-                final LootPool pool2 = event.getTable().getPool("pool2");
-                
-                if (pool2 != null)
-                    pool2.addEntry(new LootEntryItem(ContentHandler.itemScroll, ConfigurationHandler.scrollWeight, 0, new LootFunction[] { new ItemScroll.Function() }, new LootCondition[0], "eplus:dungeon_scroll"));
-            }
+        if (ConfigurationHandler.allowScrollLoot && event.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON)) {
+            
+            final LootPool targetPool = event.getTable().getPool("main");
+            
+            if (targetPool != null)
+                targetPool.addEntry(new LootEntryItem(ContentHandler.itemScroll, ConfigurationHandler.scrollWeight, 0, new LootFunction[] { new EnchantScroll(new LootCondition[0]) }, new LootCondition[0], "eplus:dungeon_scroll"));
+        }
     }
     
     @SubscribeEvent

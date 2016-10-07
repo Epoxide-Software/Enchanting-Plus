@@ -72,7 +72,7 @@ public class BlockAdvancedTable extends BlockTileEntity {
             
             if (tileentity instanceof TileEntityAdvancedTable)
                 playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
-                
+            
             return true;
         }
         
@@ -90,7 +90,7 @@ public class BlockAdvancedTable extends BlockTileEntity {
                 
                 if (x > -2 && x < 2 && z == -1)
                     z = 2;
-                    
+                
                 if (rand.nextInt(16) == 0)
                     for (int y = 0; y <= 1; ++y) {
                         
@@ -100,7 +100,7 @@ public class BlockAdvancedTable extends BlockTileEntity {
                             
                             if (!worldIn.isAirBlock(pos.add(x / 2, 0, z / 2)))
                                 break;
-                                
+                            
                             worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, pos.getX() + 0.5D, pos.getY() + 2.0D, pos.getZ() + 0.5D, x + rand.nextFloat() - 0.5D, y - rand.nextFloat() - 1.0F, z + rand.nextFloat() - 0.5D, new int[0]);
                         }
                     }

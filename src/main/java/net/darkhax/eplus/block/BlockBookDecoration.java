@@ -41,7 +41,7 @@ public class BlockBookDecoration extends BlockContainer {
         
         if (source.getTileEntity(pos) instanceof TileEntityDecoration)
             return BOUNDS.offset(0, ((TileEntityDecoration) source.getTileEntity(pos)).height, 0);
-            
+        
         return BOUNDS;
     }
     
@@ -72,10 +72,10 @@ public class BlockBookDecoration extends BlockContainer {
             
             if (playerIn.getHeldItemMainhand().getItem() == Items.FEATHER)
                 deco.increaseHeight();
-                
+            
             else if (playerIn.getHeldItemMainhand().getItem() == Items.IRON_INGOT)
                 deco.decreaseHeight();
-                
+            
             else {
                 
                 final int color = ItemStackUtils.getDyeColor(playerIn.getHeldItemMainhand());
@@ -125,7 +125,7 @@ public class BlockBookDecoration extends BlockContainer {
         
         final TileEntity te = world.getTileEntity(pos);
         
-        final java.util.List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
+        final java.util.List<ItemStack> ret = new java.util.ArrayList<>();
         if (te instanceof TileEntityDecoration) {
             final TileEntityDecoration deco = (TileEntityDecoration) te;
             ret.add(this.getData(deco));

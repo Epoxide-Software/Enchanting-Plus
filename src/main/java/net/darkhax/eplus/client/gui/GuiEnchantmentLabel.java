@@ -55,7 +55,7 @@ public class GuiEnchantmentLabel extends Gui {
         
         if (!this.visible)
             return;
-            
+        
         final int indexX = this.dragging ? this.sliderX : this.currentLevel <= this.enchantment.getMaxLevel() ? (int) (this.xPos + 1 + (this.width - 6) * (this.currentLevel / (double) this.enchantment.getMaxLevel())) : this.xPos + 1 + this.width - 6;
         
         drawRect(indexX, this.yPos + 1, indexX + 5, this.yPos - 1 + this.height, 0xff000000);
@@ -78,7 +78,7 @@ public class GuiEnchantmentLabel extends Gui {
                 name = this.enchantment.getName();
             else
                 name = name.substring(0, name.lastIndexOf(" "));
-                
+            
         return name;
     }
     
@@ -97,16 +97,16 @@ public class GuiEnchantmentLabel extends Gui {
         
         if (this.sliderX <= prevX)
             this.sliderX = prevX;
-            
+        
         if (this.sliderX >= prevX + this.width + 20)
             this.sliderX = prevX + this.width + 20;
-            
+        
         final float index = xPos / (float) (this.width + 10);
         final int tempLevel = (int) Math.floor(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
         
         if (tempLevel >= this.initialLevel || ConfigurationHandler.allowDisenchanting && !this.container.getItem().isItemDamaged())
             this.currentLevel = tempLevel;
-            
+        
         if (this.currentLevel <= 0)
             this.currentLevel = 0;
     }

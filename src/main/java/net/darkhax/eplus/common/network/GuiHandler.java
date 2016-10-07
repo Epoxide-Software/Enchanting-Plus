@@ -17,7 +17,7 @@ public final class GuiHandler implements IGuiHandler {
         switch (id) {
             case ADVANCED_TABLE:
                 return new GuiAdvancedTable(entityPlayer.inventory, world, new BlockPos(x, y, z));
-                
+            
             default:
                 return null;
         }
@@ -29,7 +29,7 @@ public final class GuiHandler implements IGuiHandler {
         switch (id) {
             case ADVANCED_TABLE:
                 return new ContainerAdvancedTable(entityPlayer.inventory, world, new BlockPos(x, y, z));
-                
+            
             default:
                 return null;
         }

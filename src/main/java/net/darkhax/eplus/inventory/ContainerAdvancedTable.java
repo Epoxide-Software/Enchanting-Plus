@@ -40,7 +40,7 @@ public class ContainerAdvancedTable extends Container {
     private final EntityPlayer player;
     private final IInventory tableInventory = new InventoryTable(this, "Enchant", true, 1);
     
-    private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+    private Map<Enchantment, Integer> enchantments = new HashMap<>();
     
     public ContainerAdvancedTable(final InventoryPlayer inventory, World world, BlockPos pos) {
         
@@ -57,11 +57,11 @@ public class ContainerAdvancedTable extends Container {
         for (int invRow = 0; invRow < 3; invRow++)
             for (int slotCount = 0; slotCount < 9; slotCount++)
                 this.addSlotToContainer(new Slot(inventory, slotCount + invRow * 9 + 9, 17 + slotCount * 18 + guiOffest, 91 + invRow * 18));
-                
+            
         // Hotbar
         for (int slotCount = 0; slotCount < 9; slotCount++)
             this.addSlotToContainer(new Slot(inventory, slotCount, 17 + slotCount * 18 + guiOffest, 149));
-            
+        
         // Armor Slots
         for (int slotIndex = 0; slotIndex < 4; slotIndex++)
             this.addSlotToContainer(new SlotArmor(inventory.player, EntityUtils.getEquipmentSlot(slotIndex), inventory, 39 - slotIndex, 7, 24 + slotIndex * 19));
@@ -107,8 +107,8 @@ public class ContainerAdvancedTable extends Container {
         
         final ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         
-        final HashMap<Enchantment, Integer> temp = new LinkedHashMap<Enchantment, Integer>();
-        final HashMap<Enchantment, Integer> temp2 = new LinkedHashMap<Enchantment, Integer>();
+        final HashMap<Enchantment, Integer> temp = new LinkedHashMap<>();
+        final HashMap<Enchantment, Integer> temp2 = new LinkedHashMap<>();
         
         if (!ItemStackUtils.isValidStack(itemStack) || ContentHandler.isItemBlacklisted(itemStack.getItem())) {
             
@@ -118,7 +118,7 @@ public class ContainerAdvancedTable extends Container {
         
         if (EnchantmentUtils.isItemEnchantable(itemStack))
             this.addAllEnchatments(itemStack, temp);
-            
+        
         else if (itemStack.isItemEnchanted()) {
             
             temp.putAll(EnchantmentHelper.getEnchantments(itemStack));
@@ -127,7 +127,7 @@ public class ContainerAdvancedTable extends Container {
                 for (final Enchantment existingEnchant : temp.keySet())
                     if (existingEnchant != null && EnchantmentUtils.areEnchantmentsCompatible(existingEnchant, potentialEnchant))
                         this.addEnchantment(itemStack, temp2, potentialEnchant);
-                        
+                    
             temp.putAll(temp2);
         }
         
@@ -141,7 +141,7 @@ public class ContainerAdvancedTable extends Container {
         
         if (itemStack == null || !itemStack.isItemEnchanted() || cost == 0)
             return;
-            
+        
         if (this.canPurchase(player, cost)) {
             
             itemStack.setItemDamage(0);
@@ -179,13 +179,13 @@ public class ContainerAdvancedTable extends Container {
             
             if (slotStack.stackSize == 0)
                 slot.putStack(null);
-                
+            
             else
                 slot.onSlotChanged();
-                
+            
             if (itemStack.stackSize == slotStack.stackSize)
                 return null;
-                
+            
             slot.onPickupFromSlot(entityPlayer, slotStack);
         }
         
@@ -203,13 +203,13 @@ public class ContainerAdvancedTable extends Container {
     public void updateItemStack (EntityPlayer player, HashMap<Enchantment, Integer> map, int clientCost) {
         
         final ItemStack itemstack = this.tableInventory.getStackInSlot(0);
-        final ArrayList<Enchantment> toRemove = new ArrayList<Enchantment>();
+        final ArrayList<Enchantment> toRemove = new ArrayList<>();
         
         final int serverCost = this.getTotalEnchantmentCost(map);
         
         if (itemstack == null)
             return;
-            
+        
         if (clientCost != serverCost) {
             
             Constants.LOG.warn(player.getDisplayNameString() + " tried to enchant " + itemstack.getDisplayName() + " but the costs were not in sync!");
@@ -235,21 +235,21 @@ public class ContainerAdvancedTable extends Container {
         
         for (final Enchantment enchantment : toRemove)
             map.remove(enchantment);
-            
+        
         if (this.canPurchase(player, serverCost)) {
             
-            final List<EnchantmentData> enchantmentDataList = new ArrayList<EnchantmentData>();
+            final List<EnchantmentData> enchantmentDataList = new ArrayList<>();
             
             for (final Enchantment enchantment : map.keySet())
                 enchantmentDataList.add(new EnchantmentData(enchantment, map.get(enchantment)));
-                
+            
             if (!player.capabilities.isCreativeMode)
                 if (serverCost < 0)
                     player.addExperience(-serverCost);
-                    
+                
                 else
                     player.addExperienceLevel(-EnchantmentUtils.getLevelsFromExperience(serverCost));
-                    
+                
             this.tableInventory.setInventorySlotContents(0, this.applyChanges(enchantmentDataList, itemstack, player, clientCost));
         }
         
@@ -273,7 +273,7 @@ public class ContainerAdvancedTable extends Container {
             
             if (level > startingLevel)
                 cost += this.enchantmentCost(enchantment, level, startingLevel);
-                
+            
             else if (level < startingLevel)
                 cost += this.getRebate(enchantment, level, startingLevel);
         }
@@ -336,12 +336,12 @@ public class ContainerAdvancedTable extends Container {
         
         if (itemStack.getItem() == Items.BOOK)
             itemStack.setItem(Items.ENCHANTED_BOOK);
-            
+        
         if (itemStack.getItem() == Items.ENCHANTED_BOOK) {
             
             if (nbttaglist.tagCount() > 0)
                 itemStack.setTagInfo("StoredEnchantments", nbttaglist);
-                
+            
             else if (itemStack.hasTagCompound()) {
                 
                 itemStack.getTagCompound().removeTag("StoredEnchantments");
@@ -352,10 +352,10 @@ public class ContainerAdvancedTable extends Container {
         
         else if (nbttaglist.tagCount() > 0)
             itemStack.setTagInfo("ench", nbttaglist);
-            
+        
         else if (itemStack.hasTagCompound())
             itemStack.getTagCompound().removeTag("ench");
-            
+        
         return itemStack;
     }
     
@@ -373,7 +373,7 @@ public class ContainerAdvancedTable extends Container {
         
         if (player.capabilities.isCreativeMode)
             return true;
-            
+        
         final int levelCost = EnchantmentUtils.getLevelsFromExperience(cost);
         
         if (levelCost > this.getEnchantingPower()) {
@@ -405,7 +405,7 @@ public class ContainerAdvancedTable extends Container {
         
         if (itemStack == null || enchantmentLevel > enchantment.getMaxLevel())
             return 0;
-            
+        
         return EnchantmentUtils.getExperienceFromLevel(calculateEnchantmentCost(enchantment, enchantmentLevel + level));
     }
     
@@ -433,7 +433,7 @@ public class ContainerAdvancedTable extends Container {
         
         if (!ItemStackUtils.isValidStack(stack) && enchantmentLevel > enchantment.getMaxLevel())
             return 0;
-            
+        
         final int oldCost = (int) ((enchantment.getMaxEnchantability(existingLevel) - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
         final int newCost = (int) ((enchantment.getMaxEnchantability(enchantmentLevel) - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
         final int returnAmount = (oldCost - newCost) / 2;
@@ -452,7 +452,7 @@ public class ContainerAdvancedTable extends Container {
         
         if (!ItemStackUtils.isValidStack(stack) || !stack.isItemEnchanted() || !stack.isItemDamaged())
             return cost;
-            
+        
         final Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack);
         
         for (final Enchantment enchantment : map.keySet()) {
@@ -530,7 +530,7 @@ public class ContainerAdvancedTable extends Container {
                         cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset, y + 1, z + zOffset * 2));
                     }
                 }
-                
+            
         return cost * 2;
     }
 }

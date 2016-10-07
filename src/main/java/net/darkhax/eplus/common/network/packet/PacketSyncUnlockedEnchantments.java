@@ -23,12 +23,12 @@ public class PacketSyncUnlockedEnchantments implements IMessage {
     private List<String> enchantments;
     
     public PacketSyncUnlockedEnchantments() {
-    
+        
     }
     
     public PacketSyncUnlockedEnchantments(List<Enchantment> enchantments) {
         
-        this.enchantments = new ArrayList<String>();
+        this.enchantments = new ArrayList<>();
         
         for (final Enchantment ench : enchantments)
             this.enchantments.add(ench.getRegistryName().toString());
@@ -38,7 +38,7 @@ public class PacketSyncUnlockedEnchantments implements IMessage {
     public void fromBytes (ByteBuf buf) {
         
         final int count = buf.readInt();
-        this.enchantments = new ArrayList<String>();
+        this.enchantments = new ArrayList<>();
         
         for (int pos = 0; pos < count; pos++)
             this.enchantments.add(ByteBufUtils.readUTF8String(buf));
