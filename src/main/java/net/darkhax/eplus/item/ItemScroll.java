@@ -1,14 +1,12 @@
 package net.darkhax.eplus.item;
 
 import java.util.List;
-import java.util.Random;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.ParticleUtils;
-import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
@@ -26,9 +24,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.conditions.LootCondition;
-import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,17 +37,26 @@ public class ItemScroll extends Item {
         this.setCreativeTab(EnchantingPlus.tabEplus);
     }
     
+    public static ItemStack createScroll () {
+        
+        return createScroll(Enchantment.REGISTRY.getRandomObject(Constants.RANDOM));
+    }
+    
     public static ItemStack createScroll (Enchantment enchantment) {
         
-        final ItemStack stack = new ItemStack(ContentHandler.itemScroll);
-        ItemStackUtils.prepareDataTag(stack);
-        stack.getTagCompound().setString("ScrollEnchantment", enchantment.getRegistryName().toString());
-        return stack;
+        return enchantScroll(new ItemStack(ContentHandler.itemScroll), enchantment);
     }
     
     public static Enchantment readScroll (ItemStack stack) {
         
         return ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(stack.getTagCompound().getString("ScrollEnchantment")));
+    }
+    
+    public static ItemStack enchantScroll (ItemStack stack, Enchantment enchantment) {
+        
+        ItemStackUtils.prepareDataTag(stack);
+        stack.getTagCompound().setString("ScrollEnchantment", enchantment.getRegistryName().toString());
+        return stack;
     }
     
     public static boolean isValidScroll (ItemStack stack) {
@@ -66,10 +70,10 @@ public class ItemScroll extends Item {
         
         if (isValidScroll(itemStackIn) && !PlayerHandler.knowsEnchantment(playerIn, readScroll(itemStackIn))) {
             playerIn.setActiveHand(hand);
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
         }
         
-        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+        return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
     }
     
     @Override
@@ -132,19 +136,4 @@ public class ItemScroll extends Item {
             tip.add(I18n.format("tooltip.eplus.invalid"));
     }
     
-    public static class Function extends LootFunction {
-        
-        public Function() {
-            
-            super(new LootCondition[0]);
-        }
-        
-        @Override
-        public ItemStack apply (ItemStack stack, Random rand, LootContext context) {
-            
-            ItemStackUtils.prepareDataTag(stack);
-            stack.getTagCompound().setString("ScrollEnchantment", Enchantment.REGISTRY.getRandomObject(Constants.RANDOM).getRegistryName().toString());
-            return stack;
-        }
-    }
 }
