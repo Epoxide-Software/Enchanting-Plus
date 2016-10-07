@@ -18,7 +18,7 @@ public final class ConfigurationHandler {
     public static String[] blacklistedItems = new String[] {};
     public static String[] blacklistedEnchantments = new String[] {};
     public static boolean allowScrollLoot = true;
-    public static int scrollWeight = 2;
+    public static int scrollWeight = 10;
     
     public static boolean allowScrollDrop = true;
     public static float scrollDropChance = 0.01f;
@@ -41,7 +41,7 @@ public final class ConfigurationHandler {
         blacklistedItems = config.getStringList("blacklistedItems", settings, new String[] {}, "A list of blacklisted items and blocks. Things in this list won't be enchantable at the eplus table. The format is the same as minecraft's id system. For example, minecraft:chainmail_helmet will prevent chainmail helmets from becoming enchanted.");
         blacklistedEnchantments = config.getStringList("blacklistedEnchantments", settings, new String[] {}, "A list of blacklisted enchantment ids. Each entry should be an integer.");
         allowScrollLoot = config.getBoolean("allowScrollLoot", settings, true, "If disabled, scrolls will only spawn in custom village chests.");
-        scrollWeight = config.getInt("scrollWeight", settings, 2, Integer.MAX_VALUE, 0, "The weight of enchantment scrolls spawning in dungeon chests");
+        scrollWeight = config.getInt("dungeonWeight", settings, 10, 1, Integer.MAX_VALUE, "The weight of enchantment scrolls spawning in dungeon chests");
         
         if (config.hasChanged())
             config.save();
