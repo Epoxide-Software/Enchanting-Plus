@@ -15,6 +15,7 @@ import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.libs.Constants;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.enchantment.EnchantmentData;
@@ -29,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -378,13 +380,13 @@ public class ContainerAdvancedTable extends Container {
         
         if (levelCost > this.getEnchantingPower()) {
             
-            player.addChatMessage(new TextComponentTranslation("chat.eplus.morebooks" + " " + levelCost));
+            player.addChatMessage(new TextComponentString(I18n.format("chat.eplus.morebooks") + " " + levelCost));
             return false;
         }
         
         if (player.experienceLevel < levelCost) {
             
-            player.addChatMessage(new TextComponentTranslation("chat.eplus.morelevels" + " " + levelCost));
+            player.addChatMessage(new TextComponentString(I18n.format("chat.eplus.morelevels") + " " + levelCost));
             return false;
         }
         

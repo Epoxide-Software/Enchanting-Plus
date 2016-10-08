@@ -41,6 +41,9 @@ chat.eplus.scrollunlock.failed=You have already learned this.
 chat.eplus.morebooks=Not enough bookcases, Requires
 chat.eplus.morelevels=Not enough levels, Requires
 
+#Misc
+itemGroup.eplus=Enchanting Plus
+
 #Vanilla Enchantment Descriptions
 enchantment.minecraft.protection.desc=Reduces damage from most sources. 
 enchantment.minecraft.fire_protection.desc=Reduces the effects of fire damage. Also reduces the burn time when set on fire.
