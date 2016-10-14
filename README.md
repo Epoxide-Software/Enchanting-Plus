@@ -1,4 +1,4 @@
-Enchanting Plus[![](http://cf.way2muchnoise.eu/59413.svg)](https://minecraft.curseforge.com/projects/enchanting-plus) [![](http://cf.way2muchnoise.eu/versions/59413.svg)](https://minecraft.curseforge.com/projects/enchanting-plus)
+Enchanting Plus [![](http://cf.way2muchnoise.eu/59413.svg)](https://minecraft.curseforge.com/projects/enchanting-plus) [![](http://cf.way2muchnoise.eu/versions/59413.svg)](https://minecraft.curseforge.com/projects/enchanting-plus)
 =====
 Enchanting Plus is a Minecraft mod which gives players more control over their enchanting experience. 
 
