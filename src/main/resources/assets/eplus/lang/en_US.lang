@@ -38,8 +38,8 @@ tooltip.eplus.noench=You have not learned any enchantments for this item!
 #Chat
 chat.eplus.scrollunlock=Enchantment unlocked
 chat.eplus.scrollunlock.failed=You have already learned this.
-chat.eplus.morebooks=Not enough bookcases, Requires
-chat.eplus.morelevels=Not enough levels, Requires
+chat.eplus.morebooks=Not enough bookcases, Requires %s
+chat.eplus.morelevels=Not enough levels, Requires %s
 
 #Misc
 itemGroup.eplus=Enchanting Plus
