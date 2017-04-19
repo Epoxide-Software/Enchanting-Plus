@@ -2,6 +2,9 @@ Enchanting Plus [![](http://cf.way2muchnoise.eu/59413.svg)](https://minecraft.cu
 =====
 Enchanting Plus is a Minecraft mod which gives players more control over their enchanting experience. 
 
+[![Nodecraft](https://i.imgur.com/sz9PUmK.png)](https://nodecraft.com/r/darkhax)    
+This project is sponsored by Nodecraft. Use code [Darkhax](https://nodecraft.com/r/darkhax) for 30% off your first month of service!
+
 Required Mods
 =============
 [Bookshelf](https://github.com/Darkhax-Minecraft/Bookshelf)   
