@@ -1,0 +1,40 @@
+#Enchanting Plus English Language File
+
+#Item Names
+item.eplus.tableUpgrade.name=附魔台升级
+item.eplus.scroll.name=魔法卷轴
+item.eplus.book.eplus.name=高级附魔书
+item.eplus.book.vanilla.name=附魔书
+item.eplus.book.prismarine.name=海晶石书
+item.eplus.book.nether.name=下界书
+item.eplus.book.white.name=灰白色的书
+item.eplus.book.metal.name=合金书
+
+#Block Names
+tile.eplus.advancedtable.name=高级附魔台
+tile.eplus.enchantmentbook.name=魔法书
+
+#Tooltips
+tooltip.eplus.speed=速度
+tooltip.eplus.stability=稳定性
+tooltip.eplus.repair=修理所需经验 %s
+tooltip.eplus.playerlevel=玩家等级
+tooltip.eplus.maxlevel=最高附魔级别
+tooltip.eplus.enchant=附魔等级
+tooltip.eplus.learned=已学会
+tooltip.eplus.duration=持续时间
+tooltip.eplus.unlimited=无限
+tooltip.eplus.nodesc=请保留mod作者的描述。
+tooltip.eplus.experienceGained=获得 EXP
+tooltip.eplus.invalid=不能滑动!
+tooltip.eplus.additem=放入一个物品!
+tooltip.eplus.noench=你还没有学习怎么附魔
+
+#Chat
+chat.eplus.scrollunlock=去除附魔
+chat.eplus.scrollunlock.failed=你已经知道这一点。
+chat.eplus.morebooks=没有足够的书架，需要%s
+chat.eplus.morelevels=经验不够, 需要 %s
+
+#Misc
+itemGroup.eplus=更好的附魔
