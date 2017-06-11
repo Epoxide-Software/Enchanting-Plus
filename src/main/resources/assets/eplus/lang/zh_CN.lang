@@ -17,17 +17,18 @@ tile.eplus.enchantmentbook.name=魔法书
 #Tooltips
 tooltip.eplus.speed=速度
 tooltip.eplus.stability=稳定性
-tooltip.eplus.repair=修理经验 %s
+tooltip.eplus.repair=修理所需经验 %s
 tooltip.eplus.playerlevel=玩家等级
 tooltip.eplus.maxlevel=最高附魔级别
 tooltip.eplus.enchant=附魔等级
+tooltip.eplus.learned=已学会
 tooltip.eplus.duration=持续时间
 tooltip.eplus.unlimited=无限
 tooltip.eplus.nodesc=请保留mod作者的描述。
 tooltip.eplus.experienceGained=获得 EXP
 tooltip.eplus.invalid=不能滑动!
 tooltip.eplus.additem=放入一个物品!
-tooltip.eplus.noench=你还不知道什么物品可以附魔
+tooltip.eplus.noench=你还没有学习怎么附魔
 
 #Chat
 chat.eplus.scrollunlock=去除附魔
