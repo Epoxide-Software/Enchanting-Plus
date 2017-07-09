@@ -33,7 +33,7 @@ public class ItemTableUpgrade extends Item {
                 worldIn.setBlockState(pos, ContentHandler.blockAdvancedTable.getDefaultState());
                 worldIn.setTileEntity(pos, new TileEntityAdvancedTable());
             
-            playerIn.getHeldItem(hand).shrink(1);
+            if(!playerIn.capabilities.isCreativeMode) playerIn.getHeldItem(hand).shrink(1);
             return EnumActionResult.SUCCESS;
             }
             
