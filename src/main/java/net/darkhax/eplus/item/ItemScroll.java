@@ -116,10 +116,11 @@ public class ItemScroll extends Item {
     
     @Override
     public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> itemList) {
-        
+        if(isInCreativeTab(tab)){
         for (final Enchantment enchantment : ForgeRegistries.ENCHANTMENTS.getValues())
             if (!ContentHandler.isEnchantmentBlacklisted(enchantment))
                 itemList.add(createScroll(enchantment));
+        }
     }
     
     @Override

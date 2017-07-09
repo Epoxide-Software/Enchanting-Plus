@@ -40,9 +40,10 @@ public class ItemBook extends ItemBlock {
     
     @Override
     public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        
+    	if(isInCreativeTab(tab)){
         for (int meta = 0; meta < TYPES.length; meta++)
             subItems.add(new ItemStack(this, 1, meta));
+    	}
     }
     
     @Override
