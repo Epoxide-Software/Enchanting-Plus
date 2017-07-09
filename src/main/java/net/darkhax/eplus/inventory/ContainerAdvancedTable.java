@@ -141,6 +141,7 @@ public class ContainerAdvancedTable extends Container {
         if (itemStack.isEmpty() || !itemStack.isItemEnchanted() || cost == 0)
             return;
         
+        if (this.canPurchase(player, cost, false)) {
             
             itemStack.setItemDamage(0);
             
@@ -232,6 +233,7 @@ public class ContainerAdvancedTable extends Container {
         for (final Enchantment enchantment : toRemove)
             map.remove(enchantment);
         
+        if (this.canPurchase(player, serverCost, false)) {
             
             final List<EnchantmentData> enchantmentDataList = new ArrayList<>();
             

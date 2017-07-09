@@ -317,6 +317,7 @@ public class GuiAdvancedTable extends GuiContainer {
             
             int cost = this.totalCost + this.container.enchantmentCost(label.enchantment, label.currentLevel, level);
             
+            if (!this.container.canPurchase(this.player, cost, true))
                 
                 while (label.currentLevel > 0) {
                     
