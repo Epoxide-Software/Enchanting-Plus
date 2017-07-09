@@ -138,10 +138,9 @@ public class ContainerAdvancedTable extends Container {
         
         final ItemStack itemStack = this.tableInventory.getStackInSlot(0);
         
-        if (itemStack == null || !itemStack.isItemEnchanted() || cost == 0)
+        if (itemStack.isEmpty() || !itemStack.isItemEnchanted() || cost == 0)
             return;
         
-        if (this.canPurchase(player, cost)) {
             
             itemStack.setItemDamage(0);
             
@@ -155,7 +154,7 @@ public class ContainerAdvancedTable extends Container {
     @Override
     public ItemStack transferStackInSlot (EntityPlayer entityPlayer, int slotIndex) {
         
-        ItemStack itemStack = null;
+        ItemStack itemStack = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(slotIndex);
         
         if (slot != null && slot.getHasStack()) {
@@ -204,7 +203,7 @@ public class ContainerAdvancedTable extends Container {
         
         final int serverCost = this.getTotalEnchantmentCost(map);
         
-        if (itemstack == null)
+        if (itemstack.isEmpty())
             return;
         
         if (clientCost != serverCost) {
@@ -233,7 +232,6 @@ public class ContainerAdvancedTable extends Container {
         for (final Enchantment enchantment : toRemove)
             map.remove(enchantment);
         
-        if (this.canPurchase(player, serverCost)) {
             
             final List<EnchantmentData> enchantmentDataList = new ArrayList<>();
             
@@ -366,7 +364,7 @@ public class ContainerAdvancedTable extends Container {
      * @param cost The cost of the enchantments.
      * @return boolean Whether or not they can afford the cost.
      */
-    public boolean canPurchase (EntityPlayer player, int cost) {
+    public boolean canPurchase (EntityPlayer player, int cost, boolean sendChat) {
         
         if (player.capabilities.isCreativeMode)
             return true;
@@ -375,13 +373,13 @@ public class ContainerAdvancedTable extends Container {
         
         if (levelCost > this.getEnchantingPower()) {
 
-            player.sendMessage(new TextComponentTranslation("chat.eplus.morebooks", levelCost));
+            if(sendChat) player.sendMessage(new TextComponentTranslation("chat.eplus.morebooks", levelCost));
             return false;
         }
         
         if (player.experienceLevel < levelCost) {
 
-            player.sendMessage(new TextComponentTranslation("chat.eplus.morelevels", levelCost));
+        	if(sendChat) player.sendMessage(new TextComponentTranslation("chat.eplus.morelevels", levelCost));
             return false;
         }
         

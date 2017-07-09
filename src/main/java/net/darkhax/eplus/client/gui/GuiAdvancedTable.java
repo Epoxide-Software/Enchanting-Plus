@@ -317,7 +317,6 @@ public class GuiAdvancedTable extends GuiContainer {
             
             int cost = this.totalCost + this.container.enchantmentCost(label.enchantment, label.currentLevel, level);
             
-            if (!this.container.canPurchase(this.player, cost))
                 
                 while (label.currentLevel > 0) {
                     
@@ -325,7 +324,7 @@ public class GuiAdvancedTable extends GuiContainer {
                     label.currentLevel--;
                     cost = this.totalCost + this.container.enchantmentCost(label.enchantment, label.currentLevel, level);
                     
-                    if (this.container.canPurchase(this.player, cost))
+                    if (this.container.canPurchase(this.player, cost, false))
                         break;
                 }
             
