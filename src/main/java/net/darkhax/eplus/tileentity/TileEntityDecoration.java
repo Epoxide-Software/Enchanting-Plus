@@ -3,7 +3,7 @@ package net.darkhax.eplus.tileentity;
 import java.awt.Color;
 import java.util.Random;
 
-import net.darkhax.bookshelf.tileentity.TileEntityBasicTickable;
+import net.darkhax.bookshelf.block.tileentity.TileEntityBasicTickable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
@@ -56,7 +56,7 @@ public class TileEntityDecoration extends TileEntityBasicTickable {
         
         this.bookSpreadPrev = this.bookSpread;
         this.bookRotationPrev = this.bookRotation;
-        final EntityPlayer entityplayer = this.worldObj.getClosestPlayer(this.pos.getX() + 0.5F, this.pos.getY() + 0.5F, this.pos.getZ() + 0.5F, 3.0D, false);
+        final EntityPlayer entityplayer = this.world.getClosestPlayer(this.pos.getX() + 0.5F, this.pos.getY() + 0.5F, this.pos.getZ() + 0.5F, 3.0D, false);
         
         if (entityplayer != null) {
             final double d0 = entityplayer.posX - (this.pos.getX() + 0.5F);
@@ -101,12 +101,12 @@ public class TileEntityDecoration extends TileEntityBasicTickable {
             f2 += (float) Math.PI * 2F;
         
         this.bookRotation += f2 * 0.4F;
-        this.bookSpread = MathHelper.clamp_float(this.bookSpread, 0.0F, 1.0F);
+        this.bookSpread = MathHelper.clamp(this.bookSpread, 0.0F, 1.0F);
         ++this.tickCount;
         this.pageFlipPrev = this.pageFlip;
         float f = (this.flipRandom - this.pageFlip) * 0.4F;
         final float f3 = 0.2F;
-        f = MathHelper.clamp_float(f, -f3, f3);
+        f = MathHelper.clamp(f, -f3, f3);
         this.flipTurn += (f - this.flipTurn) * 0.9F;
         this.pageFlip += this.flipTurn;
     }
@@ -118,4 +118,11 @@ public class TileEntityDecoration extends TileEntityBasicTickable {
         dataTag.setInteger("Color", this.color);
         dataTag.setInteger("Variant", this.variant);
     }
+
+	@Override
+	public void onEntityUpdate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

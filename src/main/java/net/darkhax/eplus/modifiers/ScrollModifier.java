@@ -1,6 +1,6 @@
 package net.darkhax.eplus.modifiers;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.util.StackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -92,7 +92,7 @@ public class ScrollModifier {
         final NBTTagCompound modifierTag = new NBTTagCompound();
         modifierTag.setFloat("speed", this.speed);
         modifierTag.setFloat("stability", this.stability);
-        ItemStackUtils.writeStackToTag(this.stack, tag, "stackTag");
+        StackUtils.writeStackToTag(this.stack, tag, "stackTag");
         tag.setTag(tagName, modifierTag);
     }
 }

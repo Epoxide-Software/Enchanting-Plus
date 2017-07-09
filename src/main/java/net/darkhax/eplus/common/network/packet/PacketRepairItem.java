@@ -1,7 +1,7 @@
 package net.darkhax.eplus.common.network.packet;
 
 import io.netty.buffer.ByteBuf;
-import net.darkhax.bookshelf.lib.util.PlayerUtils;
+import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -45,7 +45,7 @@ public class PacketRepairItem implements IMessage {
         @Override
         public IMessage onMessage (PacketRepairItem packet, MessageContext ctx) {
             
-            final EntityPlayer player = ctx.side == Side.CLIENT ? PlayerUtils.getClientPlayer() : ctx.getServerHandler().playerEntity;
+            final EntityPlayer player = ctx.side == Side.CLIENT ? PlayerUtils.getClientPlayer() : ctx.getServerHandler().player;
             
             if (player.openContainer instanceof ContainerAdvancedTable) {
                 

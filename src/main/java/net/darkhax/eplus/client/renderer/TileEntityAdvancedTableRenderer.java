@@ -14,7 +14,7 @@ public class TileEntityAdvancedTableRenderer extends TileEntitySpecialRenderer<T
     private final ModelBook modelBook = new ModelBook();
     
     @Override
-    public void renderTileEntityAt (TileEntityAdvancedTable te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render (TileEntityAdvancedTable te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x + 0.5F, (float) y + 0.75F, (float) z + 0.5F);
@@ -34,8 +34,8 @@ public class TileEntityAdvancedTableRenderer extends TileEntitySpecialRenderer<T
         this.bindTexture(TEXTURE_BOOK);
         float f3 = te.pageFlipPrev + (te.pageFlip - te.pageFlipPrev) * partialTicks + 0.25F;
         float f4 = te.pageFlipPrev + (te.pageFlip - te.pageFlipPrev) * partialTicks + 0.75F;
-        f3 = (f3 - MathHelper.truncateDoubleToInt(f3)) * 1.6F - 0.3F;
-        f4 = (f4 - MathHelper.truncateDoubleToInt(f4)) * 1.6F - 0.3F;
+        f3 = (f3 - MathHelper.ceil(f3)) * 1.6F - 0.3F;
+        f4 = (f4 - MathHelper.ceil(f4)) * 1.6F - 0.3F;
         
         if (f3 < 0.0F)
             f3 = 0.0F;

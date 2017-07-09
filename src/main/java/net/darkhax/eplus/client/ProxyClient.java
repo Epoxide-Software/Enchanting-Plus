@@ -11,8 +11,11 @@ import net.darkhax.eplus.tileentity.TileEntityDecoration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ProxyClient extends ProxyCommon {
     
@@ -30,13 +33,18 @@ public class ProxyClient extends ProxyCommon {
     @Override
     public void onPreInit () {
         
+    	MinecraftForge.EVENT_BUS.register(this);
+        
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedTable.class, new TileEntityAdvancedTableRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecoration.class, new TileEntityDecorationRenderer());
+    }
+    
+    @SubscribeEvent
+    public void onModelRegister(ModelRegistryEvent e){
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ContentHandler.blockAdvancedTable), 0, new ModelResourceLocation("eplus:advanced_table", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ContentHandler.itemTableUpgrade, 0, new ModelResourceLocation("eplus:table_upgrade", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ContentHandler.itemScroll, 0, new ModelResourceLocation("eplus:scroll", "inventory"));
         for (int meta = 0; meta < ItemBook.TYPES.length; meta++)
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ContentHandler.blockDecoration), meta, new ModelResourceLocation("eplus:book_" + ItemBook.getName(meta), "inventory"));
-        
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedTable.class, new TileEntityAdvancedTableRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecoration.class, new TileEntityDecorationRenderer());
     }
 }

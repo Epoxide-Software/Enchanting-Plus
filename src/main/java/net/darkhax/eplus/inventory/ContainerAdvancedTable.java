@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.darkhax.bookshelf.inventory.SlotArmor;
-import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
-import net.darkhax.bookshelf.lib.util.EntityUtils;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.util.EnchantmentUtils;
+import net.darkhax.bookshelf.util.EntityUtils;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
@@ -29,7 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -83,9 +81,9 @@ public class ContainerAdvancedTable extends Container {
             
             final ItemStack stack = this.tableInventory.getStackInSlot(i);
             
-            if (ItemStackUtils.isValidStack(stack))
+            if (!stack.isEmpty())
                 if (!player.inventory.addItemStackToInventory(stack))
-                    if (!player.worldObj.isRemote)
+                    if (!player.world.isRemote)
                         player.entityDropItem(stack, 0.2f);
         }
     }
@@ -111,7 +109,7 @@ public class ContainerAdvancedTable extends Container {
         final HashMap<Enchantment, Integer> temp = new LinkedHashMap<>();
         final HashMap<Enchantment, Integer> temp2 = new LinkedHashMap<>();
         
-        if (!ItemStackUtils.isValidStack(itemStack) || ContentHandler.isItemBlacklisted(itemStack.getItem())) {
+        if (itemStack.isEmpty() || ContentHandler.isItemBlacklisted(itemStack.getItem())) {
             
             this.enchantments = temp;
             return;
@@ -165,7 +163,7 @@ public class ContainerAdvancedTable extends Container {
             final ItemStack slotStack = slot.getStack();
             final ItemStack tempStack = slotStack.copy();
             itemStack = slotStack.copy();
-            tempStack.stackSize = 1;
+            tempStack.setCount(1);
             
             if (slotIndex != 0) {
                 
@@ -173,21 +171,19 @@ public class ContainerAdvancedTable extends Container {
                 
                 if (!firstSlot.getHasStack() && firstSlot.isItemValid(tempStack) && this.mergeItemStack(tempStack, 0, 1, false)) {
                     
-                    slotStack.stackSize--;
+                    slotStack.shrink(1);
                     itemStack = slotStack.copy();
                 }
             }
             
-            if (slotStack.stackSize == 0)
-                slot.putStack(null);
             
             else
                 slot.onSlotChanged();
             
-            if (itemStack.stackSize == slotStack.stackSize)
-                return null;
+            if (itemStack.getCount() == slotStack.getCount())
+                return ItemStack.EMPTY;
             
-            slot.onPickupFromSlot(entityPlayer, slotStack);
+            slot.onTake(entityPlayer, slotStack);
         }
         
         return itemStack;
@@ -330,13 +326,13 @@ public class ContainerAdvancedTable extends Container {
         for (final EnchantmentData data : enchantmentData) {
             
             final NBTTagCompound nbttagcompound = new NBTTagCompound();
-            nbttagcompound.setShort("id", (short) Enchantment.getEnchantmentID(data.enchantmentobj));
+            nbttagcompound.setShort("id", (short) Enchantment.getEnchantmentID(data.enchantment));
             nbttagcompound.setInteger("lvl", data.enchantmentLevel);
             nbttaglist.appendTag(nbttagcompound);
         }
         
         if (itemStack.getItem() == Items.BOOK)
-            itemStack.setItem(Items.ENCHANTED_BOOK);
+            itemStack = new ItemStack(Items.ENCHANTED_BOOK, itemStack.getCount());
         
         if (itemStack.getItem() == Items.ENCHANTED_BOOK) {
             
@@ -379,13 +375,13 @@ public class ContainerAdvancedTable extends Container {
         
         if (levelCost > this.getEnchantingPower()) {
 
-            player.addChatMessage(new TextComponentTranslation("chat.eplus.morebooks", levelCost));
+            player.sendMessage(new TextComponentTranslation("chat.eplus.morebooks", levelCost));
             return false;
         }
         
         if (player.experienceLevel < levelCost) {
 
-            player.addChatMessage(new TextComponentTranslation("chat.eplus.morelevels", levelCost));
+            player.sendMessage(new TextComponentTranslation("chat.eplus.morelevels", levelCost));
             return false;
         }
         
@@ -432,7 +428,7 @@ public class ContainerAdvancedTable extends Container {
         
         final ItemStack stack = this.tableInventory.getStackInSlot(0);
         
-        if (!ItemStackUtils.isValidStack(stack) && enchantmentLevel > enchantment.getMaxLevel())
+        if (stack.isEmpty() && enchantmentLevel > enchantment.getMaxLevel())
             return 0;
         
         final int oldCost = (int) ((enchantment.getMaxEnchantability(existingLevel) - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
@@ -451,7 +447,7 @@ public class ContainerAdvancedTable extends Container {
         final ItemStack stack = this.tableInventory.getStackInSlot(0);
         int cost = 0;
         
-        if (!ItemStackUtils.isValidStack(stack) || !stack.isItemEnchanted() || !stack.isItemDamaged())
+        if (stack.isEmpty() || !stack.isItemEnchanted() || !stack.isItemDamaged())
             return cost;
         
         final Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack);

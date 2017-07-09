@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -24,9 +23,8 @@ public class ItemTableUpgrade extends Item {
     }
     
     @Override
-    public EnumActionResult onItemUse (ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse (EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         
-        if (!worldIn.isRemote) {
             
             final Block block = worldIn.getBlockState(pos).getBlock();
             
@@ -34,10 +32,11 @@ public class ItemTableUpgrade extends Item {
                 
                 worldIn.setBlockState(pos, ContentHandler.blockAdvancedTable.getDefaultState());
                 worldIn.setTileEntity(pos, new TileEntityAdvancedTable());
-            }
+            
+            playerIn.getHeldItem(hand).shrink(1);
             return EnumActionResult.SUCCESS;
-        }
-        
+            }
+            
         return EnumActionResult.PASS;
     }
 }

@@ -2,7 +2,7 @@ package net.darkhax.eplus.creativetab;
 
 import net.darkhax.eplus.handler.ContentHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class CreativeTabEPlus extends CreativeTabs {
     
@@ -12,8 +12,8 @@ public class CreativeTabEPlus extends CreativeTabs {
     }
     
     @Override
-    public Item getTabIconItem () {
+    public ItemStack getTabIconItem () {
         
-        return ContentHandler.itemTableUpgrade;
+        return new ItemStack(ContentHandler.itemTableUpgrade);
     }
 }

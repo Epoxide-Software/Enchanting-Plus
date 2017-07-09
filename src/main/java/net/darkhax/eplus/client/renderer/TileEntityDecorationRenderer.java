@@ -22,7 +22,7 @@ public class TileEntityDecorationRenderer extends TileEntitySpecialRenderer<Tile
     }
     
     @Override
-    public void renderTileEntityAt (TileEntityDecoration te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render (TileEntityDecoration te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x + 0.5F, (float) y + 0.75F + te.height, (float) z + 0.5F);
@@ -45,8 +45,8 @@ public class TileEntityDecorationRenderer extends TileEntitySpecialRenderer<Tile
         this.bindTexture(this.getTexture(te.variant));
         float f3 = te.pageFlipPrev + (te.pageFlip - te.pageFlipPrev) * partialTicks + 0.25F;
         float f4 = te.pageFlipPrev + (te.pageFlip - te.pageFlipPrev) * partialTicks + 0.75F;
-        f3 = (f3 - MathHelper.truncateDoubleToInt(f3)) * 1.6F - 0.3F;
-        f4 = (f4 - MathHelper.truncateDoubleToInt(f4)) * 1.6F - 0.3F;
+        f3 = (f3 - MathHelper.ceil(f3)) * 1.6F - 0.3F;
+        f4 = (f4 - MathHelper.ceil(f4)) * 1.6F - 0.3F;
         
         if (f3 < 0.0F)
             f3 = 0.0F;

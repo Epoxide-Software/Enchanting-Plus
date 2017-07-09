@@ -11,9 +11,8 @@ import org.lwjgl.input.Mouse;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.client.gui.GuiGraphicButton;
-import net.darkhax.bookshelf.lib.util.EnchantmentUtils;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.lib.util.ModUtils;
+import net.darkhax.bookshelf.util.EnchantmentUtils;
+import net.darkhax.bookshelf.util.ModUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
 import net.darkhax.eplus.common.network.packet.PacketRepairItem;
@@ -99,7 +98,7 @@ public class GuiAdvancedTable extends GuiContainer {
             else
                 label.setVisible(true);
             
-            label.draw(this.fontRendererObj);
+            label.draw(this.fontRenderer);
         }
         
         final int adjustedMouseX = mouseX - this.guiLeft;
@@ -166,43 +165,44 @@ public class GuiAdvancedTable extends GuiContainer {
     public void drawScreen (int mouseX, int mouseY, float partialTicks) {
         
         super.drawScreen(mouseX, mouseY, partialTicks);
+        super.renderHoveredToolTip(mouseX, mouseY);
         this.updateEnchantmentLabels();
         
         final int maxWidth = this.guiLeft - 20;
         final List<List<String>> information = new ArrayList<>();
         final ItemStack stack = this.container.getItem();
         
-        information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.playerlevel"), this.player.experienceLevel), maxWidth));
+        information.add(this.fontRenderer.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.playerlevel"), this.player.experienceLevel), maxWidth));
         
-        if (ItemStackUtils.isValidStack(stack))
+        if (!stack.isEmpty())
             if (this.hasLevelChanged()) {
                 
                 final boolean exp = this.totalCost <= EnchantmentUtils.getExperienceFromLevel(1) && this.totalCost >= -EnchantmentUtils.getExperienceFromLevel(1);
                 final boolean negExp = this.totalCost < 0;
                 final int finalCost = exp ? this.totalCost : negExp ? -EnchantmentUtils.getLevelsFromExperience(-this.totalCost) : EnchantmentUtils.getLevelsFromExperience(this.totalCost);
-                information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", exp ? I18n.format("tooltip.eplus.experienceGained") : I18n.format("tooltip.eplus.enchant"), finalCost), maxWidth));
+                information.add(this.fontRenderer.listFormattedStringToWidth(String.format("%s: %s", exp ? I18n.format("tooltip.eplus.experienceGained") : I18n.format("tooltip.eplus.enchant"), finalCost), maxWidth));
             }
             
             else if (ConfigurationHandler.allowRepairs && stack.isItemEnchanted() && stack.isItemDamaged())
-                information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.repair", EnchantmentUtils.getExpForDisplay(this.totalCost)), maxWidth));
+                information.add(this.fontRenderer.listFormattedStringToWidth(I18n.format("tooltip.eplus.repair", EnchantmentUtils.getExpForDisplay(this.totalCost)), maxWidth));
             
-        information.add(this.fontRendererObj.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
+        information.add(this.fontRenderer.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
         
-        if (!ItemStackUtils.isValidStack(this.container.getItem()))
-            information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.additem"), maxWidth));
+        if (this.container.getItem().isEmpty())
+            information.add(this.fontRenderer.listFormattedStringToWidth(I18n.format("tooltip.eplus.additem"), maxWidth));
         
         else if (this.enchantments.size() == 0 && ConfigurationHandler.useQuestMode)
-            information.add(this.fontRendererObj.listFormattedStringToWidth(I18n.format("tooltip.eplus.noench"), maxWidth));
+            information.add(this.fontRenderer.listFormattedStringToWidth(I18n.format("tooltip.eplus.noench"), maxWidth));
         
         for (final List<String> display : information) {
             
-            int height = information.indexOf(display) == 0 ? this.guiTop + this.fontRendererObj.FONT_HEIGHT + 8 : this.guiTop + (this.fontRendererObj.FONT_HEIGHT + 8) * (information.indexOf(display) + 1);
+            int height = information.indexOf(display) == 0 ? this.guiTop + this.fontRenderer.FONT_HEIGHT + 8 : this.guiTop + (this.fontRenderer.FONT_HEIGHT + 8) * (information.indexOf(display) + 1);
             
             if (information.indexOf(display) > 0)
                 for (int i = information.indexOf(display) - 1; i >= 0; i--)
-                    height += (this.fontRendererObj.FONT_HEIGHT + 3) * (information.get(i).size() - 1);
+                    height += (this.fontRenderer.FONT_HEIGHT + 3) * (information.get(i).size() - 1);
                 
-            this.drawHoveringText(display, this.guiLeft - 20 - maxWidth, height, this.fontRendererObj);
+            this.drawHoveringText(display, this.guiLeft - 20 - maxWidth, height, this.fontRenderer);
         }
         
         final GuiEnchantmentLabel label = this.getSelectedLabel(mouseX, mouseY);
@@ -221,9 +221,9 @@ public class GuiAdvancedTable extends GuiContainer {
             final List<String> display = new ArrayList<>();
             
             display.add(enchName);
-            display.addAll(this.fontRendererObj.listFormattedStringToWidth(description, 215));
+            display.addAll(this.fontRenderer.listFormattedStringToWidth(description, 215));
             display.add(ChatFormatting.BLUE + "" + ChatFormatting.ITALIC + ModUtils.getModName(label.enchantment));
-            this.drawHoveringText(display, mouseX, mouseY, this.fontRendererObj);
+            this.drawHoveringText(display, mouseX, mouseY, this.fontRenderer);
         }
     }
     

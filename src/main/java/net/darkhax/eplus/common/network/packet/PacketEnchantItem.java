@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import io.netty.buffer.ByteBuf;
-import net.darkhax.bookshelf.lib.util.PlayerUtils;
+import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,7 +66,7 @@ public class PacketEnchantItem implements IMessage {
         @Override
         public IMessage onMessage (PacketEnchantItem packet, MessageContext ctx) {
             
-            final EntityPlayer player = ctx.side == Side.CLIENT ? PlayerUtils.getClientPlayer() : ctx.getServerHandler().playerEntity;
+            final EntityPlayer player = ctx.side == Side.CLIENT ? PlayerUtils.getClientPlayer() : ctx.getServerHandler().player;
             
             if (player.openContainer instanceof ContainerAdvancedTable) {
                 
