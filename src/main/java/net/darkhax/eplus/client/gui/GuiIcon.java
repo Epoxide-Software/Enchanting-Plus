@@ -44,16 +44,16 @@ public class GuiIcon extends GuiButton {
     }
     
     @Override
-    public void drawButton (Minecraft mc, int x, int y) {
+    public void drawButton (Minecraft mc, int x, int y, float partialTicks) {
         
         if (!this.customTexture)
-            super.drawButton(mc, x, y);
+            super.drawButton(mc, x, y, partialTicks);
         else {
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             mc.renderEngine.bindTexture(this.texture);
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, 8 + this.textureIndex * 16, 182, this.width, this.height);
+            this.drawTexturedModalRect(this.x, this.y, 8 + this.textureIndex * 16, 182, this.width, this.height);
         }
     }
     

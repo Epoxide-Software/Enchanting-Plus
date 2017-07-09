@@ -1,7 +1,7 @@
 package net.darkhax.eplus.handler;
 
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.util.MathsUtils;
+import net.darkhax.bookshelf.util.MathsUtils;
 import net.darkhax.eplus.item.ItemScroll;
 import net.darkhax.eplus.loot.EnchantScroll;
 import net.minecraft.enchantment.Enchantment;
@@ -34,6 +34,6 @@ public final class ForgeEventHandler {
     public void onMobDrops (LivingDropsEvent event) {
         
         if (ConfigurationHandler.allowScrollDrop && event.getEntity() instanceof IMob && MathsUtils.tryPercentage(ConfigurationHandler.scrollDropChance))
-            event.getDrops().add(new EntityItem(event.getEntity().worldObj, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, ItemScroll.createScroll(Enchantment.REGISTRY.getRandomObject(Constants.RANDOM))));
+            event.getDrops().add(new EntityItem(event.getEntity().world, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, ItemScroll.createScroll(Enchantment.REGISTRY.getRandomObject(Constants.RANDOM))));
     }
 }

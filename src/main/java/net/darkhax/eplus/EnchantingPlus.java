@@ -73,11 +73,6 @@ public final class EnchantingPlus {
         
         PlayerHandler.init();
         
-        ContentHandler.initBlocks();
-        ContentHandler.initItems();
-        ContentHandler.initRecipes();
-        // ContentHandler.initModifiers();
-        
         proxy.onPreInit();
     }
     

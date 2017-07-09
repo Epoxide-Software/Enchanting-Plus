@@ -1,13 +1,11 @@
 package net.darkhax.eplus.item;
 
-import java.util.List;
-
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,11 +39,11 @@ public class ItemBook extends ItemBlock {
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems (Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        
+    public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    	if(isInCreativeTab(tab)){
         for (int meta = 0; meta < TYPES.length; meta++)
             subItems.add(new ItemStack(this, 1, meta));
+    	}
     }
     
     @Override

@@ -1,6 +1,6 @@
 package net.darkhax.eplus.block;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.util.StackUtils;
 import net.darkhax.eplus.tileentity.TileEntityDecoration;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -64,28 +64,28 @@ public class BlockBookDecoration extends BlockContainer {
     }
     
     @Override
-    public boolean onBlockActivated (World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated (World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         
-        if (!worldIn.isRemote && ItemStackUtils.isValidStack(playerIn.getHeldItemMainhand()) && worldIn.getTileEntity(pos) instanceof TileEntityDecoration) {
+        if (!worldIn.isRemote && !playerIn.getHeldItemMainhand().isEmpty() && worldIn.getTileEntity(pos) instanceof TileEntityDecoration) {
             
             final TileEntityDecoration deco = (TileEntityDecoration) worldIn.getTileEntity(pos);
             
-            if (playerIn.getHeldItemMainhand().getItem() == Items.FEATHER)
+            if (playerIn.getHeldItem(hand).getItem() == Items.FEATHER)
                 deco.increaseHeight();
             
-            else if (playerIn.getHeldItemMainhand().getItem() == Items.IRON_INGOT)
+            else if (playerIn.getHeldItem(hand).getItem() == Items.IRON_INGOT)
                 deco.decreaseHeight();
             
-            else {
+           /* else {
                 
-                final int color = ItemStackUtils.getDyeColor(playerIn.getHeldItemMainhand());
+                final int color = StackUtils.getDyeColor(playerIn.getHeldItemMainhand());
                 
                 if (color != -1337) {
                     
                     deco.color = color;
-                    ItemStackUtils.decreaseStackSize(playerIn.getHeldItemMainhand(), 1);
+                    StackUtils.decreaseStackSize(playerIn.getHeldItemMainhand(), 1);
                 }
-            }
+            }*/
             
             worldIn.notifyBlockUpdate(pos, state, state, 8);
         }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.netty.buffer.ByteBuf;
-import net.darkhax.bookshelf.lib.util.PlayerUtils;
+import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.handler.PlayerHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;

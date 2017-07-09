@@ -3,13 +3,14 @@ package net.darkhax.eplus.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.lib.util.OreDictUtils;
+import net.darkhax.bookshelf.util.OreDictUtils;
+import net.darkhax.bookshelf.util.StackUtils;
 import net.darkhax.eplus.block.BlockAdvancedTable;
 import net.darkhax.eplus.block.BlockBookDecoration;
 import net.darkhax.eplus.item.ItemBook;
 import net.darkhax.eplus.item.ItemScroll;
 import net.darkhax.eplus.item.ItemTableUpgrade;
+import net.darkhax.eplus.libs.Constants;
 import net.darkhax.eplus.modifiers.ScrollModifier;
 import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.tileentity.TileEntityDecoration;
@@ -20,11 +21,16 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+@EventBusSubscriber
 public final class ContentHandler {
     
     /**
@@ -52,7 +58,7 @@ public final class ContentHandler {
      * The amount of achievements added by the mod. This is used purely for calculating the
      * placement of the achievement on the achievement tab.
      */
-    private static int achievementCount = 0;
+    //private static int achievementCount = 0;
     
     public static Block blockAdvancedTable;
     public static Block blockArcaneInscriber;
@@ -60,6 +66,28 @@ public final class ContentHandler {
     
     public static Item itemTableUpgrade;
     public static Item itemScroll;
+    
+    public static final List<Item> ITEMS = new ArrayList<Item>();
+    public static final List<Block> BLOCKS = new ArrayList<Block>();
+    public static final List<IRecipe> RECIPES = new ArrayList<IRecipe>();
+    
+    @SubscribeEvent
+    public static void onItemRegister(Register<Item> event){
+    	initItems();
+    	event.getRegistry().registerAll(ITEMS.toArray(new Item[0]));
+    }
+    
+    @SubscribeEvent
+    public static void onBlockRegister(Register<Block> event){
+    	initBlocks();
+    	event.getRegistry().registerAll(BLOCKS.toArray(new Block[0]));
+    }
+    
+    @SubscribeEvent
+    public static void onRecipeRegister(Register<IRecipe> event){
+    	initRecipes();
+    	event.getRegistry().registerAll(new IRecipe[0]);
+    }
     
     /**
      * Registers a ScrollModifier with our List of modifiers.
@@ -105,7 +133,7 @@ public final class ContentHandler {
     public static ScrollModifier findScrollModifier (ItemStack stack) {
         
         for (final ScrollModifier modifier : modifiers)
-            if (ItemStackUtils.areStacksSimilar(modifier.stack, stack))
+            if (StackUtils.areStacksSimilar(modifier.stack, stack))
                 return modifier;
             
         return null;
@@ -165,20 +193,27 @@ public final class ContentHandler {
         addScrollModifier(new ScrollModifier(new ItemStack(Items.ENDER_EYE), 0f, 0.1f, false));
     }
     
+    private static int j = 0;
+    
+    private static void addRecipe(IRecipe rec){
+    	if(rec.getRegistryName() == null) rec.setRegistryName(new ResourceLocation(Constants.MOD_ID, "recipe" + j++));
+    	RECIPES.add(rec);
+    }
+    
     /**
      * Initializes all crafting recipes.
      */
     public static void initRecipes () {
         
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(itemTableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD }));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD, 't', Blocks.ENCHANTING_TABLE }));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockDecoration, 1, 0), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.DUST_GLOWSTONE, 'b', Items.ENCHANTED_BOOK }));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockDecoration, 1, 1), new Object[] { " g ", "gbg", " g ", 'g', Items.BOOK, 'b', Items.ENCHANTED_BOOK }));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockDecoration, 1, 2), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.GEM_PRISMARINE, 'b', Items.ENCHANTED_BOOK }));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockDecoration, 1, 3), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.INGOT_BRICK_NETHER, 'b', Items.ENCHANTED_BOOK }));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockDecoration, 1, 5), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.PAPER, 'b', Items.ENCHANTED_BOOK }));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockDecoration, 1, 6), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.INGOT_IRON, 'b', Items.ENCHANTED_BOOK }));
-        GameRegistry.addShapelessRecipe(new ItemStack(blockAdvancedTable), new Object[] { Blocks.ENCHANTING_TABLE, itemTableUpgrade });
+        addRecipe(new ShapedOreRecipe(new ResourceLocation(Constants.MOD_ID, "recipe" + j++), new ItemStack(itemTableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD }));
+        addRecipe(new ShapedOreRecipe(new ResourceLocation(Constants.MOD_ID, "recipe" + j++), new ItemStack(blockAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD, 't', Blocks.ENCHANTING_TABLE }));
+        addRecipe(new ShapedOreRecipe(new ResourceLocation(Constants.MOD_ID, "recipe" + j++), new ItemStack(blockDecoration, 1, 0), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.DUST_GLOWSTONE, 'b', Items.ENCHANTED_BOOK }));
+        addRecipe(new ShapedOreRecipe(new ResourceLocation(Constants.MOD_ID, "recipe" + j++), new ItemStack(blockDecoration, 1, 1), new Object[] { " g ", "gbg", " g ", 'g', Items.BOOK, 'b', Items.ENCHANTED_BOOK }));
+        addRecipe(new ShapedOreRecipe(new ResourceLocation(Constants.MOD_ID, "recipe" + j++), new ItemStack(blockDecoration, 1, 2), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.GEM_PRISMARINE, 'b', Items.ENCHANTED_BOOK }));
+        addRecipe(new ShapedOreRecipe(new ResourceLocation(Constants.MOD_ID, "recipe" + j++), new ItemStack(blockDecoration, 1, 3), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.INGOT_BRICK_NETHER, 'b', Items.ENCHANTED_BOOK }));
+        addRecipe(new ShapedOreRecipe(new ResourceLocation(Constants.MOD_ID, "recipe" + j++), new ItemStack(blockDecoration, 1, 5), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.PAPER, 'b', Items.ENCHANTED_BOOK }));
+        addRecipe(new ShapedOreRecipe(new ResourceLocation(Constants.MOD_ID, "recipe" + j++), new ItemStack(blockDecoration, 1, 6), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.INGOT_IRON, 'b', Items.ENCHANTED_BOOK }));
+        addRecipe(new ShapelessOreRecipe(new ResourceLocation(Constants.MOD_ID, "recipe" + j++), new ItemStack(blockAdvancedTable), new Object[] { Blocks.ENCHANTING_TABLE, itemTableUpgrade }));
     }
     
     /**
@@ -211,6 +246,7 @@ public final class ContentHandler {
      * @param item The Item to show in the tab. Also works for blocks.
      * @return Achievement The instance of Achievement created.
      */
+    /*
     public static Achievement registerAchievement (String key, Item item) {
         
         final int posX = achievementCount % 8;
@@ -218,7 +254,7 @@ public final class ContentHandler {
         achievementCount++;
         
         return new Achievement(key, key, posX, posY + 1, item, null).registerStat();
-    }
+    }*/
     
     /**
      * Provides the same functionality as older forge tile registration.
@@ -229,8 +265,8 @@ public final class ContentHandler {
     private static void registerBlock (Block block, ItemBlock item, String ID) {
         
         block.setRegistryName(ID);
-        GameRegistry.register(block);
-        GameRegistry.register(item, block.getRegistryName());
+        BLOCKS.add(block);
+        ITEMS.add(item.setRegistryName(block.getRegistryName()));
     }
     
     /**
@@ -242,8 +278,8 @@ public final class ContentHandler {
     private static void registerBlock (Block block, String ID) {
         
         block.setRegistryName(ID);
-        GameRegistry.register(block);
-        GameRegistry.register(new ItemBlock(block), block.getRegistryName());
+        BLOCKS.add(block);
+        ITEMS.add(new ItemBlock(block).setRegistryName(block.getRegistryName()));
     }
     
     /**
@@ -257,6 +293,6 @@ public final class ContentHandler {
         if (item.getRegistryName() == null)
             item.setRegistryName(ID);
         
-        GameRegistry.register(item);
+        ITEMS.add(item);
     }
 }

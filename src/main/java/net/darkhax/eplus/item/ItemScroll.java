@@ -5,12 +5,14 @@ import java.util.List;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.lib.util.ParticleUtils;
+import net.darkhax.bookshelf.util.ParticleUtils;
+import net.darkhax.bookshelf.util.StackUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,6 +24,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -54,26 +57,27 @@ public class ItemScroll extends Item {
     
     public static ItemStack enchantScroll (ItemStack stack, Enchantment enchantment) {
         
-        ItemStackUtils.prepareDataTag(stack);
+        StackUtils.prepareStackTag(stack);
         stack.getTagCompound().setString("ScrollEnchantment", enchantment.getRegistryName().toString());
         return stack;
     }
     
     public static boolean isValidScroll (ItemStack stack) {
         
-        ItemStackUtils.prepareDataTag(stack);
-        return ItemStackUtils.isValidStack(stack) && stack.getItem() instanceof ItemScroll && stack.getTagCompound().hasKey("ScrollEnchantment") && ForgeRegistries.ENCHANTMENTS.containsKey(new ResourceLocation(stack.getTagCompound().getString("ScrollEnchantment")));
+    	StackUtils.prepareStackTag(stack);
+        return !stack.isEmpty() && stack.getItem() instanceof ItemScroll && stack.getTagCompound().hasKey("ScrollEnchantment") && ForgeRegistries.ENCHANTMENTS.containsKey(new ResourceLocation(stack.getTagCompound().getString("ScrollEnchantment")));
     }
     
     @Override
-    public ActionResult<ItemStack> onItemRightClick (ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        
-        if (isValidScroll(itemStackIn) && !PlayerHandler.knowsEnchantment(playerIn, readScroll(itemStackIn))) {
-            playerIn.setActiveHand(hand);
-            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+    public ActionResult<ItemStack> onItemRightClick (World worldIn, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+    	
+        if (isValidScroll(stack) && !PlayerHandler.knowsEnchantment(player, readScroll(stack))) {
+            player.setActiveHand(hand);
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         
-        return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
+        return new ActionResult<>(EnumActionResult.FAIL, stack);
     }
     
     @Override
@@ -81,7 +85,7 @@ public class ItemScroll extends Item {
         
         if (!worldIn.isRemote && entityLiving instanceof EntityPlayer && isValidScroll(stack)) {
             
-            --stack.stackSize;
+            stack.shrink(1);
             PlayerHandler.unlockEnchantment((EntityPlayer) entityLiving, readScroll(stack));
         }
         
@@ -94,7 +98,7 @@ public class ItemScroll extends Item {
         if (count % 4 == 0) {
             
             final float percent = 1.0f - (float) count / (float) this.getMaxItemUseDuration(stack);
-            ParticleUtils.spawnPercentageParticleRing(player.worldObj, EnumParticleTypes.ENCHANTMENT_TABLE, percent, player.posX, player.posY + player.height, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
+            ParticleUtils.spawnPercentageParticleRing(player.world, EnumParticleTypes.ENCHANTMENT_TABLE, percent, player.posX, player.posY + player.height, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
         }
     }
     
@@ -111,24 +115,24 @@ public class ItemScroll extends Item {
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems (Item item, CreativeTabs tab, List<ItemStack> itemList) {
-        
+    public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> itemList) {
+        if(isInCreativeTab(tab)){
         for (final Enchantment enchantment : ForgeRegistries.ENCHANTMENTS.getValues())
             if (!ContentHandler.isEnchantmentBlacklisted(enchantment))
                 itemList.add(createScroll(enchantment));
+        }
     }
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation (ItemStack stack, EntityPlayer reader, List<String> tip, boolean isDebug) {
+    public void addInformation (ItemStack stack, World world, List<String> tip, ITooltipFlag flag) {
         
         if (isValidScroll(stack)) {
             
             final Enchantment enchant = readScroll(stack);
             tip.add(ChatFormatting.AQUA + I18n.format("tooltip.eplus.enchantment") + ": " + ChatFormatting.RESET + I18n.format(enchant.getName()));
             
-            if (PlayerHandler.knowsEnchantment(reader, enchant))
+            if (Minecraft.getMinecraft().player != null && PlayerHandler.knowsEnchantment(Minecraft.getMinecraft().player, enchant))
                 tip.add(ChatFormatting.RED + I18n.format("tooltip.eplus.learned"));
         }
         

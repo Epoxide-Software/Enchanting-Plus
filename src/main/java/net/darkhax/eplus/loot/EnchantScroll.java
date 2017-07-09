@@ -6,7 +6,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.eplus.item.ItemScroll;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
@@ -29,7 +28,7 @@ public class EnchantScroll extends LootFunction {
         
         final Enchantment enchant = Enchantment.REGISTRY.getRandomObject(rand);
         
-        if (ItemStackUtils.isValidStack(stack) && enchant != null)
+        if (!stack.isEmpty() && enchant != null)
             stack = ItemScroll.enchantScroll(stack, enchant);
         
         return stack;
