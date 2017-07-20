@@ -11,7 +11,6 @@ import net.darkhax.eplus.item.ItemBook;
 import net.darkhax.eplus.item.ItemScroll;
 import net.darkhax.eplus.item.ItemTableUpgrade;
 import net.darkhax.eplus.libs.Constants;
-import net.darkhax.eplus.modifiers.ScrollModifier;
 import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.tileentity.TileEntityDecoration;
 import net.minecraft.block.Block;
@@ -42,23 +41,6 @@ public final class ContentHandler {
      * A list of all blacklisted item IDs.
      */
     private static List<ResourceLocation> itemBlacklist = new ArrayList<>();
-
-    /**
-     * A map of all enchantment type colors. The key is the enchantment type, and the Integer
-     * is a RGB integer. Used when rendering scroll items.
-     */
-
-    /**
-     * A List of all modifiers that have been registered. Modifiers are used with the Arcane
-     * Inscriber.
-     */
-    public static List<ScrollModifier> modifiers = new ArrayList<>();
-
-    /**
-     * The amount of achievements added by the mod. This is used purely for calculating the
-     * placement of the achievement on the achievement tab.
-     */
-    // private static int achievementCount = 0;
 
     public static Block blockAdvancedTable;
     public static Block blockArcaneInscriber;
@@ -93,16 +75,6 @@ public final class ContentHandler {
     }
 
     /**
-     * Registers a ScrollModifier with our List of modifiers.
-     *
-     * @param modifier The modifier to register.
-     */
-    public static void addScrollModifier (ScrollModifier modifier) {
-
-        modifiers.add(modifier);
-    }
-
-    /**
      * Attempts to blacklist an enchantment. If the enchantment has already been blacklisted,
      * or the enchantment is null, it will fail.
      *
@@ -126,24 +98,6 @@ public final class ContentHandler {
         if (item != null && !itemBlacklist.contains(item.getRegistryName())) {
             itemBlacklist.add(item.getRegistryName());
         }
-    }
-
-    /**
-     * Retrieves a ScrollModifier using the modifier ItemStack as a key.
-     *
-     * @param stack The ItemStack associated with the modifier you are looking for.
-     * @return ScrollModifier If a valid modifier is found, it will be returned. Otherwise
-     *         null.
-     */
-    public static ScrollModifier findScrollModifier (ItemStack stack) {
-
-        for (final ScrollModifier modifier : modifiers) {
-            if (StackUtils.areStacksSimilar(modifier.stack, stack)) {
-                return modifier;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -186,20 +140,6 @@ public final class ContentHandler {
 
         itemScroll = new ItemScroll();
         registerItem(itemScroll, "scroll");
-    }
-
-    /**
-     * Initializes all vanilla modifiers.
-     */
-    public static void initModifiers () {
-
-        addScrollModifier(new ScrollModifier(new ItemStack(Items.BLAZE_POWDER), -0.05f, 0.1f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Blocks.OBSIDIAN), 0.1f, -0.05f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Items.DIAMOND), 0.25f, -0.05f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Items.EMERALD), -0.05f, 0.25f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Items.ENDER_PEARL), 0.05f, 0f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Blocks.GLOWSTONE), 0f, 0.05f, false));
-        addScrollModifier(new ScrollModifier(new ItemStack(Items.ENDER_EYE), 0f, 0.1f, false));
     }
 
     private static int j = 0;
@@ -249,20 +189,6 @@ public final class ContentHandler {
 
         return item != null && itemBlacklist.contains(item.getRegistryName());
     }
-
-    /**
-     * Creates a new Achievement to be used in the mod. The posX and posY are automatically
-     * generated.
-     *
-     * @param key The localization key to use for both the description and the title.
-     * @param item The Item to show in the tab. Also works for blocks.
-     * @return Achievement The instance of Achievement created.
-     */
-    /*
-     * public static Achievement registerAchievement (String key, Item item) { final int posX =
-     * achievementCount % 8; final int posY = achievementCount / 8; achievementCount++; return
-     * new Achievement(key, key, posX, posY + 1, item, null).registerStat(); }
-     */
 
     /**
      * Provides the same functionality as older forge tile registration.
