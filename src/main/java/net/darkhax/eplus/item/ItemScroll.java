@@ -52,13 +52,23 @@ public class ItemScroll extends Item {
 
     public static Enchantment readScroll (ItemStack stack) {
 
-        return ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(stack.getTagCompound().getString("ScrollEnchantment")));
+        return ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(StackUtils.prepareStackTag(stack).getString("ScrollEnchantment")));
     }
 
     public static ItemStack enchantScroll (ItemStack stack, Enchantment enchantment) {
 
-        StackUtils.prepareStackTag(stack);
-        stack.getTagCompound().setString("ScrollEnchantment", enchantment.getRegistryName().toString());
+        if (enchantment != null) {
+
+            if (enchantment.getRegistryName() == null) {
+
+                Constants.LOG.warn("The following enchantment was registered poorly! " + enchantment.getName() + " " + enchantment.getClass().getName());
+                return stack;
+            }
+
+            StackUtils.prepareStackTag(stack);
+            stack.getTagCompound().setString("ScrollEnchantment", enchantment.getRegistryName().toString());
+        }
+
         return stack;
     }
 
@@ -144,5 +154,4 @@ public class ItemScroll extends Item {
             tip.add(I18n.format("tooltip.eplus.invalid"));
         }
     }
-
 }
