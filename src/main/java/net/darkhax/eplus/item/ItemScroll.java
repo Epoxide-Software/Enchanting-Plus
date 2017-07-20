@@ -144,14 +144,21 @@ public class ItemScroll extends Item {
         if (isValidScroll(stack)) {
 
             final Enchantment enchant = readScroll(stack);
-            tip.add(ChatFormatting.AQUA + I18n.format("tooltip.eplus.enchantment") + ": " + ChatFormatting.RESET + I18n.format(enchant.getName()));
-
-            if (Minecraft.getMinecraft().player != null && PlayerHandler.knowsEnchantment(Minecraft.getMinecraft().player, enchant)) {
-                tip.add(ChatFormatting.RED + I18n.format("tooltip.eplus.learned"));
-            }
+            tip.add(ChatFormatting.BLUE + I18n.format("tooltip.eplus.enchantment") + ": " + ChatFormatting.RESET + I18n.format(enchant.getName()));
         }
+        
         else {
+            
             tip.add(I18n.format("tooltip.eplus.invalid"));
         }
+    }
+    
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getItemStackDisplayName (ItemStack stack) {
+        
+        final Enchantment enchant = readScroll(stack);       
+        return (enchant == null ? "" : enchant.isCurse() ? ChatFormatting.RED : enchant.isTreasureEnchantment() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA) + super.getItemStackDisplayName(stack);
     }
 }
