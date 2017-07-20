@@ -72,7 +72,7 @@ public class GuiAdvancedTable extends GuiContainer {
                 enchants.put(label.enchantment, label.currentLevel);
             }
         }
-        
+
         if (button.id == 0 && enchants.size() > 0) {
             EnchantingPlus.network.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
         }
@@ -135,7 +135,7 @@ public class GuiAdvancedTable extends GuiContainer {
                     label.dragging = true;
                 }
             }
-            
+
             if (adjustedMouseX <= 191 + guiOffset && adjustedMouseX >= 180 + guiOffset) {
                 if (this.enchantingPages != 0) {
                     this.sliding = true;
@@ -170,7 +170,7 @@ public class GuiAdvancedTable extends GuiContainer {
                 label.updateSlider(adjustedMouseX - 36, guiOffset + this.guiLeft + 10);
             }
         }
-        
+
         GlStateManager.enableLighting();
         GlStateManager.enableDepth();
     }
@@ -201,7 +201,7 @@ public class GuiAdvancedTable extends GuiContainer {
                 information.add(this.fontRenderer.listFormattedStringToWidth(I18n.format("tooltip.eplus.repair", EnchantmentUtils.getExpForDisplay(this.totalCost)), maxWidth));
             }
         }
-        
+
         information.add(this.fontRenderer.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
 
         if (this.container.getItem().isEmpty()) {
@@ -220,7 +220,7 @@ public class GuiAdvancedTable extends GuiContainer {
                     height += (this.fontRenderer.FONT_HEIGHT + 3) * (information.get(i).size() - 1);
                 }
             }
-            
+
             this.drawHoveringText(display, this.guiLeft - 20 - maxWidth, height, this.fontRenderer);
         }
 
@@ -381,7 +381,7 @@ public class GuiAdvancedTable extends GuiContainer {
                     this.updateEnchantmentLabel(enchantments.get(label.enchantment), label);
                 }
             }
-            
+
             if (this.last != null) {
                 this.updateEnchantmentLabel(enchantments.get(this.last.enchantment), this.last);
             }
@@ -417,7 +417,7 @@ public class GuiAdvancedTable extends GuiContainer {
                     }
                 }
             }
-            
+
             this.dirty = false;
         }
     }
@@ -434,7 +434,7 @@ public class GuiAdvancedTable extends GuiContainer {
                 return true;
             }
         }
-        
+
         return false;
     }
 

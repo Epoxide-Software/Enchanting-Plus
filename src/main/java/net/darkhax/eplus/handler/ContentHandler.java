@@ -142,7 +142,7 @@ public final class ContentHandler {
                 return modifier;
             }
         }
-        
+
         return null;
     }
 

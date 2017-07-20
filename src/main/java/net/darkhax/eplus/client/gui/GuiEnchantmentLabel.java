@@ -82,7 +82,7 @@ public class GuiEnchantmentLabel extends Gui {
                 name = name.substring(0, name.lastIndexOf(" "));
             }
         }
-        
+
         return name;
     }
 

@@ -58,7 +58,7 @@ public class ContainerAdvancedTable extends Container {
                 this.addSlotToContainer(new Slot(inventory, slotCount + invRow * 9 + 9, 17 + slotCount * 18 + guiOffest, 91 + invRow * 18));
             }
         }
-        
+
         // Hotbar
         for (int slotCount = 0; slotCount < 9; slotCount++) {
             this.addSlotToContainer(new Slot(inventory, slotCount, 17 + slotCount * 18 + guiOffest, 149));
@@ -136,7 +136,7 @@ public class ContainerAdvancedTable extends Container {
                     }
                 }
             }
-            
+
             temp.putAll(temp2);
         }
 
@@ -267,7 +267,7 @@ public class ContainerAdvancedTable extends Container {
                     player.addExperienceLevel(-EnchantmentUtils.getLevelsFromExperience(serverCost));
                 }
             }
-            
+
             this.tableInventory.setInventorySlotContents(0, this.applyChanges(enchantmentDataList, itemstack, player, clientCost));
         }
 
@@ -563,7 +563,7 @@ public class ContainerAdvancedTable extends Container {
                 }
             }
         }
-        
+
         return cost * 2;
     }
 }
