@@ -6,34 +6,34 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class ScrollModifier {
-    
+
     /**
      * The ItemStack to associate with this modifier.
      */
     public ItemStack stack;
-    
+
     /**
      * The amount of additional stability this modifier will add. This can be 0, or a negative.
      */
     public float stability;
-    
+
     /**
      * The amount of additional speed to add to the inscription process. This can be 0, or a
      * negative.
      */
     public float speed;
-    
+
     /**
      * A flag which determines whether or not onInscription should be called.
      */
     public boolean handleInscriptions;
-    
+
     /**
      * Constructs a new ScrollModifier. ScrollModifiers are a basic object which are used with
      * the Arcane Inscriber. A ScrollModifier can do several things, such as increase the
      * stability of the inscription process, or increase the speed on the inscription process.
      * They can also be used to change how the outcome of the inscription process.
-     * 
+     *
      * @param stack The ItemStack to declare as the modifier. When an ItemStack with the same
      *        ID and meta as this one is added to the inscription process, this modifier will
      *        be applied.
@@ -49,19 +49,19 @@ public class ScrollModifier {
      *        no need for the method, this can be set to false, which will save the user a
      *        negligible amount of cpu and memory.
      */
-    public ScrollModifier(ItemStack stack, float stability, float speed, boolean handleInscriptions) {
-        
+    public ScrollModifier (ItemStack stack, float stability, float speed, boolean handleInscriptions) {
+
         this.stack = stack;
         this.stability = stability;
         this.speed = speed;
         this.handleInscriptions = handleInscriptions;
     }
-    
+
     /**
      * Called when the inscription process is completed. This method allows for special
      * behavior to happen when your modifier is being used. It can also be used to alter the
      * outcome of the inscription process.
-     * 
+     *
      * @param world The instance of World in which the inscription process took place.
      * @param x The X coordinate of the arcane inscriber.
      * @param y The Y coordinate of the arcane inscriber.
@@ -76,19 +76,19 @@ public class ScrollModifier {
      *         inscription.
      */
     public ItemStack onInscription (World world, int x, int y, int z, ItemStack output, ItemStack input, ItemStack firstModifier, ItemStack secondModifier) {
-        
+
         return output;
     }
-    
+
     /**
      * Writes the ScrollModifier to an NBTTagCompound. The ItemStack, stability, and speed are
      * all stored.
-     * 
+     *
      * @param tag The NBTTagCompound to write the ScrollModifier to.
      * @param tagName The name to store the tag under.
      */
     public void writeModiferToNBT (NBTTagCompound tag, String tagName) {
-        
+
         final NBTTagCompound modifierTag = new NBTTagCompound();
         modifierTag.setFloat("speed", this.speed);
         modifierTag.setFloat("stability", this.stability);

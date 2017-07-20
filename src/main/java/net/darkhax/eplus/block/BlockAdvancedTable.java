@@ -24,11 +24,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockAdvancedTable extends BlockTileEntity {
-    
+
     private static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
-    
-    public BlockAdvancedTable() {
-        
+
+    public BlockAdvancedTable () {
+
         super(Material.ROCK, MapColor.PURPLE);
         this.setLightOpacity(0);
         this.setCreativeTab(EnchantingPlus.tabEplus);
@@ -36,73 +36,78 @@ public class BlockAdvancedTable extends BlockTileEntity {
         this.setResistance(2000.0F);
         this.setUnlocalizedName("eplus.advancedtable");
     }
-    
+
     @Override
     public TileEntity createNewTileEntity (World worldIn, int meta) {
-        
+
         return new TileEntityAdvancedTable();
     }
-    
+
     @Override
     public AxisAlignedBB getBoundingBox (IBlockState state, IBlockAccess source, BlockPos pos) {
-        
+
         return BOUNDS;
     }
-    
+
     @Override
     public boolean isFullCube (IBlockState state) {
-        
+
         return false;
     }
-    
+
     @Override
     public boolean isOpaqueCube (IBlockState state) {
-        
+
         return false;
     }
-    
+
     @Override
     public boolean onBlockActivated (World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        
+
         if (!worldIn.isRemote) {
-            
+
             final TileEntity tileentity = worldIn.getTileEntity(pos);
             PlayerHandler.syncEnchantmentData(playerIn);
-            
-            if (tileentity instanceof TileEntityAdvancedTable)
+
+            if (tileentity instanceof TileEntityAdvancedTable) {
                 playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            
+            }
+
             return true;
         }
-        
+
         return true;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick (IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-        
+
         super.randomDisplayTick(stateIn, worldIn, pos, rand);
-        
-        for (int x = -2; x <= 2; ++x)
+
+        for (int x = -2; x <= 2; ++x) {
             for (int z = -2; z <= 2; ++z) {
-                
-                if (x > -2 && x < 2 && z == -1)
+
+                if (x > -2 && x < 2 && z == -1) {
                     z = 2;
-                
-                if (rand.nextInt(16) == 0)
+                }
+
+                if (rand.nextInt(16) == 0) {
                     for (int y = 0; y <= 1; ++y) {
-                        
+
                         final BlockPos blockpos = pos.add(x, y, z);
-                        
+
                         if (worldIn.getBlockState(blockpos).getBlock() == Blocks.BOOKSHELF) {
-                            
-                            if (!worldIn.isAirBlock(pos.add(x / 2, 0, z / 2)))
+
+                            if (!worldIn.isAirBlock(pos.add(x / 2, 0, z / 2))) {
                                 break;
-                            
+                            }
+
                             worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, pos.getX() + 0.5D, pos.getY() + 2.0D, pos.getZ() + 0.5D, x + rand.nextFloat() - 0.5D, y - rand.nextFloat() - 1.0F, z + rand.nextFloat() - 0.5D, new int[0]);
                         }
                     }
+                }
             }
+        }
     }
 }

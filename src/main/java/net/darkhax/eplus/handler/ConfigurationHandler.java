@@ -5,9 +5,9 @@ import java.io.File;
 import net.minecraftforge.common.config.Configuration;
 
 public final class ConfigurationHandler {
-    
+
     public static Configuration config;
-    
+
     public static boolean printDebug = true;
     public static boolean useQuestMode = true;
     public static boolean allowRepairs = true;
@@ -19,15 +19,15 @@ public final class ConfigurationHandler {
     public static String[] blacklistedEnchantments = new String[] {};
     public static boolean allowScrollLoot = true;
     public static int scrollWeight = 10;
-    
+
     public static boolean allowScrollDrop = true;
     public static float scrollDropChance = 0.01f;
     public static int repairFactor = 5;
-    
+
     public static void initConfig (File configFile) {
-        
+
         config = new Configuration(configFile);
-        
+
         final String settings = "settings";
         printDebug = config.getBoolean("printDebug", settings, true, "If true, Enchanting Plus will ocasionally write messages to the console.");
         useQuestMode = config.getBoolean("useQuestMode", settings, true, "Quest Mode requires that users collect scrolls to unlock enchantments, before they can make use of them at the table.");
@@ -42,8 +42,9 @@ public final class ConfigurationHandler {
         blacklistedEnchantments = config.getStringList("blacklistedEnchantments", settings, new String[] {}, "A list of blacklisted enchantment ids. Each entry should be an integer.");
         allowScrollLoot = config.getBoolean("allowScrollLoot", settings, true, "If disabled, scrolls will only spawn in custom village chests.");
         scrollWeight = config.getInt("dungeonWeight", settings, 10, 1, Integer.MAX_VALUE, "The weight of enchantment scrolls spawning in dungeon chests");
-        
-        if (config.hasChanged())
+
+        if (config.hasChanged()) {
             config.save();
+        }
     }
 }

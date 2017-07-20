@@ -18,33 +18,35 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ProxyClient extends ProxyCommon {
-    
+
     @Override
     public void onInit () {
-        
+
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ScrollColorHandler(), ContentHandler.itemScroll);
     }
-    
+
     @Override
     public void onPostInit () {
-        
+
     }
-    
+
     @Override
     public void onPreInit () {
-        
-    	MinecraftForge.EVENT_BUS.register(this);
-        
+
+        MinecraftForge.EVENT_BUS.register(this);
+
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedTable.class, new TileEntityAdvancedTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecoration.class, new TileEntityDecorationRenderer());
     }
-    
+
     @SubscribeEvent
-    public void onModelRegister(ModelRegistryEvent e){
+    public void onModelRegister (ModelRegistryEvent e) {
+
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ContentHandler.blockAdvancedTable), 0, new ModelResourceLocation("eplus:advanced_table", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ContentHandler.itemTableUpgrade, 0, new ModelResourceLocation("eplus:table_upgrade", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ContentHandler.itemScroll, 0, new ModelResourceLocation("eplus:scroll", "inventory"));
-        for (int meta = 0; meta < ItemBook.TYPES.length; meta++)
+        for (int meta = 0; meta < ItemBook.TYPES.length; meta++) {
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ContentHandler.blockDecoration), meta, new ModelResourceLocation("eplus:book_" + ItemBook.getName(meta), "inventory"));
+        }
     }
 }

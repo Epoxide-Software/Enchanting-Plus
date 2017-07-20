@@ -17,23 +17,25 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public final class ForgeEventHandler {
-    
+
     @SubscribeEvent
     public void onLootTableLoad (LootTableLoadEvent event) {
-        
+
         if (ConfigurationHandler.allowScrollLoot && event.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON)) {
-            
+
             final LootPool targetPool = event.getTable().getPool("main");
-            
-            if (targetPool != null)
+
+            if (targetPool != null) {
                 targetPool.addEntry(new LootEntryItem(ContentHandler.itemScroll, ConfigurationHandler.scrollWeight, 0, new LootFunction[] { new EnchantScroll(new LootCondition[0]) }, new LootCondition[0], "eplus:dungeon_scroll"));
+            }
         }
     }
-    
+
     @SubscribeEvent
     public void onMobDrops (LivingDropsEvent event) {
-        
-        if (ConfigurationHandler.allowScrollDrop && event.getEntity() instanceof IMob && MathsUtils.tryPercentage(ConfigurationHandler.scrollDropChance))
+
+        if (ConfigurationHandler.allowScrollDrop && event.getEntity() instanceof IMob && MathsUtils.tryPercentage(ConfigurationHandler.scrollDropChance)) {
             event.getDrops().add(new EntityItem(event.getEntity().world, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, ItemScroll.createScroll(Enchantment.REGISTRY.getRandomObject(Constants.RANDOM))));
+        }
     }
 }

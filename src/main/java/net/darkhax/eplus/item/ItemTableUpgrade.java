@@ -14,29 +14,30 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemTableUpgrade extends Item {
-    
-    public ItemTableUpgrade() {
-        
+
+    public ItemTableUpgrade () {
+
         this.setMaxStackSize(16);
         this.setUnlocalizedName("eplus.tableUpgrade");
         this.setCreativeTab(EnchantingPlus.tabEplus);
     }
-    
+
     @Override
     public EnumActionResult onItemUse (EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        
-            
-            final Block block = worldIn.getBlockState(pos).getBlock();
-            
-            if (block == Blocks.ENCHANTING_TABLE) {
-                
-                worldIn.setBlockState(pos, ContentHandler.blockAdvancedTable.getDefaultState());
-                worldIn.setTileEntity(pos, new TileEntityAdvancedTable());
-            
-            if(!playerIn.capabilities.isCreativeMode) playerIn.getHeldItem(hand).shrink(1);
-            return EnumActionResult.SUCCESS;
+
+        final Block block = worldIn.getBlockState(pos).getBlock();
+
+        if (block == Blocks.ENCHANTING_TABLE) {
+
+            worldIn.setBlockState(pos, ContentHandler.blockAdvancedTable.getDefaultState());
+            worldIn.setTileEntity(pos, new TileEntityAdvancedTable());
+
+            if (!playerIn.capabilities.isCreativeMode) {
+                playerIn.getHeldItem(hand).shrink(1);
             }
-            
+            return EnumActionResult.SUCCESS;
+        }
+
         return EnumActionResult.PASS;
     }
 }
