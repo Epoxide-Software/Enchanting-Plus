@@ -10,7 +10,6 @@ import net.darkhax.bookshelf.util.StackUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -146,19 +145,18 @@ public class ItemScroll extends Item {
             final Enchantment enchant = readScroll(stack);
             tip.add(ChatFormatting.BLUE + I18n.format("tooltip.eplus.enchantment") + ": " + ChatFormatting.RESET + I18n.format(enchant.getName()));
         }
-        
+
         else {
-            
+
             tip.add(I18n.format("tooltip.eplus.invalid"));
         }
     }
-    
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName (ItemStack stack) {
-        
-        final Enchantment enchant = readScroll(stack);       
+
+        final Enchantment enchant = readScroll(stack);
         return (enchant == null ? "" : enchant.isCurse() ? ChatFormatting.RED : enchant.isTreasureEnchantment() ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA) + super.getItemStackDisplayName(stack);
     }
 }

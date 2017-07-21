@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.darkhax.bookshelf.util.OreDictUtils;
-import net.darkhax.bookshelf.util.StackUtils;
 import net.darkhax.eplus.block.BlockAdvancedTable;
 import net.darkhax.eplus.block.BlockBookDecoration;
 import net.darkhax.eplus.item.ItemBook;

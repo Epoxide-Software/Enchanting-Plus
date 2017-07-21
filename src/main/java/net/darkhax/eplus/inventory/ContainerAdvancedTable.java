@@ -210,12 +210,12 @@ public class ContainerAdvancedTable extends Container {
      * @param map: A map of Integer. Used to hold the the level for the various enchantments.
      * @param clientCost: The cost for the current update.
      */
-    public void updateItemStack (EntityPlayer player, HashMap<Enchantment, Integer> map, int clientCost) {
+    public void updateItemStack (EntityPlayer player, List<EnchantmentData> enchantments, int clientCost) {
 
         final ItemStack itemstack = this.tableInventory.getStackInSlot(0);
         final ArrayList<Enchantment> toRemove = new ArrayList<>();
 
-        final int serverCost = this.getTotalEnchantmentCost(map);
+        final int serverCost = this.getTotalEnchantmentCost(enchantments);
 
         if (itemstack.isEmpty()) {
             return;
@@ -232,32 +232,33 @@ public class ContainerAdvancedTable extends Container {
             final Integer level = this.enchantments.get(enchantment);
 
             if (level != 0) {
-                if (!map.containsKey(enchantment)) {
-                    map.put(enchantment, level);
-                }
+                // if (!enchantments.containsKey(enchantment)) {
+                // enchantments.put(enchantment, level);
+                // }
             }
         }
 
-        for (final Enchantment enchantment : map.keySet()) {
+        // for (final Enchantment enchantment : enchantments.keySet()) {
 
-            final Integer level = map.get(enchantment);
+        // final Integer level = enchantments.get(enchantment);
 
-            if (level == 0) {
-                toRemove.add(enchantment);
-            }
-        }
+        // if (level == 0) {
+        // toRemove.add(enchantment);
+        // }
+        // }
 
         for (final Enchantment enchantment : toRemove) {
-            map.remove(enchantment);
+            enchantments.remove(enchantment);
         }
 
         if (this.canPurchase(player, serverCost, false)) {
 
             final List<EnchantmentData> enchantmentDataList = new ArrayList<>();
 
-            for (final Enchantment enchantment : map.keySet()) {
-                enchantmentDataList.add(new EnchantmentData(enchantment, map.get(enchantment)));
-            }
+            // for (final Enchantment enchantment : enchantments.keySet()) {
+            // enchantmentDataList.add(new EnchantmentData(enchantment,
+            // enchantments.get(enchantment)));
+            // }
 
             if (!player.capabilities.isCreativeMode) {
                 if (serverCost < 0) {
@@ -280,20 +281,20 @@ public class ContainerAdvancedTable extends Container {
      * @param enchants The enchantments being applied.
      * @return The total cost.
      */
-    private int getTotalEnchantmentCost (Map<Enchantment, Integer> enchants) {
+    private int getTotalEnchantmentCost (List<EnchantmentData> enchants) {
 
         int cost = 0;
 
-        for (final Enchantment enchantment : enchants.keySet()) {
+        for (final EnchantmentData enchData : enchants) {
 
-            final Integer level = enchants.get(enchantment);
-            final Integer startingLevel = this.enchantments.get(enchantment);
+            final Integer level = enchData.enchantmentLevel;
+            final Integer startingLevel = this.enchantments.get(enchData.enchantment);
 
             if (level > startingLevel) {
-                cost += this.enchantmentCost(enchantment, level, startingLevel);
+                cost += this.enchantmentCost(enchData.enchantment, level, startingLevel);
             }
             else if (level < startingLevel) {
-                cost += this.getRebate(enchantment, level, startingLevel);
+                cost += this.getRebate(enchData.enchantment, level, startingLevel);
             }
         }
 

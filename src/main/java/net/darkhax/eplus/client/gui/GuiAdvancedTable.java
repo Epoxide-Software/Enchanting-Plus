@@ -2,7 +2,6 @@ package net.darkhax.eplus.client.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,6 @@ import net.darkhax.bookshelf.util.EnchantmentUtils;
 import net.darkhax.bookshelf.util.ModUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
-import net.darkhax.eplus.common.network.packet.PacketRepairItem;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.minecraft.client.gui.GuiButton;
@@ -23,6 +21,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -65,19 +64,16 @@ public class GuiAdvancedTable extends GuiContainer {
     @Override
     protected void actionPerformed (GuiButton button) {
 
-        final HashMap<Enchantment, Integer> enchants = new HashMap<>();
+        final List<EnchantmentData> enchants = new ArrayList<>();
 
         for (final GuiEnchantmentLabel label : this.enchantmentList) {
             if (label.currentLevel != this.enchantments.get(label.enchantment) && !label.locked) {
-                enchants.put(label.enchantment, label.currentLevel);
+                enchants.add(new EnchantmentData(label.enchantment, label.currentLevel));
             }
         }
 
         if (button.id == 0 && enchants.size() > 0) {
             EnchantingPlus.network.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
-        }
-        else if (button.id == 1 && enchants.size() == 0 && this.totalCost > 0 && ConfigurationHandler.allowRepairs) {
-            EnchantingPlus.network.sendToServer(new PacketRepairItem(this.totalCost));
         }
     }
 

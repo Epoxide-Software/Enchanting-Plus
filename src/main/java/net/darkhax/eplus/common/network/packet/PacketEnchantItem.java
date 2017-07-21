@@ -1,81 +1,52 @@
 package net.darkhax.eplus.common.network.packet;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.Arrays;
+import java.util.List;
 
-import io.netty.buffer.ByteBuf;
+import net.darkhax.bookshelf.network.SerializableMessage;
 import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Packet for repairing an item from the enchanting plus GUI.
  */
-public class PacketEnchantItem implements IMessage {
+public class PacketEnchantItem extends SerializableMessage {
+    
+    private static final long serialVersionUID = 4391316650621991566L;
 
     /**
      * The enchant cost that the client thinks it should have to pay.
      */
-    protected int enchantCost;
+    private int enchantCost;
 
-    protected HashMap<Enchantment, Integer> enchantments = new HashMap<>();
+    private EnchantmentData[] enchantments;
 
     public PacketEnchantItem () {
 
     }
 
-    public PacketEnchantItem (int cost, HashMap<Enchantment, Integer> enchants) {
+    public PacketEnchantItem (int cost, List<EnchantmentData> enchants) {
 
         this.enchantCost = cost;
-        this.enchantments = enchants;
+        this.enchantments = enchants.toArray(new EnchantmentData[enchants.size()]);
     }
 
     @Override
-    public void fromBytes (ByteBuf buf) {
+    public IMessage handleMessage (MessageContext context) {
 
-        this.enchantCost = buf.readInt();
+        final EntityPlayer player = context.side == Side.CLIENT ? PlayerUtils.getClientPlayer() : context.getServerHandler().player;
 
-        this.enchantments = new HashMap<>();
-        final int size = buf.readInt();
+        if (player.openContainer instanceof ContainerAdvancedTable) {
 
-        for (int index = 0; index < size; index++) {
-            this.enchantments.put(Enchantment.getEnchantmentByLocation(ByteBufUtils.readUTF8String(buf)), buf.readInt());
+            ((ContainerAdvancedTable) player.openContainer).updateItemStack(player, Arrays.asList(this.enchantments), this.enchantCost);
+            player.openContainer.detectAndSendChanges();
         }
-    }
 
-    @Override
-    public void toBytes (ByteBuf buf) {
-
-        buf.writeInt(this.enchantCost);
-        buf.writeInt(this.enchantments.size());
-
-        for (final Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
-
-            ByteBufUtils.writeUTF8String(buf, entry.getKey().getRegistryName().toString());
-            buf.writeInt(entry.getValue());
-        }
-    }
-
-    public static class PacketHandler implements IMessageHandler<PacketEnchantItem, IMessage> {
-
-        @Override
-        public IMessage onMessage (PacketEnchantItem packet, MessageContext ctx) {
-
-            final EntityPlayer player = ctx.side == Side.CLIENT ? PlayerUtils.getClientPlayer() : ctx.getServerHandler().player;
-
-            if (player.openContainer instanceof ContainerAdvancedTable) {
-
-                ((ContainerAdvancedTable) player.openContainer).updateItemStack(player, packet.enchantments, packet.enchantCost);
-                player.openContainer.detectAndSendChanges();
-            }
-
-            return null;
-        }
+        return null;
     }
 }

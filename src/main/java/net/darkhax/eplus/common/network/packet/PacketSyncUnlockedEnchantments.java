@@ -1,26 +1,30 @@
 package net.darkhax.eplus.common.network.packet;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.netty.buffer.ByteBuf;
+import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.network.SerializableMessage;
 import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.handler.PlayerHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
- * Packet for syncing unlocked enchantments to the client from server.
+ * This packet is used to sync all of the unlocked enchantments from the server to the client.
  */
-public class PacketSyncUnlockedEnchantments implements IMessage {
+public class PacketSyncUnlockedEnchantments extends SerializableMessage {
 
-    private List<String> enchantments;
+    private static final long serialVersionUID = 828601957159834616L;
+
+    /**
+     * An array of all the ids that have been unlocked. This array may contain null/empty
+     * entries in cases where the enchantment is null or invalid.
+     */
+    private String[] enchIds;
 
     public PacketSyncUnlockedEnchantments () {
 
@@ -28,52 +32,50 @@ public class PacketSyncUnlockedEnchantments implements IMessage {
 
     public PacketSyncUnlockedEnchantments (List<Enchantment> enchantments) {
 
-        this.enchantments = new ArrayList<>();
+        this.enchIds = new String[enchantments.size()];
+        int index = 0;
 
         for (final Enchantment ench : enchantments) {
-            this.enchantments.add(ench.getRegistryName().toString());
-        }
-    }
 
-    @Override
-    public void fromBytes (ByteBuf buf) {
+            if (ench != null) {
 
-        final int count = buf.readInt();
-        this.enchantments = new ArrayList<>();
+                // Valid enchantment
+                if (ench.getRegistryName() != null) {
 
-        for (int pos = 0; pos < count; pos++) {
-            this.enchantments.add(ByteBufUtils.readUTF8String(buf));
-        }
-    }
+                    this.enchIds[index] = ench.getRegistryName().toString();
+                }
 
-    @Override
-    public void toBytes (ByteBuf buf) {
+                else {
 
-        buf.writeInt(this.enchantments.size());
-
-        for (final String enchant : this.enchantments) {
-            ByteBufUtils.writeUTF8String(buf, enchant);
-        }
-    }
-
-    public static class PacketHandler implements IMessageHandler<PacketSyncUnlockedEnchantments, IMessage> {
-
-        @Override
-        public IMessage onMessage (PacketSyncUnlockedEnchantments packet, MessageContext ctx) {
-
-            final EntityPlayer player = PlayerUtils.getClientPlayer();
-            final List<Enchantment> enchants = PlayerHandler.getUnlockedEnchantments(player);
-
-            for (final String enchant : packet.enchantments) {
-
-                final Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(enchant));
-
-                if (ench != null && !enchants.contains(ench)) {
-                    enchants.add(ench);
+                    Constants.LOG.warn("Enchantment lacks an id! " + ench.getName());
                 }
             }
 
-            return null;
+            else {
+
+                Constants.LOG.warn("A null enchantment was unlocked!");
+            }
+
+            index++;
         }
+    }
+
+    @Override
+    public IMessage handleMessage (MessageContext context) {
+
+        final EntityPlayer player = PlayerUtils.getClientPlayer();
+        final List<Enchantment> enchants = PlayerHandler.getUnlockedEnchantments(player);
+
+        for (final String enchant : this.enchIds) {
+
+            final Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(enchant));
+
+            if (ench != null && !enchants.contains(ench)) {
+
+                enchants.add(ench);
+            }
+        }
+
+        return null;
     }
 }
