@@ -11,19 +11,19 @@ public class EPlusUtils {
         if (enchant == null) {
             
             Constants.LOG.warn("Attempted to get ID for invalid enchantment. Enchantment was null.");
-            return null;
+            return "N/A";
         }
         
         else if (enchant.getRegistryName() == null || enchant.getRegistryName().toString().isEmpty()) {
             
             Constants.LOG.warn("Attempted to get ID for invalid enchantment. Enchantment lacks registry info. Class: %s Name: %s", enchant.getClass(), enchant.getName());
-            return null;
+            return "N/A";
         }
         
         else if (!ForgeRegistries.ENCHANTMENTS.containsValue(enchant) || !ForgeRegistries.ENCHANTMENTS.containsKey(enchant.getRegistryName())) {
             
             Constants.LOG.warn("Attempted to get ID for invalid enchantment. Enchantment was not registered. Class: %s Name: %s RegID: %S", enchant.getClass(), enchant.getName(), enchant.getRegistryName().toString());
-            return null;
+            return "N/A";
         }
         
         return enchant.getRegistryName().toString();
