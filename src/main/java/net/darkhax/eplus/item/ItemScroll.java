@@ -6,6 +6,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.ParticleUtils;
+import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.bookshelf.util.StackUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.ContentHandler;
@@ -144,7 +145,13 @@ public class ItemScroll extends Item {
         if (isValidScroll(stack)) {
 
             final Enchantment enchant = readScroll(stack);
+
             tip.add(ChatFormatting.BLUE + I18n.format("tooltip.eplus.enchantment") + ": " + ChatFormatting.RESET + I18n.format(enchant.getName()));
+
+            if (PlayerHandler.hasEnchantment(PlayerUtils.getClientPlayer(), enchant)) {
+
+                tip.add(ChatFormatting.RED + I18n.format("tooltip.eplus.learned"));
+            }
         }
 
         else {
