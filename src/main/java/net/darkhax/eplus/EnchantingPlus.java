@@ -4,7 +4,9 @@ import net.darkhax.bookshelf.network.NetworkHandler;
 import net.darkhax.eplus.common.ProxyCommon;
 import net.darkhax.eplus.common.network.GuiHandler;
 import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
-import net.darkhax.eplus.common.network.packet.PacketSyncUnlockedEnchantments;
+import net.darkhax.eplus.common.network.packet.PacketRequestSync;
+import net.darkhax.eplus.common.network.packet.PacketSyncEnchantUnlock;
+import net.darkhax.eplus.common.network.packet.PacketSyncEnchantUnlocks;
 import net.darkhax.eplus.creativetab.CreativeTabEPlus;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
@@ -42,8 +44,10 @@ public final class EnchantingPlus {
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
 
+        network.register(PacketRequestSync.class, Side.SERVER);
+        network.register(PacketSyncEnchantUnlock.class, Side.CLIENT);
+        network.register(PacketSyncEnchantUnlocks.class, Side.CLIENT);
         network.register(PacketEnchantItem.class, Side.SERVER);
-        network.register(PacketSyncUnlockedEnchantments.class, Side.SERVER);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 

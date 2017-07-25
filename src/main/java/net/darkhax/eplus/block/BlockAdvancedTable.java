@@ -5,7 +5,6 @@ import java.util.Random;
 import net.darkhax.bookshelf.block.BlockTileEntity;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.common.network.GuiHandler;
-import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -67,9 +66,9 @@ public class BlockAdvancedTable extends BlockTileEntity {
         if (!worldIn.isRemote) {
 
             final TileEntity tileentity = worldIn.getTileEntity(pos);
-            PlayerHandler.syncEnchantmentData(playerIn);
 
             if (tileentity instanceof TileEntityAdvancedTable) {
+
                 playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
             }
 

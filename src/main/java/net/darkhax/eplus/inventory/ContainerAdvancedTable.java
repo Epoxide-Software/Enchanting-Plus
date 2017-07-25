@@ -330,7 +330,7 @@ public class ContainerAdvancedTable extends Container {
      */
     private boolean isEnchantmentValid (Enchantment enchantment, EntityPlayer player) {
 
-        return enchantment != null && ((ConfigurationHandler.useQuestMode ? PlayerHandler.knowsEnchantment(player, enchantment) : true) || player.capabilities.isCreativeMode);
+        return enchantment != null && ((ConfigurationHandler.useQuestMode ? PlayerHandler.hasEnchantment(player, enchantment) : true) || player.capabilities.isCreativeMode);
     }
 
     /**

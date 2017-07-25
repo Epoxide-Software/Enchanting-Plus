@@ -16,15 +16,15 @@ import net.minecraftforge.fml.relauncher.Side;
  * Packet for repairing an item from the enchanting plus GUI.
  */
 public class PacketEnchantItem extends SerializableMessage {
-    
+
     private static final long serialVersionUID = 4391316650621991566L;
 
     /**
      * The enchant cost that the client thinks it should have to pay.
      */
-    private int enchantCost;
+    public int enchantCost;
 
-    private EnchantmentData[] enchantments;
+    public EnchantmentData[] enchantments;
 
     public PacketEnchantItem () {
 

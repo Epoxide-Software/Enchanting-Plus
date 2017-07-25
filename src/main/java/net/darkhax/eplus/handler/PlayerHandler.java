@@ -1,11 +1,16 @@
 package net.darkhax.eplus.handler;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.darkhax.eplus.EnchantingPlus;
-import net.darkhax.eplus.common.network.packet.PacketSyncUnlockedEnchantments;
+import net.darkhax.eplus.common.network.packet.PacketRequestSync;
+import net.darkhax.eplus.common.network.packet.PacketSyncEnchantUnlocks;
 import net.darkhax.eplus.libs.Constants;
+import net.darkhax.eplus.libs.EPlusUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,74 +27,37 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class PlayerHandler {
 
-    /**
-     * The capability field. Used for checks and references. Initialized when the capability is
-     * initialized.
-     */
     @CapabilityInject(ICustomData.class)
     public static final Capability<ICustomData> CUSTOM_DATA = null;
 
-    /**
-     * Initializes the CustomDataHandler and sets everything up. Should be called in the
-     * preInit loading phase.
-     */
     public static void init () {
 
         CapabilityManager.INSTANCE.register(ICustomData.class, new Storage(), Default.class);
         MinecraftForge.EVENT_BUS.register(new PlayerHandler());
     }
 
-    /**
-     * Used to get easy access to the unlock list.
-     *
-     * @param player Player to get data for.
-     * @return The list of enchantments found.
-     */
-    public static List<Enchantment> getUnlockedEnchantments (EntityPlayer player) {
+    public static ICustomData getPlayerData (EntityPlayer player) {
 
-        if (player.hasCapability(CUSTOM_DATA, EnumFacing.DOWN)) {
-            return player.getCapability(CUSTOM_DATA, EnumFacing.DOWN).getUnlockedEnchantments();
-        }
-
-        return null;
+        return player.hasCapability(CUSTOM_DATA, null) ? player.getCapability(CUSTOM_DATA, null) : null;
     }
 
-    public static boolean knowsEnchantment (EntityPlayer player, Enchantment enchantment) {
+    public static boolean hasEnchantment (EntityPlayer player, Enchantment enchant) {
 
-        final List<Enchantment> enchants = getUnlockedEnchantments(player);
-        return enchants != null && enchants.contains(enchantment);
+        return getPlayerData(player).hasEnchantment(enchant);
     }
 
-    /**
-     * Unlocks an enchantment for the player.
-     *
-     * @param player The player.
-     * @param enchant The enchantment to unlock.
-     */
-    public static void unlockEnchantment (EntityPlayer player, Enchantment enchant) {
+    @SubscribeEvent
+    public void onEntityJoinWorld (EntityJoinWorldEvent event) {
 
-        if (player.hasCapability(CUSTOM_DATA, EnumFacing.DOWN)) {
+        if (event.getEntity() instanceof EntityPlayer && event.getWorld().isRemote) {
 
-            player.getCapability(CUSTOM_DATA, EnumFacing.DOWN).unlockEnchantment(enchant);
-            PlayerHandler.syncEnchantmentData(player);
-        }
-    }
-
-    /**
-     * The list of unlocked enchantment to sync.
-     *
-     * @param player The player to sync enchantments to.
-     */
-    public static void syncEnchantmentData (EntityPlayer player) {
-
-        if (!player.getEntityWorld().isRemote) {
-            EnchantingPlus.network.sendTo(new PacketSyncUnlockedEnchantments(getUnlockedEnchantments(player)), (EntityPlayerMP) player);
+            EnchantingPlus.network.sendToServer(new PacketRequestSync());
         }
     }
 
@@ -97,41 +65,47 @@ public class PlayerHandler {
     public void attachCapabilities (AttachCapabilitiesEvent<Entity> event) {
 
         if (event.getObject() instanceof EntityPlayer) {
-            event.addCapability(new ResourceLocation(Constants.MOD_ID, "playerData"), new Provider());
+            event.addCapability(new ResourceLocation(Constants.MOD_ID, "PlayerData"), new Provider((EntityPlayer) event.getObject()));
         }
     }
 
     @SubscribeEvent
     public void onPlayerClonning (PlayerEvent.Clone event) {
 
-        for (final Enchantment enchantment : getUnlockedEnchantments(event.getOriginal())) {
-            unlockEnchantment(event.getEntityPlayer(), enchantment);
-        }
+        final ICustomData oldData = getPlayerData(event.getOriginal());
+        final ICustomData newData = getPlayerData(event.getEntityPlayer());
+
+        newData.overrideUnlocks(oldData.getUnlockedEnchantments());
+        newData.syncData();
     }
 
-    /**
-     * Interface for holding various getter and setter methods.
-     */
     public static interface ICustomData {
 
-        List<Enchantment> getUnlockedEnchantments ();
+        Set<Enchantment> getUnlockedEnchantments ();
 
         boolean hasEnchantment (Enchantment enchant);
 
         void unlockEnchantment (Enchantment enchant);
 
         void lockEnchantment (Enchantment enchant);
+
+        void overrideUnlocks (Set<Enchantment> enchantments);
+
+        void setPlayer (@Nonnull EntityPlayer player);
+
+        @Nullable
+        EntityPlayer getPlayer ();
+
+        void syncData ();
     }
 
-    /**
-     * Default implementation of the custom data.
-     */
     public static class Default implements ICustomData {
 
-        private final List<Enchantment> unlockedEnchants = new ArrayList<>();
+        private Set<Enchantment> unlockedEnchants = new HashSet<>();
+        private EntityPlayer player;
 
         @Override
-        public List<Enchantment> getUnlockedEnchantments () {
+        public Set<Enchantment> getUnlockedEnchantments () {
 
             return this.unlockedEnchants;
         }
@@ -145,8 +119,11 @@ public class PlayerHandler {
         @Override
         public void unlockEnchantment (Enchantment enchant) {
 
-            if (!this.hasEnchantment(enchant)) {
-                this.unlockedEnchants.add(enchant);
+            this.unlockedEnchants.add(enchant);
+
+            if (enchant == null) {
+
+                Constants.LOG.warn("Hello null");
             }
         }
 
@@ -155,11 +132,35 @@ public class PlayerHandler {
 
             this.unlockedEnchants.remove(enchant);
         }
+
+        @Override
+        public void syncData () {
+
+            if (this.getPlayer() instanceof EntityPlayerMP) {
+
+                EnchantingPlus.network.sendTo(new PacketSyncEnchantUnlocks(this.getUnlockedEnchantments()), (EntityPlayerMP) this.player);
+            }
+        }
+
+        @Override
+        public void setPlayer (EntityPlayer player) {
+
+            this.player = player;
+        }
+
+        @Override
+        public EntityPlayer getPlayer () {
+
+            return this.player;
+        }
+
+        @Override
+        public void overrideUnlocks (Set<Enchantment> enchantments) {
+
+            this.unlockedEnchants = enchantments;
+        }
     }
 
-    /**
-     * Handles reand/write of custom data.
-     */
     public static class Storage implements Capability.IStorage<ICustomData> {
 
         @Override
@@ -170,7 +171,16 @@ public class PlayerHandler {
             final NBTTagList list = new NBTTagList();
 
             for (final Enchantment enchant : instance.getUnlockedEnchantments()) {
-                list.appendTag(new NBTTagString(enchant.getRegistryName().toString()));
+
+                if (enchant != null) {
+
+                    list.appendTag(new NBTTagString(EPlusUtils.getEnchId(enchant)));
+                }
+
+                else {
+
+                    Constants.LOG.info("Attempted to save null enchantment for {}, it will be discarded.", instance.getPlayer().getDisplayName().getUnformattedText());
+                }
             }
 
             tag.setTag("unlocked", list);
@@ -187,25 +197,29 @@ public class PlayerHandler {
 
             for (int i = 0; i < list.tagCount(); i++) {
 
-                final String id = list.getStringTagAt(i);
-                final Enchantment enchant = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(id));
+                final Enchantment enchant = EPlusUtils.getEnchantmentFromId(list.getStringTagAt(i));
 
                 if (enchant != null) {
+
                     instance.unlockEnchantment(enchant);
                 }
+
                 else {
-                    EnchantingPlus.printDebugMessage("The enchantment " + id + " does not exist. It will not be loaded.");
+
+                    Constants.LOG.info("Attempted to read null enchantment for {}, it will be discarded.", instance.getPlayer().getDisplayName().getUnformattedText());
                 }
             }
         }
     }
 
-    /**
-     * Handles all the checks and delegate methods for the capability.
-     */
     public static class Provider implements ICapabilitySerializable<NBTTagCompound> {
 
-        ICustomData instance = CUSTOM_DATA.getDefaultInstance();
+        private final ICustomData instance = CUSTOM_DATA.getDefaultInstance();
+
+        public Provider (EntityPlayer player) {
+
+            this.instance.setPlayer(player);
+        }
 
         @Override
         public boolean hasCapability (Capability<?> capability, EnumFacing facing) {
