@@ -10,12 +10,10 @@ import net.darkhax.eplus.common.network.packet.PacketSyncEnchantUnlocks;
 import net.darkhax.eplus.creativetab.CreativeTabEPlus;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
-import net.darkhax.eplus.handler.ForgeEventHandler;
 import net.darkhax.eplus.handler.IMCHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.libs.Constants;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -52,7 +50,6 @@ public final class EnchantingPlus {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
         ConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
-        MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
 
         PlayerHandler.init();
 
