@@ -44,12 +44,13 @@ public class PlayerHandler {
 
     public static ICustomData getPlayerData (EntityPlayer player) {
 
-        return player.hasCapability(CUSTOM_DATA, null) ? player.getCapability(CUSTOM_DATA, null) : null;
+        return player != null && player.hasCapability(CUSTOM_DATA, null) ? player.getCapability(CUSTOM_DATA, null) : null;
     }
 
     public static boolean hasEnchantment (EntityPlayer player, Enchantment enchant) {
 
-        return getPlayerData(player).hasEnchantment(enchant);
+        final ICustomData data = getPlayerData(player);
+        return data != null && data.hasEnchantment(enchant);
     }
 
     @SubscribeEvent
