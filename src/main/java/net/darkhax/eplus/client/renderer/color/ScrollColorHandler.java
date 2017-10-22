@@ -7,10 +7,10 @@ import net.minecraft.item.ItemStack;
 
 public class ScrollColorHandler implements IItemColor {
 
-    @Override
-    public int getColorFromItemstack (ItemStack stack, int renderPass) {
+	@Override
+	public int colorMultiplier(ItemStack stack, int tintIndex) {
 
-        if (renderPass == 1 && ItemScroll.isValidScroll(stack)) {
+        if (tintIndex == 1 && ItemScroll.isValidScroll(stack)) {
 
             final Enchantment enchant = ItemScroll.readScroll(stack);
 
@@ -20,5 +20,5 @@ public class ScrollColorHandler implements IItemColor {
         }
 
         return 16777215;
-    }
+	}
 }
