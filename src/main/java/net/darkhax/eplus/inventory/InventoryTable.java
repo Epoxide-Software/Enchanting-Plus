@@ -17,15 +17,15 @@ public class InventoryTable extends InventoryBasic {
     public ItemStack removeStackFromSlot (int index) {
 
         this.container.table.stack = ItemStack.EMPTY;
-        this.container.table.markDirty();
-        return super.removeStackFromSlot(index);
+        final ItemStack stack = super.removeStackFromSlot(index);
+        this.markDirty();
+        return stack;
     }
 
     @Override
     public void setInventorySlotContents (int index, ItemStack stack) {
 
         this.container.table.stack = stack;
-        this.container.table.markDirty();
         super.setInventorySlotContents(index, stack);
     }
 
@@ -34,5 +34,6 @@ public class InventoryTable extends InventoryBasic {
 
         super.markDirty();
         this.container.onCraftMatrixChanged(this);
+        this.container.table.markDirty();
     }
 }
