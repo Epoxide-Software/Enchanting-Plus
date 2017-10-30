@@ -4,8 +4,10 @@ import java.util.Random;
 
 import net.darkhax.bookshelf.block.BlockTileEntity;
 import net.darkhax.bookshelf.block.ITileEntityBlock;
+import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.block.tileentity.renderer.TileEntityAdvancedTableRenderer;
+import net.darkhax.eplus.common.network.GuiHandler;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -68,9 +70,7 @@ public class BlockAdvancedTable extends BlockTileEntity implements ITileEntityBl
 
             if (tileentity instanceof TileEntityAdvancedTable) {
 
-                // playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE,
-                // worldIn,
-                // pos.getX(), pos.getY(), pos.getZ());
+                playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
             }
 
             return true;
