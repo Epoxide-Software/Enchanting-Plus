@@ -1,6 +1,6 @@
 package net.darkhax.eplus.creativetab;
 
-import net.darkhax.eplus.handler.ContentHandler;
+import net.darkhax.eplus.libs.Content;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
@@ -14,6 +14,6 @@ public class CreativeTabEPlus extends CreativeTabs {
     @Override
     public ItemStack getTabIconItem () {
 
-        return new ItemStack(ContentHandler.itemTableUpgrade);
+        return new ItemStack(Content.blockAdvancedTable);
     }
 }

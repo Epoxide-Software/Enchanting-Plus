@@ -58,7 +58,7 @@ public class PlayerHandler {
 
         if (event.getEntity() instanceof EntityPlayer && event.getWorld().isRemote) {
 
-            EnchantingPlus.network.sendToServer(new PacketRequestSync());
+            EnchantingPlus.NETWORK.sendToServer(new PacketRequestSync());
         }
     }
 
@@ -139,7 +139,7 @@ public class PlayerHandler {
 
             if (this.getPlayer() instanceof EntityPlayerMP) {
 
-                EnchantingPlus.network.sendTo(new PacketSyncEnchantUnlocks(this.getUnlockedEnchantments()), (EntityPlayerMP) this.player);
+                EnchantingPlus.NETWORK.sendTo(new PacketSyncEnchantUnlocks(this.getUnlockedEnchantments()), (EntityPlayerMP) this.player);
             }
         }
 

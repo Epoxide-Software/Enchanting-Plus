@@ -1,19 +1,14 @@
-package net.darkhax.eplus.tileentity;
+package net.darkhax.eplus.block.tileentity;
 
+import java.awt.Color;
 import java.util.Random;
 
+import net.darkhax.bookshelf.block.tileentity.TileEntityBasicTickable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerEnchantment;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.IInteractionObject;
 
-public class TileEntityAdvancedTable extends TileEntity implements ITickable, IInteractionObject {
+public class TileEntityDecoration extends TileEntityBasicTickable {
 
     private static Random rand = new Random();
 
@@ -28,34 +23,34 @@ public class TileEntityAdvancedTable extends TileEntity implements ITickable, II
     public float bookRotationPrev;
     public float offset;
 
-    @Override
-    public Container createContainer (InventoryPlayer playerInventory, EntityPlayer playerIn) {
+    public float height = 0f;
+    public int color = Color.WHITE.getRGB();
+    public int variant;
 
-        return new ContainerEnchantment(playerInventory, this.world, this.pos);
+    public void decreaseHeight () {
+
+        this.height -= 0.05f;
+
+        if (this.height < -0.35f) {
+            this.height = -0.35f;
+        }
+    }
+
+    public void increaseHeight () {
+
+        this.height += 0.05f;
+
+        if (this.height > 0.35f) {
+            this.height = 0.35f;
+        }
     }
 
     @Override
-    public ITextComponent getDisplayName () {
+    public void readNBT (NBTTagCompound dataTag) {
 
-        return new TextComponentString(this.getName());
-    }
-
-    @Override
-    public String getGuiID () {
-
-        return "darkutils:enchanting_table";
-    }
-
-    @Override
-    public String getName () {
-
-        return "container.enchant";
-    }
-
-    @Override
-    public boolean hasCustomName () {
-
-        return false;
+        this.height = dataTag.getFloat("Height");
+        this.color = dataTag.getInteger("Color");
+        this.variant = dataTag.getInteger("Variant");
     }
 
     @Override
@@ -124,4 +119,19 @@ public class TileEntityAdvancedTable extends TileEntity implements ITickable, II
         this.flipTurn += (f - this.flipTurn) * 0.9F;
         this.pageFlip += this.flipTurn;
     }
+
+    @Override
+    public void writeNBT (NBTTagCompound dataTag) {
+
+        dataTag.setFloat("Height", this.height);
+        dataTag.setInteger("Color", this.color);
+        dataTag.setInteger("Variant", this.variant);
+    }
+
+    @Override
+    public void onEntityUpdate () {
+        // TODO Auto-generated method stub
+
+    }
+
 }

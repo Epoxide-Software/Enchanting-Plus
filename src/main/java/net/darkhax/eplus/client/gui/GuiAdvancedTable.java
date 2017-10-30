@@ -73,7 +73,7 @@ public class GuiAdvancedTable extends GuiContainer {
         }
 
         if (button.id == 0 && enchants.size() > 0) {
-            EnchantingPlus.network.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
+            EnchantingPlus.NETWORK.sendToServer(new PacketEnchantItem(this.totalCost, enchants));
         }
     }
 

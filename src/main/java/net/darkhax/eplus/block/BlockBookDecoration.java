@@ -1,9 +1,13 @@
 package net.darkhax.eplus.block;
 
-import net.darkhax.eplus.tileentity.TileEntityDecoration;
+import net.darkhax.bookshelf.block.ITileEntityBlock;
+import net.darkhax.eplus.block.tileentity.TileEntityDecoration;
+import net.darkhax.eplus.block.tileentity.renderer.TileEntityDecorationRenderer;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -12,21 +16,25 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBookDecoration extends BlockContainer {
+public class BlockBookDecoration extends BlockContainer implements ITileEntityBlock {
 
     private static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.3d, 0.6d, 0.3d, 0.6d, 0.9d, 0.6d);
+
+    public static final String[] TYPES = new String[] { "eplus", "vanilla", "prismarine", "nether", "tartarite", "white", "metal" };
 
     public BlockBookDecoration () {
 
         super(Material.WOOD);
         this.setHardness(1.5F);
         this.setLightLevel(0.9375F);
-        this.setUnlocalizedName("eplus.enchantmentbook");
     }
 
     @Override
@@ -142,5 +150,27 @@ public class BlockBookDecoration extends BlockContainer {
         tag.setInteger("Color", tile.color);
         stack.setTagCompound(tag);
         return stack;
+    }
+
+    @Override
+    public void getSubBlocks (CreativeTabs tab, NonNullList<ItemStack> items) {
+
+        for (int meta = 0; meta < TYPES.length; meta++) {
+
+            items.add(new ItemStack(this, 1, meta));
+        }
+    }
+
+    @Override
+    public Class<? extends TileEntity> getTileEntityClass () {
+
+        return TileEntityDecoration.class;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TileEntitySpecialRenderer<?> getTileRenderer () {
+
+        return new TileEntityDecorationRenderer();
     }
 }

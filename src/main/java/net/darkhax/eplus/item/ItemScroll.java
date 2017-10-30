@@ -4,14 +4,17 @@ import java.util.List;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
+import net.darkhax.bookshelf.item.IColorfulItem;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.ParticleUtils;
 import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.bookshelf.util.StackUtils;
-import net.darkhax.eplus.EnchantingPlus;
+import net.darkhax.eplus.client.renderer.color.ScrollColorHandler;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
+import net.darkhax.eplus.libs.Content;
 import net.darkhax.eplus.libs.EPlusUtils;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,15 +36,13 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemScroll extends Item {
+public class ItemScroll extends Item implements IColorfulItem {
 
     public static final String SCROLL_TAG = "ScrollEnchantment";
 
     public ItemScroll () {
 
-        this.setUnlocalizedName("eplus.scroll");
         this.setMaxStackSize(16);
-        this.setCreativeTab(EnchantingPlus.tabEplus);
         this.setHasSubtypes(true);
     }
 
@@ -52,7 +53,7 @@ public class ItemScroll extends Item {
 
     public static ItemStack createScroll (Enchantment enchantment) {
 
-        return enchantScroll(new ItemStack(ContentHandler.itemScroll), enchantment);
+        return enchantScroll(new ItemStack(Content.itemEnchantedScroll), enchantment);
     }
 
     public static Enchantment readScroll (ItemStack stack) {
@@ -158,5 +159,12 @@ public class ItemScroll extends Item {
 
             tip.add(I18n.format("tooltip.eplus.invalid"));
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IItemColor getColorHandler () {
+
+        return ScrollColorHandler.INSTANCE;
     }
 }

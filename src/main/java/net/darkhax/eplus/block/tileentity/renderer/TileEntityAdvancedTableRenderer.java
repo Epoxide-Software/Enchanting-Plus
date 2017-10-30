@@ -1,6 +1,6 @@
-package net.darkhax.eplus.client.renderer;
+package net.darkhax.eplus.block.tileentity.renderer;
 
-import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
+import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

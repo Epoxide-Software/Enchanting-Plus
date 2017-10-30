@@ -1,20 +1,19 @@
 #Enchanting Plus English Language File
 
-#Item Names
-item.eplus.tableUpgrade.name=Table Upgrade
-item.eplus.scroll.name=Enchanted Scroll
-item.eplus.book.eplus.name=Enchanting Plus Book
-item.eplus.book.vanilla.name=Enchanting Book
-item.eplus.book.prismarine.name=Prismarine Book
-item.eplus.book.nether.name=Nether Book
-item.eplus.book.tartarite.name=Tartarite Book
-item.eplus.book.white.name=Pale Book
-item.eplus.book.metal.name=Metal Book
-
 #Block Names
-tile.eplus.advancedtable.name=Advanced Enchantment Table
-tile.eplus.arcaneInscriber.name=Arcane Inscriber
-tile.eplus.enchantmentbook.name=Enchanted Book
+tile.eplus.advanced.table.name=Advanced Enchantment Table
+tile.eplus.decorative.book.eplus.name=Enchanting Plus Book
+tile.eplus.decorative.book.vanilla.name=Enchanting Book
+tile.eplus.decorative.book.prismarine.name=Prismarine Book
+tile.eplus.decorative.book.nether.name=Nether Book
+tile.eplus.decorative.book.tartarite.name=Tartarite Book
+tile.eplus.decorative.book.white.name=Pale Book
+tile.eplus.decorative.book.metal.name=Metal Book
+
+#Item Names
+item.eplus.table.upgrade.name=Table Upgrade
+item.eplus.enchanted.scroll.name=Enchanted Scroll
+
 
 #Tooltips
 tooltip.eplus.enchantment=Enchantment

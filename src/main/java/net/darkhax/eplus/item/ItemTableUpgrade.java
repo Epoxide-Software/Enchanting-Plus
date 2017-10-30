@@ -1,8 +1,7 @@
 package net.darkhax.eplus.item;
 
-import net.darkhax.eplus.EnchantingPlus;
-import net.darkhax.eplus.handler.ContentHandler;
-import net.darkhax.eplus.tileentity.TileEntityAdvancedTable;
+import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
+import net.darkhax.eplus.libs.Content;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -18,8 +17,6 @@ public class ItemTableUpgrade extends Item {
     public ItemTableUpgrade () {
 
         this.setMaxStackSize(16);
-        this.setUnlocalizedName("eplus.tableUpgrade");
-        this.setCreativeTab(EnchantingPlus.tabEplus);
     }
 
     @Override
@@ -29,7 +26,7 @@ public class ItemTableUpgrade extends Item {
 
         if (block == Blocks.ENCHANTING_TABLE) {
 
-            worldIn.setBlockState(pos, ContentHandler.blockAdvancedTable.getDefaultState());
+            worldIn.setBlockState(pos, Content.blockAdvancedTable.getDefaultState());
             worldIn.setTileEntity(pos, new TileEntityAdvancedTable());
 
             if (!playerIn.capabilities.isCreativeMode) {
