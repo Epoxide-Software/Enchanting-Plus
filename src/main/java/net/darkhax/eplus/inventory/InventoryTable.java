@@ -1,6 +1,7 @@
 package net.darkhax.eplus.inventory;
 
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.ItemStack;
 
 public class InventoryTable extends InventoryBasic {
 
@@ -10,6 +11,22 @@ public class InventoryTable extends InventoryBasic {
 
         super(inventoryTitle, customName, slotsCount);
         this.container = container;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot (int index) {
+
+        this.container.table.stack = ItemStack.EMPTY;
+        this.container.table.markDirty();
+        return super.removeStackFromSlot(index);
+    }
+
+    @Override
+    public void setInventorySlotContents (int index, ItemStack stack) {
+
+        this.container.table.stack = stack;
+        this.container.table.markDirty();
+        super.setInventorySlotContents(index, stack);
     }
 
     @Override

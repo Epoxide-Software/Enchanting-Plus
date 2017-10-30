@@ -203,7 +203,7 @@ public class GuiAdvancedTable extends GuiContainer {
         if (this.container.getItem().isEmpty()) {
             information.add(this.fontRenderer.listFormattedStringToWidth(I18n.format("tooltip.eplus.additem"), maxWidth));
         }
-        else if (this.enchantments.size() == 0 && ConfigurationHandler.useQuestMode) {
+        else if (this.enchantments != null && this.enchantments.size() == 0 && ConfigurationHandler.useQuestMode) {
             information.add(this.fontRenderer.listFormattedStringToWidth(I18n.format("tooltip.eplus.noench"), maxWidth));
         }
 

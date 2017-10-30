@@ -10,6 +10,7 @@ import net.darkhax.bookshelf.inventory.SlotArmor;
 import net.darkhax.bookshelf.util.EnchantmentUtils;
 import net.darkhax.bookshelf.util.EntityUtils;
 import net.darkhax.eplus.EnchantingPlus;
+import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
@@ -27,6 +28,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -37,6 +39,8 @@ public class ContainerAdvancedTable extends Container {
     private final World world;
     private final BlockPos pos;
     private final EntityPlayer player;
+    public final TileEntityAdvancedTable table;
+
     private final IInventory tableInventory = new InventoryTable(this, "Enchant", true, 1);
 
     private Map<Enchantment, Integer> enchantments = new HashMap<>();
@@ -46,6 +50,11 @@ public class ContainerAdvancedTable extends Container {
         this.world = world;
         this.pos = pos;
         this.player = inventory.player;
+
+        final TileEntity tile = world.getTileEntity(pos);
+        this.table = tile instanceof TileEntityAdvancedTable ? (TileEntityAdvancedTable) tile : null;
+
+        this.tableInventory.setInventorySlotContents(0, this.table.stack);
 
         final int guiOffest = 26;
 
@@ -74,25 +83,6 @@ public class ContainerAdvancedTable extends Container {
     public boolean canInteractWith (EntityPlayer entityPlayer) {
 
         return entityPlayer.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D && !entityPlayer.isDead;
-    }
-
-    @Override
-    public void onContainerClosed (EntityPlayer player) {
-
-        super.onContainerClosed(player);
-
-        for (int i = 0; i < this.tableInventory.getSizeInventory(); i++) {
-
-            final ItemStack stack = this.tableInventory.getStackInSlot(i);
-
-            if (!stack.isEmpty()) {
-                if (!player.inventory.addItemStackToInventory(stack)) {
-                    if (!player.world.isRemote) {
-                        player.entityDropItem(stack, 0.2f);
-                    }
-                }
-            }
-        }
     }
 
     @Override

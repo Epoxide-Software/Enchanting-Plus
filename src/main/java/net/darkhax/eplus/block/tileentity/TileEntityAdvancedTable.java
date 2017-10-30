@@ -1,21 +1,21 @@
 package net.darkhax.eplus.block.tileentity;
 
-import java.util.Random;
-
+import net.darkhax.bookshelf.block.tileentity.TileEntityBasicTickable;
+import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerEnchantment;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IInteractionObject;
 
-public class TileEntityAdvancedTable extends TileEntity implements ITickable, IInteractionObject {
+public class TileEntityAdvancedTable extends TileEntityBasicTickable implements IInteractionObject {
 
-    private static Random rand = new Random();
+    public ItemStack stack = ItemStack.EMPTY;
 
     public int tickCount;
     public float pageFlip;
@@ -43,7 +43,7 @@ public class TileEntityAdvancedTable extends TileEntity implements ITickable, II
     @Override
     public String getGuiID () {
 
-        return "darkutils:enchanting_table";
+        return "eplus:enchanting_table";
     }
 
     @Override
@@ -59,7 +59,19 @@ public class TileEntityAdvancedTable extends TileEntity implements ITickable, II
     }
 
     @Override
-    public void update () {
+    public void writeNBT (NBTTagCompound dataTag) {
+
+        dataTag.setTag("HeldItem", this.stack.writeToNBT(new NBTTagCompound()));
+    }
+
+    @Override
+    public void readNBT (NBTTagCompound dataTag) {
+
+        this.stack = new ItemStack(dataTag.getCompoundTag("HeldItem"));
+    }
+
+    @Override
+    public void onEntityUpdate () {
 
         this.bookSpreadPrev = this.bookSpread;
         this.bookRotationPrev = this.bookRotation;
@@ -71,11 +83,11 @@ public class TileEntityAdvancedTable extends TileEntity implements ITickable, II
             this.offset = (float) MathHelper.atan2(d1, d0);
             this.bookSpread += 0.1F;
 
-            if (this.bookSpread < 0.5F || rand.nextInt(40) == 0) {
+            if (this.bookSpread < 0.5F || Constants.RANDOM.nextInt(40) == 0) {
                 final float f1 = this.flipRandom;
 
                 while (true) {
-                    this.flipRandom += rand.nextInt(4) - rand.nextInt(4);
+                    this.flipRandom += Constants.RANDOM.nextInt(4) - Constants.RANDOM.nextInt(4);
 
                     if (f1 != this.flipRandom) {
                         break;
@@ -123,5 +135,6 @@ public class TileEntityAdvancedTable extends TileEntity implements ITickable, II
         f = MathHelper.clamp(f, -f3, f3);
         this.flipTurn += (f - this.flipTurn) * 0.9F;
         this.pageFlip += this.flipTurn;
+
     }
 }
