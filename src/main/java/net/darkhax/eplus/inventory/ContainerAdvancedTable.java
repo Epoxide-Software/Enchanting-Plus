@@ -9,10 +9,10 @@ import java.util.Map;
 import net.darkhax.bookshelf.inventory.SlotArmor;
 import net.darkhax.bookshelf.util.EnchantmentUtils;
 import net.darkhax.bookshelf.util.EntityUtils;
+import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
-import net.darkhax.eplus.libs.Constants;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantment.Rarity;
@@ -223,7 +223,7 @@ public class ContainerAdvancedTable extends Container {
 
         if (clientCost != serverCost) {
 
-            Constants.LOG.warn(player.getDisplayNameString() + " tried to enchant " + itemstack.getDisplayName() + " but the costs were not in sync!");
+            EnchantingPlus.LOG.warn(player.getDisplayNameString() + " tried to enchant " + itemstack.getDisplayName() + " but the costs were not in sync!");
             return;
         }
 

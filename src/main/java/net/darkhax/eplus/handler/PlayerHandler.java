@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.common.network.packet.PacketRequestSync;
 import net.darkhax.eplus.common.network.packet.PacketSyncEnchantUnlocks;
-import net.darkhax.eplus.libs.Constants;
 import net.darkhax.eplus.libs.EPlusUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -66,7 +65,7 @@ public class PlayerHandler {
     public void attachCapabilities (AttachCapabilitiesEvent<Entity> event) {
 
         if (event.getObject() instanceof EntityPlayer) {
-            event.addCapability(new ResourceLocation(Constants.MOD_ID, "PlayerData"), new Provider((EntityPlayer) event.getObject()));
+            event.addCapability(new ResourceLocation("eplus", "PlayerData"), new Provider((EntityPlayer) event.getObject()));
         }
     }
 
@@ -124,7 +123,7 @@ public class PlayerHandler {
 
             if (enchant == null) {
 
-                Constants.LOG.warn("Hello null");
+                EnchantingPlus.LOG.warn("Hello null");
             }
         }
 
@@ -180,7 +179,7 @@ public class PlayerHandler {
 
                 else {
 
-                    Constants.LOG.info("Attempted to save null enchantment for {}, it will be discarded.", instance.getPlayer().getDisplayName().getUnformattedText());
+                    EnchantingPlus.LOG.info("Attempted to save null enchantment for {}, it will be discarded.", instance.getPlayer().getDisplayName().getUnformattedText());
                 }
             }
 
@@ -207,7 +206,7 @@ public class PlayerHandler {
 
                 else {
 
-                    Constants.LOG.info("Attempted to read null enchantment for {}, it will be discarded.", instance.getPlayer().getDisplayName().getUnformattedText());
+                    EnchantingPlus.LOG.info("Attempted to read null enchantment for {}, it will be discarded.", instance.getPlayer().getDisplayName().getUnformattedText());
                 }
             }
         }

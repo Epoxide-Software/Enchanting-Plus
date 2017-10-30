@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 
 public class Content {
 
-    public static RegistryHelper REGISTRY = new RegistryHelper(Constants.MOD_ID).setTab(new CreativeTabEPlus()).enableAutoRegistration();
+    public static RegistryHelper REGISTRY = new RegistryHelper("eplus").setTab(new CreativeTabEPlus()).enableAutoRegistration();
 
     // BLOCKS
     public static Block blockAdvancedTable;

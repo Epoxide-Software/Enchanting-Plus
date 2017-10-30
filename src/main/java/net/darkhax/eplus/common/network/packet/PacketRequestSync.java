@@ -1,8 +1,8 @@
 package net.darkhax.eplus.common.network.packet;
 
 import net.darkhax.bookshelf.network.SerializableMessage;
+import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.handler.PlayerHandler;
-import net.darkhax.eplus.libs.Constants;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
@@ -19,7 +19,7 @@ public class PacketRequestSync extends SerializableMessage {
     @Override
     public IMessage handleMessage (MessageContext context) {
 
-        Constants.LOG.info("Recieved sync request from {}", context.getServerHandler().player.getName());
+        EnchantingPlus.LOG.info("Recieved sync request from {}", context.getServerHandler().player.getName());
         PlayerHandler.getPlayerData(context.getServerHandler().player).syncData();
         return null;
     }

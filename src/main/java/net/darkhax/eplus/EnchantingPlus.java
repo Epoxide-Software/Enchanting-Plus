@@ -1,5 +1,6 @@
 package net.darkhax.eplus;
 
+import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.network.NetworkHandler;
 import net.darkhax.eplus.common.network.GuiHandler;
 import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
@@ -10,7 +11,6 @@ import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.IMCHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
-import net.darkhax.eplus.libs.Constants;
 import net.darkhax.eplus.libs.Content;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -22,10 +22,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER, guiFactory = Constants.FACTORY, dependencies = Constants.DEPENDENCIES)
+@Mod(modid = "eplus", name = "Enchanting Plus", version = "@VERSION@", dependencies = "required-after:bookshelf")
 public final class EnchantingPlus {
 
-    public static NetworkHandler NETWORK = new NetworkHandler(Constants.MOD_ID);
+    public static NetworkHandler NETWORK = new NetworkHandler("eplus");
+    public static final LoggingHelper LOG = new LoggingHelper("Enchanting Plus");
 
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
