@@ -14,6 +14,7 @@ import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.libs.Content;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
@@ -24,10 +25,13 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = "eplus", name = "Enchanting Plus", version = "@VERSION@", dependencies = "required-after:bookshelf", certificateFingerprint = "@FINGERPRINT@")
 public final class EnchantingPlus {
-
+    
     public static NetworkHandler NETWORK = new NetworkHandler("eplus");
     public static final LoggingHelper LOG = new LoggingHelper("Enchanting Plus");
 
+    @Instance("eplus")
+    public static EnchantingPlus instance;
+    
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
 
