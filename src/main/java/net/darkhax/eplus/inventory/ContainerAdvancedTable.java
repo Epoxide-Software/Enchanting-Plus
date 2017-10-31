@@ -202,17 +202,18 @@ public class ContainerAdvancedTable extends Container {
     public void updateItemStack (EntityPlayer player, List<EnchantmentData> enchantments, int clientCost) {
 
         final ItemStack itemstack = this.tableInventory.getStackInSlot(0);
-        final ArrayList<Enchantment> toRemove = new ArrayList<>();
-
-        final int serverCost = this.getTotalEnchantmentCost(enchantments);
-
+        
         if (itemstack.isEmpty()) {
+            
             return;
         }
+        
+        final ArrayList<Enchantment> toRemove = new ArrayList<>();
+        final int serverCost = this.getTotalEnchantmentCost(enchantments);
 
         if (clientCost != serverCost) {
 
-            EnchantingPlus.LOG.warn(player.getDisplayNameString() + " tried to enchant " + itemstack.getDisplayName() + " but the costs were not in sync!");
+            EnchantingPlus.LOG.warn("{} tried to enchant {} but the costs were not in sync! Client: {} Server: {}", player.getDisplayNameString(), itemstack.getDisplayName(), clientCost, serverCost);
             return;
         }
 
