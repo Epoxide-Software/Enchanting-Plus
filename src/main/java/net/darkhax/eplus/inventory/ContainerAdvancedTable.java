@@ -282,9 +282,6 @@ public class ContainerAdvancedTable extends Container {
             if (level > startingLevel) {
                 cost += this.enchantmentCost(enchData.enchantment, level, startingLevel);
             }
-            else if (level < startingLevel) {
-                cost += this.getRebate(enchData.enchantment, level, startingLevel);
-            }
         }
 
         return cost;
@@ -434,28 +431,6 @@ public class ContainerAdvancedTable extends Container {
     public Map<Enchantment, Integer> getEnchantments () {
 
         return this.enchantments;
-    }
-
-    /**
-     * Calculates the amount of experience to give the player for disenchanting their item.
-     *
-     * @param enchantment: The enchantment being removed.
-     * @param enchantmentLevel: The new amount of levels for the enchantment effect.
-     * @param existingLevel: The amount of levels for the enchantment effect before updating.
-     * @return int: The amount of experience points to give the player.
-     */
-    public int getRebate (Enchantment enchantment, int enchantmentLevel, Integer existingLevel) {
-
-        final ItemStack stack = this.tableInventory.getStackInSlot(0);
-
-        if (stack.isEmpty() && enchantmentLevel > enchantment.getMaxLevel()) {
-            return 0;
-        }
-
-        final int oldCost = (int) ((enchantment.getMaxEnchantability(existingLevel) - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
-        final int newCost = (int) ((enchantment.getMaxEnchantability(enchantmentLevel) - stack.getItem().getItemEnchantability(stack)) / 2 * ConfigurationHandler.costFactor);
-        final int returnAmount = (oldCost - newCost) / 2;
-        return -EnchantmentUtils.getExperienceFromLevel(returnAmount > 0 ? returnAmount : 0);
     }
 
     /**

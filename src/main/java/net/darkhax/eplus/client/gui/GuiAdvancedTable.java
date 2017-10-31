@@ -355,10 +355,6 @@ public class GuiAdvancedTable extends GuiContainer {
 
             this.totalCost = cost;
         }
-
-        else if (label.currentLevel < level && !label.locked) {
-            this.totalCost += this.container.getRebate(label.enchantment, label.currentLevel, level);
-        }
     }
 
     /**
