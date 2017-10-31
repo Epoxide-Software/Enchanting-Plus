@@ -32,13 +32,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 public class ContainerAdvancedTable extends Container {
 
-    private final World world;
-    private final BlockPos pos;
-    private final EntityPlayer player;
+    public final World world;
+    public final BlockPos pos;
+    public final EntityPlayer player;
     public final TileEntityAdvancedTable table;
 
     private final IInventory tableInventory = new InventoryTable(this, "Enchant", true, 1);
@@ -389,7 +388,7 @@ public class ContainerAdvancedTable extends Container {
 
         final int levelCost = EnchantmentUtils.getLevelsFromExperience(cost);
 
-        if (levelCost > this.getEnchantingPower()) {
+        if (levelCost > EnchantmentUtils.getEnchantingPower(this.world, this.pos)) {
 
             if (sendChat) {
                 player.sendMessage(new TextComponentTranslation("chat.eplus.morebooks", levelCost));
@@ -523,38 +522,5 @@ public class ContainerAdvancedTable extends Container {
     public ItemStack getItem () {
 
         return this.tableInventory.getStackInSlot(0);
-    }
-
-    /**
-     * Calculates the enchantment power in the surrounding blocks.
-     *
-     * @return The total enchanting power in the nearby blocks.
-     */
-    public float getEnchantingPower () {
-
-        final int x = this.pos.getX();
-        final int y = this.pos.getY();
-        final int z = this.pos.getZ();
-
-        float cost = ConfigurationHandler.bonusShelves;
-
-        for (int zOffset = -1; zOffset <= 1; zOffset++) {
-            for (int xOffset = -1; xOffset <= 1; xOffset++) {
-                if ((zOffset != 0 || xOffset != 0) && this.world.isAirBlock(new BlockPos(x + xOffset, y, z + zOffset)) && this.world.isAirBlock(new BlockPos(x + xOffset, y + 1, z + zOffset))) {
-
-                    cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y, z + zOffset * 2));
-                    cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y + 1, z + zOffset * 2));
-
-                    if (xOffset != 0 && zOffset != 0) {
-                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y, z + zOffset));
-                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset * 2, y + 1, z + zOffset));
-                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset, y, z + zOffset * 2));
-                        cost += ForgeHooks.getEnchantPower(this.world, new BlockPos(x + xOffset, y + 1, z + zOffset * 2));
-                    }
-                }
-            }
-        }
-
-        return cost * 2;
     }
 }

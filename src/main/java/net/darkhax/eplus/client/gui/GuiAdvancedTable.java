@@ -198,7 +198,7 @@ public class GuiAdvancedTable extends GuiContainer {
             }
         }
 
-        information.add(this.fontRenderer.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.maxlevel"), this.container.getEnchantingPower()), maxWidth));
+        information.add(this.fontRenderer.listFormattedStringToWidth(String.format("%s: %s", I18n.format("tooltip.eplus.maxlevel"), EnchantmentUtils.getEnchantingPower(this.container.world, this.container.pos)), maxWidth));
 
         if (this.container.getItem().isEmpty()) {
             information.add(this.fontRenderer.listFormattedStringToWidth(I18n.format("tooltip.eplus.additem"), maxWidth));

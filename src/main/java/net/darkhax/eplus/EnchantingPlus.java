@@ -25,13 +25,13 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = "eplus", name = "Enchanting Plus", version = "@VERSION@", dependencies = "required-after:bookshelf", certificateFingerprint = "@FINGERPRINT@")
 public final class EnchantingPlus {
-    
+
     public static NetworkHandler NETWORK = new NetworkHandler("eplus");
     public static final LoggingHelper LOG = new LoggingHelper("Enchanting Plus");
 
     @Instance("eplus")
     public static EnchantingPlus instance;
-    
+
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
 
