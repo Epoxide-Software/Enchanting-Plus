@@ -16,7 +16,6 @@ import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -202,12 +201,12 @@ public class ContainerAdvancedTable extends Container {
     public void updateItemStack (EntityPlayer player, List<EnchantmentData> enchantments, int clientCost) {
 
         final ItemStack itemstack = this.tableInventory.getStackInSlot(0);
-        
+
         if (itemstack.isEmpty()) {
-            
+
             return;
         }
-        
+
         final ArrayList<Enchantment> toRemove = new ArrayList<>();
         final int serverCost = this.getTotalEnchantmentCost(enchantments);
 
@@ -299,11 +298,46 @@ public class ContainerAdvancedTable extends Container {
      * @param stack: The ItemStack being enchanted.
      * @return int: The amount of experience levels that should be charged for the enchantment.
      */
+
+    /**
+     * Calculates the amount of experience an enchantment costs to be applied to a tool.
+     *
+     * @param enchantment The enchantment to apply.
+     * @param level The amount of levels.
+     * @return The experience cost of an enchantment.
+     */
     public static int calculateEnchantmentCost (Enchantment enchantment, int level) {
 
-        int cost = (int) Math.floor(Math.max(1F, 1F + 2F * level * ((float) level / enchantment.getMaxLevel()) + (10 - enchantment.getRarity().getWeight()) * 0.2F));
-        cost = cost + (int) (cost * ConfigurationHandler.costFactor);
-        cost = cost + (enchantment.getRarity() == Rarity.COMMON ? 1 : enchantment.getRarity() == Rarity.UNCOMMON ? 5 : enchantment.getRarity() == Rarity.RARE ? 10 : 20);
+        // Base cost is equal to roughly 2.5 levels of EXP.
+        int cost = 25;
+
+        // Cost is multiplied up to 10, based on rarity of the enchant.
+        // Rarer the enchant, higher the cost.
+        cost *= Math.max(11 - enchantment.getRarity().getWeight(), 1);
+
+        // Linear cost increase based on level.
+        cost *= level;
+
+        // The cost factor is applied. Default is 1.5.
+        // TODO make configurable
+        cost *= 1.5f;
+
+        // Curses cost even more to apply
+        if (enchantment.isCurse()) {
+
+            // TODO make configurable
+            cost *= 1.5f;
+        }
+
+        // Treasures cost more to apply
+        if (enchantment.isTreasureEnchantment()) {
+
+            // TODO make configurable
+            cost *= 1.5f;
+        }
+
+        // TODO current output is in levels. Should be in exp.
+        // EnchantmentUtils.getExperienceFromLevel(int level)
         return cost;
     }
 
