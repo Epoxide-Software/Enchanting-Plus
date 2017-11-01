@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.darkhax.bookshelf.network.SerializableMessage;
 import net.darkhax.bookshelf.util.PlayerUtils;
-import net.darkhax.eplus.inventory.ContainerAdvancedTable;
+import net.darkhax.eplus.inventory.n.ContainerAdvancedTable;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -42,9 +42,9 @@ public class PacketEnchantItem extends SerializableMessage {
         final EntityPlayer player = context.side == Side.CLIENT ? PlayerUtils.getClientPlayer() : context.getServerHandler().player;
 
         if (player.openContainer instanceof ContainerAdvancedTable) {
-
-            ((ContainerAdvancedTable) player.openContainer).updateItemStack(player, Arrays.asList(this.enchantments), this.enchantCost);
-            player.openContainer.detectAndSendChanges();
+            //TODO implement
+//            ((ContainerAdvancedTable) player.openContainer).updateItemStack(player, Arrays.asList(this.enchantments), this.enchantCost);
+//            player.openContainer.detectAndSendChanges();
         }
 
         return null;

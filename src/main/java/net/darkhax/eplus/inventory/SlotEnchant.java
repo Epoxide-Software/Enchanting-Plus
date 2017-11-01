@@ -1,26 +1,30 @@
 package net.darkhax.eplus.inventory;
 
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.SlotItemHandler;
 
-public class SlotEnchant extends Slot {
-
-    public SlotEnchant (ContainerAdvancedTable container, IInventory tableInventory, int slotIndex, int xPos, int yPos) {
-
-        super(tableInventory, slotIndex, xPos, yPos);
+public class SlotEnchant extends SlotItemHandler {
+    
+    private final PredicateEnchantableItem predicate;
+    
+    public SlotEnchant(TileEntityAdvancedTable tile, int index, int xPosition, int yPosition) {
+        super(tile.inventory, index, xPosition, yPosition);
+        predicate = new PredicateEnchantableItem();
     }
-
+    
     @Override
-    public int getSlotStackLimit () {
-
+    public int getSlotStackLimit() {
+        
         return 1;
     }
-
+    
     @Override
-    public boolean isItemValid (ItemStack stack) {
-
-        return stack.isItemEnchantable() || stack.isItemEnchanted() || stack.getItem() == Items.BOOK || stack.getItem() == Items.ENCHANTED_BOOK;
+    public boolean isItemValid(ItemStack stack) {
+        return predicate.test(stack);
     }
+    
+   
+    
+    
 }
