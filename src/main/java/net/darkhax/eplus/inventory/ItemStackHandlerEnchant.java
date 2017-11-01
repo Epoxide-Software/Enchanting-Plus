@@ -1,11 +1,10 @@
 package net.darkhax.eplus.inventory;
 
+import net.darkhax.bookshelf.util.InventoryUtils;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -90,35 +89,25 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
     @Override
     public ItemStack extractItem (int slot, int amount, boolean simulate) {
 
-        if (amount == 0) {
-            return ItemStack.EMPTY;
-        }
-
         this.validateSlotIndex(slot);
 
         final ItemStack existing = this.stacks.get(slot);
 
-        if (existing.isEmpty()) {
+        if (amount <= 0 || existing.isEmpty()) {
+            
             return ItemStack.EMPTY;
         }
 
         final int toExtract = Math.min(amount, existing.getMaxStackSize());
+        final boolean isCompletelyEmpty = existing.getCount() <= toExtract;
 
-        if (existing.getCount() <= toExtract) {
-            if (!simulate) {
-                this.stacks.set(slot, ItemStack.EMPTY);
-                this.onContentsChanged(slot);
-            }
-            return existing;
+        if (!simulate) {
+            
+            this.stacks.set(slot, (isCompletelyEmpty) ? ItemStack.EMPTY : ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
+            this.onContentsChanged(slot);
         }
-        else {
-            if (!simulate) {
-                this.stacks.set(slot, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
-                this.onContentsChanged(slot);
-            }
-
-            return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
-        }
+        
+        return (isCompletelyEmpty) ? existing : ItemHandlerHelper.copyStackWithSize(existing, toExtract);
     }
 
     @Override
@@ -130,34 +119,14 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
     @Override
     public NBTTagCompound serializeNBT () {
 
-        final NBTTagList nbtTagList = new NBTTagList();
-        for (int i = 0; i < this.stacks.size(); i++) {
-            if (!this.stacks.get(i).isEmpty()) {
-                final NBTTagCompound itemTag = new NBTTagCompound();
-                itemTag.setInteger("Slot", i);
-                this.stacks.get(i).writeToNBT(itemTag);
-                nbtTagList.appendTag(itemTag);
-            }
-        }
-        final NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setTag("Items", nbtTagList);
-        nbt.setInteger("Size", this.stacks.size());
-        return nbt;
+        return InventoryUtils.writeInventory(this.stacks);
     }
 
     @Override
-    public void deserializeNBT (NBTTagCompound nbt) {
+    public void deserializeNBT (NBTTagCompound tag) {
 
-        this.setSize(nbt.hasKey("Size", Constants.NBT.TAG_INT) ? nbt.getInteger("Size") : this.stacks.size());
-        final NBTTagList tagList = nbt.getTagList("Items", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < tagList.tagCount(); i++) {
-            final NBTTagCompound itemTags = tagList.getCompoundTagAt(i);
-            final int slot = itemTags.getInteger("Slot");
-
-            if (slot >= 0 && slot < this.stacks.size()) {
-                this.stacks.set(slot, new ItemStack(itemTags));
-            }
-        }
+        this.stacks = InventoryUtils.readInventory(tag);
+        this.setSize(this.stacks.size());
         this.onLoad();
     }
 
@@ -176,10 +145,8 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
     protected void onContentsChanged (int slot) {
 
         if (slot == 0) {
+            
             this.tile.updateItem();
-        }
-        if (!this.tile.getWorld().isRemote) {
-            this.tile.markDirty();
         }
     }
 }
