@@ -15,7 +15,6 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
     public TileEntityAdvancedTable tile;
     protected NonNullList<ItemStack> stacks;
-    private final PredicateEnchantableItem predicate = new PredicateEnchantableItem();;
 
     public ItemStackHandlerEnchant (TileEntityAdvancedTable tile, int size) {
 
@@ -61,7 +60,9 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
     @Override
     public ItemStack insertItem (int slot, ItemStack stack, boolean simulate) {
 
+        // Prevents inserting air
         if (stack.isEmpty() || stack.getCount() == 0) {
+            
             return ItemStack.EMPTY;
         }
 
@@ -69,36 +70,21 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
         final ItemStack existing = this.stacks.get(slot);
 
-        int limit = this.getStackLimit(slot, stack);
-
-        if (!existing.isEmpty()) {
-            if (!ItemHandlerHelper.canItemStacksStack(stack, existing)) {
-                return stack;
-            }
-
-            limit -= existing.getCount();
-        }
-
-        if (slot == 0 && !this.predicate.test(stack)) {
-            return stack;
-        }
-        if (limit <= 0) {
+        // If existing exists, prevent all new entries.
+        if (!existing.isEmpty() || !PredicateEnchantableItem.INSTANCE.test(stack)) {
+            
             return stack;
         }
 
-        final boolean reachedLimit = stack.getCount() > limit;
-
+        // Inserts new item
         if (!simulate) {
-            if (existing.isEmpty()) {
-                this.stacks.set(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
-            }
-            else {
-                existing.grow(reachedLimit ? limit : stack.getCount());
-            }
+            
+            this.stacks.set(slot, ItemHandlerHelper.copyStackWithSize(stack, this.getSlotLimit(slot)));
             this.onContentsChanged(slot);
         }
 
-        return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
+        // Returns the decreased item
+        return ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - this.getSlotLimit(0));
     }
 
     @Override
@@ -138,12 +124,7 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
     @Override
     public int getSlotLimit (int slot) {
 
-        return 64;
-    }
-
-    protected int getStackLimit (int slot, ItemStack stack) {
-
-        return stack.getMaxStackSize();
+        return 1;
     }
 
     @Override
@@ -183,6 +164,7 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
     protected void validateSlotIndex (int slot) {
 
         if (slot < 0 || slot >= this.stacks.size()) {
+            // TODO add a warning through logger
             throw new RuntimeException("Slot " + slot + " not in valid range - [0," + this.stacks.size() + ")");
         }
     }
