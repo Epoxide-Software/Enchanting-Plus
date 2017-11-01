@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.lwjgl.input.Mouse;
 
+import net.darkhax.bookshelf.client.gui.GuiItemButton;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.client.gui.GuiEnchantmentLabel;
 import net.darkhax.eplus.inventory.n.ContainerAdvancedTable;
