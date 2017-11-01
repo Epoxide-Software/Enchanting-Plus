@@ -7,10 +7,10 @@ import java.util.List;
 import org.lwjgl.input.Mouse;
 
 import net.darkhax.bookshelf.client.gui.GuiItemButton;
+import net.darkhax.bookshelf.lib.EnchantData;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.client.gui.GuiEnchantmentLabel;
 import net.darkhax.eplus.inventory.n.ContainerAdvancedTable;
-import net.darkhax.eplus.libs.EnchantData;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
