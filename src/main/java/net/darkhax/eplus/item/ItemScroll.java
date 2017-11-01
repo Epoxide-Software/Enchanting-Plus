@@ -94,8 +94,9 @@ public class ItemScroll extends Item implements IColorfulItem {
 
             System.out.println(readScroll(stack).getRegistryType().toString());
             PlayerHandler.getPlayerData((EntityPlayer) entityLiving).unlockEnchantment(readScroll(stack));
-            if(!worldIn.isRemote )
+            if (!worldIn.isRemote) {
                 stack.shrink(1);
+            }
         }
 
         return stack;

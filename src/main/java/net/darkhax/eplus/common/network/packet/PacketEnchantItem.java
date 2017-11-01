@@ -1,6 +1,5 @@
 package net.darkhax.eplus.common.network.packet;
 
-import java.util.Arrays;
 import java.util.List;
 
 import net.darkhax.bookshelf.network.SerializableMessage;
@@ -42,9 +41,10 @@ public class PacketEnchantItem extends SerializableMessage {
         final EntityPlayer player = context.side == Side.CLIENT ? PlayerUtils.getClientPlayer() : context.getServerHandler().player;
 
         if (player.openContainer instanceof ContainerAdvancedTable) {
-            //TODO implement
-//            ((ContainerAdvancedTable) player.openContainer).updateItemStack(player, Arrays.asList(this.enchantments), this.enchantCost);
-//            player.openContainer.detectAndSendChanges();
+            // TODO implement
+            // ((ContainerAdvancedTable) player.openContainer).updateItemStack(player,
+            // Arrays.asList(this.enchantments), this.enchantCost);
+            // player.openContainer.detectAndSendChanges();
         }
 
         return null;
