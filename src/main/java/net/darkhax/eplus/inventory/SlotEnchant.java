@@ -6,12 +6,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class SlotEnchant extends SlotItemHandler {
 
-    private final PredicateEnchantableItem predicate;
-
     public SlotEnchant (TileEntityAdvancedTable tile, int index, int xPosition, int yPosition) {
 
         super(tile.inventory, index, xPosition, yPosition);
-        this.predicate = new PredicateEnchantableItem();
     }
 
     @Override
@@ -23,7 +20,6 @@ public class SlotEnchant extends SlotItemHandler {
     @Override
     public boolean isItemValid (ItemStack stack) {
 
-        return this.predicate.test(stack);
+        return PredicateEnchantableItem.INSTANCE.test(stack);
     }
-
 }
