@@ -3,7 +3,6 @@ package net.darkhax.eplus;
 import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.network.NetworkHandler;
 import net.darkhax.eplus.common.network.GuiHandler;
-import net.darkhax.eplus.common.network.packet.PacketEnchantItem;
 import net.darkhax.eplus.common.network.packet.PacketRequestSync;
 import net.darkhax.eplus.common.network.packet.PacketSyncEnchantUnlock;
 import net.darkhax.eplus.common.network.packet.PacketSyncEnchantUnlocks;
@@ -41,7 +40,6 @@ public final class EnchantingPlus {
         NETWORK.register(PacketRequestSync.class, Side.SERVER);
         NETWORK.register(PacketSyncEnchantUnlock.class, Side.CLIENT);
         NETWORK.register(PacketSyncEnchantUnlocks.class, Side.CLIENT);
-        NETWORK.register(PacketEnchantItem.class, Side.SERVER);
         NETWORK.register(PacketTableSync.class, Side.CLIENT);
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
