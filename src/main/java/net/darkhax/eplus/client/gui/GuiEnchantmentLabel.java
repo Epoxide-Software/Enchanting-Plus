@@ -97,28 +97,32 @@ public class GuiEnchantmentLabel extends Gui {
      * @param prevX The previous slider position.
      */
     public void updateSlider (int xPos, int prevX) {
-
+    
+    
         if (this.locked) {
             return;
         }
+        if(xPos > prevX+width){
+            return;
+        }
         this.sliderX = prevX + xPos;
-
+    
         if (this.sliderX <= prevX) {
             this.sliderX = prevX;
         }
-
-        if (this.sliderX >= prevX + this.width) {
-            this.sliderX = prevX + this.width;
+    
+        if (this.sliderX >= prevX + this.width-6) {
+            this.sliderX = prevX + this.width-6;
         }
-
-        final float index = xPos / (float) this.width;
+    
+        final float index = xPos / (float) (this.width-10);
         final int tempLevel = (int) Math.floor(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
-
+    
         if (tempLevel >= this.initialLevel || ConfigurationHandler.allowDisenchanting && !this.tile.inventory.getStackInSlot(0).isItemDamaged()) {
             this.currentLevel = tempLevel;
         }
-
-        if (this.currentLevel < 0) {
+    
+        if (this.currentLevel <= 0) {
             this.currentLevel = 0;
         }
     }
