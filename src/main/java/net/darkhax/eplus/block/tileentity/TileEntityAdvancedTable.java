@@ -36,24 +36,25 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
         this.inventory = new ItemStackHandlerEnchant(this, 1);
     }
 
-    public List<Enchantment> enchantmentsValid = new ArrayList<>();
+    public List<Enchantment> validEnchantments = new ArrayList<>();
 
-    public List<EnchantmentData> enchantmentsCurrent = new ArrayList<>();
+    public List<EnchantmentData> existingEnchantments = new ArrayList<>();
 
-    public List<EnchantmentData> enchantmentsNew = new ArrayList<>();
+    public List<EnchantmentData> tableEnchantments = new ArrayList<>();
 
     public void updateItem () {
 
         final ItemStack stack = this.inventory.getStackInSlot(0);
-        this.enchantmentsValid.clear();
-        this.enchantmentsCurrent.clear();
-        this.enchantmentsNew.clear();
+        this.validEnchantments.clear();
+        this.existingEnchantments.clear();
+        this.tableEnchantments.clear();
+        
         if (!stack.isEmpty()) {
             if (stack.isItemEnchantable() || stack.isItemEnchanted()) {
                 for (final Map.Entry<Enchantment, Integer> entry : EnchantmentHelper.getEnchantments(stack).entrySet()) {
-                    this.enchantmentsCurrent.add(new EnchantData(entry.getKey(), entry.getValue()));
+                    this.existingEnchantments.add(new EnchantData(entry.getKey(), entry.getValue()));
                 }
-                this.enchantmentsValid.addAll(this.getEnchantmentsForItem(stack));
+                this.validEnchantments.addAll(this.getEnchantmentsForItem(stack));
 
             }
         }
@@ -63,24 +64,24 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
         }
     }
 
-    @Override
-    public void markDirty () {
-
-        super.markDirty();
-    }
-
     private List<Enchantment> getEnchantmentsForItem (ItemStack stack) {
 
         final List<Enchantment> enchList = new ArrayList<>();
+        
         for (final Enchantment enchantment : Enchantment.REGISTRY) {
 
             if (stack.isItemEnchanted()) {
+                
                 if (enchantment.canApply(stack)) {
+                    
                     enchList.add(enchantment);
                 }
             }
+            
             else {
+                
                 if (enchantment.type.canEnchantItem(stack.getItem())) {
+                    
                     enchList.add(enchantment);
                 }
             }
@@ -90,7 +91,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
 
     public int getCurrentLevelForEnchant (Enchantment enchant) {
 
-        for (final EnchantmentData data : this.enchantmentsCurrent) {
+        for (final EnchantmentData data : this.existingEnchantments) {
             if (data.enchantment.getRegistryName().equals(enchant.getRegistryName())) {
                 return data.enchantmentLevel;
             }

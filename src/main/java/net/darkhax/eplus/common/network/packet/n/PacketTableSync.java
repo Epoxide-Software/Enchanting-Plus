@@ -38,8 +38,8 @@ public class PacketTableSync extends SerializableMessage {
 
     public PacketTableSync (TileEntityAdvancedTable tile) {
 
-        this.enchantmentsValid = this.getLocationsFromEnchants(tile.enchantmentsValid);
-        this.enchantmentsCurrent = tile.enchantmentsCurrent.toArray(new EnchantmentData[0]);
+        this.enchantmentsValid = this.getLocationsFromEnchants(tile.validEnchantments);
+        this.enchantmentsCurrent = tile.existingEnchantments.toArray(new EnchantmentData[0]);
 
         this.pos = tile.getPos();
     }
@@ -78,8 +78,8 @@ public class PacketTableSync extends SerializableMessage {
         }
         final World world = PlayerUtils.getClientPlayer().world;
         final TileEntityAdvancedTable tile = (TileEntityAdvancedTable) world.getTileEntity(this.pos);
-        tile.enchantmentsValid = new ArrayList<>(Arrays.asList(this.getEnchantsFromLocations(this.enchantmentsValid)));
-        tile.enchantmentsCurrent = new ArrayList<>(Arrays.asList(this.enchantmentsCurrent));
+        tile.validEnchantments = new ArrayList<>(Arrays.asList(this.getEnchantsFromLocations(this.enchantmentsValid)));
+        tile.existingEnchantments = new ArrayList<>(Arrays.asList(this.enchantmentsCurrent));
         if (Minecraft.getMinecraft().currentScreen instanceof GuiAdvancedTable) {
             ((GuiAdvancedTable) Minecraft.getMinecraft().currentScreen).updateLabels();
         }

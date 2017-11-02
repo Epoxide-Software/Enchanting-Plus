@@ -50,9 +50,9 @@ public class GuiAdvancedTable extends GuiContainer {
         super.initGui();
         this.buttonList.add(new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, new ItemStack(Items.ENCHANTED_BOOK)));
         this.enchantmentList.clear();
-        if (!this.table.enchantmentsValid.isEmpty()) {
+        if (!this.table.validEnchantments.isEmpty()) {
             int count = 0;
-            for (final Enchantment enchantment : this.table.enchantmentsValid) {
+            for (final Enchantment enchantment : this.table.validEnchantments) {
                 this.enchantmentList.add(new GuiEnchantmentLabel(this, this.table, enchantment, this.table.getCurrentLevelForEnchant(enchantment), 35 + 26 + this.guiLeft, 15 + this.guiTop + count++ * 18));
             }
         }
@@ -86,15 +86,15 @@ public class GuiAdvancedTable extends GuiContainer {
     public void updateLabels () {
 
         this.enchantmentList.clear();
-        if (!this.table.enchantmentsValid.isEmpty()) {
+        if (!this.table.validEnchantments.isEmpty()) {
             int count = 0;
-            for (int i = 0; i < this.table.enchantmentsValid.size(); i++) {
+            for (int i = 0; i < this.table.validEnchantments.size(); i++) {
                 if (i < this.listOffset) {
                     continue;
                 }
-                final Enchantment enchantment = this.table.enchantmentsValid.get(i);
+                final Enchantment enchantment = this.table.validEnchantments.get(i);
                 final GuiEnchantmentLabel label = new GuiEnchantmentLabel(this, this.table, enchantment, this.table.getCurrentLevelForEnchant(enchantment), 35 + 26 + this.guiLeft, 15 + this.guiTop + count++ * 18);
-                for (final EnchantmentData data : this.table.enchantmentsNew) {
+                for (final EnchantmentData data : this.table.tableEnchantments) {
                     if (data.enchantment == label.enchantment) {
                         label.currentLevel = data.enchantmentLevel;
                     }
@@ -111,12 +111,12 @@ public class GuiAdvancedTable extends GuiContainer {
         for (final GuiEnchantmentLabel label : this.enchantmentList) {
             label.locked = false;
             final Enchantment enchantment = label.enchantment;
-            for (final EnchantmentData data : this.table.enchantmentsCurrent) {
+            for (final EnchantmentData data : this.table.existingEnchantments) {
                 if (data.enchantment != enchantment && !data.enchantment.isCompatibleWith(enchantment)) {
                     label.locked = true;
                 }
             }
-            for (final EnchantmentData data : this.table.enchantmentsNew) {
+            for (final EnchantmentData data : this.table.tableEnchantments) {
                 if (data.enchantment != enchantment && !data.enchantment.isCompatibleWith(enchantment)) {
                     label.locked = true;
                 }
@@ -234,10 +234,10 @@ public class GuiAdvancedTable extends GuiContainer {
             this.selected.dragging = false;
             this.selected = null;
             this.wasSelecting = true;
-            this.table.enchantmentsNew.clear();
+            this.table.tableEnchantments.clear();
             for (final GuiEnchantmentLabel label : this.enchantmentList) {
                 if (label.currentLevel != label.initialLevel) {
-                    this.table.enchantmentsNew.add(new EnchantData(label.enchantment, label.currentLevel));
+                    this.table.tableEnchantments.add(new EnchantData(label.enchantment, label.currentLevel));
                 }
             }
 
@@ -259,11 +259,11 @@ public class GuiAdvancedTable extends GuiContainer {
                 this.selected = null;
                 return;
             }
-            this.table.enchantmentsNew.clear();
+            this.table.tableEnchantments.clear();
             // Something with this code forced hidden enchants to reset to their initial value
             for (final GuiEnchantmentLabel label : this.enchantmentList) {
                 if (label.currentLevel != label.initialLevel) {
-                    this.table.enchantmentsNew.add(new EnchantData(label.enchantment, label.currentLevel));
+                    this.table.tableEnchantments.add(new EnchantData(label.enchantment, label.currentLevel));
                 }
             }
 
