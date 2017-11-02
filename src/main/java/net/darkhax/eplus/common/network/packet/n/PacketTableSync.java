@@ -33,7 +33,7 @@ public class PacketTableSync extends SerializableMessage {
     public BlockPos pos;
 
     public PacketTableSync () {
-        
+
     }
 
     public PacketTableSync (TileEntityAdvancedTable tile) {

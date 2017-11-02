@@ -4,7 +4,8 @@ import net.darkhax.bookshelf.util.InventoryUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
@@ -62,7 +63,7 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
         // Prevents inserting air
         if (stack.isEmpty() || stack.getCount() == 0) {
-            
+
             return ItemStack.EMPTY;
         }
 
@@ -72,13 +73,13 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
         // If existing exists, prevent all new entries.
         if (!existing.isEmpty() || !PredicateEnchantableItem.INSTANCE.test(stack)) {
-            
+
             return stack;
         }
 
         // Inserts new item
         if (!simulate) {
-            
+
             this.stacks.set(slot, ItemHandlerHelper.copyStackWithSize(stack, this.getSlotLimit(slot)));
             this.onContentsChanged(slot);
         }
@@ -95,7 +96,7 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
         final ItemStack existing = this.stacks.get(slot);
 
         if (amount <= 0 || existing.isEmpty()) {
-            
+
             return ItemStack.EMPTY;
         }
 
@@ -103,12 +104,12 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
         final boolean isCompletelyEmpty = existing.getCount() <= toExtract;
 
         if (!simulate) {
-            
-            this.stacks.set(slot, (isCompletelyEmpty) ? ItemStack.EMPTY : ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
+
+            this.stacks.set(slot, isCompletelyEmpty ? ItemStack.EMPTY : ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
             this.onContentsChanged(slot);
         }
-        
-        return (isCompletelyEmpty) ? existing : ItemHandlerHelper.copyStackWithSize(existing, toExtract);
+
+        return isCompletelyEmpty ? existing : ItemHandlerHelper.copyStackWithSize(existing, toExtract);
     }
 
     @Override
@@ -125,16 +126,17 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
     @Override
     public void deserializeNBT (NBTTagCompound tag) {
-        this.setSize(((NBTTagList)tag.getTag("Items")).tagCount());
+
+        this.setSize(((NBTTagList) tag.getTag("Items")).tagCount());
         this.stacks = InventoryUtils.readInventory(tag);
-        
+
         this.onLoad();
     }
 
     protected void validateSlotIndex (int slot) {
 
         if (slot < 0 || slot >= this.stacks.size()) {
-            
+
             EnchantingPlus.LOG.warn("Attempted to access invalid slot {}. Valid range: 0 - {}", slot, this.stacks.size());
             throw new IllegalArgumentException("Slot " + slot + " not in valid range - [0," + this.stacks.size() + ")");
         }
@@ -147,7 +149,7 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
     protected void onContentsChanged (int slot) {
 
         if (slot == 0) {
-            
+
             this.tile.updateItem();
         }
     }

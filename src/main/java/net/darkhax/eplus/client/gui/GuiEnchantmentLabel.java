@@ -26,8 +26,9 @@ public class GuiEnchantmentLabel extends Gui {
 
     public boolean visible = true;
     public boolean locked = false;
-    
+
     public final GuiAdvancedTable parent;
+
     /**
      * Creates a new enchantment label. This is used to represent an enchantment in the GUI.
      *
@@ -62,9 +63,9 @@ public class GuiEnchantmentLabel extends Gui {
 
         final int indexX = this.dragging ? this.sliderX : this.currentLevel <= this.enchantment.getMaxLevel() ? (int) (this.xPos + 1 + (this.width - 6) * (this.currentLevel / (double) this.enchantment.getMaxLevel())) : this.xPos + 1 + this.width - 6;
 
-        drawRect(indexX, this.yPos + 1, indexX + 5, this.yPos - 1 + this.height, parent.selected !=null && parent.selected == this ? 0xFFFF00FF: 0xFF000000);
-        drawRect(this.xPos, this.yPos + 1, this.xPos + this.width, this.yPos - 1 + this.height, this.locked ? 0x44d10841  : 0x445aaeae);
-        font.drawString(this.getDisplayName(), this.xPos + 5, this.yPos+ 6, 0x55aaff00);
+        drawRect(indexX, this.yPos + 1, indexX + 5, this.yPos - 1 + this.height, this.parent.selected != null && this.parent.selected == this ? 0xFFFF00FF : 0xFF000000);
+        drawRect(this.xPos, this.yPos + 1, this.xPos + this.width, this.yPos - 1 + this.height, this.locked ? 0x44d10841 : 0x445aaeae);
+        font.drawString(this.getDisplayName(), this.xPos + 5, this.yPos + 6, 0x55aaff00);
     }
 
     /**
@@ -97,31 +98,30 @@ public class GuiEnchantmentLabel extends Gui {
      * @param prevX The previous slider position.
      */
     public void updateSlider (int xPos, int prevX) {
-    
-    
+
         if (this.locked) {
             return;
         }
-        if(xPos > prevX+width){
+        if (xPos > prevX + this.width) {
             return;
         }
         this.sliderX = prevX + xPos;
-    
+
         if (this.sliderX <= prevX) {
             this.sliderX = prevX;
         }
-    
-        if (this.sliderX >= prevX + this.width-6) {
-            this.sliderX = prevX + this.width-6;
+
+        if (this.sliderX >= prevX + this.width - 6) {
+            this.sliderX = prevX + this.width - 6;
         }
-    
-        final float index = xPos / (float) (this.width-10);
+
+        final float index = xPos / (float) (this.width - 10);
         final int tempLevel = (int) Math.floor(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
-    
+
         if (tempLevel >= this.initialLevel || ConfigurationHandler.allowDisenchanting && !this.tile.inventory.getStackInSlot(0).isItemDamaged()) {
             this.currentLevel = tempLevel;
         }
-    
+
         if (this.currentLevel <= 0) {
             this.currentLevel = 0;
         }
