@@ -1,6 +1,7 @@
 package net.darkhax.eplus.client.gui;
 
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
+import net.darkhax.eplus.client.gui.n.GuiAdvancedTable;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -25,7 +26,8 @@ public class GuiEnchantmentLabel extends Gui {
 
     public boolean visible = true;
     public boolean locked = false;
-
+    
+    public final GuiAdvancedTable parent;
     /**
      * Creates a new enchantment label. This is used to represent an enchantment in the GUI.
      *
@@ -35,8 +37,9 @@ public class GuiEnchantmentLabel extends Gui {
      * @param x The X position of the label.
      * @param y The Y position of the label.
      */
-    public GuiEnchantmentLabel (TileEntityAdvancedTable tile, Enchantment enchant, int level, int x, int y) {
+    public GuiEnchantmentLabel (GuiAdvancedTable parent, TileEntityAdvancedTable tile, Enchantment enchant, int level, int x, int y) {
 
+        this.parent = parent;
         this.tile = tile;
         this.enchantment = enchant;
         this.currentLevel = level;
@@ -59,9 +62,9 @@ public class GuiEnchantmentLabel extends Gui {
 
         final int indexX = this.dragging ? this.sliderX : this.currentLevel <= this.enchantment.getMaxLevel() ? (int) (this.xPos + 1 + (this.width - 6) * (this.currentLevel / (double) this.enchantment.getMaxLevel())) : this.xPos + 1 + this.width - 6;
 
-        drawRect(indexX, this.yPos + 1, indexX + 5, this.yPos - 1 + this.height, 0xff000000);
-        font.drawString(this.getDisplayName(), this.xPos + 5, this.yPos + this.height / 4, 0x55aaff00);
-        drawRect(this.xPos, this.yPos + 1, this.xPos + this.width, this.yPos - 1 + this.height, this.locked ? 0x44aaffff : 0x44aa55ff);
+        drawRect(indexX, this.yPos + 1, indexX + 5, this.yPos - 1 + this.height, parent.selected !=null && parent.selected == this ? 0xFFFF00FF: 0xFF000000);
+        drawRect(this.xPos, this.yPos + 1, this.xPos + this.width, this.yPos - 1 + this.height, this.locked ? 0x44aaffff  : 0x44aa55ff);
+        font.drawString(this.getDisplayName(), this.xPos + 5, this.yPos+ 6, 0x55aaff00);
     }
 
     /**

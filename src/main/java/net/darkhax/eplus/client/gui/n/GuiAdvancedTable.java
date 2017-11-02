@@ -28,11 +28,11 @@ public class GuiAdvancedTable extends GuiContainer {
     private final TileEntityAdvancedTable table;
 
     private final List<GuiEnchantmentLabel> enchantmentList = new ArrayList<>();
-    private GuiEnchantmentLabel selected;
-    private boolean wasSelecting;
-    private int listOffset = 0;
-    private int sliderY = 0;
-    private boolean isSliding;
+    public GuiEnchantmentLabel selected;
+    public boolean wasSelecting;
+    public int listOffset = 0;
+    public int sliderY = 0;
+    public boolean isSliding;
 
     public GuiAdvancedTable (InventoryPlayer invPlayer, TileEntityAdvancedTable table) {
 
@@ -53,7 +53,7 @@ public class GuiAdvancedTable extends GuiContainer {
         if (!this.table.enchantmentsValid.isEmpty()) {
             int count = 0;
             for (final Enchantment enchantment : this.table.enchantmentsValid) {
-                this.enchantmentList.add(new GuiEnchantmentLabel(this.table, enchantment, this.table.getCurrentLevelForEnchant(enchantment), 35 + 26 + this.guiLeft, 15 + this.guiTop + count++ * 18));
+                this.enchantmentList.add(new GuiEnchantmentLabel(this,this.table, enchantment, this.table.getCurrentLevelForEnchant(enchantment), 35 + 26 + this.guiLeft, 15 + this.guiTop + count++ * 18));
             }
         }
     }
@@ -93,7 +93,7 @@ public class GuiAdvancedTable extends GuiContainer {
                     continue;
                 }
                 final Enchantment enchantment = this.table.enchantmentsValid.get(i);
-                final GuiEnchantmentLabel label = new GuiEnchantmentLabel(this.table, enchantment, this.table.getCurrentLevelForEnchant(enchantment), 35 + 26 + this.guiLeft, 15 + this.guiTop + count++ * 18);
+                final GuiEnchantmentLabel label = new GuiEnchantmentLabel(this,this.table, enchantment, this.table.getCurrentLevelForEnchant(enchantment), 35 + 26 + this.guiLeft, 15 + this.guiTop + count++ * 18);
                 for (final EnchantmentData data : this.table.enchantmentsNew) {
                     if (data.enchantment == label.enchantment) {
                         label.currentLevel = data.enchantmentLevel;
@@ -211,9 +211,11 @@ public class GuiAdvancedTable extends GuiContainer {
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
         this.selected = this.getLabelUnderMouse(mouseX, mouseY);
-        if (this.selected != null) {
+        if (this.selected != null && !selected.locked) {
             this.selected.dragging = true;
             this.wasSelecting = true;
+        }else{
+            selected = null;
         }
 
         if (mouseX > this.guiLeft + 206 && mouseX < this.guiLeft + 218) {
@@ -251,6 +253,11 @@ public class GuiAdvancedTable extends GuiContainer {
 
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
         if (this.selected != null) {
+            if(mouseX < this.selected.xPos || mouseX > this.selected.xPos + this.selected.width){
+                selected.dragging = false;
+                selected = null;
+                return;
+            }
             this.table.enchantmentsNew.clear();
             // Something with this code forced hidden enchants to reset to their initial value
             for (final GuiEnchantmentLabel label : this.enchantmentList) {
