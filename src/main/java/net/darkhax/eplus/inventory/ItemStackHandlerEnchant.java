@@ -1,6 +1,7 @@
 package net.darkhax.eplus.inventory;
 
 import net.darkhax.bookshelf.util.InventoryUtils;
+import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
@@ -133,8 +134,9 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
     protected void validateSlotIndex (int slot) {
 
         if (slot < 0 || slot >= this.stacks.size()) {
-            // TODO add a warning through logger
-            throw new RuntimeException("Slot " + slot + " not in valid range - [0," + this.stacks.size() + ")");
+            
+            EnchantingPlus.LOG.warn("Attempted to access invalid slot {}. Valid range: 0 - {}", slot, this.stacks.size());
+            throw new IllegalArgumentException("Slot " + slot + " not in valid range - [0," + this.stacks.size() + ")");
         }
     }
 
