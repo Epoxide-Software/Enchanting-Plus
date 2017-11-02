@@ -3,7 +3,7 @@ package net.darkhax.eplus.inventory;
 import net.darkhax.bookshelf.util.InventoryUtils;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.*;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
@@ -124,9 +124,9 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
     @Override
     public void deserializeNBT (NBTTagCompound tag) {
-
+        this.setSize(((NBTTagList)tag.getTag("Items")).tagCount());
         this.stacks = InventoryUtils.readInventory(tag);
-        this.setSize(this.stacks.size());
+        
         this.onLoad();
     }
 
