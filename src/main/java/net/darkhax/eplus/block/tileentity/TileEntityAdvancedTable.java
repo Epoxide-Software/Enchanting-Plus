@@ -40,14 +40,12 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
 
     public List<EnchantmentData> existingEnchantments = new ArrayList<>();
 
-    public List<EnchantmentData> tableEnchantments = new ArrayList<>();
 
     public void updateItem () {
 
         final ItemStack stack = this.inventory.getStackInSlot(0);
         this.validEnchantments.clear();
         this.existingEnchantments.clear();
-        this.tableEnchantments.clear();
         
         if (!stack.isEmpty()) {
             if (stack.isItemEnchantable() || stack.isItemEnchanted()) {
@@ -63,7 +61,8 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
             this.markDirty();
         }
     }
-
+    
+    
     private List<Enchantment> getEnchantmentsForItem (ItemStack stack) {
 
         final List<Enchantment> enchList = new ArrayList<>();
