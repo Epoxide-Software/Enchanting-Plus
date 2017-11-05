@@ -1,9 +1,10 @@
 package net.darkhax.eplus.client.gui.n;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.launchwrapper.Launch;
 import org.lwjgl.input.Mouse;
 
 import net.darkhax.bookshelf.client.gui.GuiItemButton;
@@ -27,7 +28,9 @@ public class GuiAdvancedTable extends GuiContainer {
 
     private final TileEntityAdvancedTable table;
 
+    private final List<GuiEnchantmentLabel> enchantmentListAll = new ArrayList<>();
     private final List<GuiEnchantmentLabel> enchantmentList = new ArrayList<>();
+    
     public GuiEnchantmentLabel selected;
     public boolean wasSelecting;
     public int listOffset = 0;
@@ -49,13 +52,9 @@ public class GuiAdvancedTable extends GuiContainer {
         this.isSliding = false;
         super.initGui();
         this.buttonList.add(new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, new ItemStack(Items.ENCHANTED_BOOK)));
-        this.enchantmentList.clear();
-        if (!this.table.validEnchantments.isEmpty()) {
-            int count = 0;
-            for (final Enchantment enchantment : this.table.validEnchantments) {
-                this.enchantmentList.add(new GuiEnchantmentLabel(this, this.table, enchantment, this.table.getCurrentLevelForEnchant(enchantment), 35 + 26 + this.guiLeft, 15 + this.guiTop + count++ * 18));
-            }
-        }
+        
+        refreshLabels();
+        updateLabels();
     }
 
     @Override
@@ -72,7 +71,7 @@ public class GuiAdvancedTable extends GuiContainer {
     public void drawScreen (int mouseX, int mouseY, float partialTicks) {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
-        for (final GuiEnchantmentLabel label : this.getVisibleLabels()) {
+        for (final GuiEnchantmentLabel label : getVisibleLabels()) {
             label.draw(this.fontRenderer);
         }
         GlStateManager.color(1, 1, 1, 1);
@@ -82,65 +81,79 @@ public class GuiAdvancedTable extends GuiContainer {
         this.renderHoveredToolTip(mouseX, mouseY);
 
     }
-
-    public void updateLabels () {
-
-        this.enchantmentList.clear();
+    
+    public void refreshLabels(){
+        this.enchantmentListAll.clear();
         if (!this.table.validEnchantments.isEmpty()) {
             int count = 0;
-            for (int i = 0; i < this.table.validEnchantments.size(); i++) {
-                if (i < this.listOffset) {
-                    continue;
-                }
-                final Enchantment enchantment = this.table.validEnchantments.get(i);
-                final GuiEnchantmentLabel label = new GuiEnchantmentLabel(this, this.table, enchantment, this.table.getCurrentLevelForEnchant(enchantment), 35 + 26 + this.guiLeft, 15 + this.guiTop + count++ * 18);
-                for (final EnchantmentData data : this.table.tableEnchantments) {
+            for (final Enchantment enchantment : this.table.validEnchantments) {
+                GuiEnchantmentLabel label = new GuiEnchantmentLabel(this, this.table, enchantment, this.table.getCurrentLevelForEnchant(enchantment), 35 + 26 + this.guiLeft, 15 + this.guiTop + count++ * 18);
+                for (final EnchantmentData data : this.table.existingEnchantments) {
                     if (data.enchantment == label.enchantment) {
                         label.currentLevel = data.enchantmentLevel;
                     }
                 }
+                this.enchantmentListAll.add(label);
+            }
+        }
+    }
+    
+
+    public void updateLabels () {
+        this.enchantmentList.clear();
+        if(!this.enchantmentListAll.isEmpty()){
+            int count = 0;
+            for(int i = 0; i < enchantmentListAll.size(); i++) {
+                if (i < this.listOffset) {
+                    continue;
+                }
+                GuiEnchantmentLabel label = enchantmentListAll.get(i);
+                label.yPos = 15 + this.guiTop + count++ * 18;
+                label.visible = label.yPos >= this.guiTop + 15 && label.yPos < this.guiTop + 87;
                 this.enchantmentList.add(label);
             }
-            this.lockLabels();
         }
+        this.lockLabels();
     }
 
     public void lockLabels () {
-
-        // messes with existing enchants
-        for (final GuiEnchantmentLabel label : this.enchantmentList) {
+        for (final GuiEnchantmentLabel label : this.enchantmentListAll) {
+        
             label.locked = false;
+        
             final Enchantment enchantment = label.enchantment;
+        
             for (final EnchantmentData data : this.table.existingEnchantments) {
-                if (data.enchantment != enchantment && !data.enchantment.isCompatibleWith(enchantment)) {
-                    label.locked = true;
-                }
-            }
-            for (final EnchantmentData data : this.table.tableEnchantments) {
-                if (data.enchantment != enchantment && !data.enchantment.isCompatibleWith(enchantment)) {
+            
+                if (enchantment != data.enchantment && !data.enchantment.isCompatibleWith(enchantment)) {
+                
                     label.locked = true;
                 }
             }
         }
     }
-
-    public List<GuiEnchantmentLabel> getVisibleLabels () {
-
-        final List<GuiEnchantmentLabel> visible = new ArrayList<>();
-
-        for (int i = 0; i < this.enchantmentList.size(); i++) {
-            final GuiEnchantmentLabel label = this.enchantmentList.get(i);
-            label.visible = label.yPos >= this.guiTop + 15 && label.yPos < this.guiTop + 87;
-            if (label.visible) {
-                visible.add(label);
-            }
-        }
-        return visible;
+    
+    public List<GuiEnchantmentLabel> getVisibleLabels() {
+        return new ArrayList<>(enchantmentList);
     }
+    
+    //    public List<GuiEnchantmentLabel> getVisibleLabels () {
+//
+//        final List<GuiEnchantmentLabel> visible = new ArrayList<>();
+//
+//        for (int i = 0; i < this.enchantmentListAll.size(); i++) {
+//            final GuiEnchantmentLabel label = this.enchantmentListAll.get(i);
+//            label.visible = label.yPos >= this.guiTop + 15 && label.yPos < this.guiTop + 87;
+//            if (label.visible) {
+//                visible.add(label);
+//            }
+//        }
+//        return visible;
+//    }
 
     public GuiEnchantmentLabel getLabelUnderMouse (int mx, int my) {
 
-        for (final GuiEnchantmentLabel label : this.getVisibleLabels()) {
+        for (final GuiEnchantmentLabel label : this.enchantmentList) {
             if (label.xPos <= mx && label.xPos + label.width >= mx) {
                 if (label.yPos <= my && label.yPos + label.height >= my) {
                     return label;
@@ -184,7 +197,7 @@ public class GuiAdvancedTable extends GuiContainer {
             this.listOffset = this.sliderY / 4;
         }
         this.listOffset = Math.max(this.listOffset, 0);
-        this.listOffset = Math.min(this.listOffset, this.enchantmentList.size() + 1);
+        this.listOffset = Math.min(this.listOffset, this.enchantmentListAll.size() );
 
         if (this.listOffset != prevOff) {
             this.updateLabels();
@@ -234,10 +247,10 @@ public class GuiAdvancedTable extends GuiContainer {
             this.selected.dragging = false;
             this.selected = null;
             this.wasSelecting = true;
-            this.table.tableEnchantments.clear();
-            for (final GuiEnchantmentLabel label : this.enchantmentList) {
+            this.table.existingEnchantments.clear();
+            for (final GuiEnchantmentLabel label : this.enchantmentListAll) {
                 if (label.currentLevel != label.initialLevel) {
-                    this.table.tableEnchantments.add(new EnchantData(label.enchantment, label.currentLevel));
+                    this.table.existingEnchantments.add(new EnchantData(label.enchantment, label.currentLevel));
                 }
             }
 
@@ -259,11 +272,11 @@ public class GuiAdvancedTable extends GuiContainer {
                 this.selected = null;
                 return;
             }
-            this.table.tableEnchantments.clear();
+            this.table.existingEnchantments.clear();
             // Something with this code forced hidden enchants to reset to their initial value
-            for (final GuiEnchantmentLabel label : this.enchantmentList) {
+            for (final GuiEnchantmentLabel label : this.enchantmentListAll) {
                 if (label.currentLevel != label.initialLevel) {
-                    this.table.tableEnchantments.add(new EnchantData(label.enchantment, label.currentLevel));
+                    this.table.existingEnchantments.add(new EnchantData(label.enchantment, label.currentLevel));
                 }
             }
 
@@ -277,7 +290,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
         super.actionPerformed(button);
         if (button.id == 0) {
-            for (final GuiEnchantmentLabel label : this.enchantmentList) {
+            for (final GuiEnchantmentLabel label : this.enchantmentListAll) {
                 if (label.currentLevel != label.initialLevel) {
                     this.table.inventory.getStackInSlot(0).addEnchantment(label.enchantment, label.currentLevel);
                     // TODO send a packet to the server

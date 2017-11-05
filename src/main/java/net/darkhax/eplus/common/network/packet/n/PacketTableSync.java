@@ -81,7 +81,9 @@ public class PacketTableSync extends SerializableMessage {
         tile.validEnchantments = new ArrayList<>(Arrays.asList(this.getEnchantsFromLocations(this.enchantmentsValid)));
         tile.existingEnchantments = new ArrayList<>(Arrays.asList(this.enchantmentsCurrent));
         if (Minecraft.getMinecraft().currentScreen instanceof GuiAdvancedTable) {
+            ((GuiAdvancedTable) Minecraft.getMinecraft().currentScreen).refreshLabels();
             ((GuiAdvancedTable) Minecraft.getMinecraft().currentScreen).updateLabels();
+    
         }
         return null;
     }
