@@ -81,13 +81,6 @@ public class GuiAdvancedTable extends GuiContainer {
     public void drawScreen (int mouseX, int mouseY, float partialTicks) {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
-        for (final GuiEnchantmentLabel label : getVisibleLabels()) {
-            label.draw(this.fontRenderer);
-        }
-        GlStateManager.color(1, 1, 1, 1);
-        this.mc.renderEngine.bindTexture(TEXTURE);
-        this.drawTexturedModalRect(this.guiLeft + 206, this.guiTop + 16 + this.sliderY, 0, 182, 12, 15);
-
         this.renderHoveredToolTip(mouseX, mouseY);
 
     }
@@ -178,6 +171,12 @@ public class GuiAdvancedTable extends GuiContainer {
 
         this.mc.renderEngine.bindTexture(TEXTURE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+        GlStateManager.color(1, 1, 1, 1);
+        
+        if(!getVisibleLabels().isEmpty())
+            for (final GuiEnchantmentLabel label : getVisibleLabels()) {
+                label.draw(this.fontRenderer);
+            }
     }
 
     @Override
