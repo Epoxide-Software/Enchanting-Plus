@@ -63,7 +63,15 @@ public class GuiAdvancedTable extends GuiContainer {
         super.updateScreen();
         if (this.selected == null && this.wasSelecting) {
             this.wasSelecting = false;
-
+        }
+        if(table.updateGui){
+            table.updateGui = false;
+            scrollbar.sliderY = 1;
+            this.isSliding = false;
+            listOffset = 0;
+            refreshLabels();
+            updateLabels();
+            
         }
     }
 

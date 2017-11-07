@@ -39,7 +39,11 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
     public List<Enchantment> validEnchantments = new ArrayList<>();
 
     public List<EnchantmentData> existingEnchantments = new ArrayList<>();
-
+    
+    /**
+     * tells the gui to update. Client side only
+     */
+    public boolean updateGui = false;
 
     public void updateItem () {
 
