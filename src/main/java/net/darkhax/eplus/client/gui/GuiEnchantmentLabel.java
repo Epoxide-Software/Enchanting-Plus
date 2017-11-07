@@ -119,8 +119,8 @@ public class GuiEnchantmentLabel extends Gui {
             this.sliderX = prevX + this.width - 6;
         }
 
-        final float index = xPos / (float) (this.width - 10);
-        final int tempLevel = (int) Math.floor(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
+        final float index = (xPos) / (float) (this.width - 10);
+        final int tempLevel = (int) Math.round(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
 
         if (tempLevel >= this.initialLevel || ConfigurationHandler.allowDisenchanting && !this.tile.inventory.getStackInSlot(0).isItemDamaged()) {
             this.currentLevel = tempLevel;
