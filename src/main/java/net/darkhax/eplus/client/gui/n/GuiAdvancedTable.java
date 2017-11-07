@@ -127,8 +127,7 @@ public class GuiAdvancedTable extends GuiContainer {
             final Enchantment enchantment = label.enchantment;
         
             for (final EnchantmentData data : this.table.existingEnchantments) {
-            
-                if (enchantment != data.enchantment && !data.enchantment.isCompatibleWith(enchantment)) {
+                if (enchantment != data.enchantment && data.enchantmentLevel > 0 && !data.enchantment.isCompatibleWith(enchantment)) {
                 
                     label.locked = true;
                 }
@@ -259,8 +258,8 @@ public class GuiAdvancedTable extends GuiContainer {
             this.wasSelecting = true;
             this.table.existingEnchantments.clear();
             for (final GuiEnchantmentLabel label : this.enchantmentListAll) {
-                if (label.currentLevel != label.initialLevel) {
-                    this.table.existingEnchantments.add(new EnchantData(label.enchantment, label.currentLevel));
+                if (label.currentLevel > 0) {
+                    this.table.existingEnchantments.add(new EnchantmentData(label.enchantment, label.currentLevel));
                 }
             }
 
