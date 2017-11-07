@@ -109,7 +109,7 @@ public class GuiEnchantmentLabel extends Gui {
         if (xPos > prevX + this.width) {
             return;
         }
-        this.sliderX = prevX + xPos;
+        this.sliderX = prevX + xPos+2;
 
         if (this.sliderX <= prevX) {
             this.sliderX = prevX;
