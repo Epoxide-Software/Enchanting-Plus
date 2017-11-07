@@ -83,19 +83,15 @@ public class GuiEnchantmentLabel extends Gui {
      * @return The name to display for the label.
      */
     public String getDisplayName () {
-
-        String name = this.enchantment.getTranslatedName(this.currentLevel);
-
-        if (this.currentLevel == 0) {
-            if (name.lastIndexOf(" ") == -1) {
-                name = this.enchantment.getName();
-            }
-            else {
-                name = name.substring(0, name.lastIndexOf(" "));
-            }
+    
+        String s = I18n.translateToLocal(enchantment.getName());
+    
+        if (enchantment.isCurse())
+        {
+            s = TextFormatting.RED + s;
         }
-
-        return name;
+    
+        return currentLevel <= 0 ? s : s + " " + I18n.translateToLocal("enchantment.level." + currentLevel);
     }
 
     /**
