@@ -71,7 +71,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
 
             if (stack.isItemEnchanted()) {
                 
-                if (enchantment.canApply(stack)) {
+                if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
                     
                     enchList.add(enchantment);
                 }
@@ -79,7 +79,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
             
             else {
                 
-                if (enchantment.type.canEnchantItem(stack.getItem())) {
+                if (enchantment.type.canEnchantItem(stack.getItem()) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
                     
                     enchList.add(enchantment);
                 }
