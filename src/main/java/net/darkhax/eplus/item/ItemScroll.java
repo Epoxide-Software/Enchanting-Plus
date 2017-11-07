@@ -108,8 +108,7 @@ public class ItemScroll extends Item implements IColorfulItem {
         if (count % 4 == 0) {
 
             final float percent = 1.0f - (float) count / (float) this.getMaxItemUseDuration(stack);
-            ParticleUtils.spawnPercentageParticleRing(player.world, EnumParticleTypes.ENCHANTMENT_TABLE, percent, player.posX, player.posY + player.height, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
-
+            ParticleUtils.spawnWavingParticleRing(player.world, EnumParticleTypes.ENCHANTMENT_TABLE, percent, player.posX, player.posY + player.height, player.posZ, 0.0d, 0.0d, 0.0d, 0.15);
             System.out.println(FMLCommonHandler.instance().getEffectiveSide().name() + " " + stack.getTagCompound().toString());
         }
     }

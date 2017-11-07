@@ -39,7 +39,11 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
     public List<Enchantment> validEnchantments = new ArrayList<>();
 
     public List<EnchantmentData> existingEnchantments = new ArrayList<>();
-
+    
+    /**
+     * tells the gui to update. Client side only
+     */
+    public boolean updateGui = false;
 
     public void updateItem () {
 
@@ -71,7 +75,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
 
             if (stack.isItemEnchanted()) {
                 
-                if (enchantment.canApply(stack)) {
+                if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
                     
                     enchList.add(enchantment);
                 }
@@ -79,7 +83,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
             
             else {
                 
-                if (enchantment.type.canEnchantItem(stack.getItem())) {
+                if (enchantment.type.canEnchantItem(stack.getItem()) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
                     
                     enchList.add(enchantment);
                 }
