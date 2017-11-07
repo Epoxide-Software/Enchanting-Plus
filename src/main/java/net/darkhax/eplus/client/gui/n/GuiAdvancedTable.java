@@ -28,15 +28,16 @@ public class GuiAdvancedTable extends GuiContainer {
 
     private final TileEntityAdvancedTable table;
 
-    private final List<GuiEnchantmentLabel> enchantmentListAll = new ArrayList<>();
-    private final List<GuiEnchantmentLabel> enchantmentList = new ArrayList<>();
+    public final List<GuiEnchantmentLabel> enchantmentListAll = new ArrayList<>();
+    public final List<GuiEnchantmentLabel> enchantmentList = new ArrayList<>();
     
     public GuiEnchantmentLabel selected;
     public boolean wasSelecting;
     public int listOffset = 0;
-    public int sliderY = 0;
+    
     public boolean isSliding;
-
+    
+    public GuiButtonScroller scrollbar;
     public GuiAdvancedTable (InventoryPlayer invPlayer, TileEntityAdvancedTable table) {
 
         super(new ContainerAdvancedTable(invPlayer, table));
@@ -48,10 +49,11 @@ public class GuiAdvancedTable extends GuiContainer {
 
         this.xSize = 235;
         this.ySize = 182;
-        this.sliderY = 1;
         this.isSliding = false;
         super.initGui();
+        scrollbar = new GuiButtonScroller(this,1,this.guiLeft + 206, this.guiTop + 16,12,70,"");
         this.buttonList.add(new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, new ItemStack(Items.ENCHANTED_BOOK)));
+        this.buttonList.add(scrollbar);
         
         refreshLabels();
         updateLabels();
@@ -195,20 +197,22 @@ public class GuiAdvancedTable extends GuiContainer {
 
         if (this.selected != null) {
             this.selected.updateSlider(mouseX - 62, this.guiLeft + 62);
-            this.lockLabels();
         }
-        if (this.isSliding) {
-            this.sliderY = mouseY - this.guiTop + 7;
-            this.sliderY = Math.max(1, this.sliderY);
-            this.sliderY = Math.min(56, this.sliderY);
-            // TODO fix this code
-            this.listOffset = this.sliderY / 4;
-        }
+//        if (this.isSliding) {
+//            this.scrollbar.sliderY  = mouseY - this.guiTop + 7;
+//            this.scrollbar.sliderY = Math.max(1, this.scrollbar.sliderY);
+//            this.scrollbar.sliderY = Math.min(56, this.scrollbar.sliderY);
+//            // TODO fix this code
+//            this.listOffset = this.scrollbar.sliderY / 4;
+//        }
         this.listOffset = Math.max(this.listOffset, 0);
-        this.listOffset = Math.min(this.listOffset, this.enchantmentListAll.size() );
+        this.listOffset = Math.min(this.listOffset, this.enchantmentListAll.size()-4);
 
         if (this.listOffset != prevOff) {
             this.updateLabels();
+            scrollbar.sliderY = ((70/(enchantmentListAll.size()-4))*listOffset)-7;
+            this.scrollbar.sliderY = Math.max(1, this.scrollbar.sliderY);
+            this.scrollbar.sliderY = Math.min(56, this.scrollbar.sliderY);
         }
     }
 
@@ -239,9 +243,8 @@ public class GuiAdvancedTable extends GuiContainer {
         else {
             this.selected = null;
         }
-
         if (mouseX > this.guiLeft + 206 && mouseX < this.guiLeft + 218) {
-            if (mouseY > this.guiTop + 16 + this.sliderY && mouseY < this.guiTop + 31 + this.sliderY) {
+            if (mouseY > this.guiTop + 16 + this.scrollbar.sliderY && mouseY < this.guiTop + 31 + this.scrollbar.sliderY) {
                 this.isSliding = true;
             }
         }
@@ -281,16 +284,15 @@ public class GuiAdvancedTable extends GuiContainer {
                 return;
             }
             this.table.existingEnchantments.clear();
-            // Something with this code forced hidden enchants to reset to their initial value
             for (final GuiEnchantmentLabel label : this.enchantmentListAll) {
                 if (label.currentLevel != label.initialLevel) {
-                    this.table.existingEnchantments.add(new EnchantData(label.enchantment, label.currentLevel));
+                    this.table.existingEnchantments.add(new EnchantmentData(label.enchantment, label.currentLevel));
                 }
             }
 
             this.lockLabels();
         }
-        this.moveSlider(mouseX, mouseY);
+        
     }
 
     @Override
