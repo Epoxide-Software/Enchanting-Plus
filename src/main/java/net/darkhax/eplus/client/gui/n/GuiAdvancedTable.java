@@ -51,7 +51,7 @@ public class GuiAdvancedTable extends GuiContainer {
         this.ySize = 182;
         this.isSliding = false;
         super.initGui();
-        scrollbar = new GuiButtonScroller(this,1,this.guiLeft + 206, this.guiTop + 16,12,70,"");
+        scrollbar = new GuiButtonScroller(this,1,this.guiLeft + 206, this.guiTop + 16,12,70);
         this.buttonList.add(new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, new ItemStack(Items.ENCHANTED_BOOK)));
         this.buttonList.add(scrollbar);
         
@@ -139,20 +139,6 @@ public class GuiAdvancedTable extends GuiContainer {
         return new ArrayList<>(enchantmentList);
     }
     
-    //    public List<GuiEnchantmentLabel> getVisibleLabels () {
-//
-//        final List<GuiEnchantmentLabel> visible = new ArrayList<>();
-//
-//        for (int i = 0; i < this.enchantmentListAll.size(); i++) {
-//            final GuiEnchantmentLabel label = this.enchantmentListAll.get(i);
-//            label.visible = label.yPos >= this.guiTop + 15 && label.yPos < this.guiTop + 87;
-//            if (label.visible) {
-//                visible.add(label);
-//            }
-//        }
-//        return visible;
-//    }
-
     public GuiEnchantmentLabel getLabelUnderMouse (int mx, int my) {
 
         for (final GuiEnchantmentLabel label : this.enchantmentList) {
@@ -196,13 +182,6 @@ public class GuiAdvancedTable extends GuiContainer {
         if (this.selected != null) {
             this.selected.updateSlider(mouseX - 62, this.guiLeft + 62);
         }
-//        if (this.isSliding) {
-//            this.scrollbar.sliderY  = mouseY - this.guiTop + 7;
-//            this.scrollbar.sliderY = Math.max(1, this.scrollbar.sliderY);
-//            this.scrollbar.sliderY = Math.min(56, this.scrollbar.sliderY);
-//            // TODO fix this code
-//            this.listOffset = this.scrollbar.sliderY / 4;
-//        }
         this.listOffset = Math.max(this.listOffset, 0);
         this.listOffset = Math.min(this.listOffset, this.enchantmentListAll.size()-4);
 
@@ -212,21 +191,6 @@ public class GuiAdvancedTable extends GuiContainer {
             this.scrollbar.sliderY = Math.max(1, this.scrollbar.sliderY);
             this.scrollbar.sliderY = Math.min(56, this.scrollbar.sliderY);
         }
-    }
-
-    public void moveSlider (int mx, int my) {
-
-        // System.out.println(mx + ":" + (guiLeft + 206) +":" + (guiLeft + 218));
-        // System.out.println(my + ":" + (guiTop + 16 + sliderY) + ":" + (guiTop + 31 +
-        // sliderY));
-        //
-        // System.out.println();
-        // if(mx > guiLeft + 206 && mx < guiLeft + 218) {
-        // if(my > guiTop + 16 + sliderY && my < guiTop + 31 + sliderY) {
-        // if(Mouse.getEventButton() == 0)
-        // sliderY = my-guiTop;
-        // }
-        // }
     }
 
     @Override

@@ -15,14 +15,17 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IInteractionObject;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -40,6 +43,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
 
     public List<EnchantmentData> existingEnchantments = new ArrayList<>();
     
+    public List<BlockPos> enchantmentTables = new ArrayList<>();
     /**
      * tells the gui to update. Client side only
      */
@@ -100,6 +104,42 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
             }
         }
         return 0;
+    }
+    
+    public void searchForTables(){
+        final int x = getPos().getX();
+        final int y = getPos().getY();
+        final int z = getPos().getZ();
+        List<BlockPos> tables = new ArrayList<>();
+        for(int xOff = -1; xOff < 2; xOff++) {
+            for(int zOff = -1; zOff < 2; zOff++) {
+            for(int yOff = 0; yOff < 2; yOff++) {
+                
+                    if(xOff == 0 && zOff == 0){
+                        continue;
+                    }
+                    
+                    BlockPos pos = new BlockPos(x+xOff,y+yOff,z+zOff);
+                    
+                    if(world.isAirBlock(pos)){
+                        BlockPos pos1 = new BlockPos(x + xOff * 2, y+yOff, z + zOff );
+                        if(ForgeHooks.getEnchantPower(world, pos1) > 0){
+                            tables.add(pos1);
+                        }
+                        pos1 = new BlockPos(x + xOff, y+yOff, z + zOff*2 );
+                        if(ForgeHooks.getEnchantPower(world, pos1) > 0) {
+                            tables.add(pos1);
+                        }
+                        pos1 = new BlockPos(x + xOff*2, y+yOff, z + zOff*2 );
+                        if(ForgeHooks.getEnchantPower(world, pos1) > 0) {
+                            tables.add(pos1);
+                        }
+                    }
+                }
+            }
+        }
+        this.enchantmentTables = tables;
+        
     }
 
     @Override
