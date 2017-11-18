@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class CommandInfo extends Command {
 
@@ -42,6 +43,12 @@ public class CommandInfo extends Command {
 
             if (data != null) {
 
+                if (data.getUnlockedEnchantments().isEmpty()) {
+                    
+                    sender.sendMessage(new TextComponentTranslation("chat.eplus.nounlocked"));
+                    return;
+                }
+                
                 final String enchants = data.getUnlockedEnchantments().stream().map(Enchantment::getRegistryName).map(ResourceLocation::toString).collect(Collectors.joining(", "));
                 sender.sendMessage(new TextComponentString(enchants));
             }
