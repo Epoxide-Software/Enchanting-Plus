@@ -15,7 +15,6 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.item.ItemStack;
@@ -42,7 +41,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
     public List<Enchantment> validEnchantments = new ArrayList<>();
 
     public List<EnchantmentData> existingEnchantments = new ArrayList<>();
-    
+
     public List<BlockPos> enchantmentTables = new ArrayList<>();
     /**
      * tells the gui to update. Client side only
@@ -54,7 +53,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
         final ItemStack stack = this.inventory.getStackInSlot(0);
         this.validEnchantments.clear();
         this.existingEnchantments.clear();
-        
+
         if (!stack.isEmpty()) {
             if (stack.isItemEnchantable() || stack.isItemEnchanted()) {
                 for (final Map.Entry<Enchantment, Integer> entry : EnchantmentHelper.getEnchantments(stack).entrySet()) {
@@ -69,26 +68,25 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
             this.markDirty();
         }
     }
-    
-    
+
     private List<Enchantment> getEnchantmentsForItem (ItemStack stack) {
 
         final List<Enchantment> enchList = new ArrayList<>();
-        
+
         for (final Enchantment enchantment : Enchantment.REGISTRY) {
 
             if (stack.isItemEnchanted()) {
-                
+
                 if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
-                    
+
                     enchList.add(enchantment);
                 }
             }
-            
+
             else {
-                
+
                 if (enchantment.type.canEnchantItem(stack.getItem()) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
-                    
+
                     enchList.add(enchantment);
                 }
             }
@@ -105,33 +103,34 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
         }
         return 0;
     }
-    
-    public void searchForTables(){
-        final int x = getPos().getX();
-        final int y = getPos().getY();
-        final int z = getPos().getZ();
-        List<BlockPos> tables = new ArrayList<>();
-        for(int xOff = -1; xOff < 2; xOff++) {
-            for(int zOff = -1; zOff < 2; zOff++) {
-            for(int yOff = 0; yOff < 2; yOff++) {
-                
-                    if(xOff == 0 && zOff == 0){
+
+    public void searchForTables () {
+
+        final int x = this.getPos().getX();
+        final int y = this.getPos().getY();
+        final int z = this.getPos().getZ();
+        final List<BlockPos> tables = new ArrayList<>();
+        for (int xOff = -1; xOff < 2; xOff++) {
+            for (int zOff = -1; zOff < 2; zOff++) {
+                for (int yOff = 0; yOff < 2; yOff++) {
+
+                    if (xOff == 0 && zOff == 0) {
                         continue;
                     }
-                    
-                    BlockPos pos = new BlockPos(x+xOff,y+yOff,z+zOff);
-                    
-                    if(world.isAirBlock(pos)){
-                        BlockPos pos1 = new BlockPos(x + xOff * 2, y+yOff, z + zOff );
-                        if(ForgeHooks.getEnchantPower(world, pos1) > 0){
+
+                    final BlockPos pos = new BlockPos(x + xOff, y + yOff, z + zOff);
+
+                    if (this.world.isAirBlock(pos)) {
+                        BlockPos pos1 = new BlockPos(x + xOff * 2, y + yOff, z + zOff);
+                        if (ForgeHooks.getEnchantPower(this.world, pos1) > 0) {
                             tables.add(pos1);
                         }
-                        pos1 = new BlockPos(x + xOff, y+yOff, z + zOff*2 );
-                        if(ForgeHooks.getEnchantPower(world, pos1) > 0) {
+                        pos1 = new BlockPos(x + xOff, y + yOff, z + zOff * 2);
+                        if (ForgeHooks.getEnchantPower(this.world, pos1) > 0) {
                             tables.add(pos1);
                         }
-                        pos1 = new BlockPos(x + xOff*2, y+yOff, z + zOff*2 );
-                        if(ForgeHooks.getEnchantPower(world, pos1) > 0) {
+                        pos1 = new BlockPos(x + xOff * 2, y + yOff, z + zOff * 2);
+                        if (ForgeHooks.getEnchantPower(this.world, pos1) > 0) {
                             tables.add(pos1);
                         }
                     }
@@ -139,7 +138,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
             }
         }
         this.enchantmentTables = tables;
-        
+
     }
 
     @Override
