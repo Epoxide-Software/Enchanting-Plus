@@ -14,6 +14,8 @@ tile.eplus.decorative.book.metal.name=Metal Book
 item.eplus.table.upgrade.name=Table Upgrade
 item.eplus.enchanted.scroll.name=Enchanted Scroll
 
+#Commands
+commands.eplus.usage=The base command for all commands added by Enchanting Plus.
 
 #Tooltips
 tooltip.eplus.enchantment=Enchantment

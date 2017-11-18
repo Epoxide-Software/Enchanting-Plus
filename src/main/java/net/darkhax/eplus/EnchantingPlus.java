@@ -1,7 +1,9 @@
 package net.darkhax.eplus;
 
+import net.darkhax.bookshelf.BookshelfRegistry;
 import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.network.NetworkHandler;
+import net.darkhax.eplus.commands.CommandEPlus;
 import net.darkhax.eplus.common.network.GuiHandler;
 import net.darkhax.eplus.common.network.packet.PacketRequestSync;
 import net.darkhax.eplus.common.network.packet.PacketSyncEnchantUnlock;
@@ -41,7 +43,10 @@ public final class EnchantingPlus {
         NETWORK.register(PacketSyncEnchantUnlock.class, Side.CLIENT);
         NETWORK.register(PacketSyncEnchantUnlocks.class, Side.CLIENT);
         NETWORK.register(PacketTableSync.class, Side.CLIENT);
+
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+
+        BookshelfRegistry.addCommand(new CommandEPlus());
 
         PlayerHandler.init();
 
