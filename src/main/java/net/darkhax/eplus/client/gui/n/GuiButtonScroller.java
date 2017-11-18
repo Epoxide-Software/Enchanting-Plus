@@ -44,7 +44,7 @@ public class GuiButtonScroller extends GuiButton {
             sliderY = Math.max(1, sliderY);
             sliderY = Math.min(56, sliderY);
             parent.updateLabels();
-            int div = height/parent.enchantmentListAll.size()+4;
+            int div = height / Math.max(parent.enchantmentListAll.size(), 1) + 4;
             parent.listOffset = sliderY / div;
             parent.listOffset = Math.max(parent.listOffset, 0);
             parent.listOffset = Math.min(parent.listOffset, parent.enchantmentListAll.size()-4);
