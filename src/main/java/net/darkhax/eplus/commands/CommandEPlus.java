@@ -8,6 +8,7 @@ public class CommandEPlus extends CommandTree {
     public CommandEPlus () {
 
         this.addSubcommand(new CommandInfo());
+        this.addSubcommand(new CommandClear());
     }
 
     @Override
