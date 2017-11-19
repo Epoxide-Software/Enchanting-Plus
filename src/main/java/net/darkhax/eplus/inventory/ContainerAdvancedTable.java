@@ -1,4 +1,4 @@
-package net.darkhax.eplus.inventory.n;
+package net.darkhax.eplus.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import net.darkhax.bookshelf.inventory.SlotArmor;
 import net.darkhax.bookshelf.util.EntityUtils;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
-import net.darkhax.eplus.inventory.SlotEnchant;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

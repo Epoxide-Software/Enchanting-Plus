@@ -1,4 +1,4 @@
-package net.darkhax.eplus.client.gui.n;
+package net.darkhax.eplus.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

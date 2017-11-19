@@ -1,4 +1,4 @@
-package net.darkhax.eplus.common.network.packet.n;
+package net.darkhax.eplus.network.packet;
 
 import java.util.ArrayList;
 import java.util.Arrays;

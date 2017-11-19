@@ -7,7 +7,7 @@ import net.darkhax.bookshelf.block.ITileEntityBlock;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.block.tileentity.renderer.TileEntityAdvancedTableRenderer;
-import net.darkhax.eplus.common.network.GuiHandler;
+import net.darkhax.eplus.network.GuiHandler;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

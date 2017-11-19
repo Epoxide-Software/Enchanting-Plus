@@ -1,8 +1,8 @@
-package net.darkhax.eplus.common.network;
+package net.darkhax.eplus.network;
 
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
-import net.darkhax.eplus.client.gui.n.GuiAdvancedTable;
-import net.darkhax.eplus.inventory.n.ContainerAdvancedTable;
+import net.darkhax.eplus.gui.GuiAdvancedTable;
+import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

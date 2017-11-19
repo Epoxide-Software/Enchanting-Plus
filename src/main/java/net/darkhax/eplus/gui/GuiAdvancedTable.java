@@ -1,4 +1,4 @@
-package net.darkhax.eplus.client.gui.n;
+package net.darkhax.eplus.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,8 +8,7 @@ import org.lwjgl.input.Mouse;
 
 import net.darkhax.bookshelf.client.gui.GuiItemButton;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
-import net.darkhax.eplus.client.gui.GuiEnchantmentLabel;
-import net.darkhax.eplus.inventory.n.ContainerAdvancedTable;
+import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

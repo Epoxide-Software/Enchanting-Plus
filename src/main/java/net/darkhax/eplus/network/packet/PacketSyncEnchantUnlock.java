@@ -1,4 +1,4 @@
-package net.darkhax.eplus.common.network.packet;
+package net.darkhax.eplus.network.packet;
 
 import net.darkhax.bookshelf.network.SerializableMessage;
 import net.darkhax.bookshelf.util.PlayerUtils;

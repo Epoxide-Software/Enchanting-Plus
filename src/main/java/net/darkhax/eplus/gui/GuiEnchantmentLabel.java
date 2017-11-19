@@ -1,7 +1,6 @@
-package net.darkhax.eplus.client.gui;
+package net.darkhax.eplus.gui;
 
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
-import net.darkhax.eplus.client.gui.n.GuiAdvancedTable;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
