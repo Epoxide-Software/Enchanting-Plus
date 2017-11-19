@@ -18,6 +18,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import sun.security.x509.SubjectInfoAccessExtension;
 
 public class GuiAdvancedTable extends GuiContainer {
 
@@ -186,7 +187,9 @@ public class GuiAdvancedTable extends GuiContainer {
         }
         this.listOffset = Math.max(this.listOffset, 0);
         this.listOffset = Math.min(this.listOffset, this.enchantmentListAll.size() - 4);
-
+        if(this.enchantmentList.size()<4){
+            this.listOffset = 0;
+        }
         if (this.listOffset != prevOff) {
             this.updateLabels();
             this.scrollbar.sliderY = 70 / (this.enchantmentListAll.size() - 4) * this.listOffset - 7;
