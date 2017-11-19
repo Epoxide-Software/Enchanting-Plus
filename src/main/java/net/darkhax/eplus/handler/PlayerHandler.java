@@ -7,9 +7,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.darkhax.eplus.EnchantingPlus;
-import net.darkhax.eplus.common.network.packet.PacketRequestSync;
-import net.darkhax.eplus.common.network.packet.PacketSyncEnchantUnlocks;
 import net.darkhax.eplus.libs.EPlusUtils;
+import net.darkhax.eplus.network.packet.PacketRequestSync;
+import net.darkhax.eplus.network.packet.PacketSyncEnchantUnlocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

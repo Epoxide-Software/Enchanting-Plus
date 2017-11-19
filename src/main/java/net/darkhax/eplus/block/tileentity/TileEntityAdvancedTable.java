@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 
 import net.darkhax.bookshelf.lib.EnchantData;
 import net.darkhax.eplus.EnchantingPlus;
-import net.darkhax.eplus.common.network.packet.n.PacketTableSync;
 import net.darkhax.eplus.inventory.ItemStackHandlerEnchant;
+import net.darkhax.eplus.network.packet.PacketTableSync;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;

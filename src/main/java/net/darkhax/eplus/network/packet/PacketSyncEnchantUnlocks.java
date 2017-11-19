@@ -1,4 +1,4 @@
-package net.darkhax.eplus.common.network.packet;
+package net.darkhax.eplus.network.packet;
 
 import java.util.HashSet;
 import java.util.Set;

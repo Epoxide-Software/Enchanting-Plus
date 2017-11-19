@@ -1,4 +1,4 @@
-package net.darkhax.eplus.client.renderer.color;
+package net.darkhax.eplus.item.renderer;
 
 import net.darkhax.eplus.item.ItemScroll;
 import net.minecraft.client.renderer.color.IItemColor;
