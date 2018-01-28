@@ -147,10 +147,12 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
     }
 
     protected void onContentsChanged (int slot) {
-
-        if (slot == 0) {
-
-            this.tile.updateItem();
+        if(!tile.getWorld().isRemote){
+    
+            if (slot == 0) {
+                this.tile.updateItem();
+            }
+            tile.markDirty();
         }
     }
 }
