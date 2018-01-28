@@ -10,6 +10,7 @@ import net.darkhax.eplus.handler.IMCHandler;
 import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.libs.Content;
 import net.darkhax.eplus.network.GuiHandler;
+import net.darkhax.eplus.network.messages.*;
 import net.darkhax.eplus.network.packet.PacketRequestSync;
 import net.darkhax.eplus.network.packet.PacketSyncEnchantUnlock;
 import net.darkhax.eplus.network.packet.PacketSyncEnchantUnlocks;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import sun.plugin2.message.Message;
 
 @Mod(modid = "eplus", name = "Enchanting Plus", version = "@VERSION@", dependencies = "required-after:bookshelf", certificateFingerprint = "@FINGERPRINT@")
 public final class EnchantingPlus {
@@ -43,7 +45,9 @@ public final class EnchantingPlus {
         NETWORK.register(PacketSyncEnchantUnlock.class, Side.CLIENT);
         NETWORK.register(PacketSyncEnchantUnlocks.class, Side.CLIENT);
         NETWORK.register(PacketTableSync.class, Side.CLIENT);
-
+        NETWORK.register(MessageEnchant.class, Side.SERVER);
+        NETWORK.register(MessageEnchantSync.class, Side.CLIENT);
+        NETWORK.register(MessageSliderUpdate.class, Side.SERVER);
         NETWORK.register(MessageBookshelfSync.class, Side.CLIENT);
     
     
