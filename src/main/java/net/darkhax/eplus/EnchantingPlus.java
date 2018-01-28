@@ -44,6 +44,9 @@ public final class EnchantingPlus {
         NETWORK.register(PacketSyncEnchantUnlocks.class, Side.CLIENT);
         NETWORK.register(PacketTableSync.class, Side.CLIENT);
 
+        NETWORK.register(MessageBookshelfSync.class, Side.CLIENT);
+    
+    
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
         BookshelfRegistry.addCommand(new CommandEPlus());

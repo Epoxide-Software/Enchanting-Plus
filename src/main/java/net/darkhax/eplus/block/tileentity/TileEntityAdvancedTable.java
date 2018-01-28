@@ -44,6 +44,11 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
 
     public List<BlockPos> enchantmentTables = new ArrayList<>();
     /**
+     * map containing the position of the bookshelves around the table and their enchantability (since it can be more than 1)
+     */
+    public Map<BlockPos, Float> bookshelves = new HashMap<>();
+    
+    /**
      * tells the gui to update. Client side only
      */
     public boolean updateGui = false;
@@ -103,42 +108,55 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
         }
         return 0;
     }
-
-    public void searchForTables () {
-
+    public void searchForShelves() {
+        //TODO this needs to run everytime that a tile changes withing a 2 block radius around the table
         final int x = this.getPos().getX();
         final int y = this.getPos().getY();
         final int z = this.getPos().getZ();
-        final List<BlockPos> tables = new ArrayList<>();
-        for (int xOff = -1; xOff < 2; xOff++) {
-            for (int zOff = -1; zOff < 2; zOff++) {
-                for (int yOff = 0; yOff < 2; yOff++) {
-
-                    if (xOff == 0 && zOff == 0) {
+        final Map<BlockPos, Float> tables = new HashMap<>();
+        for(int xOff = -1; xOff < 2; xOff++) {
+            for(int zOff = -1; zOff < 2; zOff++) {
+                for(int yOff = 0; yOff < 2; yOff++) {
+                    
+                    if(xOff == 0 && zOff == 0) {
                         continue;
                     }
-
+                    
                     final BlockPos pos = new BlockPos(x + xOff, y + yOff, z + zOff);
-
-                    if (this.world.isAirBlock(pos)) {
+                    
+                    if(this.world.isAirBlock(pos)) {
                         BlockPos pos1 = new BlockPos(x + xOff * 2, y + yOff, z + zOff);
-                        if (ForgeHooks.getEnchantPower(this.world, pos1) > 0) {
-                            tables.add(pos1);
+                        float enchantPower = ForgeHooks.getEnchantPower(this.world, pos1);
+                        if(enchantPower > 0) {
+                            tables.put(pos1, enchantPower);
                         }
                         pos1 = new BlockPos(x + xOff, y + yOff, z + zOff * 2);
-                        if (ForgeHooks.getEnchantPower(this.world, pos1) > 0) {
-                            tables.add(pos1);
+                        enchantPower = ForgeHooks.getEnchantPower(this.world, pos1);
+                        if(enchantPower > 0) {
+                            tables.put(pos1, enchantPower);
                         }
                         pos1 = new BlockPos(x + xOff * 2, y + yOff, z + zOff * 2);
-                        if (ForgeHooks.getEnchantPower(this.world, pos1) > 0) {
-                            tables.add(pos1);
+                        enchantPower = ForgeHooks.getEnchantPower(this.world, pos1);
+                        if(enchantPower > 0) {
+                            tables.put(pos1, enchantPower);
                         }
                     }
                 }
             }
         }
-        this.enchantmentTables = tables;
-
+        this.bookshelves = tables;
+        if(!world.isRemote) {
+            BlockPos[] bPos = new BlockPos[bookshelves.size()];
+            float[] enchants = new float[bookshelves.size()];
+            int count = 0;
+            for(Map.Entry<BlockPos, Float> entry : bookshelves.entrySet()) {
+                bPos[count] = entry.getKey();
+                enchants[count] = entry.getValue();
+                count++;
+            }
+            EnchantingPlus.NETWORK.sendToAllAround(new MessageBookshelfSync(getPos(), bPos, enchants), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 128));
+            markDirty();
+        }
     }
 
     @Override
