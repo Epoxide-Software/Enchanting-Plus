@@ -1,0 +1,76 @@
+#Enchanting Plus Brazilian Portuguese Language File
+
+#Block Names
+tile.eplus.advanced.table.name=Mesa de Encantamentos Avançada
+tile.eplus.decorative.book.eplus.name=Livro de Encantamentos Avançado
+tile.eplus.decorative.book.vanilla.name=Livro de Encantamentos
+tile.eplus.decorative.book.prismarine.name=Livro de Prismarinho
+tile.eplus.decorative.book.nether.name=Livro do Nether
+tile.eplus.decorative.book.tartarite.name=Livro de Tartarita
+tile.eplus.decorative.book.white.name=Livro Pálido
+tile.eplus.decorative.book.metal.name=Livro Metálico
+
+#Item Names
+item.eplus.table.upgrade.name=Melhoria
+item.eplus.enchanted.scroll.name=Pergaminho Encantado
+
+#Commands
+commands.eplus.usage=O comando base para todos os comandos adicionados pelo Enchanting Plus
+
+#Tooltips
+tooltip.eplus.enchantment=Encantamento
+tooltip.eplus.modifier=Modificador de Pergaminho
+tooltip.eplus.speed=Velocidade
+tooltip.eplus.stability=Estabilidade
+tooltip.eplus.repair=Custo de Reparo %s
+tooltip.eplus.playerlevel=Nível do Jogador
+tooltip.eplus.maxlevel=Nível Máximo do Encantamento
+tooltip.eplus.enchant=Custo do Encantamento
+tooltip.eplus.learned=Aprendido
+tooltip.eplus.duration=Duração
+tooltip.eplus.uses=Usos Restantes
+tooltip.eplus.unlimited=Infinito
+tooltip.eplus.nodesc=Por favor, peça ao autor do mod para mantar as descrições dos encantamentos.
+tooltip.eplus.experienceGained=Experiência ganha
+tooltip.eplus.invalid=Este pergaminho é inválido!
+tooltip.eplus.additem=Coloque um item na mesa para começar!
+tooltip.eplus.noench=Você não aprendeu nenhum encantamento apropriado para este item!
+
+#Chat
+chat.eplus.scrollunlock=Encantamento Desbloqueado
+chat.eplus.scrollunlock.failed=Você já aprendeu isso.
+chat.eplus.morebooks=Estantes insuficientes, precisa de %s
+chat.eplus.morelevels=Níveis insuficientes, precisa de %s
+chat.eplus.nounlocked=Você não tem encantamentos desbloqueados. 
+
+#Misc
+itemGroup.eplus=Enchanting Plus
+
+#Vanilla Enchantment Descriptions
+enchantment.minecraft.protection.desc=Reduz o dano recebido pela maioria das fontes de dano.
+enchantment.minecraft.fire_protection.desc=Reduz o dano recebido pelo fogo. Também reduz o tempo de chama (quando você pega fogo).
+enchantment.minecraft.feather_falling.desc=Reduz o dano de queda e o dano causado pela teleportação via Pérolas do Fim.
+enchantment.minecraft.blast_protection.desc=Reduz o dano recebido por explosões e reduz o recuo causado pela explosão.
+enchantment.minecraft.projectile_protection.desc=Reduz o dano recebido por projéteis, como flechas e bolas de fogo.
+enchantment.minecraft.respiration.desc=Aumenta o tempo em que o jogador pode ficar embaixo d'água. Também melhora a visão embaixo d'água.
+enchantment.minecraft.aqua_affinity.desc=Aumenta a velocidade de mineração embaixo d'água.
+enchantment.minecraft.thorns.desc=Causa dano a inimigos que te atacam.
+enchantment.minecraft.sharpness.desc=Aumenta o dano.
+enchantment.minecraft.smite.desc=Aumenta o dano contra mortos-vivos, como zumbis e esqueletos
+enchantment.minecraft.bane_of_arthropods.desc=Aumenta o dano contra atrópodes, como aranhas e traças.
+enchantment.minecraft.knockback.desc=Aumenta a força de impacto (repulsão) da arma.
+enchantment.minecraft.fire_aspect.desc=Causa dano de fogo adicional quando usado para atacar um mob.
+enchantment.minecraft.looting.desc=Mobs droparão mais loot ao morrerem.
+enchantment.minecraft.efficiency.desc=Aumenta a velocidade de mineração.
+enchantment.minecraft.silk_touch.desc=Permite que blocos frágeis como o vidro possam ser coletados.
+enchantment.minecraft.unbreaking.desc=Faz com que a ferramenta perca menos durabilidade ao decorrer de seu uso.
+enchantment.minecraft.fortune.desc=Faz com que minérios como o carvão e o diamante dropem itens adicionais.
+enchantment.minecraft.power.desc=Aumenta o dano causado pelas flechas atiradas pelo arco.
+enchantment.minecraft.punch.desc=Aumenta a força de impacto (repulsão) das flechas atiradas pelo arco.
+enchantment.minecraft.flame.desc=Flechas atiradas pelo arco terão dano adicional de fogo. 
+enchantment.minecraft.infinity.desc=Permite que o arco atire flechas infinitamente. Mas você precisa ter ao menos uma flecha no seu inventário.
+enchantment.minecraft.luck_of_the_sea.desc=Aumenta a chance de obter loot bom enquanto pesca.
+enchantment.minecraft.lure.desc=Diminui o tempo necessário para um peixe morder o anzol.
+enchantment.minecraft.depth_strider.desc=Aumenta a velocidade de movimento embaixo d'água
+enchantment.minecraft.frost_walker.desc=Congela a água embaixo dos pés do jogador em gelo rachado.
+enchantment.minecraft.mending.desc=Conserta as ferramentas através de orbes de experiência.
