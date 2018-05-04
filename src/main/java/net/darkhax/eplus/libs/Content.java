@@ -5,7 +5,6 @@ import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.eplus.block.BlockAdvancedTable;
 import net.darkhax.eplus.block.BlockBookDecoration;
 import net.darkhax.eplus.creativetab.CreativeTabEPlus;
-import net.darkhax.eplus.item.ItemScroll;
 import net.darkhax.eplus.item.ItemTableUpgrade;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -19,7 +18,6 @@ public class Content {
     public static Block blockDecorativeBook;
 
     // ITEMS
-    public static Item itemEnchantedScroll;
     public static Item itemTableUpgrade;
     public static Item itemDecorativeBook;
 
@@ -33,6 +31,5 @@ public class Content {
     public static void registerItems () {
 
         itemTableUpgrade = REGISTRY.registerItem(new ItemTableUpgrade(), "table_upgrade");
-        itemEnchantedScroll = REGISTRY.registerItem(new ItemScroll(), "enchanted_scroll");
     }
 }
