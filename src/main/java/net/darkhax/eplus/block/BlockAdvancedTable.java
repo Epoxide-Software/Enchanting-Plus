@@ -72,6 +72,8 @@ public class BlockAdvancedTable extends BlockTileEntity implements ITileEntityBl
 
                 playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
                 ((TileEntityAdvancedTable) tileentity).updateItem();
+                ((TileEntityAdvancedTable) tileentity).searchForShelves();
+    
             }
 
             return true;
