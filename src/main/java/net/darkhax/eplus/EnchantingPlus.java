@@ -1,19 +1,13 @@
 package net.darkhax.eplus;
 
-import net.darkhax.bookshelf.BookshelfRegistry;
 import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.network.NetworkHandler;
-import net.darkhax.eplus.commands.CommandEPlus;
 import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.IMCHandler;
-import net.darkhax.eplus.handler.PlayerHandler;
 import net.darkhax.eplus.libs.Content;
 import net.darkhax.eplus.network.GuiHandler;
 import net.darkhax.eplus.network.messages.*;
-import net.darkhax.eplus.network.packet.PacketRequestSync;
-import net.darkhax.eplus.network.packet.PacketSyncEnchantUnlock;
-import net.darkhax.eplus.network.packet.PacketSyncEnchantUnlocks;
 import net.darkhax.eplus.network.packet.PacketTableSync;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -40,9 +34,6 @@ public final class EnchantingPlus {
 
         ConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
 
-        NETWORK.register(PacketRequestSync.class, Side.SERVER);
-        NETWORK.register(PacketSyncEnchantUnlock.class, Side.CLIENT);
-        NETWORK.register(PacketSyncEnchantUnlocks.class, Side.CLIENT);
         NETWORK.register(PacketTableSync.class, Side.CLIENT);
         NETWORK.register(MessageEnchant.class, Side.SERVER);
         NETWORK.register(MessageEnchantSync.class, Side.CLIENT);
@@ -51,10 +42,6 @@ public final class EnchantingPlus {
     
     
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-
-        BookshelfRegistry.addCommand(new CommandEPlus());
-
-        PlayerHandler.init();
 
         Content.registerBlocks();
         Content.registerItems();
