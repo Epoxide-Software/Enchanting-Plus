@@ -2,6 +2,7 @@ package net.darkhax.eplus.block;
 
 import net.darkhax.bookshelf.block.ITileEntityBlock;
 import net.darkhax.eplus.block.tileentity.TileEntityDecoration;
+import net.darkhax.eplus.block.tileentity.TileEntityWithBook;
 import net.darkhax.eplus.block.tileentity.renderer.TileEntityDecorationRenderer;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -172,5 +173,19 @@ public class BlockBookDecoration extends BlockContainer implements ITileEntityBl
     public TileEntitySpecialRenderer<?> getTileRenderer () {
 
         return new TileEntityDecorationRenderer();
+    }
+    
+    @Override
+    public boolean hasComparatorInputOverride(IBlockState state) {
+        
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+        
+        final TileEntity tile = worldIn.getTileEntity(pos);
+        
+        return tile instanceof TileEntityWithBook && ((TileEntityWithBook) tile).isOpen() ? 15 : 0;
     }
 }

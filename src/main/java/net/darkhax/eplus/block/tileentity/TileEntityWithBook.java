@@ -3,6 +3,7 @@ package net.darkhax.eplus.block.tileentity;
 import java.util.Random;
 
 import net.darkhax.bookshelf.block.tileentity.TileEntityBasicTickable;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 
@@ -21,9 +22,20 @@ public abstract class TileEntityWithBook extends TileEntityBasicTickable {
     public float bookRotationPrev;
     public float offset;
 
+    public boolean isOpen() {
+        
+        return this.bookSpread >= 1;
+    }
+    
     @Override
     public void onEntityUpdate () {
-
+        
+        if (bookSpreadPrev != this.bookSpread && (this.bookSpread == 0f || this.bookSpread == 1f)) {
+            
+            IBlockState state = this.world.getBlockState(this.getPos());
+            this.getWorld().notifyNeighborsOfStateChange(pos, blockType, true);
+        }
+        
         this.bookSpreadPrev = this.bookSpread;
         this.bookRotationPrev = this.bookRotation;
         final EntityPlayer entityplayer = this.world.getClosestPlayer(this.pos.getX() + 0.5F, this.pos.getY() + 0.5F, this.pos.getZ() + 0.5F, 3.0D, false);
