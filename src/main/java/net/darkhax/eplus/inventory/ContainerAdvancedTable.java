@@ -83,9 +83,9 @@ public class ContainerAdvancedTable extends Container {
                 }
             }
 
-            if (itemStack != ItemStack.EMPTY) {
+            if (!itemStack.isEmpty()) {
                 for (final Slot slot : selectedSlots) {
-                    if (slot.isItemValid(itemStack) && itemStack != ItemStack.EMPTY) {
+                    if (slot.isItemValid(itemStack) && !itemStack.isEmpty()) {
                         if (slot.getHasStack()) {
                             final ItemStack stack = slot.getStack();
 
@@ -143,7 +143,7 @@ public class ContainerAdvancedTable extends Container {
                 }
             }
 
-            clickSlot.putStack(itemStack != ItemStack.EMPTY ? itemStack.copy() : ItemStack.EMPTY);
+            clickSlot.putStack(!itemStack.isEmpty() ? itemStack.copy() : ItemStack.EMPTY);
         }
         this.detectAndSendChanges();
         return ItemStack.EMPTY;
