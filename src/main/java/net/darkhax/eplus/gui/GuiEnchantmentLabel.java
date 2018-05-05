@@ -7,11 +7,9 @@ import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.network.messages.*;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.*;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
-
-import java.util.*;
 
 public class GuiEnchantmentLabel extends Gui {
     
@@ -82,13 +80,13 @@ public class GuiEnchantmentLabel extends Gui {
      */
     public String getDisplayName() {
         
-        String s = I18n.translateToLocal(this.enchantment.getName());
+        String s = I18n.format(this.enchantment.getName());
         
         if(this.enchantment.isCurse()) {
             s = TextFormatting.RED + s;
         }
         
-        return this.currentLevel <= 0 ? s : s + " " + I18n.translateToLocal("enchantment.level." + this.currentLevel);
+        return this.currentLevel <= 0 ? s : s + " " + I18n.format("enchantment.level." + this.currentLevel);
     }
     
     /**
@@ -101,9 +99,12 @@ public class GuiEnchantmentLabel extends Gui {
     public void updateSlider(int xPos, int prevX) {
         
         if(this.locked) {
+            
             return;
         }
+        
         if(xPos > prevX + this.width) {
+            
             return;
         }
         this.sliderX = prevX + xPos + 2;
@@ -126,18 +127,8 @@ public class GuiEnchantmentLabel extends Gui {
         if(this.currentLevel <= 0) {
             this.currentLevel = 0;
         }
-        //TODO send packet to server here, telling the tile what level has changed
-//        List<EnchantData> existinEnchants = new LinkedList<>();
-//        for(EnchantData data : parent.getTable().existingEnchantments) {
-//            if(data.enchantment == this.enchantment) {
-//                existinEnchants.add(new EnchantData(enchantment, currentLevel));
-//            } else {
-//                existinEnchants.add(data);
-//            }
-//        }
-//        parent.getTable().existingEnchantments = existinEnchants;
-        EnchantingPlus.NETWORK.sendToServer(new MessageSliderUpdate(((ContainerAdvancedTable) parent.inventorySlots).pos, new EnchantData(enchantment, currentLevel)));
-    
+
+        EnchantingPlus.NETWORK.sendToServer(new MessageSliderUpdate(((ContainerAdvancedTable) parent.inventorySlots).pos, new EnchantData(enchantment, currentLevel)));    
     }
     
     /**

@@ -170,65 +170,6 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
         return cost;
     }
     
-    public void searchForShelves() {
-        //TODO this needs to run everytime that a tile changes withing a 2 block radius around the table
-        final int x = this.getPos().getX();
-        final int y = this.getPos().getY();
-        final int z = this.getPos().getZ();
-        final Map<BlockPos, Float> tables = new HashMap<>();
-        for(int xOff = -1; xOff < 2; xOff++) {
-            for(int zOff = -1; zOff < 2; zOff++) {
-                for(int yOff = 0; yOff < 2; yOff++) {
-                    
-                    if(xOff == 0 && zOff == 0) {
-                        continue;
-                    }
-                    
-                    final BlockPos pos = new BlockPos(x + xOff, y + yOff, z + zOff);
-                    
-                    if(this.world.isAirBlock(pos)) {
-                        BlockPos pos1 = new BlockPos(x + xOff * 2, y + yOff, z + zOff);
-                        float enchantPower = ForgeHooks.getEnchantPower(this.world, pos1);
-                        if(enchantPower > 0) {
-                            tables.put(pos1, enchantPower);
-                        }
-                        pos1 = new BlockPos(x + xOff, y + yOff, z + zOff * 2);
-                        enchantPower = ForgeHooks.getEnchantPower(this.world, pos1);
-                        if(enchantPower > 0) {
-                            tables.put(pos1, enchantPower);
-                        }
-                        pos1 = new BlockPos(x + xOff * 2, y + yOff, z + zOff * 2);
-                        enchantPower = ForgeHooks.getEnchantPower(this.world, pos1);
-                        if(enchantPower > 0) {
-                            tables.put(pos1, enchantPower);
-                        }
-                    }
-                }
-            }
-        }
-        this.bookshelves = tables;
-        if(!world.isRemote) {
-            BlockPos[] bPos = new BlockPos[bookshelves.size()];
-            float[] enchants = new float[bookshelves.size()];
-            int count = 0;
-            for(Map.Entry<BlockPos, Float> entry : bookshelves.entrySet()) {
-                bPos[count] = entry.getKey();
-                enchants[count] = entry.getValue();
-                count++;
-            }
-            EnchantingPlus.NETWORK.sendToAllAround(new MessageBookshelfSync(getPos(), bPos, enchants), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 128));
-            markDirty();
-        }
-    }
-    
-    public float getEnchantabilityOfShelves() {
-        float enchantability = 0;
-        for(Float aFloat : bookshelves.values()) {
-            enchantability += aFloat;
-        }
-        return enchantability;
-    }
-    
     @Override
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
         

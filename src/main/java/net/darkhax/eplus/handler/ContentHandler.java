@@ -1,83 +1,45 @@
 package net.darkhax.eplus.handler;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import net.darkhax.bookshelf.lib.ItemStackMap;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 public final class ContentHandler {
 
-    /**
-     * A list of all blacklisted enchantment IDs.
-     */
-    private static List<ResourceLocation> enchantBlacklist = new ArrayList<>();
-
-    /**
-     * A list of all blacklisted item IDs.
-     */
-    private static List<ResourceLocation> itemBlacklist = new ArrayList<>();
-
-    /**
-     * Attempts to blacklist an enchantment. If the enchantment has already been blacklisted,
-     * or the enchantment is null, it will fail.
-     *
-     * @param enchant The Enchantment to blacklist.
-     */
-    public static void blacklistEnchantment (Enchantment enchant) {
-
-        if (enchant != null && !enchantBlacklist.contains(enchant.getRegistryName())) {
-            enchantBlacklist.add(enchant.getRegistryName());
-        }
+    private static final ItemStackMap<String> BLACKLIST_ITEMS = new ItemStackMap<>(ItemStackMap.SIMILAR_WITH_NBT); 
+    private static final Map<Enchantment, String> BLACKLIST_ENCHANTMENTS = new HashMap<>();
+    
+    public static void blacklist(ItemStack stack, String blacklister) {
+        
+        BLACKLIST_ITEMS.put(stack, blacklister);
     }
-
-    /**
-     * Attempts to blacklist an item. If the item has already been blacklisted, or the item is
-     * null, it will fail.
-     *
-     * @param item The Item to blacklist.
-     */
-    public static void blacklistItem (Item item) {
-
-        if (item != null && !itemBlacklist.contains(item.getRegistryName())) {
-            itemBlacklist.add(item.getRegistryName());
-        }
+    
+    public static void blacklist(Enchantment enchantment, String blacklister) {
+        
+        BLACKLIST_ENCHANTMENTS.put(enchantment, blacklister);
     }
-
-    /**
-     * Initializes the blacklist for both enchantments and items.
-     */
-    public static void initBlacklist () {
-
-        for (final String entry : ConfigurationHandler.blacklistedItems) {
-            blacklistItem(Item.REGISTRY.getObject(new ResourceLocation(entry)));
-        }
-
-        for (final String entry : ConfigurationHandler.blacklistedEnchantments) {
-            blacklistEnchantment(Enchantment.REGISTRY.getObject(new ResourceLocation(entry)));
-        }
+    
+    public static boolean isValidItem(EntityPlayer player, ItemStack stack) {
+        
+        return stack.getItem().isEnchantable(stack) && !BLACKLIST_ITEMS.containsKey(stack);
     }
-
-    /**
-     * Checks if an enchantment is blacklisted.
-     *
-     * @param enchant The enchantment to check for.
-     * @return boolean Whether or not the enchantment is blacklisted.
-     */
-    public static boolean isEnchantmentBlacklisted (Enchantment enchant) {
-
-        return enchant != null && enchantBlacklist.contains(enchant.getRegistryName());
+    
+    public static boolean isValidEnchantment(EntityPlayer player, Enchantment enchantment) {
+        
+        return !BLACKLIST_ENCHANTMENTS.containsKey(enchantment);
     }
-
-    /**
-     * Checks if an item is blacklisted.
-     *
-     * @param item The item to check for.
-     * @return Whether or not the item was blacklisted.
-     */
-    public static boolean isItemBlacklisted (Item item) {
-
-        return item != null && itemBlacklist.contains(item.getRegistryName());
+    
+    public static String getBlacklister(ItemStack stack) {
+        
+        return BLACKLIST_ITEMS.get(stack);
+    }
+    
+    public static String getBlacklister(Enchantment enchantment) {
+        
+        return BLACKLIST_ENCHANTMENTS.get(enchantment);
     }
 }

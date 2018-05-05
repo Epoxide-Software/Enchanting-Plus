@@ -93,9 +93,9 @@ public class GuiAdvancedTable extends GuiContainer {
         }
         int levels = 0;
         for(EnchantData data : list) {
-            levels += table.calculateNewEnchCost(data.enchantment, data.enchantmentLevel);
+            levels += TileEntityAdvancedTable.calculateNewEnchCost(data.enchantment, data.enchantmentLevel);
         }
-        fontRenderer.drawString(levels + "/" + table.getEnchantabilityOfShelves(), guiLeft+30,guiTop+80,0);
+        fontRenderer.drawString(Integer.toString(levels), guiLeft+30,guiTop+80,0);
     
         this.renderHoveredToolTip(mouseX, mouseY);
         
@@ -281,13 +281,15 @@ public class GuiAdvancedTable extends GuiContainer {
     protected void actionPerformed(GuiButton button) throws IOException {
         
         super.actionPerformed(button);
+        
         if(button.id == 0) {
-            //            this.table.enchant();
+            
             EnchantingPlus.NETWORK.sendToServer(new MessageEnchant(((ContainerAdvancedTable) this.inventorySlots).pos));
         }
     }
     
     public TileEntityAdvancedTable getTable() {
+        
         return table;
     }
 }

@@ -3,11 +3,13 @@ package net.darkhax.eplus;
 import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.network.NetworkHandler;
 import net.darkhax.eplus.handler.ConfigurationHandler;
-import net.darkhax.eplus.handler.ContentHandler;
 import net.darkhax.eplus.handler.IMCHandler;
 import net.darkhax.eplus.libs.Content;
 import net.darkhax.eplus.network.GuiHandler;
-import net.darkhax.eplus.network.messages.*;
+import net.darkhax.eplus.network.messages.MessageBookshelfSync;
+import net.darkhax.eplus.network.messages.MessageEnchant;
+import net.darkhax.eplus.network.messages.MessageEnchantSync;
+import net.darkhax.eplus.network.messages.MessageSliderUpdate;
 import net.darkhax.eplus.network.packet.PacketTableSync;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -15,7 +17,6 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,7 +41,6 @@ public final class EnchantingPlus {
         NETWORK.register(MessageSliderUpdate.class, Side.SERVER);
         NETWORK.register(MessageBookshelfSync.class, Side.CLIENT);
     
-    
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
         Content.registerBlocks();
@@ -50,12 +50,6 @@ public final class EnchantingPlus {
     @EventHandler
     public void init (FMLInitializationEvent event) {
 
-    }
-
-    @EventHandler
-    public void postInit (FMLPostInitializationEvent event) {
-
-        ContentHandler.initBlacklist();
     }
 
     @EventHandler
