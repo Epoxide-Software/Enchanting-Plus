@@ -145,9 +145,14 @@ public class GuiAdvancedTable extends GuiContainer {
             final Enchantment enchantment = label.getEnchantment();
             
             for(final EnchantData data : this.table.existingEnchantments) {
-                if(enchantment != data.enchantment && data.enchantmentLevel > 0 && !data.enchantment.isCompatibleWith(enchantment)) {
+                
+                final boolean isIncompatable = enchantment != data.enchantment && data.enchantmentLevel > 0 && !data.enchantment.isCompatibleWith(enchantment);
+                final boolean isOverLeveled = enchantment == data.enchantment && data.enchantmentLevel > enchantment.getMaxLevel();
+                
+                if(isOverLeveled || isIncompatable) {
                     
                     label.setLocked(true);
+                    break;
                 }
             }
         }
