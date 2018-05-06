@@ -13,23 +13,23 @@ import net.minecraft.util.text.TextFormatting;
 
 public class GuiEnchantmentLabel extends Gui {
     
+    private final int height = 18;
+    private final int width = 143;
     private final TileEntityAdvancedTable tile;
-    public final Enchantment enchantment;
-    public final int initialLevel;
-    public int currentLevel;
+    private final Enchantment enchantment;
+    private final int initialLevel;
     
-    public int startingXPos;
-    public int startingYPos;
-    public int xPos;
-    public int yPos;
-    public final int height = 18;
-    public final int width = 143;
+    private int currentLevel;    
+    private int startingXPos;
+    private int startingYPos;
+    private int xPos;
+    private int yPos;
     
     private int sliderX;
-    public boolean dragging = false;
+    private boolean dragging = false;
     
-    public boolean visible = true;
-    public boolean locked = false;
+    private boolean visible = true;
+    private boolean locked = false;
     
     public final GuiAdvancedTable parent;
     
@@ -52,6 +52,11 @@ public class GuiEnchantmentLabel extends Gui {
         this.xPos = this.startingXPos = x;
         this.yPos = this.startingYPos = y;
         this.sliderX = this.xPos + 1;
+        
+        if (this.currentLevel > this.enchantment.getMaxLevel()) {
+            
+            this.locked = true;
+        }
     }
     
     /**
@@ -94,43 +99,158 @@ public class GuiEnchantmentLabel extends Gui {
      * the enchantment being represented.
      *
      * @param xPos  The xPos of the slider.
-     * @param prevX The previous slider position.
+     * @param baseX The previous slider position.
      */
-    public void updateSlider(int xPos, int prevX) {
+    public void updateSlider(int xPos) {
         
+        // If the slider is locked, prevent it from updating.
         if(this.locked) {
             
             return;
         }
         
-        if(xPos > prevX + this.width) {
+        final int min = this.xPos + 1;
+        final int max = min + this.width - 6;
+        
+        // Updates the position of the slider. -2 to center the cursor on the mouse position.
+        this.sliderX = min + xPos - 2;
+        
+        // Prevents the slider from being dragged less than the lowest position.
+        if(this.sliderX < min) {
             
-            return;
-        }
-        this.sliderX = prevX + xPos + 2;
-        
-        if(this.sliderX <= prevX) {
-            this.sliderX = prevX;
+            this.sliderX = min;
         }
         
-        if(this.sliderX >= prevX + this.width - 6) {
-            this.sliderX = prevX + this.width - 6;
+        // Prevents the slider from being dragged 
+        else if(this.sliderX > max) {
+            
+            this.sliderX = max;
         }
         
         final float index = xPos / (float) (this.width - 10);
-        final int tempLevel = Math.round(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
+        final int updatedLevel = Math.round(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
         
-        if(tempLevel >= this.initialLevel || ConfigurationHandler.allowDisenchanting && !this.tile.inventory.getStackInSlot(0).isItemDamaged()) {
-            this.currentLevel = tempLevel;
+        // Checks if the updated level can be applied.
+        if(updatedLevel > this.initialLevel || (ConfigurationHandler.allowDisenchanting && !this.tile.inventory.getStackInSlot(0).isItemDamaged())) {
+            this.currentLevel = updatedLevel;
         }
         
-        if(this.currentLevel <= 0) {
+        // Adjust to range.
+        if(this.currentLevel < 0) {
+            
             this.currentLevel = 0;
         }
+        
+        // Adjust to range.
+        else if (this.currentLevel > this.enchantment.getMaxLevel()) {
+            
+            this.currentLevel = this.enchantment.getMaxLevel();
+        }
 
+        // Send the update to the server.
         EnchantingPlus.NETWORK.sendToServer(new MessageSliderUpdate(((ContainerAdvancedTable) parent.inventorySlots).pos, new EnchantData(enchantment, currentLevel)));    
     }
     
+    public int getCurrentLevel () {
+        
+        return currentLevel;
+    }
+
+    public void setCurrentLevel (int currentLevel) {
+        
+        this.currentLevel = currentLevel;
+    }
+
+    public int getStartingXPos () {
+        
+        return startingXPos;
+    }
+
+    public void setStartingXPos (int startingXPos) {
+        
+        this.startingXPos = startingXPos;
+    }
+
+    public int getStartingYPos () {
+        
+        return startingYPos;
+    }
+
+    public void setStartingYPos (int startingYPos) {
+        
+        this.startingYPos = startingYPos;
+    }
+
+    public int getxPos () {
+        
+        return xPos;
+    }
+
+    public void setxPos (int xPos) {
+        
+        this.xPos = xPos;
+    }
+
+    public int getyPos () {
+        
+        return yPos;
+    }
+
+    public void setyPos (int yPos) {
+        
+        this.yPos = yPos;
+    }
+
+    public int getSliderX () {
+        
+        return sliderX;
+    }
+
+    public void setSliderX (int sliderX) {
+        
+        this.sliderX = sliderX;
+    }
+
+    public boolean isDragging () {
+        
+        return dragging;
+    }
+
+    public void setDragging (boolean dragging) {
+        
+        this.dragging = dragging;
+    }
+
+    public boolean isLocked () {
+        
+        return locked;
+    }
+
+    public void setLocked (boolean locked) {
+        
+        this.locked = locked;
+    }
+
+    public int getWidth () {
+        
+        return width;
+    }
+
+    public TileEntityAdvancedTable getTile () {
+        
+        return tile;
+    }
+
+    public boolean isVisible () {
+        
+        return visible;
+    }
+
+    public GuiAdvancedTable getParent () {
+        
+        return parent;
+    }
+
     /**
      * Sets whether or not the label should be shown.
      *
@@ -139,5 +259,20 @@ public class GuiEnchantmentLabel extends Gui {
     public void setVisible(boolean isVisible) {
         
         this.visible = isVisible;
+    }
+
+    public int getHeight () {
+        
+        return height;
+    }
+
+    public Enchantment getEnchantment () {
+        
+        return enchantment;
+    }
+
+    public int getInitialLevel () {
+        
+        return initialLevel;
     }
 }
