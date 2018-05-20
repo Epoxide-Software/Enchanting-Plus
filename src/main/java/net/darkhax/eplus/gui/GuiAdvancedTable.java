@@ -178,10 +178,8 @@ public class GuiAdvancedTable extends GuiContainer {
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
         GlStateManager.color(1, 1, 1, 1);
         
-        if(!this.enchantmentList.isEmpty()) {
-            for(final GuiEnchantmentLabel label : this.enchantmentList) {
-                label.draw(this.fontRenderer);
-            }
+        for(final GuiEnchantmentLabel label : this.enchantmentList) {
+            label.draw(this.fontRenderer);
         }
     }
     
