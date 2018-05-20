@@ -159,11 +159,6 @@ public class GuiAdvancedTable extends GuiContainer {
         }
     }
     
-    public List<GuiEnchantmentLabel> getVisibleLabels() {
-        
-        return new ArrayList<>(this.enchantmentList);
-    }
-    
     public GuiEnchantmentLabel getLabelUnderMouse(int mx, int my) {
         
         for(final GuiEnchantmentLabel label : this.enchantmentList) {
@@ -183,8 +178,8 @@ public class GuiAdvancedTable extends GuiContainer {
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
         GlStateManager.color(1, 1, 1, 1);
         
-        if(!this.getVisibleLabels().isEmpty()) {
-            for(final GuiEnchantmentLabel label : this.getVisibleLabels()) {
+        if(!this.enchantmentList.isEmpty()) {
+            for(final GuiEnchantmentLabel label : this.enchantmentList) {
                 label.draw(this.fontRenderer);
             }
         }
