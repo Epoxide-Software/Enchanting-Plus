@@ -117,8 +117,13 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
         
         ItemStack stack = inventory.getStackInSlot(0);
         EnchantmentHelper.setEnchantments(new HashMap<>(), stack);
+        
         for(EnchantData data : existingEnchantments) {
-            stack.addEnchantment(data.enchantment, data.enchantmentLevel);
+            
+            if (data.enchantmentLevel > 0) {
+                
+                stack.addEnchantment(data.enchantment, data.enchantmentLevel);
+            }
         }
         
         if(!world.isRemote) {
