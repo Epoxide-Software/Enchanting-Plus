@@ -10,12 +10,10 @@ import net.darkhax.eplus.libs.Content;
 import net.darkhax.eplus.network.GuiHandler;
 import net.darkhax.eplus.network.messages.MessageBookshelfSync;
 import net.darkhax.eplus.network.messages.MessageEnchant;
-import net.darkhax.eplus.network.messages.MessageEnchantSync;
 import net.darkhax.eplus.network.messages.MessageSliderUpdate;
 import net.darkhax.eplus.network.packet.PacketTableSync;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -44,7 +42,6 @@ public final class EnchantingPlus {
 
         NETWORK.register(PacketTableSync.class, Side.CLIENT);
         NETWORK.register(MessageEnchant.class, Side.SERVER);
-        NETWORK.register(MessageEnchantSync.class, Side.CLIENT);
         NETWORK.register(MessageSliderUpdate.class, Side.SERVER);
         NETWORK.register(MessageBookshelfSync.class, Side.CLIENT);
     

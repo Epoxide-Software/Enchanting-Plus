@@ -14,7 +14,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.*;
 import net.minecraft.world.IInteractionObject;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -115,59 +114,19 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
     
     
     public void enchant() {
-        //TODO remove enchantments from the item first.
+        
         ItemStack stack = inventory.getStackInSlot(0);
         EnchantmentHelper.setEnchantments(new HashMap<>(), stack);
-        //
-        //        TODO apply new enchantments to it.
         for(EnchantData data : existingEnchantments) {
-            //TODO the current code will recalculate costs for preexisting enchantments, this needs to change, maybe a list made in updateItem?
             stack.addEnchantment(data.enchantment, data.enchantmentLevel);
         }
+        
         if(!world.isRemote) {
-            EnchantingPlus.NETWORK.sendToAllAround(new MessageEnchantSync(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 128));
-            markDirty();
+            
             updateItem();
+            markDirty();
+            this.world.notifyBlockUpdate(this.getPos(), this.getState(), this.getState(), 8);
         }
-    }
-    
-    public int getEnchantmentCosts() {
-        int cost = 0;
-        return cost;
-    }
-    
-    
-    public static int calculateNewEnchCost(Enchantment enchantment, int level) {
-        
-        // Base cost is equal to roughly 2.5 levels of EXP.
-        int cost = 25;
-        
-        // Cost is multiplied up to 10, based on rarity of the enchant.
-        // Rarer the enchant, higher the cost.
-        cost *= Math.max(11 - enchantment.getRarity().getWeight(), 1);
-        
-        // Linear cost increase based on level.
-        cost *= level;
-        
-        // The cost factor is applied. Default is 1.5.
-        // TODO make configurable
-        cost *= 1.5f;
-        
-        // Curses cost even more to apply
-        if(enchantment.isCurse()) {
-            
-            // TODO make configurable
-            cost *= 1.5f;
-        }
-        
-        // Treasures cost more to apply
-        if(enchantment.isTreasureEnchantment()) {
-            
-            // TODO make configurable
-            cost *= 1.5f;
-        }
-        
-        return cost;
     }
     
     @Override
