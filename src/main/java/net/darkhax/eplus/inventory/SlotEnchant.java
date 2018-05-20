@@ -1,5 +1,6 @@
 package net.darkhax.eplus.inventory;
 
+import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
@@ -20,6 +21,6 @@ public class SlotEnchant extends SlotItemHandler {
     @Override
     public boolean isItemValid (ItemStack stack) {
 
-        return PredicateEnchantableItem.INSTANCE.test(stack);
+        return EnchantingPlus.TEST_ENCHANTABILITY.test(stack);
     }
 }

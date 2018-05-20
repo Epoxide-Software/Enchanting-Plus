@@ -72,7 +72,7 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
         final ItemStack existing = this.stacks.get(slot);
 
         // If existing exists, prevent all new entries.
-        if (!existing.isEmpty() || !PredicateEnchantableItem.INSTANCE.test(stack)) {
+        if (!existing.isEmpty() || !EnchantingPlus.TEST_ENCHANTABILITY.test(stack)) {
 
             return stack;
         }

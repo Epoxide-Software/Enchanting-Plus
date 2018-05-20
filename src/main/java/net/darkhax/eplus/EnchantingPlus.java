@@ -1,5 +1,7 @@
 package net.darkhax.eplus;
 
+import java.util.function.Predicate;
+
 import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.network.NetworkHandler;
 import net.darkhax.eplus.handler.ConfigurationHandler;
@@ -11,6 +13,9 @@ import net.darkhax.eplus.network.messages.MessageEnchant;
 import net.darkhax.eplus.network.messages.MessageEnchantSync;
 import net.darkhax.eplus.network.messages.MessageSliderUpdate;
 import net.darkhax.eplus.network.packet.PacketTableSync;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -27,6 +32,8 @@ public final class EnchantingPlus {
     public static NetworkHandler NETWORK = new NetworkHandler("eplus");
     public static final LoggingHelper LOG = new LoggingHelper("Enchanting Plus");
 
+    public static final Predicate<ItemStack> TEST_ENCHANTABILITY = (stack) -> stack.isItemEnchantable() || stack.isItemEnchanted() || stack.getItem() == Items.BOOK || stack.getItem() == Items.ENCHANTED_BOOK;
+    
     @Instance("eplus")
     public static EnchantingPlus instance;
 
