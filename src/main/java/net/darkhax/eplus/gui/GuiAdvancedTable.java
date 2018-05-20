@@ -162,12 +162,13 @@ public class GuiAdvancedTable extends GuiContainer {
     public GuiEnchantmentLabel getLabelUnderMouse(int mx, int my) {
         
         for(final GuiEnchantmentLabel label : this.enchantmentList) {
-            if(label.getxPos() <= mx && label.getxPos() + label.getWidth() >= mx) {
-                if(label.getyPos() <= my && label.getyPos() + label.getHeight() >= my) {
-                    return label;
-                }
+
+            if (label.isMouseOver(mx, my)) {
+                
+                return label;
             }
         }
+        
         return null;
     }
     

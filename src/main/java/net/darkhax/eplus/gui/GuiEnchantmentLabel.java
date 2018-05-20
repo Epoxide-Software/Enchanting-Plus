@@ -13,8 +13,8 @@ import net.minecraft.util.text.TextFormatting;
 
 public class GuiEnchantmentLabel extends Gui {
     
-    private final int height = 18;
-    private final int width = 143;
+    private static final int HEIGHT = 18;
+    private static final int WIDTH = 143;
     private final TileEntityAdvancedTable tile;
     private final Enchantment enchantment;
     private final int initialLevel;
@@ -70,9 +70,9 @@ public class GuiEnchantmentLabel extends Gui {
             return;
         }
         
-        final int indexX = this.dragging ? this.sliderX : this.currentLevel <= this.enchantment.getMaxLevel() ? (int) (this.xPos + 1 + (this.width - 6) * (this.currentLevel / (double) this.enchantment.getMaxLevel())) : this.xPos + 1 + this.width - 6;
-        drawRect(this.xPos, this.yPos + 1, this.xPos + this.width, this.yPos - 1 + this.height, this.locked ? 0x44d10841 : 0x445aaeae);
-        drawRect(indexX, this.yPos + 1, indexX + 5, this.yPos - 1 + this.height, this.parent.selected != null && this.parent.selected == this ? 0xFFFF00FF : 0xFF000000);
+        final int indexX = this.dragging ? this.sliderX : this.currentLevel <= this.enchantment.getMaxLevel() ? (int) (this.xPos + 1 + (this.WIDTH - 6) * (this.currentLevel / (double) this.enchantment.getMaxLevel())) : this.xPos + 1 + this.WIDTH - 6;
+        drawRect(this.xPos, this.yPos + 1, this.xPos + this.WIDTH, this.yPos - 1 + this.HEIGHT, this.locked ? 0x44d10841 : 0x445aaeae);
+        drawRect(indexX, this.yPos + 1, indexX + 5, this.yPos - 1 + this.HEIGHT, this.parent.selected != null && this.parent.selected == this ? 0xFFFF00FF : 0xFF000000);
         
         font.drawString(this.getDisplayName(), this.xPos + 5, this.yPos + 6, 0x55aaff00);
     }
@@ -110,7 +110,7 @@ public class GuiEnchantmentLabel extends Gui {
         }
         
         final int min = this.xPos + 1;
-        final int max = min + this.width - 6;
+        final int max = min + this.WIDTH - 6;
         
         // Updates the position of the slider. -2 to center the cursor on the mouse position.
         this.sliderX = min + xPos - 2;
@@ -127,7 +127,7 @@ public class GuiEnchantmentLabel extends Gui {
             this.sliderX = max;
         }
         
-        final float index = xPos / (float) (this.width - 10);
+        final float index = xPos / (float) (this.WIDTH - 10);
         final int updatedLevel = Math.round(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
         
         // Checks if the updated level can be applied.
@@ -233,7 +233,7 @@ public class GuiEnchantmentLabel extends Gui {
 
     public int getWidth () {
         
-        return width;
+        return WIDTH;
     }
 
     public TileEntityAdvancedTable getTile () {
@@ -263,7 +263,7 @@ public class GuiEnchantmentLabel extends Gui {
 
     public int getHeight () {
         
-        return height;
+        return HEIGHT;
     }
 
     public Enchantment getEnchantment () {
@@ -274,5 +274,10 @@ public class GuiEnchantmentLabel extends Gui {
     public int getInitialLevel () {
         
         return initialLevel;
+    }
+    
+    public boolean isMouseOver(int mouseX, int mouseY) {
+        
+        return this.getxPos() <= mouseX && this.getxPos() + this.getWidth() >= mouseX && this.getyPos() <= mouseY && this.getyPos() + this.getHeight() >= mouseY;
     }
 }
