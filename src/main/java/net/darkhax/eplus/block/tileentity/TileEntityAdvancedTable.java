@@ -10,25 +10,20 @@ import javax.annotation.Nullable;
 import net.darkhax.bookshelf.lib.EnchantData;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.inventory.ItemStackHandlerEnchant;
-import net.darkhax.eplus.network.packet.PacketTableSync;
+import net.darkhax.eplus.network.messages.PacketTableSync;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileEntityAdvancedTable extends TileEntityWithBook implements IInteractionObject {
+public class TileEntityAdvancedTable extends TileEntityWithBook {
 
     public ItemStackHandlerEnchant inventory;
 
@@ -139,35 +134,11 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
             this.world.notifyBlockUpdate(this.getPos(), this.getState(), this.getState(), 8);
         }
     }
-
-    @Override
-    public Container createContainer (InventoryPlayer playerInventory, EntityPlayer playerIn) {
-
-        return new ContainerEnchantment(playerInventory, this.world, this.pos);
-    }
-
+    
     @Override
     public ITextComponent getDisplayName () {
 
-        return new TextComponentString(this.getName());
-    }
-
-    @Override
-    public String getGuiID () {
-
-        return "eplus:enchanting_table";
-    }
-
-    @Override
-    public String getName () {
-
-        return "container.enchant";
-    }
-
-    @Override
-    public boolean hasCustomName () {
-
-        return false;
+        return new TextComponentString("container.enchant");
     }
 
     @Override
