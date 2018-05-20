@@ -24,9 +24,6 @@ public class GuiButtonScroller extends GuiButton {
         this.parent = parent;
     }
 
-    /**
-     * Draws this button to the screen.
-     */
     @Override
     public void drawButton (Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 

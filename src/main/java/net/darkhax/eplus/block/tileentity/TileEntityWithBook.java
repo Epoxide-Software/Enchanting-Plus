@@ -22,20 +22,20 @@ public abstract class TileEntityWithBook extends TileEntityBasicTickable {
     public float bookRotationPrev;
     public float offset;
 
-    public boolean isOpen() {
-        
+    public boolean isOpen () {
+
         return this.bookSpread >= 1;
     }
-    
+
     @Override
     public void onEntityUpdate () {
-        
-        if (bookSpreadPrev != this.bookSpread && (this.bookSpread == 0f || this.bookSpread == 1f)) {
-            
-            IBlockState state = this.world.getBlockState(this.getPos());
-            this.getWorld().notifyNeighborsOfStateChange(pos, blockType, true);
+
+        if (this.bookSpreadPrev != this.bookSpread && (this.bookSpread == 0f || this.bookSpread == 1f)) {
+
+            final IBlockState state = this.world.getBlockState(this.getPos());
+            this.getWorld().notifyNeighborsOfStateChange(this.pos, this.blockType, true);
         }
-        
+
         this.bookSpreadPrev = this.bookSpread;
         this.bookRotationPrev = this.bookRotation;
         final EntityPlayer entityplayer = this.world.getClosestPlayer(this.pos.getX() + 0.5F, this.pos.getY() + 0.5F, this.pos.getZ() + 0.5F, 3.0D, false);

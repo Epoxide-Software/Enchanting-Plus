@@ -42,7 +42,7 @@ public class ContainerAdvancedTable extends Container {
                 this.addSlotToContainer(new Slot(invPlayer, x + y * 9 + 9, 43 + 18 * x, 91 + y * 18));
             }
         }
-        
+
         // Armor slots
         for (int y = 0; y < 4; y++) {
             this.addSlotToContainer(new SlotArmor(invPlayer.player, EntityUtils.getEquipmentSlot(y), invPlayer, 39 - y, 7, 24 + y * 19));

@@ -28,8 +28,7 @@ public class PacketTableSync extends SerializableMessage {
 
     public EnchantData[] enchantmentsCurrent;
     public EnchantData[] enchantmentsCurrentcache;
-    
-    
+
     public BlockPos pos;
 
     public PacketTableSync () {
@@ -40,12 +39,12 @@ public class PacketTableSync extends SerializableMessage {
 
         this.enchantmentsValid = this.getLocationsFromEnchants(tile.validEnchantments);
         this.enchantmentsCurrent = new EnchantData[tile.existingEnchantments.size()];
-        for(int i = 0; i < tile.existingEnchantments.size(); i++) {
+        for (int i = 0; i < tile.existingEnchantments.size(); i++) {
             this.enchantmentsCurrent[i] = tile.existingEnchantments.get(i);
         }
-    
+
         this.enchantmentsCurrentcache = new EnchantData[tile.existingEnchantmentsCache.size()];
-        for(int i = 0; i < tile.existingEnchantmentsCache.size(); i++) {
+        for (int i = 0; i < tile.existingEnchantmentsCache.size(); i++) {
             this.enchantmentsCurrentcache[i] = tile.existingEnchantmentsCache.get(i);
         }
         this.pos = tile.getPos();

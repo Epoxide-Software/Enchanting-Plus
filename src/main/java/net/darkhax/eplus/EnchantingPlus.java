@@ -31,7 +31,7 @@ public final class EnchantingPlus {
     public static final LoggingHelper LOG = new LoggingHelper("Enchanting Plus");
 
     public static final Predicate<ItemStack> TEST_ENCHANTABILITY = (stack) -> stack.isItemEnchantable() || stack.isItemEnchanted() || stack.getItem() == Items.BOOK || stack.getItem() == Items.ENCHANTED_BOOK;
-    
+
     @Instance("eplus")
     public static EnchantingPlus instance;
 
@@ -44,7 +44,7 @@ public final class EnchantingPlus {
         NETWORK.register(MessageEnchant.class, Side.SERVER);
         NETWORK.register(MessageSliderUpdate.class, Side.SERVER);
         NETWORK.register(MessageBookshelfSync.class, Side.CLIENT);
-    
+
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
         Content.registerBlocks();

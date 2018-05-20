@@ -4,10 +4,6 @@ import java.util.ArrayList;
 
 import net.darkhax.bookshelf.util.NBTUtils;
 import net.darkhax.bookshelf.util.RegistryUtils;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
@@ -23,43 +19,46 @@ public final class IMCHandler {
 
         if (message.key.equalsIgnoreCase("blacklistItems")) {
 
-//            if (message.isStringMessage()) {
-//                ContentHandler.blacklistItem(Item.REGISTRY.getObject(new ResourceLocation(message.getStringValue())));
-//            }
-//
-//            if (message.isItemStackMessage()) {
-//                ContentHandler.blacklistItem(message.getItemStackValue().getItem());
-//            }
-//
-//            if (message.isNBTMessage()) {
-//
-//                final NBTTagList list = message.getNBTValue().getTagList("blacklistItems", NBT.TAG_STRING);
-//
-//                for (int count = 0; count < list.tagCount(); count++) {
-//                    ContentHandler.blacklistItem(Item.REGISTRY.getObject(new ResourceLocation(list.getStringTagAt(count))));
-//                }
-//            }
+            // if (message.isStringMessage()) {
+            // ContentHandler.blacklistItem(Item.REGISTRY.getObject(new
+            // ResourceLocation(message.getStringValue())));
+            // }
+            //
+            // if (message.isItemStackMessage()) {
+            // ContentHandler.blacklistItem(message.getItemStackValue().getItem());
+            // }
+            //
+            // if (message.isNBTMessage()) {
+            //
+            // final NBTTagList list = message.getNBTValue().getTagList("blacklistItems",
+            // NBT.TAG_STRING);
+            //
+            // for (int count = 0; count < list.tagCount(); count++) {
+            // ContentHandler.blacklistItem(Item.REGISTRY.getObject(new
+            // ResourceLocation(list.getStringTagAt(count))));
+            // }
+            // }
         }
 
         else if (message.key.equalsIgnoreCase("blacklistEnchantments")) {
 
             if (message.isStringMessage()) {
-                
+
                 blacklistEnchantmentString(message.getStringValue(), message.getSender());
             }
 
             if (message.isNBTMessage()) {
 
-                for (String id : NBTUtils.readCollection(new ArrayList<String>(), message.getNBTValue().getTagList("blacklistEnchantments", NBT.TAG_STRING), entry -> entry)) {
-                    
+                for (final String id : NBTUtils.readCollection(new ArrayList<String>(), message.getNBTValue().getTagList("blacklistEnchantments", NBT.TAG_STRING), entry -> entry)) {
+
                     blacklistEnchantmentString(message.getStringValue(), message.getSender());
                 }
             }
         }
     }
-    
-    private static void blacklistEnchantmentString(String enchantmentid, String sender) {
-        
+
+    private static void blacklistEnchantmentString (String enchantmentid, String sender) {
+
         ContentHandler.blacklist(RegistryUtils.getEnchantment(enchantmentid), sender);
     }
 }
