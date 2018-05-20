@@ -129,7 +129,6 @@ public class TileEntityAdvancedTable extends TileEntityWithBook implements IInte
         if(!world.isRemote) {
             
             updateItem();
-            markDirty();
             this.world.notifyBlockUpdate(this.getPos(), this.getState(), this.getState(), 8);
         }
     }
