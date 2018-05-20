@@ -2,6 +2,7 @@ package net.darkhax.eplus.gui;
 
 import net.darkhax.bookshelf.client.gui.GuiItemButton;
 import net.darkhax.bookshelf.lib.EnchantData;
+import net.darkhax.eplus.EnchLogic;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
@@ -93,7 +94,7 @@ public class GuiAdvancedTable extends GuiContainer {
         }
         int levels = 0;
         for(EnchantData data : list) {
-            levels += TileEntityAdvancedTable.calculateNewEnchCost(data.enchantment, data.enchantmentLevel);
+            levels += EnchLogic.calculateNewEnchCost(data.enchantment, data.enchantmentLevel);
         }
         fontRenderer.drawString(Integer.toString(levels), guiLeft+30,guiTop+80,0);
     
