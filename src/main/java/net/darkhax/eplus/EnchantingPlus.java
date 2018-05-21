@@ -10,7 +10,6 @@ import net.darkhax.eplus.libs.Content;
 import net.darkhax.eplus.network.GuiHandler;
 import net.darkhax.eplus.network.messages.MessageEnchant;
 import net.darkhax.eplus.network.messages.MessageSliderUpdate;
-import net.darkhax.eplus.network.messages.PacketTableSync;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
@@ -39,7 +38,6 @@ public final class EnchantingPlus {
 
         ConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
 
-        NETWORK.register(PacketTableSync.class, Side.CLIENT);
         NETWORK.register(MessageEnchant.class, Side.SERVER);
         NETWORK.register(MessageSliderUpdate.class, Side.SERVER);
 

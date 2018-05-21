@@ -1,138 +1,47 @@
 package net.darkhax.eplus.block.tileentity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Nullable;
 
-import net.darkhax.bookshelf.lib.EnchantData;
-import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.inventory.ItemStackHandlerEnchant;
-import net.darkhax.eplus.network.messages.PacketTableSync;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityAdvancedTable extends TileEntityWithBook {
-
-    public ItemStackHandlerEnchant inventory;
+    
+    private ItemStackHandlerEnchant inventory;
+    
+    private EnchantmentLogicController controller;
 
     public TileEntityAdvancedTable () {
 
         this.inventory = new ItemStackHandlerEnchant(this, 1);
+        this.controller = new EnchantmentLogicController(this);
     }
 
-    /**
-     * Valid enchantments for the item (not applied to item already)
-     */
-    public List<Enchantment> validEnchantments = new ArrayList<>();
-
-    /**
-     * Current enchantments on the item (already applied to item) and ones that will be applied
-     */
-    public List<EnchantData> existingEnchantments = new ArrayList<>();
-
-    /**
-     * Last update of the existingEnchantments list, used to see which enchantments are new
-     */
-    public List<EnchantData> existingEnchantmentsCache = new ArrayList<>();
-
-    /**
-     * map containing the position of the bookshelves around the table and their enchantability
-     * (since it can be more than 1)
-     */
-    public Map<BlockPos, Float> bookshelves = new HashMap<>();
-
-    /**
-     * tells the gui to update. Client side only
-     */
-    public boolean updateGui = false;
-
-    public void updateItem () {
-
-        final ItemStack stack = this.inventory.getStackInSlot(0);
-        this.validEnchantments.clear();
-        this.existingEnchantments.clear();
-        this.existingEnchantmentsCache.clear();
-
-        if (!stack.isEmpty()) {
-            if (stack.isItemEnchantable() || stack.isItemEnchanted()) {
-                for (final Map.Entry<Enchantment, Integer> entry : EnchantmentHelper.getEnchantments(stack).entrySet()) {
-                    this.existingEnchantments.add(new EnchantData(entry.getKey(), entry.getValue()));
-                    this.existingEnchantmentsCache.add(new EnchantData(entry.getKey(), entry.getValue()));
-                }
-                this.validEnchantments.addAll(this.getEnchantmentsForItem(stack));
-
-            }
-        }
-        if (!this.world.isRemote) {
-            EnchantingPlus.NETWORK.sendToAllAround(new PacketTableSync(this), new NetworkRegistry.TargetPoint(this.world.provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 128D));
-            this.markDirty();
-        }
+    public EnchantmentLogicController getLogic() {
+        
+        return this.controller;
+    }
+    
+    public ItemStack getItem() {
+        
+        return this.inventory.getStackInSlot(0);
+    }
+    
+    public IItemHandler getInventory() {
+        
+        return this.inventory;
     }
 
-    private List<Enchantment> getEnchantmentsForItem (ItemStack stack) {
-
-        final List<Enchantment> enchList = new ArrayList<>();
-
-        for (final Enchantment enchantment : Enchantment.REGISTRY) {
-
-            if (stack.isItemEnchanted()) {
-
-                if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
-
-                    enchList.add(enchantment);
-                }
-            }
-            else {
-
-                if (enchantment.type.canEnchantItem(stack.getItem()) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
-
-                    enchList.add(enchantment);
-                }
-            }
-        }
-        return enchList;
-    }
-
-    public int getCurrentLevelForEnchant (Enchantment enchant) {
-
-        for (final EnchantData data : this.existingEnchantments) {
-            if (data.enchantment.getRegistryName().equals(enchant.getRegistryName())) {
-                return data.enchantmentLevel;
-            }
-        }
-        return 0;
-    }
-
-    public void enchant () {
-
-        final ItemStack stack = this.inventory.getStackInSlot(0);
-        EnchantmentHelper.setEnchantments(new HashMap<>(), stack);
-
-        for (final EnchantData data : this.existingEnchantments) {
-
-            if (data.enchantmentLevel > 0) {
-
-                stack.addEnchantment(data.enchantment, data.enchantmentLevel);
-            }
-        }
-
-        if (!this.world.isRemote) {
-
-            this.updateItem();
-            this.world.notifyBlockUpdate(this.getPos(), this.getState(), this.getState(), 8);
-        }
+    public void doBlockUpdate() {
+        
+        this.world.notifyBlockUpdate(this.getPos(), this.getState(), this.getState(), 8);
     }
     
     @Override
@@ -168,5 +77,4 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
         }
         return super.getCapability(capability, facing);
     }
-
 }

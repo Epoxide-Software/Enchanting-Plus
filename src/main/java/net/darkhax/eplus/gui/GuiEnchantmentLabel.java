@@ -132,7 +132,7 @@ public class GuiEnchantmentLabel extends Gui {
         final int updatedLevel = Math.round(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
 
         // Checks if the updated level can be applied.
-        if (updatedLevel > this.initialLevel || ConfigurationHandler.allowDisenchanting && !this.tile.inventory.getStackInSlot(0).isItemDamaged()) {
+        if (updatedLevel > this.initialLevel || ConfigurationHandler.allowDisenchanting && !this.tile.getItem().isItemDamaged()) {
             this.currentLevel = updatedLevel;
         }
 

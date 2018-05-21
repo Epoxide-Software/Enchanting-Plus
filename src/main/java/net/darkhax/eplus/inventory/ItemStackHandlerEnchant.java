@@ -129,11 +129,9 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
         this.setSize(((NBTTagList) tag.getTag("Items")).tagCount());
         this.stacks = InventoryUtils.readInventory(tag);
-
-        this.onLoad();
     }
 
-    protected void validateSlotIndex (int slot) {
+    private void validateSlotIndex (int slot) {
 
         if (slot < 0 || slot >= this.stacks.size()) {
 
@@ -142,18 +140,11 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
         }
     }
 
-    protected void onLoad () {
+    private void onContentsChanged (int slot) {
 
-    }
+        if (!this.tile.getWorld().isRemote && slot == 0) {
 
-    protected void onContentsChanged (int slot) {
-
-        if (!this.tile.getWorld().isRemote) {
-
-            if (slot == 0) {
-                this.tile.updateItem();
-            }
-            this.tile.markDirty();
+            this.tile.getLogic().onItemUpdated();
         }
     }
 }

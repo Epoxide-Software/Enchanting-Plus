@@ -9,7 +9,7 @@ public class SlotEnchant extends SlotItemHandler {
 
     public SlotEnchant (TileEntityAdvancedTable tile, int index, int xPosition, int yPosition) {
 
-        super(tile.inventory, index, xPosition, yPosition);
+        super(tile.getInventory(), index, xPosition, yPosition);
     }
 
     @Override
