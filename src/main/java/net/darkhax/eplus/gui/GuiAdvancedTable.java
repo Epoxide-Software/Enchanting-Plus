@@ -5,24 +5,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.lwjgl.input.Mouse;
 
 import net.darkhax.bookshelf.client.gui.GuiItemButton;
+import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.lib.MCColor;
 import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.network.messages.MessageEnchant;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiAdvancedTable extends GuiContainer {
 
@@ -71,8 +77,6 @@ public class GuiAdvancedTable extends GuiContainer {
     protected void drawGuiContainerForegroundLayer (int mouseX, int mouseY) {
 
         this.fontRenderer.drawString(I18n.format("tile.eplus.advanced.table.name"), 32, 5, 4210752);
-        final String exp = "EXP: " + (PlayerUtils.getClientPlayerSP().isCreative() ? "inf" : Integer.toString(PlayerUtils.getClientPlayerSP().experienceTotal));
-        this.fontRenderer.drawString(exp, 30, 80, MCColor.DYE_GREEN.getRGB());
     }
 
     @Override
@@ -159,6 +163,10 @@ public class GuiAdvancedTable extends GuiContainer {
         this.mc.renderEngine.bindTexture(TEXTURE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
+        this.mc.renderEngine.bindTexture(new ResourceLocation("eplus", "textures/gui/infobox.png"));
+        // 131 181
+        this.drawTexturedModalRect(12, this.guiTop, 0, 0, 98, 125);
+        
         for (final GuiEnchantmentLabel label : this.enchantmentList) {
             label.draw(this.fontRenderer);
         }
@@ -263,6 +271,50 @@ public class GuiAdvancedTable extends GuiContainer {
         }
     }
 
+    @Override
+    protected void renderHoveredToolTip(int x, int y) {
+        
+        super.renderHoveredToolTip(x, y);
+        
+        // Info Box
+        
+        int infoHeightOffset = 0;
+        for (String info : this.getInfoBox()) {
+            
+            final String lines[] = WordUtils.wrap(info, 16, "<br>", false).split("<br>");
+
+            for (String part : lines) {
+                
+                this.fontRenderer.drawString(part, 18, this.guiTop + 10 + infoHeightOffset, MCColor.DYE_WHITE.getRGB());
+                infoHeightOffset += this.fontRenderer.FONT_HEIGHT + 1;
+            }
+        }      
+    }
+    
+    private List<String> getInfoBox() {
+        
+        final List<String> info = new ArrayList<>();
+        
+        if (this.getTable().getItem().isEmpty()) {
+            
+            info.add("Place an item in to see available enchantments.");
+        }
+        
+        else if (this.enchantmentListAll.isEmpty()) {
+            
+            info.add("No enchantments are available for this item.");
+        }
+        
+        else {
+            
+            info.add("EXP: " + PlayerUtils.getClientPlayerSP().experienceTotal);
+            info.add("Required: " + 1240);
+            info.add("Power: " + 195);
+        }
+    
+        return info;
+    }
+    
     public TileEntityAdvancedTable getTable () {
 
         return this.table;
