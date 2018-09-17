@@ -1,6 +1,9 @@
 package net.darkhax.eplus.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import net.darkhax.bookshelf.lib.EnchantData;
+import net.darkhax.bookshelf.lib.MCColor;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.handler.ConfigurationHandler;
@@ -8,14 +11,24 @@ import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.network.messages.MessageSliderUpdate;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 public class GuiEnchantmentLabel extends Gui {
 
+    protected static final ResourceLocation TEXTURE = new ResourceLocation("eplus", "textures/gui/enchant.png");
+    
     private static final int HEIGHT = 18;
     private static final int WIDTH = 143;
+    
+    private static final int COLOR_SLIDER_SELECTED = MCColor.DYE_PURPLE.darker().getRGB();
+    private static final int COLOR_SLIDER_IDLE = 0xFF000000;
+    private static final int COLOR_BACKGROUND_LOCKED = 0x44d10841;
+    private static final int COLOR_BACKGROUND_AVAILABLE = 0x445aaeae;
+    
     private final TileEntityAdvancedTable tile;
     private final Enchantment enchantment;
     private final int initialLevel;
@@ -74,9 +87,12 @@ public class GuiEnchantmentLabel extends Gui {
 
         final int indexX = this.dragging ? this.sliderX : this.currentLevel <= this.enchantment.getMaxLevel() ? (int) (this.xPos + 1 + (GuiEnchantmentLabel.WIDTH - 6) * (this.currentLevel / (double) this.enchantment.getMaxLevel())) : this.xPos + 1 + GuiEnchantmentLabel.WIDTH - 6;
 
-        drawRect(this.xPos, this.yPos + 1, this.xPos + GuiEnchantmentLabel.WIDTH, this.yPos - 1 + GuiEnchantmentLabel.HEIGHT, this.locked ? 0x44d10841 : 0x445aaeae);
-        drawRect(indexX, this.yPos + 1, indexX + 5, this.yPos - 1 + GuiEnchantmentLabel.HEIGHT, this.isSelected() ? 0xFFFF00FF : 0xFF000000);
+        drawRect(this.xPos + 1, this.yPos + 2, this.xPos + GuiEnchantmentLabel.WIDTH, this.yPos + GuiEnchantmentLabel.HEIGHT, this.locked ? COLOR_BACKGROUND_LOCKED : COLOR_BACKGROUND_AVAILABLE);
 
+        GlStateManager.color(1, 1, 1, 1);
+        this.parent.mc.getTextureManager().bindTexture(TEXTURE);
+        this.drawTexturedModalRect(indexX, this.yPos + 2, this.isSelected() ? 5 : 0, 197, 5, 16);
+        
         font.drawString(this.getDisplayName(), this.xPos + 5, this.yPos + 6, 0x55aaff00);
     }
 
