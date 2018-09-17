@@ -1,7 +1,7 @@
 package net.darkhax.eplus.item;
 
+import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
-import net.darkhax.eplus.libs.Content;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -26,12 +26,13 @@ public class ItemTableUpgrade extends Item {
 
         if (block == Blocks.ENCHANTING_TABLE) {
 
-            worldIn.setBlockState(pos, Content.blockAdvancedTable.getDefaultState());
+            worldIn.setBlockState(pos, EnchantingPlus.blockAdvancedTable.getDefaultState());
             worldIn.setTileEntity(pos, new TileEntityAdvancedTable());
 
             if (!playerIn.capabilities.isCreativeMode) {
                 playerIn.getHeldItem(hand).shrink(1);
             }
+            
             return EnumActionResult.SUCCESS;
         }
 
