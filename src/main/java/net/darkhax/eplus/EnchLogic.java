@@ -51,20 +51,9 @@ public final class EnchLogic {
 
             for (final Enchantment enchantment : Enchantment.REGISTRY) {
 
-                if (stack.isItemEnchanted()) {
+                if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
 
-                    if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
-
-                        enchList.add(enchantment);
-                    }
-                }
-
-                else {
-
-                    if (enchantment.type.canEnchantItem(stack.getItem()) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
-
-                        enchList.add(enchantment);
-                    }
+                    enchList.add(enchantment);
                 }
             }
         }
