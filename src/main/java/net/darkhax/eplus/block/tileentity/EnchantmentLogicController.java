@@ -10,10 +10,12 @@ import net.darkhax.bookshelf.util.NBTUtils;
 import net.darkhax.eplus.EnchLogic;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -23,11 +25,17 @@ public class EnchantmentLogicController {
 
     private ItemStack inputStack;
 
+    // All valid enchantments for the current item.
     private List<Enchantment> validEnchantments;
+
+    // The original enchantment map.
     private Map<Enchantment, Integer> initialEnchantments;
+
+    // The new enchantments that will go on the item.
     private Map<Enchantment, Integer> itemEnchantments;
 
-    private boolean hasUpdated = true;
+    private float enchantmentPower;
+    private int cost;
 
     public EnchantmentLogicController (TileEntityAdvancedTable table, NBTTagCompound tag) {
 
@@ -133,6 +141,20 @@ public class EnchantmentLogicController {
         this.initialEnchantments = EnchantmentHelper.getEnchantments(this.inputStack);
         this.itemEnchantments = new HashMap<>(this.initialEnchantments);
         this.validEnchantments = EnchLogic.getValidEnchantments(this.inputStack);
+        this.calculateState();
+    }
+
+    public void calculateState () {
+
+        this.enchantmentPower = ForgeHooks.getEnchantPower(this.table.getWorld(), this.table.getPos());
+        this.cost = 0;
+
+        for (final Entry<Enchantment, Integer> newEntry : this.itemEnchantments.entrySet()) {
+
+            final int original = this.initialEnchantments.getOrDefault(newEntry.getKey(), 0);
+            final int newLevels = newEntry.getValue() - original;
+            this.cost += EnchLogic.calculateNewEnchCost(newEntry.getKey(), newLevels);
+        }
     }
 
     public int getCurrentLevel (Enchantment enchant) {
@@ -153,6 +175,8 @@ public class EnchantmentLogicController {
 
             this.itemEnchantments.put(enchantment, level);
         }
+
+        this.calculateState();
     }
 
     public boolean isValidEnchantment (Enchantment enchantment) {
@@ -175,7 +199,19 @@ public class EnchantmentLogicController {
         return this.itemEnchantments;
     }
 
-    public void enchantItem () {
+    public void enchantItem (EntityPlayer player) {
+
+        // If player doesn't have enough exp, ignore them.
+        if (player.experienceTotal < this.getCost() || player.isCreative()) {
+
+            return;
+        }
+
+        // Only creative players get charged
+        if (!player.isCreative()) {
+
+            EnchLogic.removeExperience(player, this.getCost());
+        }
 
         // Clear all existing enchantments
         EnchantmentHelper.setEnchantments(new HashMap<>(), this.inputStack);
@@ -193,13 +229,13 @@ public class EnchantmentLogicController {
         this.onItemUpdated();
     }
 
-    public boolean isHasUpdated () {
+    public int getCost () {
 
-        return this.hasUpdated;
+        return this.cost;
     }
 
-    public void setHasUpdated (boolean hasUpdated) {
+    public float getEnchantmentPower () {
 
-        this.hasUpdated = hasUpdated;
+        return this.enchantmentPower;
     }
 }

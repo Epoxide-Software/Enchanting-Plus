@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public final class EnchLogic {
@@ -69,5 +70,15 @@ public final class EnchLogic {
         }
 
         return enchList;
+    }
+
+    public static void removeExperience (EntityPlayer player, int amount) {
+
+        player.experience -= (float) amount / (float) player.xpBarCap();
+
+        for (player.experienceTotal -= amount; player.experience <= 0.0F; player.experience /= player.xpBarCap()) {
+            player.experience = (player.experience + 1.0F) * player.xpBarCap();
+            player.addExperienceLevel(-1);
+        }
     }
 }

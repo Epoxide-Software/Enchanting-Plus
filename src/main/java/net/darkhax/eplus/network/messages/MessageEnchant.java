@@ -21,7 +21,7 @@ public class MessageEnchant extends TileEntityMessage {
 
         if (this.tile instanceof TileEntityAdvancedTable) {
 
-            ((TileEntityAdvancedTable) this.tile).getLogic().enchantItem();
+            ((TileEntityAdvancedTable) this.tile).getLogic().enchantItem(this.context.getServerHandler().player);
         }
 
         else {
