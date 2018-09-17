@@ -31,11 +31,10 @@ public class Content {
 
     public static void registerBlocks () {
 
-        
         blockAdvancedTable = new BlockAdvancedTable();
         itemAdvancedTable = new ItemBlock(blockAdvancedTable);
         REGISTRY.registerBlock(blockAdvancedTable, itemAdvancedTable, "advanced_table");
-        
+
         blockDecorativeBook = new BlockBookDecoration();
         itemDecorativeBook = new ItemBlockBasic(blockDecorativeBook, BlockBookDecoration.TYPES, false);
         REGISTRY.registerBlock(blockDecorativeBook, itemDecorativeBook, "decorative_book");
@@ -45,9 +44,9 @@ public class Content {
 
         itemTableUpgrade = REGISTRY.registerItem(new ItemTableUpgrade(), "table_upgrade");
     }
-    
-    public static void registerRecipes() {
-                
+
+    public static void registerRecipes () {
+
         REGISTRY.registerRecipe("upgrade", new ShapedOreRecipe(null, new ItemStack(itemTableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD }));
         REGISTRY.registerRecipe("table", new ShapedOreRecipe(null, new ItemStack(itemAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD, 't', Blocks.ENCHANTING_TABLE }));
         REGISTRY.registerRecipe("book_eplus", new ShapedOreRecipe(null, new ItemStack(itemDecorativeBook, 1, 0), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.DUST_GLOWSTONE, 'b', Items.ENCHANTED_BOOK }));

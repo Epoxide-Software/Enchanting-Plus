@@ -6,18 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.darkhax.bookshelf.util.NBTUtils;
 import net.darkhax.eplus.EnchLogic;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.util.Constants.NBT;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class EnchantmentLogicController {
 

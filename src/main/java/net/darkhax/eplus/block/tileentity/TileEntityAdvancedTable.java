@@ -16,7 +16,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
 
     private final ItemStackHandlerEnchant inventory;
 
-    private EnchantmentLogicController controller;
+    private final EnchantmentLogicController controller;
 
     public TileEntityAdvancedTable () {
 

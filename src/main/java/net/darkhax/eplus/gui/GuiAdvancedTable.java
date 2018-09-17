@@ -214,7 +214,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
         this.selected = this.getLabelUnderMouse(mouseX, mouseY);
 
-        if (this.selected != null && !this.selected.isLocked() && selected.isVisible()) {
+        if (this.selected != null && !this.selected.isLocked() && this.selected.isVisible()) {
 
             this.selected.setDragging(true);
         }
