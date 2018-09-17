@@ -308,7 +308,7 @@ public class GuiEnchantmentLabel extends Gui {
         String description = I18n.format(key);
 
         if (description.startsWith("enchantment.")) {
-            description = I18n.format("tooltip.enchdesc.missing", ModUtils.getModName(this.enchantment), key);
+            description = I18n.format("tooltip.eplus.missing", ModUtils.getModName(this.enchantment), key);
         }
 
         return description;
