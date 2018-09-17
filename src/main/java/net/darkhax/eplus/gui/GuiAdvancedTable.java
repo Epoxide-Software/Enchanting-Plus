@@ -6,15 +6,17 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import net.darkhax.bookshelf.client.gui.GuiItemButton;
-import net.darkhax.bookshelf.lib.EnchantData;
-import net.darkhax.eplus.EnchLogic;
+import net.darkhax.bookshelf.lib.MCColor;
+import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.network.messages.MessageEnchant;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiEnchantment;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.enchantment.Enchantment;
@@ -33,7 +35,6 @@ public class GuiAdvancedTable extends GuiContainer {
     public final List<GuiEnchantmentLabel> enchantmentList = new ArrayList<>();
 
     public GuiEnchantmentLabel selected;
-    public boolean wasSelecting;
     public int listOffset = 0;
 
     public boolean isSliding;
@@ -44,47 +45,42 @@ public class GuiAdvancedTable extends GuiContainer {
 
         super(new ContainerAdvancedTable(invPlayer, table));
         this.table = table;
+        this.xSize = 235;
+        this.ySize = 182;
     }
 
     @Override
     public void initGui () {
 
-        this.xSize = 235;
-        this.ySize = 182;
-        this.isSliding = false;
         super.initGui();
+        
+        this.isSliding = false;
         this.scrollbar = new GuiButtonScroller(this, 1, this.guiLeft + 206, this.guiTop + 16, 12, 70);
         this.buttonList.add(new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, new ItemStack(Items.ENCHANTED_BOOK)));
         this.buttonList.add(this.scrollbar);
-
-        this.populateEnchantmentSliders();
-        this.updateLabels();
     }
 
     @Override
     public void updateScreen () {
 
-        super.updateScreen();
-        if (this.selected == null && this.wasSelecting) {
-            this.wasSelecting = false;
-        }
-        if (this.table.requireUpdate()) {
-            this.table.markGuiDirty(false);
-            this.scrollbar.sliderY = 1;
-            this.isSliding = false;
-            this.listOffset = 0;
-            this.populateEnchantmentSliders();
-            this.updateLabels();
-        }
+        super.updateScreen();        
+        this.updateLabels();
+        this.populateEnchantmentSliders();
     }
-
+   
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+    	
+        this.fontRenderer.drawString(this.getTable().getDisplayName().getUnformattedText(), 32, 5, 4210752);
+        String exp = "EXP: " + (PlayerUtils.getClientPlayerSP().isCreative() ? "inf" : Integer.toString(PlayerUtils.getClientPlayerSP().experienceTotal));
+        this.fontRenderer.drawString(exp, 30, 80, MCColor.DYE_GREEN.getRGB());
+    }
+    
     @Override
     public void drawScreen (int mouseX, int mouseY, float partialTicks) {
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
-
-        this.fontRenderer.drawString(Integer.toString(1337), this.guiLeft + 30, this.guiTop + 80, 0);
-
+    	this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);          
         this.renderHoveredToolTip(mouseX, mouseY);
     }
 
@@ -98,6 +94,7 @@ public class GuiAdvancedTable extends GuiContainer {
            
             final GuiEnchantmentLabel label = new GuiEnchantmentLabel(this, this.table, enchant, this.table.getLogic().getCurrentLevel(enchant), 35 + 26 + this.guiLeft, 15 + this.guiTop + labelCount++ * 18);
             label.setCurrentLevel(this.table.getLogic().getCurrentLevel(enchant));
+            
             this.enchantmentListAll.add(label);
         }
     }
@@ -106,12 +103,14 @@ public class GuiAdvancedTable extends GuiContainer {
 
         this.enchantmentList.clear();
 
+        int count = 0;
+        
         for (int i = 0; i < this.enchantmentListAll.size(); i++) {
             if (i < this.listOffset) {
                 continue;
             }
             final GuiEnchantmentLabel label = this.enchantmentListAll.get(i);
-            label.setyPos(15 + this.guiTop + i++ * 18);
+            label.setyPos(15 + this.guiTop + count++ * 18);
             label.setVisible(label.getyPos() >= this.guiTop + 15 && label.getyPos() < this.guiTop + 87);
             this.enchantmentList.add(label);
         }
@@ -157,9 +156,9 @@ public class GuiAdvancedTable extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer (float partialTicks, int mouseX, int mouseY) {
 
+        GlStateManager.color(1, 1, 1, 1);
         this.mc.renderEngine.bindTexture(TEXTURE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
-        GlStateManager.color(1, 1, 1, 1);
 
         for (final GuiEnchantmentLabel label : this.enchantmentList) {
             label.draw(this.fontRenderer);
@@ -200,15 +199,20 @@ public class GuiAdvancedTable extends GuiContainer {
     protected void mouseClicked (int mouseX, int mouseY, int mouseButton) throws IOException {
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
+        
         this.selected = this.getLabelUnderMouse(mouseX, mouseY);
+        
         if (this.selected != null && !this.selected.isLocked()) {
+            
             this.selected.setDragging(true);
-            this.wasSelecting = true;
         }
+        
         else {
+            
             this.selected = null;
         }
-        if (mouseX > this.guiLeft + 206 && mouseX < this.guiLeft + 218) {
+        
+        if (this.enchantmentListAll.size() > 4 && mouseX > this.guiLeft + 206 && mouseX < this.guiLeft + 218) {
             if (mouseY > this.guiTop + 16 + this.scrollbar.sliderY && mouseY < this.guiTop + 31 + this.scrollbar.sliderY) {
                 this.isSliding = true;
             }
@@ -222,14 +226,7 @@ public class GuiAdvancedTable extends GuiContainer {
         if (this.selected != null) {
             this.selected.setDragging(false);
             this.selected = null;
-            this.wasSelecting = true;
 
-            this.table.getExistingEnchantments().clear();
-            for (final GuiEnchantmentLabel label : this.enchantmentListAll) {
-                if (label.getCurrentLevel() > 0) {
-                    this.table.getExistingEnchantments().add(new EnchantData(label.getEnchantment(), label.getCurrentLevel()));
-                }
-            }
             this.lockLabels();
 
         }
@@ -242,22 +239,18 @@ public class GuiAdvancedTable extends GuiContainer {
     protected void mouseClickMove (int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
 
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        
         if (this.selected != null) {
+            
             if (mouseX < this.selected.getxPos() || mouseX > this.selected.getxPos() + this.selected.getWidth()) {
+                
                 this.selected.setDragging(false);
                 this.selected = null;
                 return;
             }
-            this.table.getExistingEnchantments().clear();
-            for (final GuiEnchantmentLabel label : this.enchantmentListAll) {
-                if (label.getCurrentLevel() != label.getInitialLevel()) {
-                    this.table.getExistingEnchantments().add(new EnchantData(label.getEnchantment(), label.getCurrentLevel()));
-                }
-            }
 
             this.lockLabels();
         }
-
     }
 
     @Override

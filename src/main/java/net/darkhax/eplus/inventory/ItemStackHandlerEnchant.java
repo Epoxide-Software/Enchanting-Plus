@@ -142,7 +142,7 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
     private void onContentsChanged (int slot) {
 
-        if (!this.tile.getWorld().isRemote && slot == 0) {
+        if (slot == 0) {
 
             this.tile.getLogic().onItemUpdated();
         }

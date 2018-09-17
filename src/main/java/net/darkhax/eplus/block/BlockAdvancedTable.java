@@ -65,7 +65,7 @@ public class BlockAdvancedTable extends BlockTileEntity implements ITileEntityBl
             final TileEntity tileentity = worldIn.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityAdvancedTable) {
-
+               
                 ((TileEntityAdvancedTable) tileentity).getLogic().onItemUpdated();
                 playerIn.openGui(EnchantingPlus.instance, GuiHandler.ADVANCED_TABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
             }

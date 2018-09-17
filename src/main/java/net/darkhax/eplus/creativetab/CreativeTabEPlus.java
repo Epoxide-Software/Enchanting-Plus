@@ -11,9 +11,9 @@ public class CreativeTabEPlus extends CreativeTabs {
         super("eplus");
     }
 
-    @Override
-    public ItemStack getTabIconItem () {
-
-        return new ItemStack(Content.blockAdvancedTable);
-    }
+	@Override
+	public ItemStack createIcon() {
+		
+		return new ItemStack(Content.blockAdvancedTable);
+	}
 }

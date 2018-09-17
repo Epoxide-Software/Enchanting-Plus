@@ -20,7 +20,7 @@ public class ContainerAdvancedTable extends Container {
     public final BlockPos pos;
     public final EntityPlayer player;
     public final TileEntityAdvancedTable table;
-
+    
     public ContainerAdvancedTable (InventoryPlayer invPlayer, TileEntityAdvancedTable table) {
 
         this.player = invPlayer.player;
@@ -147,6 +147,12 @@ public class ContainerAdvancedTable extends Container {
         }
         this.detectAndSendChanges();
         return ItemStack.EMPTY;
+    }
+    
+    @Override
+    public void putStackInSlot(int slotID, ItemStack stack) {
+        
+        super.putStackInSlot(slotID, stack);
     }
 
     @Override

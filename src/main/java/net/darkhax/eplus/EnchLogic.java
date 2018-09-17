@@ -46,24 +46,28 @@ public final class EnchLogic {
         //TODO add whitelist and blacklist
         final List<Enchantment> enchList = new ArrayList<>();
 
-        for (final Enchantment enchantment : Enchantment.REGISTRY) {
-
-            if (stack.isItemEnchanted()) {
-
-                if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
-
-                    enchList.add(enchantment);
-                }
-            }
+        if (!stack.isEmpty() && (stack.isItemEnchantable() || stack.isItemEnchanted())) {
             
-            else {
+            for (final Enchantment enchantment : Enchantment.REGISTRY) {
 
-                if (enchantment.type.canEnchantItem(stack.getItem()) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
+                if (stack.isItemEnchanted()) {
 
-                    enchList.add(enchantment);
+                    if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
+
+                        enchList.add(enchantment);
+                    }
+                }
+                
+                else {
+
+                    if (enchantment.type.canEnchantItem(stack.getItem()) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
+
+                        enchList.add(enchantment);
+                    }
                 }
             }
         }
+
         return enchList;
     }
 }

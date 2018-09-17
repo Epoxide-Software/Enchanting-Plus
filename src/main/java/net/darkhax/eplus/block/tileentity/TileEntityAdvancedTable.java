@@ -38,11 +38,6 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
         
         return this.inventory;
     }
-
-    public void doBlockUpdate() {
-        
-        this.world.notifyBlockUpdate(this.getPos(), this.getState(), this.getState(), 8);
-    }
     
     @Override
     public ITextComponent getDisplayName () {
@@ -54,12 +49,14 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
     public void writeNBT (NBTTagCompound dataTag) {
 
         dataTag.setTag("inventory", this.inventory.serializeNBT());
+        dataTag.setTag("logic", this.getLogic().writeToTag());
     }
 
     @Override
     public void readNBT (NBTTagCompound dataTag) {
 
         this.inventory.deserializeNBT((NBTTagCompound) dataTag.getTag("inventory"));
+        this.controller = new EnchantmentLogicController(this, dataTag.getCompoundTag("logic"));
     }
 
     @Override
