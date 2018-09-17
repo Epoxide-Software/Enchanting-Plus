@@ -32,7 +32,7 @@ public class GuiButtonScroller extends GuiButton {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             mc.getTextureManager().bindTexture(TEXTURE);
-            this.drawTexturedModalRect(this.x, this.y + this.sliderY, this.parent.isSliding || this.parent.enchantmentListAll.size() <= 4 ? this.getButtonWidth() : 0, 182, this.getButtonWidth(), this.height);
+            this.drawTexturedModalRect(this.x, this.y + this.sliderY, this.parent.isSliding || this.parent.enchantmentListAll.size() <= 4 ? this.getButtonWidth() : 0, 182, this.getButtonWidth(), 15);
             this.mouseDragged(mc, mouseX, mouseY);
         }
     }
