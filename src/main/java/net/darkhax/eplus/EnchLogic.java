@@ -3,6 +3,7 @@ package net.darkhax.eplus;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,21 +23,18 @@ public final class EnchLogic {
         cost *= level;
 
         // The cost factor is applied. Default is 1.5.
-        // TODO make configurable
-        cost *= 1.5f;
+        cost *= ConfigurationHandler.costFactor;
 
         // Curses cost even more to apply
         if (enchantment.isCurse()) {
 
-            // TODO make configurable
-            cost *= 1.5f;
+            cost *= ConfigurationHandler.curseFactor;
         }
 
         // Treasures cost more to apply
         if (enchantment.isTreasureEnchantment()) {
 
-            // TODO make configurable
-            cost *= 1.5f;
+            cost *= ConfigurationHandler.treasureFactor;
         }
 
         return cost;
