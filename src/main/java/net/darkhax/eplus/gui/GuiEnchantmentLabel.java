@@ -151,6 +151,7 @@ public class GuiEnchantmentLabel extends Gui {
 
         // Checks if the updated level can be applied.
         if (updatedLevel > this.initialLevel || !this.tile.getItem().isItemDamaged()) {
+
             this.currentLevel = updatedLevel;
         }
 

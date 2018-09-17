@@ -32,7 +32,7 @@ public class ItemTableUpgrade extends Item {
             if (!playerIn.capabilities.isCreativeMode) {
                 playerIn.getHeldItem(hand).shrink(1);
             }
-            
+
             return EnumActionResult.SUCCESS;
         }
 

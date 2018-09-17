@@ -144,7 +144,6 @@ public class GuiAdvancedTable extends GuiContainer {
 
                 final boolean isIncompatable = enchantment != data.getKey() && data.getValue() > 0 && !data.getKey().isCompatibleWith(enchantment);
                 final boolean isOverLeveled = enchantment == data.getKey() && data.getValue() > enchantment.getMaxLevel();
-
                 if (isOverLeveled || isIncompatable) {
 
                     label.setLocked(true);

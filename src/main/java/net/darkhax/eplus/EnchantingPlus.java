@@ -7,6 +7,7 @@ import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.network.NetworkHandler;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.OreDictUtils;
+import net.darkhax.eplus.api.Blacklist;
 import net.darkhax.eplus.block.BlockAdvancedTable;
 import net.darkhax.eplus.block.BlockBookDecoration;
 import net.darkhax.eplus.creativetab.CreativeTabEPlus;
@@ -23,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,8 +46,8 @@ public final class EnchantingPlus {
     public static ItemBlock itemAdvancedTable;
     public static Item itemTableUpgrade;
     public static ItemBlock itemDecorativeBook;
-    
-    public static final Predicate<ItemStack> TEST_ENCHANTABILITY = (stack) -> stack.isItemEnchantable() || stack.isItemEnchanted() || stack.getItem() == Items.BOOK || stack.getItem() == Items.ENCHANTED_BOOK;
+
+    public static final Predicate<ItemStack> TEST_ENCHANTABILITY = (stack) -> !Blacklist.isItemBlacklisted(stack) && (stack.isItemEnchantable() || stack.isItemEnchanted() || stack.getItem() == Items.BOOK || stack.getItem() == Items.ENCHANTED_BOOK);
 
     @Instance("eplus")
     public static EnchantingPlus instance;
@@ -67,9 +69,9 @@ public final class EnchantingPlus {
         blockDecorativeBook = new BlockBookDecoration();
         itemDecorativeBook = new ItemBlockBasic(blockDecorativeBook, BlockBookDecoration.TYPES, false);
         REGISTRY.registerBlock(blockDecorativeBook, itemDecorativeBook, "decorative_book");
-        
+
         itemTableUpgrade = REGISTRY.registerItem(new ItemTableUpgrade(), "table_upgrade");
-        
+
         REGISTRY.registerRecipe("upgrade", new ShapedOreRecipe(null, new ItemStack(itemTableUpgrade), new Object[] { "gbg", "o o", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD }));
         REGISTRY.registerRecipe("table", new ShapedOreRecipe(null, new ItemStack(itemAdvancedTable), new Object[] { "gbg", "oto", "geg", 'b', Items.WRITABLE_BOOK, 'o', OreDictUtils.OBSIDIAN, 'e', Items.ENDER_EYE, 'g', OreDictUtils.INGOT_GOLD, 't', Blocks.ENCHANTING_TABLE }));
         REGISTRY.registerRecipe("book_eplus", new ShapedOreRecipe(null, new ItemStack(itemDecorativeBook, 1, 0), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.DUST_GLOWSTONE, 'b', Items.ENCHANTED_BOOK }));
@@ -79,5 +81,11 @@ public final class EnchantingPlus {
         REGISTRY.registerRecipe("book_white", new ShapedOreRecipe(null, new ItemStack(itemDecorativeBook, 1, 5), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.PAPER, 'b', Items.ENCHANTED_BOOK }));
         REGISTRY.registerRecipe("book_metal", new ShapedOreRecipe(null, new ItemStack(itemDecorativeBook, 1, 6), new Object[] { " g ", "gbg", " g ", 'g', OreDictUtils.INGOT_IRON, 'b', Items.ENCHANTED_BOOK }));
         REGISTRY.registerRecipe("shapeless_upgrade", new ShapelessOreRecipe(null, new ItemStack(itemAdvancedTable), new Object[] { Blocks.ENCHANTING_TABLE, itemTableUpgrade }));
+    }
+
+    @EventHandler
+    public void onLoadComplete (FMLLoadCompleteEvent event) {
+
+        ConfigurationHandler.buildBlacklist();
     }
 }
