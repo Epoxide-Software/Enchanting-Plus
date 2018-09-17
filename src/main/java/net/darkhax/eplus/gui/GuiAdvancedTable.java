@@ -345,7 +345,8 @@ public class GuiAdvancedTable extends GuiContainer {
 
             if (cost > playerXP) {
 
-                info.add(I18n.format("gui.eplus.info.tooexpensive"));
+                info.add(" ");
+                info.add(TextFormatting.RED + I18n.format("gui.eplus.info.tooexpensive"));
             }
         }
 
