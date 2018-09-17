@@ -69,7 +69,6 @@ repositories {
 dependencies {
 
     deobfCompile "net.darkhax.bookshelf:Bookshelf-1.12.2:${version_bookshelf}"
-    deobfCompile "net.darkhax.gamestages:GameStages-1.12.2:${version_gamestages}"
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-${version_minetweaker}"
     deobfCompile "mezz.jei:jei_1.12.2:${version_jei}"
 }
