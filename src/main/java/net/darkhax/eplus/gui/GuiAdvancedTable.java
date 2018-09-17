@@ -70,7 +70,7 @@ public class GuiAdvancedTable extends GuiContainer {
         super.initGui();
 
         this.isSliding = false;
-        this.scrollbar = new GuiButtonScroller(this, 1, this.guiLeft + 206, this.guiTop + 16, 12, 70);
+        this.scrollbar = new GuiButtonScroller(this, 1, this.guiLeft + 206, this.guiTop + 16, 12, 15);
         this.enchantButton = new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, new ItemStack(Items.ENCHANTED_BOOK));
         this.buttonList.add(this.enchantButton);
         this.buttonList.add(this.scrollbar);
@@ -285,7 +285,7 @@ public class GuiAdvancedTable extends GuiContainer {
         super.renderHoveredToolTip(x, y);
 
         // Info Box
-        GuiUtils.drawHoveringText(this.getInfoBox(), -3, this.guiTop + 27, this.width, this.height, this.guiLeft - 18, this.fontRenderer);
+        GuiUtils.drawHoveringText(this.getInfoBox(), -3, this.guiTop + 27, this.xSize, this.ySize, this.guiLeft - 18, this.fontRenderer);
 
         // Enchant button tooltip
         if (this.enchantButton.isMouseOver()) {
