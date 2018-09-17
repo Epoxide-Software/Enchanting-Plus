@@ -45,6 +45,7 @@ public final class EnchantingPlus {
 
         Content.registerBlocks();
         Content.registerItems();
+        Content.registerRecipes();
     }
 
     @EventHandler
