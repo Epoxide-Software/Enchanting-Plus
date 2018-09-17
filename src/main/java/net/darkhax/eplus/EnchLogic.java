@@ -40,14 +40,14 @@ public final class EnchLogic {
 
         return cost;
     }
-    
+
     public static List<Enchantment> getValidEnchantments (ItemStack stack) {
 
-        //TODO add whitelist and blacklist
+        // TODO add whitelist and blacklist
         final List<Enchantment> enchList = new ArrayList<>();
 
         if (!stack.isEmpty() && (stack.isItemEnchantable() || stack.isItemEnchanted())) {
-            
+
             for (final Enchantment enchantment : Enchantment.REGISTRY) {
 
                 if (stack.isItemEnchanted()) {
@@ -57,7 +57,7 @@ public final class EnchLogic {
                         enchList.add(enchantment);
                     }
                 }
-                
+
                 else {
 
                     if (enchantment.type.canEnchantItem(stack.getItem()) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {

@@ -68,20 +68,20 @@ public class GuiEnchantmentLabel extends Gui {
     public void draw (FontRenderer font) {
 
         if (!this.visible) {
-            
+
             return;
         }
 
-        int indexX = this.dragging ? this.sliderX : this.currentLevel <= this.enchantment.getMaxLevel() ? (int) (this.xPos + 1 + (GuiEnchantmentLabel.WIDTH - 6) * (this.currentLevel / (double) this.enchantment.getMaxLevel())) : this.xPos + 1 + GuiEnchantmentLabel.WIDTH - 6;
-        
+        final int indexX = this.dragging ? this.sliderX : this.currentLevel <= this.enchantment.getMaxLevel() ? (int) (this.xPos + 1 + (GuiEnchantmentLabel.WIDTH - 6) * (this.currentLevel / (double) this.enchantment.getMaxLevel())) : this.xPos + 1 + GuiEnchantmentLabel.WIDTH - 6;
+
         drawRect(this.xPos, this.yPos + 1, this.xPos + GuiEnchantmentLabel.WIDTH, this.yPos - 1 + GuiEnchantmentLabel.HEIGHT, this.locked ? 0x44d10841 : 0x445aaeae);
         drawRect(indexX, this.yPos + 1, indexX + 5, this.yPos - 1 + GuiEnchantmentLabel.HEIGHT, this.isSelected() ? 0xFFFF00FF : 0xFF000000);
 
         font.drawString(this.getDisplayName(), this.xPos + 5, this.yPos + 6, 0x55aaff00);
     }
-    
-    public boolean isSelected() {
-        
+
+    public boolean isSelected () {
+
         return this.parent.selected != null && this.parent.selected.enchantment == this.enchantment;
     }
 
@@ -113,7 +113,7 @@ public class GuiEnchantmentLabel extends Gui {
 
         // If the slider is locked, prevent it from updating.
         if (this.locked) {
-            
+
             return;
         }
 

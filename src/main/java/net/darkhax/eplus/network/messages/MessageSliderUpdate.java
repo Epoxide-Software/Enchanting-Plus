@@ -23,7 +23,7 @@ public class MessageSliderUpdate extends TileEntityMessage {
     @Override
     public void getAction () {
 
-        final World world = context.getServerHandler().player.world;
+        final World world = this.context.getServerHandler().player.world;
         ((TileEntityAdvancedTable) world.getTileEntity(this.pos)).getLogic().updateEnchantment(this.updatedEnchant.enchantment, this.updatedEnchant.enchantmentLevel);
     }
 }

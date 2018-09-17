@@ -13,9 +13,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityAdvancedTable extends TileEntityWithBook {
-    
-    private ItemStackHandlerEnchant inventory;
-    
+
+    private final ItemStackHandlerEnchant inventory;
+
     private EnchantmentLogicController controller;
 
     public TileEntityAdvancedTable () {
@@ -24,21 +24,21 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
         this.controller = new EnchantmentLogicController(this);
     }
 
-    public EnchantmentLogicController getLogic() {
-        
+    public EnchantmentLogicController getLogic () {
+
         return this.controller;
     }
-    
-    public ItemStack getItem() {
-        
+
+    public ItemStack getItem () {
+
         return this.inventory.getStackInSlot(0);
     }
-    
-    public IItemHandler getInventory() {
-        
+
+    public IItemHandler getInventory () {
+
         return this.inventory;
     }
-    
+
     @Override
     public ITextComponent getDisplayName () {
 
