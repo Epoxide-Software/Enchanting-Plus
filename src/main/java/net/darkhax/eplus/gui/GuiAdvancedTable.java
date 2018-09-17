@@ -12,6 +12,7 @@ import net.darkhax.bookshelf.client.gui.GuiItemButton;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.EnchantingPlus;
+import net.darkhax.eplus.api.event.InfoBoxEvent;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.network.messages.MessageEnchant;
@@ -28,6 +29,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class GuiAdvancedTable extends GuiContainer {
@@ -362,6 +364,7 @@ public class GuiAdvancedTable extends GuiContainer {
             }
         }
 
+        MinecraftForge.EVENT_BUS.post(new InfoBoxEvent(this, info));
         return info;
     }
 

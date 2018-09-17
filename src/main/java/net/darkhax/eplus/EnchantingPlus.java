@@ -4,7 +4,6 @@ import java.util.function.Predicate;
 
 import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.network.NetworkHandler;
-import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.libs.Content;
 import net.darkhax.eplus.network.GuiHandler;
 import net.darkhax.eplus.network.messages.MessageEnchant;

@@ -3,10 +3,11 @@ package net.darkhax.eplus;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.darkhax.eplus.handler.ConfigurationHandler;
+import net.darkhax.eplus.api.event.EnchantmentCostEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 
 public final class EnchLogic {
 
@@ -37,7 +38,9 @@ public final class EnchLogic {
             cost *= ConfigurationHandler.treasureFactor;
         }
 
-        return cost;
+        final EnchantmentCostEvent event = new EnchantmentCostEvent(cost, enchantment, level);
+        MinecraftForge.EVENT_BUS.post(event);
+        return event.getCost();
     }
 
     public static List<Enchantment> getValidEnchantments (ItemStack stack) {
