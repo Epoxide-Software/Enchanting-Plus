@@ -4,7 +4,6 @@ import net.darkhax.bookshelf.lib.EnchantData;
 import net.darkhax.bookshelf.util.ModUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
-import net.darkhax.eplus.handler.ConfigurationHandler;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.network.messages.MessageSliderUpdate;
 import net.minecraft.client.gui.FontRenderer;
@@ -151,7 +150,7 @@ public class GuiEnchantmentLabel extends Gui {
         final int updatedLevel = Math.round(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
 
         // Checks if the updated level can be applied.
-        if (updatedLevel > this.initialLevel || ConfigurationHandler.allowDisenchanting && !this.tile.getItem().isItemDamaged()) {
+        if (updatedLevel > this.initialLevel || !this.tile.getItem().isItemDamaged()) {
             this.currentLevel = updatedLevel;
         }
 
