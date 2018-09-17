@@ -17,6 +17,7 @@ import net.darkhax.eplus.network.messages.MessageEnchant;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -69,7 +70,7 @@ public class GuiAdvancedTable extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer (int mouseX, int mouseY) {
 
-        this.fontRenderer.drawString(this.getTable().getDisplayName().getUnformattedText(), 32, 5, 4210752);
+        this.fontRenderer.drawString(I18n.format("tile.eplus.advanced.table.name"), 32, 5, 4210752);
         final String exp = "EXP: " + (PlayerUtils.getClientPlayerSP().isCreative() ? "inf" : Integer.toString(PlayerUtils.getClientPlayerSP().experienceTotal));
         this.fontRenderer.drawString(exp, 30, 80, MCColor.DYE_GREEN.getRGB());
     }
