@@ -2,39 +2,42 @@ package net.darkhax.eplus.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.text.WordUtils;
 import org.lwjgl.input.Mouse;
 
 import net.darkhax.bookshelf.client.gui.GuiItemButton;
-import net.darkhax.bookshelf.lib.LoggingHelper;
-import net.darkhax.bookshelf.lib.MCColor;
+import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.network.messages.MessageEnchant;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class GuiAdvancedTable extends GuiContainer {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("eplus", "textures/gui/enchant.png");
+    private static final KeyBinding keyBindSneak = Minecraft.getMinecraft().gameSettings.keyBindSneak;
 
     private final TileEntityAdvancedTable table;
+
+    private GuiButton enchantButton;
 
     public final List<GuiEnchantmentLabel> enchantmentListAll = new ArrayList<>();
     public final List<GuiEnchantmentLabel> enchantmentList = new ArrayList<>();
@@ -46,12 +49,17 @@ public class GuiAdvancedTable extends GuiContainer {
 
     public GuiButtonScroller scrollbar;
 
+    String[] tips = { "notip", "description", "books", "treasure", "curse" };
+    private int currentTip = 0;
+
     public GuiAdvancedTable (InventoryPlayer invPlayer, TileEntityAdvancedTable table) {
 
         super(new ContainerAdvancedTable(invPlayer, table));
         this.table = table;
         this.xSize = 235;
         this.ySize = 182;
+
+        this.currentTip = Constants.RANDOM.nextInt(this.tips.length);
     }
 
     @Override
@@ -61,7 +69,8 @@ public class GuiAdvancedTable extends GuiContainer {
 
         this.isSliding = false;
         this.scrollbar = new GuiButtonScroller(this, 1, this.guiLeft + 206, this.guiTop + 16, 12, 70);
-        this.buttonList.add(new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, new ItemStack(Items.ENCHANTED_BOOK)));
+        this.enchantButton = new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, new ItemStack(Items.ENCHANTED_BOOK));
+        this.buttonList.add(this.enchantButton);
         this.buttonList.add(this.scrollbar);
     }
 
@@ -163,10 +172,6 @@ public class GuiAdvancedTable extends GuiContainer {
         this.mc.renderEngine.bindTexture(TEXTURE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-        this.mc.renderEngine.bindTexture(new ResourceLocation("eplus", "textures/gui/infobox.png"));
-        // 131 181
-        this.drawTexturedModalRect(12, this.guiTop, 0, 0, 98, 125);
-        
         for (final GuiEnchantmentLabel label : this.enchantmentList) {
             label.draw(this.fontRenderer);
         }
@@ -265,56 +270,105 @@ public class GuiAdvancedTable extends GuiContainer {
 
         super.actionPerformed(button);
 
-        if (button.id == 0) {
+        if (button.id == 0 && this.canClientAfford()) {
 
             EnchantingPlus.NETWORK.sendToServer(new MessageEnchant(((ContainerAdvancedTable) this.inventorySlots).pos));
+            this.getTable().getLogic().enchantItem(PlayerUtils.getClientPlayerSP());
         }
     }
 
     @Override
-    protected void renderHoveredToolTip(int x, int y) {
-        
-        super.renderHoveredToolTip(x, y);
-        
-        // Info Box
-        
-        int infoHeightOffset = 0;
-        for (String info : this.getInfoBox()) {
-            
-            final String lines[] = WordUtils.wrap(info, 16, "<br>", false).split("<br>");
+    protected void renderHoveredToolTip (int x, int y) {
 
-            for (String part : lines) {
-                
-                this.fontRenderer.drawString(part, 18, this.guiTop + 10 + infoHeightOffset, MCColor.DYE_WHITE.getRGB());
-                infoHeightOffset += this.fontRenderer.FONT_HEIGHT + 1;
+        super.renderHoveredToolTip(x, y);
+
+        // Info Box
+        GuiUtils.drawHoveringText(this.getInfoBox(), -3, this.guiTop + 27, this.width, this.height, this.guiLeft - 18, this.fontRenderer);
+
+        // Enchant button tooltip
+        if (this.enchantButton.isMouseOver()) {
+
+            final List<String> text = new ArrayList<>();
+
+            if (!this.canClientAfford()) {
+
+                text.add(I18n.format("gui.eplus.tooltip.tooexpensive"));
             }
-        }      
+
+            else if (this.getTable().getLogic().getCost() == 0) {
+
+                text.add(I18n.format("gui.eplus.tooltip.nochange"));
+            }
+
+            else {
+
+                text.add(I18n.format("gui.eplus.tooltip.enchant"));
+            }
+
+            GuiUtils.drawHoveringText(text, x, y, this.width, this.height, this.width / 4, this.fontRenderer);
+        }
+
+        // Descriptions
+        if (GameSettings.isKeyDown(keyBindSneak)) {
+
+            final GuiEnchantmentLabel label = this.getLabelUnderMouse(x, y);
+
+            if (label != null && label.isVisible()) {
+
+                GuiUtils.drawHoveringText(Collections.singletonList(label.getDescription()), x, y, this.width, this.height, this.width / 3, this.fontRenderer);
+            }
+        }
     }
-    
-    private List<String> getInfoBox() {
-        
+
+    private List<String> getInfoBox () {
+
         final List<String> info = new ArrayList<>();
-        
+
         if (this.getTable().getItem().isEmpty()) {
-            
-            info.add("Place an item in to see available enchantments.");
+
+            info.add(I18n.format("gui.eplus.info.noitem"));
         }
-        
+
         else if (this.enchantmentListAll.isEmpty()) {
-            
-            info.add("No enchantments are available for this item.");
+
+            info.add(I18n.format("gui.eplus.info.neench"));
         }
-        
+
         else {
-            
-            info.add("EXP: " + PlayerUtils.getClientPlayerSP().experienceTotal);
-            info.add("Required: " + 1240);
-            info.add("Power: " + 195);
+
+            final boolean isCreative = PlayerUtils.getClientPlayerSP().isCreative();
+            final int playerXP = isCreative ? Integer.MAX_VALUE : PlayerUtils.getClientPlayerSP().experienceTotal;
+            final int cost = this.getTable().getLogic().getCost();
+
+            info.add(isCreative ? I18n.format("eplus.info.infinity") : I18n.format("eplus.info.playerxp", playerXP));
+            info.add(I18n.format("eplus.info.costxp", cost));
+
+            if (cost > playerXP) {
+
+                info.add(I18n.format("gui.eplus.info.tooexpensive"));
+            }
         }
-    
+
+        if (this.currentTip != 0) {
+
+            info.add(" ");
+            info.add(TextFormatting.YELLOW + I18n.format("eplus.info.tip.prefix") + TextFormatting.RESET + I18n.format("eplus.info.tip." + this.tips[this.currentTip], keyBindSneak.getDisplayName()));
+
+            if (PlayerUtils.isPlayersBirthdate(PlayerUtils.getClientPlayerSP())) {
+
+                info.add(" ");
+                info.add(TextFormatting.LIGHT_PURPLE + I18n.format("eplus.info.tip.bonus") + TextFormatting.RESET + I18n.format("eplus.info.tip.birthday"));
+            }
+        }
+
         return info;
     }
-    
+
+    public boolean canClientAfford () {
+
+        return this.getTable().getLogic().getCost() <= PlayerUtils.getClientPlayerSP().experienceTotal || PlayerUtils.getClientPlayerSP().isCreative();
+    }
+
     public TileEntityAdvancedTable getTable () {
 
         return this.table;

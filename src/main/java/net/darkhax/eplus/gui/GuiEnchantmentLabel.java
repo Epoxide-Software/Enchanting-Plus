@@ -1,9 +1,7 @@
 package net.darkhax.eplus.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.darkhax.bookshelf.lib.EnchantData;
-import net.darkhax.bookshelf.lib.MCColor;
+import net.darkhax.bookshelf.util.ModUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.handler.ConfigurationHandler;
@@ -20,15 +18,13 @@ import net.minecraft.util.text.TextFormatting;
 public class GuiEnchantmentLabel extends Gui {
 
     protected static final ResourceLocation TEXTURE = new ResourceLocation("eplus", "textures/gui/enchant.png");
-    
+
     private static final int HEIGHT = 18;
     private static final int WIDTH = 143;
-    
-    private static final int COLOR_SLIDER_SELECTED = MCColor.DYE_PURPLE.darker().getRGB();
-    private static final int COLOR_SLIDER_IDLE = 0xFF000000;
+
     private static final int COLOR_BACKGROUND_LOCKED = 0x44d10841;
     private static final int COLOR_BACKGROUND_AVAILABLE = 0x445aaeae;
-    
+
     private final TileEntityAdvancedTable tile;
     private final Enchantment enchantment;
     private final int initialLevel;
@@ -92,7 +88,7 @@ public class GuiEnchantmentLabel extends Gui {
         GlStateManager.color(1, 1, 1, 1);
         this.parent.mc.getTextureManager().bindTexture(TEXTURE);
         this.drawTexturedModalRect(indexX, this.yPos + 2, this.isSelected() ? 5 : 0, 197, 5, 16);
-        
+
         font.drawString(this.getDisplayName(), this.xPos + 5, this.yPos + 6, 0x55aaff00);
     }
 
@@ -304,5 +300,27 @@ public class GuiEnchantmentLabel extends Gui {
     public boolean isMouseOver (int mouseX, int mouseY) {
 
         return this.getxPos() <= mouseX && this.getxPos() + this.getWidth() >= mouseX && this.getyPos() <= mouseY && this.getyPos() + this.getHeight() >= mouseY;
+    }
+
+    public String getDescription () {
+
+        final String key = getTranslationKey(this.enchantment);
+        String description = I18n.format(key);
+
+        if (description.startsWith("enchantment.")) {
+            description = I18n.format("tooltip.enchdesc.missing", ModUtils.getModName(this.enchantment), key);
+        }
+
+        return description;
+    }
+
+    private static String getTranslationKey (Enchantment enchant) {
+
+        if (enchant != null && enchant.getRegistryName() != null) {
+
+            return String.format("enchantment.%s.%s.desc", enchant.getRegistryName().getNamespace(), enchant.getRegistryName().getPath());
+        }
+
+        return "NULL";
     }
 }
