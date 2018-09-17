@@ -3,6 +3,7 @@ package net.darkhax.eplus;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.darkhax.eplus.api.Blacklist;
 import net.darkhax.eplus.api.event.EnchantmentCostEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,13 +46,15 @@ public final class EnchLogic {
 
     public static List<Enchantment> getValidEnchantments (ItemStack stack) {
 
-        // TODO add whitelist and blacklist
         final List<Enchantment> enchList = new ArrayList<>();
 
         if (!stack.isEmpty() && (stack.isItemEnchantable() || stack.isItemEnchanted())) {
 
             for (final Enchantment enchantment : Enchantment.REGISTRY) {
 
+                if (Blacklist.isEnchantmentBlacklisted(enchantment)) {
+                    continue;
+                }
                 if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
 
                     enchList.add(enchantment);
