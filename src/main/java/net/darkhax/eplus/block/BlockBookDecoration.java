@@ -1,6 +1,7 @@
 package net.darkhax.eplus.block;
 
 import net.darkhax.bookshelf.block.ITileEntityBlock;
+import net.darkhax.eplus.ConfigurationHandler;
 import net.darkhax.eplus.block.tileentity.TileEntityDecoration;
 import net.darkhax.eplus.block.tileentity.TileEntityWithBook;
 import net.darkhax.eplus.block.tileentity.renderer.TileEntityDecorationRenderer;
@@ -57,7 +58,7 @@ public class BlockBookDecoration extends BlockContainer implements ITileEntityBl
     @Override
     public float getEnchantPowerBonus (World world, BlockPos pos) {
 
-        return 1f;
+        return ConfigurationHandler.floatingBookBonus;
     }
 
     @Override
@@ -85,12 +86,6 @@ public class BlockBookDecoration extends BlockContainer implements ITileEntityBl
             else if (playerIn.getHeldItem(hand).getItem() == Items.IRON_INGOT) {
                 deco.decreaseHeight();
             }
-
-            /*
-             * else { final int color = StackUtils.getDyeColor(playerIn.getHeldItemMainhand());
-             * if (color != -1337) { deco.color = color;
-             * StackUtils.decreaseStackSize(playerIn.getHeldItemMainhand(), 1); } }
-             */
 
             worldIn.notifyBlockUpdate(pos, state, state, 8);
         }
