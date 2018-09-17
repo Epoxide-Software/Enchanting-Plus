@@ -1,4 +1,4 @@
-package net.darkhax.eplus.handler;
+package net.darkhax.eplus;
 
 import java.io.File;
 
