@@ -1,4 +1,4 @@
-package net.darkhax.eplus.handler;
+package net.darkhax.eplus.api;
 
 import java.util.HashMap;
 import java.util.Map;
