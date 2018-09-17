@@ -6,10 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.darkhax.bookshelf.util.NBTUtils;
 import net.darkhax.eplus.EnchLogic;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class EnchantmentLogicController {
     
@@ -20,6 +26,97 @@ public class EnchantmentLogicController {
     private List<Enchantment> validEnchantments;
     private Map<Enchantment, Integer> initialEnchantments;
     private Map<Enchantment, Integer> itemEnchantments;
+    
+    private boolean hasUpdated = true;
+    
+    public EnchantmentLogicController (TileEntityAdvancedTable table, NBTTagCompound tag) {
+        
+        this(table);
+        this.readTag(tag);
+    }
+    
+    public void readTag(NBTTagCompound tag) {
+        
+        if (tag.hasKey("ValidEnchantments")) {
+            
+            NBTUtils.readCollection(this.validEnchantments, tag.getTagList("ValidEnchantments", NBT.TAG_STRING), enchId -> ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(enchId)));
+        }
+        
+        // TODO fix duplicate code
+        if (tag.hasKey("InitialEnchantments")) {
+            
+            final NBTTagList enchTagList = tag.getTagList("InitialEnchatments", NBT.TAG_COMPOUND);
+            
+            for (int index = 0; index < enchTagList.tagCount(); index++) {
+                
+                final NBTTagCompound enchTag = enchTagList.getCompoundTagAt(index);
+                
+                if (enchTag.hasKey("Enchantment") && enchTag.hasKey("Level")) {
+                    
+                    final Enchantment enchant = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(enchTag.getString("Enchantment")));
+                    
+                    if (enchant != null) {
+                        
+                        this.initialEnchantments.put(enchant, enchTag.getInteger("Level"));
+                    }
+                }
+            }
+        }
+        
+        if (tag.hasKey("ItemEnchantments")) {
+            
+            final NBTTagList enchTagList = tag.getTagList("ItemEnchatments", NBT.TAG_COMPOUND);
+            
+            for (int index = 0; index < enchTagList.tagCount(); index++) {
+                
+                final NBTTagCompound enchTag = enchTagList.getCompoundTagAt(index);
+                
+                if (enchTag.hasKey("Enchantment") && enchTag.hasKey("Level")) {
+                    
+                    final Enchantment enchant = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(enchTag.getString("Enchantment")));
+                    
+                    if (enchant != null) {
+                        
+                        this.itemEnchantments.put(enchant, enchTag.getInteger("Level"));
+                    }
+                }
+            }
+        }
+    }
+    
+    public NBTTagCompound writeToTag() {
+        
+        final NBTTagCompound tag = new NBTTagCompound();
+        
+        tag.setTag("ValidEnchantments", NBTUtils.writeCollection(this.validEnchantments, ench -> ench.getRegistryName().toString()));
+        
+        // TODO fix duplicate code
+        final NBTTagList initialEnchTagList = new NBTTagList();
+        
+        for (Entry<Enchantment, Integer> entry : initialEnchantments.entrySet()) {
+            
+            final NBTTagCompound enchTag = new NBTTagCompound();
+            enchTag.setString("Enchantment", entry.getKey().getRegistryName().toString());
+            enchTag.setInteger("Level", entry.getValue());
+            initialEnchTagList.appendTag(enchTag);
+        }
+        
+        tag.setTag("InitialEnchantments", initialEnchTagList);
+        
+        NBTTagList itemEnchTagList = new NBTTagList();
+        
+        for (Entry<Enchantment, Integer> entry : this.itemEnchantments.entrySet()) {
+            
+            final NBTTagCompound enchTag = new NBTTagCompound();
+            enchTag.setString("Enchantment", entry.getKey().getRegistryName().toString());
+            enchTag.setInteger("Level", entry.getValue());
+            itemEnchTagList.appendTag(enchTag);
+        }
+        
+        tag.setTag("ItemEnchantments", itemEnchTagList);
+        
+        return tag;
+    }
     
     public EnchantmentLogicController (TileEntityAdvancedTable table) {
         
@@ -33,17 +130,14 @@ public class EnchantmentLogicController {
         
         inputStack = table.getItem();
         
-        if (!this.inputStack.isEmpty() && (inputStack.isItemEnchantable() || this.inputStack.isItemEnchanted())) {
-            
-            this.initialEnchantments = EnchantmentHelper.getEnchantments(this.inputStack);
-            this.itemEnchantments = new HashMap<>(this.initialEnchantments);
-            this.validEnchantments = EnchLogic.getValidEnchantments(inputStack);
-        }
+        this.initialEnchantments = EnchantmentHelper.getEnchantments(this.inputStack);
+        this.itemEnchantments = new HashMap<>(this.initialEnchantments);
+        this.validEnchantments = EnchLogic.getValidEnchantments(inputStack);        
     }
     
     public int getCurrentLevel(Enchantment enchant) {
         
-        return this.itemEnchantments.get(enchant);
+        return this.itemEnchantments.getOrDefault(enchant, 0);
     }
     
     public void updateEnchantment(Enchantment enchantment, int level) {
@@ -59,8 +153,6 @@ public class EnchantmentLogicController {
             
             this.itemEnchantments.put(enchantment, level);
         }
-        
-        this.table.doBlockUpdate();
     }
     
     public boolean isValidEnchantment(Enchantment enchantment) {
@@ -99,8 +191,15 @@ public class EnchantmentLogicController {
         
         // Update the logic.
         this.onItemUpdated();
+    }
+
+    public boolean isHasUpdated () {
         
-        // Update the block in world.
-        this.table.doBlockUpdate();
+        return hasUpdated;
+    }
+
+    public void setHasUpdated (boolean hasUpdated) {
+        
+        this.hasUpdated = hasUpdated;
     }
 }
