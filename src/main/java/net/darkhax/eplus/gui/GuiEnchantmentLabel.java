@@ -88,7 +88,7 @@ public class GuiEnchantmentLabel extends Gui {
         this.parent.mc.getTextureManager().bindTexture(TEXTURE);
         this.drawTexturedModalRect(indexX, this.yPos + 2, this.isSelected() ? 5 : 0, 197, 5, 16);
 
-        font.drawString(this.getDisplayName(), this.xPos + 5, this.yPos + 6, 0x55aaff00);
+        font.drawString(this.getDisplayName(), this.xPos + 7, this.yPos + 6, 0x55aaff00);
     }
 
     public boolean isSelected () {
