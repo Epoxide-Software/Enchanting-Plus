@@ -5,7 +5,6 @@ import java.util.function.Predicate;
 import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.network.NetworkHandler;
 import net.darkhax.eplus.handler.ConfigurationHandler;
-import net.darkhax.eplus.handler.IMCHandler;
 import net.darkhax.eplus.libs.Content;
 import net.darkhax.eplus.network.GuiHandler;
 import net.darkhax.eplus.network.messages.MessageEnchant;
@@ -15,9 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -46,18 +42,5 @@ public final class EnchantingPlus {
         Content.registerBlocks();
         Content.registerItems();
         Content.registerRecipes();
-    }
-
-    @EventHandler
-    public void init (FMLInitializationEvent event) {
-
-    }
-
-    @EventHandler
-    public void processIMC (IMCEvent event) {
-
-        for (final IMCMessage message : event.getMessages()) {
-            IMCHandler.handleMessage(message);
-        }
     }
 }
