@@ -54,11 +54,26 @@ public class EnchantmentLogicController {
         this.enchantmentPower = ForgeHooks.getEnchantPower(this.table.getWorld(), this.table.getPos());
         this.cost = 0;
 
+        // Calculate cost of new enchantments
         for (final Entry<Enchantment, Integer> newEntry : this.itemEnchantments.entrySet()) {
 
             final int original = this.initialEnchantments.getOrDefault(newEntry.getKey(), 0);
             final int newLevels = newEntry.getValue() - original;
             this.cost += EnchLogic.calculateNewEnchCost(newEntry.getKey(), newLevels);
+        }
+        
+        // Calculate cost of removed curses
+        for (Entry<Enchantment, Integer> existingEnch : this.initialEnchantments.entrySet()) {
+            
+            if (existingEnch.getKey().isCurse() && existingEnch.getValue() > 0) {
+                
+                final int currentCurseLevel = this.itemEnchantments.getOrDefault(existingEnch.getKey(), 0);
+                
+                if (currentCurseLevel < existingEnch.getValue()) {
+                    
+                    this.cost += EnchLogic.calculateNewEnchCost(existingEnch.getKey(), existingEnch.getValue() - currentCurseLevel);
+                }
+            }
         }
     }
 
