@@ -51,7 +51,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
     public GuiButtonScroller scrollbar;
 
-    String[] tips = { "notip", "description", "books", "treasure", "curse" };
+    String[] tips = {"description", "books", "treasure", "curse" };
     private int currentTip = 0;
 
     public GuiAdvancedTable (InventoryPlayer invPlayer, TileEntityAdvancedTable table) {
@@ -351,16 +351,13 @@ public class GuiAdvancedTable extends GuiContainer {
             }
         }
 
-        if (this.currentTip != 0) {
+        info.add(" ");
+        info.add(TextFormatting.YELLOW + I18n.format("eplus.info.tip.prefix") + TextFormatting.RESET + I18n.format("eplus.info.tip." + this.tips[this.currentTip], keyBindSneak.getDisplayName()));
+
+        if (PlayerUtils.isPlayersBirthdate(PlayerUtils.getClientPlayerSP())) {
 
             info.add(" ");
-            info.add(TextFormatting.YELLOW + I18n.format("eplus.info.tip.prefix") + TextFormatting.RESET + I18n.format("eplus.info.tip." + this.tips[this.currentTip], keyBindSneak.getDisplayName()));
-
-            if (PlayerUtils.isPlayersBirthdate(PlayerUtils.getClientPlayerSP())) {
-
-                info.add(" ");
-                info.add(TextFormatting.LIGHT_PURPLE + I18n.format("eplus.info.tip.bonus") + TextFormatting.RESET + I18n.format("eplus.info.tip.birthday"));
-            }
+            info.add(TextFormatting.LIGHT_PURPLE + I18n.format("eplus.info.tip.bonus") + TextFormatting.RESET + I18n.format("eplus.info.tip.birthday"));
         }
 
         MinecraftForge.EVENT_BUS.post(new InfoBoxEvent(this, info));

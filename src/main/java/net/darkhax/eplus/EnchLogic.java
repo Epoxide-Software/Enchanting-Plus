@@ -8,6 +8,7 @@ import net.darkhax.eplus.api.event.EnchantmentCostEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public final class EnchLogic {
@@ -34,7 +35,7 @@ public final class EnchLogic {
         }
 
         // Treasures cost more to apply
-        if (enchantment.isTreasureEnchantment()) {
+        else if (enchantment.isTreasureEnchantment()) {
 
             cost *= ConfigurationHandler.treasureFactor;
         }
@@ -44,7 +45,7 @@ public final class EnchLogic {
         return event.getCost();
     }
 
-    public static List<Enchantment> getValidEnchantments (ItemStack stack) {
+    public static List<Enchantment> getValidEnchantments (ItemStack stack, World world) {
 
         final List<Enchantment> enchList = new ArrayList<>();
 
@@ -52,11 +53,13 @@ public final class EnchLogic {
 
             for (final Enchantment enchantment : Enchantment.REGISTRY) {
 
-                if (Blacklist.isEnchantmentBlacklisted(enchantment)) {
+                if (Blacklist.isEnchantmentBlacklisted(enchantment) || !enchantment.canApply(stack)) {
+                    
                     continue;
                 }
-                if (enchantment.canApply(stack) && !enchantment.isCurse() && !enchantment.isTreasureEnchantment()) {
-
+                
+                if (enchantment.isCurse() && EnchLogic.isWikedNight(world) || !enchantment.isTreasureEnchantment()) {
+                    
                     enchList.add(enchantment);
                 }
             }
@@ -73,5 +76,13 @@ public final class EnchLogic {
             player.experience = (player.experience + 1.0F) * player.xpBarCap();
             player.addExperienceLevel(-1);
         }
+    }
+    
+    public static boolean isWikedNight(World world) {
+        
+        float skyAngle = world.getCelestialAngle(1f);
+        boolean isNightRange = skyAngle > 0.40 && skyAngle < 0.60;
+
+        return world.getMoonPhase() == 0 && isNightRange;
     }
 }

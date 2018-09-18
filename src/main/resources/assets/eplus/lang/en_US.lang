@@ -28,8 +28,8 @@ eplus.info.tip.prefix=Tip:
 eplus.info.tip.bonus=Bonus Tip: 
 eplus.info.tip.description=Hold %s over the enchantment slider for a description.
 eplus.info.tip.books=You can place bookshelves around to reduce the cost of enchantments.
-eplus.info.tip.treasure=Very rare enchantments may idk...
-eplus.info.tip.curse=Curses can be applied/removed with the Curse Altar.
+eplus.info.tip.treasure=Treasure Enchantments are not yet available.
+eplus.info.tip.curse=Curses can only be modified near midnight on nights with a full moon.
 eplus.info.tip.birthday=It may be your birthday.
 
 #Tooltips
