@@ -37,12 +37,12 @@ import net.minecraftforge.fml.client.config.GuiUtils;
 public class GuiAdvancedTable extends GuiContainer {
 
     private static final ItemStack SPOOKY_BONE = new ItemStack(Items.BONE);
-    
+
     static {
-        
+
         SPOOKY_BONE.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 1);
     }
-    
+
     private static final ResourceLocation TEXTURE = new ResourceLocation("eplus", "textures/gui/enchant.png");
     private static final KeyBinding keyBindSneak = Minecraft.getMinecraft().gameSettings.keyBindSneak;
 
@@ -60,7 +60,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
     public GuiButtonScroller scrollbar;
 
-    String[] tips = {"description", "books", "treasure", "curse" };
+    String[] tips = { "description", "books", "treasure", "curse" };
     private int currentTip = 0;
 
     public GuiAdvancedTable (InventoryPlayer invPlayer, TileEntityAdvancedTable table) {
@@ -80,7 +80,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
         this.isSliding = false;
         this.scrollbar = new GuiButtonScroller(this, 1, this.guiLeft + 206, this.guiTop + 16, 12, 15);
-        
+
         this.enchantButton = new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, EnchLogic.isWikedNight(this.getTable().getWorld()) ? SPOOKY_BONE : new ItemStack(Items.ENCHANTED_BOOK));
         this.buttonList.add(this.enchantButton);
         this.buttonList.add(this.scrollbar);

@@ -12,14 +12,14 @@ public class EnchantingPlusJEIPlugin implements IModPlugin {
 
     @Override
     public void register (IModRegistry registry) {
-        
-        addDescription(registry, new ItemStack(EnchantingPlus.itemAdvancedTable), "advancedtable");
-        addDescription(registry, new ItemStack(EnchantingPlus.itemTableUpgrade), "upgrade");
-        addDescription(registry, new ItemStack(EnchantingPlus.itemDecorativeBook), "decorative");
+
+        this.addDescription(registry, new ItemStack(EnchantingPlus.itemAdvancedTable), "advancedtable");
+        this.addDescription(registry, new ItemStack(EnchantingPlus.itemTableUpgrade), "upgrade");
+        this.addDescription(registry, new ItemStack(EnchantingPlus.itemDecorativeBook), "decorative");
     }
-    
-    private void addDescription(IModRegistry registry, ItemStack stack, String key) {
-        
-        registry.<ItemStack>addIngredientInfo(stack, VanillaTypes.ITEM, "jei.eplus." + key);
+
+    private void addDescription (IModRegistry registry, ItemStack stack, String key) {
+
+        registry.<ItemStack> addIngredientInfo(stack, VanillaTypes.ITEM, "jei.eplus." + key);
     }
 }

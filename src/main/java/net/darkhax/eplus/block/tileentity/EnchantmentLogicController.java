@@ -61,26 +61,26 @@ public class EnchantmentLogicController {
             final int newLevels = newEntry.getValue() - original;
             this.cost += EnchLogic.calculateNewEnchCost(newEntry.getKey(), newLevels);
         }
-        
+
         // Calculate cost of removed curses
-        for (Entry<Enchantment, Integer> existingEnch : this.initialEnchantments.entrySet()) {
-            
+        for (final Entry<Enchantment, Integer> existingEnch : this.initialEnchantments.entrySet()) {
+
             if (existingEnch.getKey().isCurse() && existingEnch.getValue() > 0) {
-                
+
                 final int currentCurseLevel = this.itemEnchantments.getOrDefault(existingEnch.getKey(), 0);
-                
+
                 if (currentCurseLevel < existingEnch.getValue()) {
-                    
+
                     this.cost += EnchLogic.calculateNewEnchCost(existingEnch.getKey(), existingEnch.getValue() - currentCurseLevel);
                 }
             }
         }
-        
+
         // Apply bookshelf discount
-        
+
         if (this.enchantmentPower > 0) {
-            
-            this.cost -= (this.getCost() * this.enchantmentPower / 100f);
+
+            this.cost -= this.getCost() * this.enchantmentPower / 100f;
         }
     }
 

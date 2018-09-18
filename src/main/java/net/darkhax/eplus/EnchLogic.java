@@ -54,12 +54,12 @@ public final class EnchLogic {
             for (final Enchantment enchantment : Enchantment.REGISTRY) {
 
                 if (Blacklist.isEnchantmentBlacklisted(enchantment) || !enchantment.canApply(stack)) {
-                    
+
                     continue;
                 }
-                
+
                 if (enchantment.isCurse() && EnchLogic.isWikedNight(world) || !enchantment.isTreasureEnchantment()) {
-                    
+
                     enchList.add(enchantment);
                 }
             }
@@ -77,11 +77,11 @@ public final class EnchLogic {
             player.addExperienceLevel(-1);
         }
     }
-    
-    public static boolean isWikedNight(World world) {
-        
-        float skyAngle = world.getCelestialAngle(1f);
-        boolean isNightRange = skyAngle > 0.40 && skyAngle < 0.60;
+
+    public static boolean isWikedNight (World world) {
+
+        final float skyAngle = world.getCelestialAngle(1f);
+        final boolean isNightRange = skyAngle > 0.40 && skyAngle < 0.60;
 
         return world.getMoonPhase() == 0 && isNightRange;
     }
