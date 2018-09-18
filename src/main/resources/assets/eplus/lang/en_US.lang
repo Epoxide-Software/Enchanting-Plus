@@ -20,6 +20,7 @@ itemGroup.eplus=Enchanting Plus
 eplus.info.playerxp=EXP: %d
 eplus.info.costxp=Cost: %d
 eplus.info.infinity=EXP: ∞
+eplus.info.power=Discount: %.2f
 gui.eplus.info.noitem=Place an item in to see available enchantments.
 gui.eplus.info.neench=No enchantments are available for this item.
 gui.eplus.info.tooexpensive=You need more EXP to do this enchantment.

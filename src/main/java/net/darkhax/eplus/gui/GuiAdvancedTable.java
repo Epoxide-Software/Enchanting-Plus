@@ -343,6 +343,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
             info.add(isCreative ? I18n.format("eplus.info.infinity") : I18n.format("eplus.info.playerxp", playerXP));
             info.add(I18n.format("eplus.info.costxp", cost));
+            info.add(I18n.format("eplus.info.power", this.getTable().getLogic().getEnchantmentPower()) + "%");
 
             if (cost > playerXP) {
 

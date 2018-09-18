@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.darkhax.bookshelf.util.EnchantmentUtils;
 import net.darkhax.eplus.EnchLogic;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
 
 public class EnchantmentLogicController {
 
@@ -51,7 +51,7 @@ public class EnchantmentLogicController {
 
     public void calculateState () {
 
-        this.enchantmentPower = ForgeHooks.getEnchantPower(this.table.getWorld(), this.table.getPos());
+        this.enchantmentPower = EnchantmentUtils.getEnchantingPower(this.table.getWorld(), this.table.getPos());
         this.cost = 0;
 
         // Calculate cost of new enchantments
@@ -74,6 +74,13 @@ public class EnchantmentLogicController {
                     this.cost += EnchLogic.calculateNewEnchCost(existingEnch.getKey(), existingEnch.getValue() - currentCurseLevel);
                 }
             }
+        }
+        
+        // Apply bookshelf discount
+        
+        if (this.enchantmentPower > 0) {
+            
+            this.cost -= (this.getCost() * this.enchantmentPower / 100f);
         }
     }
 
@@ -156,6 +163,6 @@ public class EnchantmentLogicController {
 
     public float getEnchantmentPower () {
 
-        return this.enchantmentPower;
+        return Math.min(this.enchantmentPower, 30f);
     }
 }
