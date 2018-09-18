@@ -11,6 +11,7 @@ import org.lwjgl.input.Mouse;
 import net.darkhax.bookshelf.client.gui.GuiItemButton;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.PlayerUtils;
+import net.darkhax.eplus.EnchLogic;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.api.event.InfoBoxEvent;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
@@ -25,6 +26,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +36,13 @@ import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class GuiAdvancedTable extends GuiContainer {
 
+    private static final ItemStack SPOOKY_BONE = new ItemStack(Items.BONE);
+    
+    static {
+        
+        SPOOKY_BONE.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 1);
+    }
+    
     private static final ResourceLocation TEXTURE = new ResourceLocation("eplus", "textures/gui/enchant.png");
     private static final KeyBinding keyBindSneak = Minecraft.getMinecraft().gameSettings.keyBindSneak;
 
@@ -71,7 +80,8 @@ public class GuiAdvancedTable extends GuiContainer {
 
         this.isSliding = false;
         this.scrollbar = new GuiButtonScroller(this, 1, this.guiLeft + 206, this.guiTop + 16, 12, 15);
-        this.enchantButton = new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, new ItemStack(Items.ENCHANTED_BOOK));
+        
+        this.enchantButton = new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, EnchLogic.isWikedNight(this.getTable().getWorld()) ? SPOOKY_BONE : new ItemStack(Items.ENCHANTED_BOOK));
         this.buttonList.add(this.enchantButton);
         this.buttonList.add(this.scrollbar);
     }
