@@ -13,6 +13,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 public final class EnchLogic {
 
+    public static int EnchantmentSeed;
+
     public static int calculateNewEnchCost (Enchantment enchantment, int level) {
 
         // Base cost is equal to roughly 2.5 levels of EXP.
@@ -83,6 +85,6 @@ public final class EnchLogic {
         final float skyAngle = world.getCelestialAngle(1f);
         final boolean isNightRange = skyAngle > 0.40 && skyAngle < 0.60;
 
-        return world.getMoonPhase() == 0 && isNightRange;
+        return world.provider.getMoonPhase(world.getWorldTime()) == 0 && isNightRange;
     }
 }
