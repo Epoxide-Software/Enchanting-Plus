@@ -2,7 +2,6 @@ package net.darkhax.eplus.inventory;
 
 import net.darkhax.bookshelf.util.InventoryUtils;
 import net.darkhax.eplus.EnchantingPlus;
-import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -14,24 +13,26 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifiable, INBTSerializable<NBTTagCompound> {
 
-    public TileEntityAdvancedTable tile;
     protected NonNullList<ItemStack> stacks;
 
-    public ItemStackHandlerEnchant (TileEntityAdvancedTable tile, int size) {
+    public ItemStackHandlerEnchant (int size) {
 
-        this.tile = tile;
         this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
     }
 
-    public ItemStackHandlerEnchant (TileEntityAdvancedTable tile, NonNullList<ItemStack> stacks) {
+    public ItemStackHandlerEnchant (NonNullList<ItemStack> stacks) {
 
-        this.tile = tile;
         this.stacks = stacks;
     }
 
     public void setSize (int size) {
 
         this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
+    }
+
+    public ItemStack getEnchantingStack () {
+
+        return this.getStackInSlot(0);
     }
 
     @Override
@@ -42,7 +43,6 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
         if (!stack.isEmpty() && stack.getCount() > 64) {
             stack.setCount(64);
         }
-        this.onContentsChanged(slot);
     }
 
     @Override
@@ -81,7 +81,6 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
         if (!simulate) {
 
             this.stacks.set(slot, ItemHandlerHelper.copyStackWithSize(stack, this.getSlotLimit(slot)));
-            this.onContentsChanged(slot);
         }
 
         // Returns the decreased item
@@ -106,7 +105,6 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
         if (!simulate) {
 
             this.stacks.set(slot, isCompletelyEmpty ? ItemStack.EMPTY : ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
-            this.onContentsChanged(slot);
         }
 
         return isCompletelyEmpty ? existing : ItemHandlerHelper.copyStackWithSize(existing, toExtract);
@@ -137,14 +135,6 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
             EnchantingPlus.LOG.warn("Attempted to access invalid slot {}. Valid range: 0 - {}", slot, this.stacks.size());
             throw new IllegalArgumentException("Slot " + slot + " not in valid range - [0," + this.stacks.size() + ")");
-        }
-    }
-
-    private void onContentsChanged (int slot) {
-
-        if (slot == 0) {
-
-            this.tile.getLogic().onItemUpdated();
         }
     }
 }

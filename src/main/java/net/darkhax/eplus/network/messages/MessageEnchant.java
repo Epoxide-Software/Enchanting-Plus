@@ -1,32 +1,27 @@
 package net.darkhax.eplus.network.messages;
 
-import net.darkhax.bookshelf.network.TileEntityMessage;
-import net.darkhax.eplus.EnchantingPlus;
-import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
-import net.minecraft.util.math.BlockPos;
+import net.darkhax.bookshelf.network.SerializableMessage;
+import net.darkhax.eplus.inventory.ContainerAdvancedTable;
+import net.minecraft.inventory.Container;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class MessageEnchant extends TileEntityMessage {
+public class MessageEnchant extends SerializableMessage {
 
     public MessageEnchant () {
 
     }
 
-    public MessageEnchant (BlockPos pos) {
-
-        super(pos);
-    }
-
     @Override
-    public void getAction () {
+    public IMessage handleMessage (MessageContext context) {
 
-        if (this.tile instanceof TileEntityAdvancedTable) {
+        final Container container = context.getServerHandler().player.openContainer;
 
-            ((TileEntityAdvancedTable) this.tile).getLogic().enchantItem(this.context.getServerHandler().player);
+        if (container instanceof ContainerAdvancedTable) {
+
+            ((ContainerAdvancedTable) container).logic.enchantItem();
         }
 
-        else {
-
-            EnchantingPlus.LOG.error("Attempted to enchant at {} but block was not a valid table!", this.pos);
-        }
+        return null;
     }
 }

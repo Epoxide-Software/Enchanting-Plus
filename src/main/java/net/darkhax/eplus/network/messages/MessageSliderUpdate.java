@@ -1,12 +1,13 @@
 package net.darkhax.eplus.network.messages;
 
 import net.darkhax.bookshelf.lib.EnchantData;
-import net.darkhax.bookshelf.network.TileEntityMessage;
-import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.darkhax.bookshelf.network.SerializableMessage;
+import net.darkhax.eplus.inventory.ContainerAdvancedTable;
+import net.minecraft.inventory.Container;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class MessageSliderUpdate extends TileEntityMessage {
+public class MessageSliderUpdate extends SerializableMessage {
 
     public EnchantData updatedEnchant;
 
@@ -14,16 +15,21 @@ public class MessageSliderUpdate extends TileEntityMessage {
 
     }
 
-    public MessageSliderUpdate (BlockPos tablePos, EnchantData updatedEnchant) {
+    public MessageSliderUpdate (EnchantData updatedEnchant) {
 
-        super(tablePos);
         this.updatedEnchant = updatedEnchant;
     }
 
     @Override
-    public void getAction () {
+    public IMessage handleMessage (MessageContext context) {
 
-        final World world = this.context.getServerHandler().player.world;
-        ((TileEntityAdvancedTable) world.getTileEntity(this.pos)).getLogic().updateEnchantment(this.updatedEnchant.enchantment, this.updatedEnchant.enchantmentLevel);
+        final Container container = context.getServerHandler().player.openContainer;
+
+        if (container instanceof ContainerAdvancedTable) {
+
+            ((ContainerAdvancedTable) container).logic.updateEnchantment(this.updatedEnchant.enchantment, this.updatedEnchant.enchantmentLevel);
+        }
+
+        return null;
     }
 }

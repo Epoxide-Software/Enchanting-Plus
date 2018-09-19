@@ -5,31 +5,23 @@ import java.util.List;
 
 import net.darkhax.bookshelf.inventory.SlotArmor;
 import net.darkhax.bookshelf.util.EntityUtils;
-import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
+import net.darkhax.eplus.block.tileentity.EnchantmentLogicController;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class ContainerAdvancedTable extends Container {
 
-    public final World world;
-    public final BlockPos pos;
-    public final EntityPlayer player;
-    public final TileEntityAdvancedTable table;
+    public final EnchantmentLogicController logic;
 
-    public ContainerAdvancedTable (InventoryPlayer invPlayer, TileEntityAdvancedTable table) {
+    public ContainerAdvancedTable (InventoryPlayer invPlayer, EnchantmentLogicController logic) {
 
-        this.player = invPlayer.player;
-        this.table = table;
-        this.world = table.getWorld();
-        this.pos = table.getPos();
+        this.logic = logic;
 
         // Enchantment slot
-        this.addSlotToContainer(new SlotEnchant(table, 0, 37, 17));
+        this.addSlotToContainer(new SlotEnchant(logic, 0, 37, 17));
 
         // Hotbar
         for (int x = 0; x < 9; x++) {
@@ -150,14 +142,8 @@ public class ContainerAdvancedTable extends Container {
     }
 
     @Override
-    public void putStackInSlot (int slotID, ItemStack stack) {
-
-        super.putStackInSlot(slotID, stack);
-    }
-
-    @Override
     public boolean canInteractWith (EntityPlayer playerIn) {
 
-        return playerIn.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D && !playerIn.isDead;
+        return playerIn.getDistanceSq(this.logic.getPos().getX() + 0.5D, this.logic.getPos().getY() + 0.5D, this.logic.getPos().getZ() + 0.5D) <= 64.0D && !playerIn.isDead;
     }
 }

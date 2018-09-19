@@ -3,8 +3,7 @@ package net.darkhax.eplus.gui;
 import net.darkhax.bookshelf.lib.EnchantData;
 import net.darkhax.bookshelf.util.ModUtils;
 import net.darkhax.eplus.EnchantingPlus;
-import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
-import net.darkhax.eplus.inventory.ContainerAdvancedTable;
+import net.darkhax.eplus.block.tileentity.EnchantmentLogicController;
 import net.darkhax.eplus.network.messages.MessageSliderUpdate;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -24,7 +23,8 @@ public class GuiEnchantmentLabel extends Gui {
     private static final int COLOR_BACKGROUND_LOCKED = 0x44d10841;
     private static final int COLOR_BACKGROUND_AVAILABLE = 0x445aaeae;
 
-    private final TileEntityAdvancedTable tile;
+    private final EnchantmentLogicController logic;
+
     private final Enchantment enchantment;
     private final int initialLevel;
 
@@ -42,19 +42,10 @@ public class GuiEnchantmentLabel extends Gui {
 
     public final GuiAdvancedTable parent;
 
-    /**
-     * Creates a new enchantment label. This is used to represent an enchantment in the GUI.
-     *
-     * @param container The tile used.
-     * @param enchant The enchantment to represent.
-     * @param level The current level of the enchantment to depict.
-     * @param x The X position of the label.
-     * @param y The Y position of the label.
-     */
-    public GuiEnchantmentLabel (GuiAdvancedTable parent, TileEntityAdvancedTable tile, Enchantment enchant, int level, int x, int y) {
+    public GuiEnchantmentLabel (GuiAdvancedTable parent, EnchantmentLogicController logic, Enchantment enchant, int level, int x, int y) {
 
+        this.logic = logic;
         this.parent = parent;
-        this.tile = tile;
         this.enchantment = enchant;
         this.currentLevel = level;
         this.initialLevel = level;
@@ -150,7 +141,7 @@ public class GuiEnchantmentLabel extends Gui {
         final int updatedLevel = Math.round(this.initialLevel > this.enchantment.getMaxLevel() ? this.initialLevel * index : this.enchantment.getMaxLevel() * index);
 
         // Checks if the updated level can be applied.
-        if (updatedLevel > this.initialLevel || !this.tile.getItem().isItemDamaged()) {
+        if (updatedLevel > this.initialLevel || !this.logic.getInventory().getEnchantingStack().isItemDamaged()) {
 
             this.currentLevel = updatedLevel;
         }
@@ -168,8 +159,8 @@ public class GuiEnchantmentLabel extends Gui {
         }
 
         // Send the update to the server.
-        EnchantingPlus.NETWORK.sendToServer(new MessageSliderUpdate(((ContainerAdvancedTable) this.parent.inventorySlots).pos, new EnchantData(this.enchantment, this.currentLevel)));
-        this.parent.getTable().getLogic().updateEnchantment(this.enchantment, this.currentLevel);
+        EnchantingPlus.NETWORK.sendToServer(new MessageSliderUpdate(new EnchantData(this.enchantment, this.currentLevel)));
+        this.logic.updateEnchantment(this.enchantment, this.currentLevel);
     }
 
     public int getCurrentLevel () {
@@ -255,11 +246,6 @@ public class GuiEnchantmentLabel extends Gui {
     public int getWidth () {
 
         return WIDTH;
-    }
-
-    public TileEntityAdvancedTable getTile () {
-
-        return this.tile;
     }
 
     public boolean isVisible () {

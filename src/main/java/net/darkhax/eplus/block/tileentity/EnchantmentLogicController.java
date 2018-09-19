@@ -8,14 +8,20 @@ import java.util.Map.Entry;
 
 import net.darkhax.bookshelf.util.EnchantmentUtils;
 import net.darkhax.eplus.EnchLogic;
+import net.darkhax.eplus.inventory.ItemStackHandlerEnchant;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class EnchantmentLogicController {
 
-    private final TileEntityAdvancedTable table;
+    private final EntityPlayer player;
+    private final World world;
+    private final BlockPos pos;
+    private final ItemStackHandlerEnchant inventory;
 
     private ItemStack inputStack;
 
@@ -31,27 +37,33 @@ public class EnchantmentLogicController {
     private float enchantmentPower;
     private int cost;
 
-    public EnchantmentLogicController (TileEntityAdvancedTable table) {
+    public EnchantmentLogicController (EntityPlayer player, World world, BlockPos pos, ItemStackHandlerEnchant inventory) {
 
-        this.table = table;
+        this.player = player;
+        this.world = world;
+        this.pos = pos;
+        this.inventory = inventory;
+
         this.validEnchantments = new ArrayList<>();
         this.initialEnchantments = new HashMap<>();
         this.itemEnchantments = new HashMap<>();
+
+        this.onItemUpdated();
     }
 
     public void onItemUpdated () {
 
-        this.inputStack = this.table.getItem();
+        this.inputStack = this.inventory.getEnchantingStack();
 
         this.initialEnchantments = EnchantmentHelper.getEnchantments(this.inputStack);
         this.itemEnchantments = new HashMap<>(this.initialEnchantments);
-        this.validEnchantments = EnchLogic.getValidEnchantments(this.inputStack, this.table.getWorld());
+        this.validEnchantments = EnchLogic.getValidEnchantments(this.inputStack, this.world);
         this.calculateState();
     }
 
     public void calculateState () {
 
-        this.enchantmentPower = EnchantmentUtils.getEnchantingPower(this.table.getWorld(), this.table.getPos());
+        this.enchantmentPower = EnchantmentUtils.getEnchantingPower(this.world, this.pos);
         this.cost = 0;
 
         // Calculate cost of new enchantments
@@ -126,18 +138,18 @@ public class EnchantmentLogicController {
         return this.itemEnchantments;
     }
 
-    public void enchantItem (EntityPlayer player) {
+    public void enchantItem () {
 
         // If player doesn't have enough exp, ignore them.
-        if (!player.isCreative() && player.experienceTotal < this.getCost()) {
+        if (!this.player.isCreative() && this.player.experienceTotal < this.getCost()) {
 
             return;
         }
 
         // Only creative players get charged
-        if (!player.isCreative()) {
+        if (!this.player.isCreative()) {
 
-            EnchLogic.removeExperience(player, this.getCost());
+            EnchLogic.removeExperience(this.player, this.getCost());
         }
 
         // Clear all existing enchantments
@@ -164,5 +176,25 @@ public class EnchantmentLogicController {
     public float getEnchantmentPower () {
 
         return Math.min(this.enchantmentPower, 30f);
+    }
+
+    public ItemStackHandlerEnchant getInventory () {
+
+        return this.inventory;
+    }
+
+    public BlockPos getPos () {
+
+        return this.pos;
+    }
+
+    public World getWorld () {
+
+        return this.world;
+    }
+
+    public EntityPlayer getPlayer () {
+
+        return this.player;
     }
 }

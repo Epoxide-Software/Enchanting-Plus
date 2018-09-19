@@ -14,7 +14,7 @@ import net.darkhax.bookshelf.util.PlayerUtils;
 import net.darkhax.eplus.EnchLogic;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.api.event.InfoBoxEvent;
-import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
+import net.darkhax.eplus.block.tileentity.EnchantmentLogicController;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
 import net.darkhax.eplus.network.messages.MessageEnchant;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -46,8 +45,6 @@ public class GuiAdvancedTable extends GuiContainer {
     private static final ResourceLocation TEXTURE = new ResourceLocation("eplus", "textures/gui/enchant.png");
     private static final KeyBinding keyBindSneak = Minecraft.getMinecraft().gameSettings.keyBindSneak;
 
-    private final TileEntityAdvancedTable table;
-
     private GuiButton enchantButton;
 
     public final List<GuiEnchantmentLabel> enchantmentListAll = new ArrayList<>();
@@ -63,14 +60,15 @@ public class GuiAdvancedTable extends GuiContainer {
     String[] tips = { "description", "books", "treasure", "curse" };
     private int currentTip = 0;
 
-    public GuiAdvancedTable (InventoryPlayer invPlayer, TileEntityAdvancedTable table) {
+    private final EnchantmentLogicController logic;
 
-        super(new ContainerAdvancedTable(invPlayer, table));
-        this.table = table;
+    public GuiAdvancedTable (ContainerAdvancedTable container) {
+
+        super(container);
         this.xSize = 235;
         this.ySize = 182;
-
         this.currentTip = Constants.RANDOM.nextInt(this.tips.length);
+        this.logic = container.logic;
     }
 
     @Override
@@ -81,7 +79,7 @@ public class GuiAdvancedTable extends GuiContainer {
         this.isSliding = false;
         this.scrollbar = new GuiButtonScroller(this, 1, this.guiLeft + 206, this.guiTop + 16, 12, 15);
 
-        this.enchantButton = new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, EnchLogic.isWikedNight(this.getTable().getWorld()) ? SPOOKY_BONE : new ItemStack(Items.ENCHANTED_BOOK));
+        this.enchantButton = new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, EnchLogic.isWikedNight(this.logic.getWorld()) ? SPOOKY_BONE : new ItemStack(Items.ENCHANTED_BOOK));
         this.buttonList.add(this.enchantButton);
         this.buttonList.add(this.scrollbar);
     }
@@ -114,10 +112,10 @@ public class GuiAdvancedTable extends GuiContainer {
 
         int labelCount = 0;
 
-        for (final Enchantment enchant : this.table.getLogic().getValidEnchantments()) {
+        for (final Enchantment enchant : this.logic.getValidEnchantments()) {
 
-            final GuiEnchantmentLabel label = new GuiEnchantmentLabel(this, this.table, enchant, this.table.getLogic().getCurrentLevel(enchant), 35 + 26 + this.guiLeft, 15 + this.guiTop + labelCount++ * 18);
-            label.setCurrentLevel(this.table.getLogic().getCurrentLevel(enchant));
+            final GuiEnchantmentLabel label = new GuiEnchantmentLabel(this, this.logic, enchant, this.logic.getCurrentLevel(enchant), 35 + 26 + this.guiLeft, 15 + this.guiTop + labelCount++ * 18);
+            label.setCurrentLevel(this.logic.getCurrentLevel(enchant));
 
             this.enchantmentListAll.add(label);
         }
@@ -150,7 +148,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
             final Enchantment enchantment = label.getEnchantment();
 
-            for (final Entry<Enchantment, Integer> data : this.table.getLogic().getCurrentEnchantments().entrySet()) {
+            for (final Entry<Enchantment, Integer> data : this.logic.getCurrentEnchantments().entrySet()) {
 
                 final boolean isIncompatable = enchantment != data.getKey() && data.getValue() > 0 && !data.getKey().isCompatibleWith(enchantment);
                 final boolean isOverLeveled = enchantment == data.getKey() && data.getValue() > enchantment.getMaxLevel();
@@ -283,8 +281,8 @@ public class GuiAdvancedTable extends GuiContainer {
 
         if (button.id == 0 && this.canClientAfford()) {
 
-            EnchantingPlus.NETWORK.sendToServer(new MessageEnchant(((ContainerAdvancedTable) this.inventorySlots).pos));
-            this.getTable().getLogic().enchantItem(PlayerUtils.getClientPlayerSP());
+            EnchantingPlus.NETWORK.sendToServer(new MessageEnchant());
+            this.logic.enchantItem();
         }
     }
 
@@ -306,7 +304,7 @@ public class GuiAdvancedTable extends GuiContainer {
                 text.add(I18n.format("gui.eplus.tooltip.tooexpensive"));
             }
 
-            else if (this.getTable().getLogic().getCost() == 0) {
+            else if (this.logic.getCost() == 0) {
 
                 text.add(I18n.format("gui.eplus.tooltip.nochange"));
             }
@@ -335,7 +333,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
         final List<String> info = new ArrayList<>();
 
-        if (this.getTable().getItem().isEmpty()) {
+        if (this.logic.getInventory().getEnchantingStack().isEmpty()) {
 
             info.add(I18n.format("gui.eplus.info.noitem"));
         }
@@ -349,11 +347,11 @@ public class GuiAdvancedTable extends GuiContainer {
 
             final boolean isCreative = PlayerUtils.getClientPlayerSP().isCreative();
             final int playerXP = isCreative ? Integer.MAX_VALUE : PlayerUtils.getClientPlayerSP().experienceTotal;
-            final int cost = this.getTable().getLogic().getCost();
+            final int cost = this.logic.getCost();
 
             info.add(isCreative ? I18n.format("eplus.info.infinity") : I18n.format("eplus.info.playerxp", playerXP));
             info.add(I18n.format("eplus.info.costxp", cost));
-            info.add(I18n.format("eplus.info.power", this.getTable().getLogic().getEnchantmentPower()) + "%");
+            info.add(I18n.format("eplus.info.power", this.logic.getEnchantmentPower()) + "%");
 
             if (cost > playerXP) {
 
@@ -377,11 +375,6 @@ public class GuiAdvancedTable extends GuiContainer {
 
     public boolean canClientAfford () {
 
-        return this.getTable().getLogic().getCost() <= PlayerUtils.getClientPlayerSP().experienceTotal || PlayerUtils.getClientPlayerSP().isCreative();
-    }
-
-    public TileEntityAdvancedTable getTable () {
-
-        return this.table;
+        return this.logic.getCost() <= PlayerUtils.getClientPlayerSP().experienceTotal || PlayerUtils.getClientPlayerSP().isCreative();
     }
 }

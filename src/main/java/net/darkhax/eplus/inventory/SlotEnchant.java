@@ -1,15 +1,25 @@
 package net.darkhax.eplus.inventory;
 
 import net.darkhax.eplus.EnchantingPlus;
-import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
+import net.darkhax.eplus.block.tileentity.EnchantmentLogicController;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class SlotEnchant extends SlotItemHandler {
 
-    public SlotEnchant (TileEntityAdvancedTable tile, int index, int xPosition, int yPosition) {
+    private final EnchantmentLogicController logic;
 
-        super(tile.getInventory(), index, xPosition, yPosition);
+    public SlotEnchant (EnchantmentLogicController logic, int index, int xPosition, int yPosition) {
+
+        super(logic.getInventory(), index, xPosition, yPosition);
+        this.logic = logic;
+    }
+
+    @Override
+    public void onSlotChanged () {
+
+        this.logic.onItemUpdated();
+        super.onSlotChanged();
     }
 
     @Override

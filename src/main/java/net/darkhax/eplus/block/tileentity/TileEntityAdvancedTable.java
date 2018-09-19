@@ -3,46 +3,23 @@ package net.darkhax.eplus.block.tileentity;
 import javax.annotation.Nullable;
 
 import net.darkhax.eplus.inventory.ItemStackHandlerEnchant;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityAdvancedTable extends TileEntityWithBook {
 
     private final ItemStackHandlerEnchant inventory;
 
-    private final EnchantmentLogicController controller;
-
     public TileEntityAdvancedTable () {
 
-        this.inventory = new ItemStackHandlerEnchant(this, 1);
-        this.controller = new EnchantmentLogicController(this);
+        this.inventory = new ItemStackHandlerEnchant(1);
     }
 
-    public EnchantmentLogicController getLogic () {
-
-        return this.controller;
-    }
-
-    public ItemStack getItem () {
-
-        return this.inventory.getStackInSlot(0);
-    }
-
-    public IItemHandler getInventory () {
+    public ItemStackHandlerEnchant getInventory () {
 
         return this.inventory;
-    }
-
-    @Override
-    public ITextComponent getDisplayName () {
-
-        return new TextComponentString("container.enchant");
     }
 
     @Override
@@ -65,6 +42,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
 
     @Nullable
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getCapability (Capability<T> capability, @Nullable EnumFacing facing) {
 
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
