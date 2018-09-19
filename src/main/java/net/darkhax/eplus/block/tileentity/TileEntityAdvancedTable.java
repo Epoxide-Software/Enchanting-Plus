@@ -22,6 +22,11 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
         return inventory;
     }
 
+    public Map<UUID, ItemStackHandlerEnchant> getInveotries() {
+        
+        return this.inventories;
+    }
+    
     @Override
     public void writeNBT (NBTTagCompound dataTag) {
 

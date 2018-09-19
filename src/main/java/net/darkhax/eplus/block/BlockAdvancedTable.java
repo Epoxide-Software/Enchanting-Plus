@@ -1,16 +1,24 @@
 package net.darkhax.eplus.block;
 
+import java.util.Map;
+import java.util.UUID;
+
 import net.darkhax.bookshelf.block.BlockTileEntity;
 import net.darkhax.bookshelf.block.ITileEntityBlock;
+import net.darkhax.bookshelf.util.StackUtils;
 import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.block.tileentity.TileEntityAdvancedTable;
 import net.darkhax.eplus.block.tileentity.renderer.TileEntityAdvancedTableRenderer;
+import net.darkhax.eplus.inventory.ItemStackHandlerEnchant;
 import net.darkhax.eplus.network.GuiHandler;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -33,6 +41,27 @@ public class BlockAdvancedTable extends BlockTileEntity implements ITileEntityBl
         this.setResistance(2000.0F);
     }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+
+        if (tileentity instanceof TileEntityAdvancedTable) {
+            
+            Map<UUID, ItemStackHandlerEnchant> inventories = ((TileEntityAdvancedTable) tileentity).getInveotries();
+            
+            for (ItemStackHandlerEnchant inventory : inventories.values()) {
+                
+                StackUtils.dropStackInWorld(worldIn, pos, inventory.getEnchantingStack());
+                inventory.setStackInSlot(0, ItemStack.EMPTY);
+            }
+            
+            inventories.clear();
+        }
+
+        super.breakBlock(worldIn, pos, state);
+    }
+    
     @Override
     public TileEntity createNewTileEntity (World worldIn, int meta) {
 
