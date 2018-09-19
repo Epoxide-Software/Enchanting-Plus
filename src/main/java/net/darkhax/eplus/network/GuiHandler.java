@@ -51,7 +51,7 @@ public final class GuiHandler implements IGuiHandler {
 
         if (te instanceof TileEntityAdvancedTable) {
 
-            final EnchantmentLogicController logic = new EnchantmentLogicController(player, world, pos, ((TileEntityAdvancedTable) te).getInventory());
+            final EnchantmentLogicController logic = new EnchantmentLogicController(player, world, pos, ((TileEntityAdvancedTable) te).getInventory(player));
             return new ContainerAdvancedTable(player.inventory, logic);
         }
 

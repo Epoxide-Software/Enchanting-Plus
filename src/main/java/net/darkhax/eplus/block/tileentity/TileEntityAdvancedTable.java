@@ -1,53 +1,61 @@
 package net.darkhax.eplus.block.tileentity;
 
-import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
 
 import net.darkhax.eplus.inventory.ItemStackHandlerEnchant;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants.NBT;
 
 public class TileEntityAdvancedTable extends TileEntityWithBook {
 
-    private final ItemStackHandlerEnchant inventory;
+    private final Map<UUID, ItemStackHandlerEnchant> inventories = new HashMap<>();
 
-    public TileEntityAdvancedTable () {
+    public ItemStackHandlerEnchant getInventory (EntityPlayer player) {
 
-        this.inventory = new ItemStackHandlerEnchant(1);
-    }
-
-    public ItemStackHandlerEnchant getInventory () {
-
-        return this.inventory;
+        ItemStackHandlerEnchant inventory = inventories.getOrDefault(player.getPersistentID(), new ItemStackHandlerEnchant());
+        inventories.put(player.getPersistentID(), inventory);
+        return inventory;
     }
 
     @Override
     public void writeNBT (NBTTagCompound dataTag) {
 
-        dataTag.setTag("inventory", this.inventory.serializeNBT());
+        NBTTagList list = new NBTTagList();
+        
+        for (Entry<UUID, ItemStackHandlerEnchant> inventory : this.inventories.entrySet()) {
+            
+            NBTTagCompound invTag = new NBTTagCompound();
+            invTag.setUniqueId("Owner", inventory.getKey());
+            invTag.setTag("Inventory", inventory.getValue().serializeNBT());
+            list.appendTag(invTag);
+        }
+        
+        dataTag.setTag("InvList", list);
     }
 
     @Override
     public void readNBT (NBTTagCompound dataTag) {
 
-        this.inventory.deserializeNBT((NBTTagCompound) dataTag.getTag("inventory"));
-    }
+        this.inventories.clear();
 
-    @Override
-    public boolean hasCapability (Capability<?> capability, @Nullable EnumFacing facing) {
-
-        return this.getCapability(capability, facing) != null || super.hasCapability(capability, facing);
-    }
-
-    @Nullable
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability (Capability<T> capability, @Nullable EnumFacing facing) {
-
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) this.inventory;
+        NBTTagList list = dataTag.getTagList("InvList", NBT.TAG_COMPOUND);
+        
+        for (int i = 0; i < list.tagCount(); i++) {
+            
+            final NBTTagCompound tag = list.getCompoundTagAt(i);
+            
+            if (tag != null) {
+                
+                UUID owner = tag.getUniqueId("Owner");
+                ItemStackHandlerEnchant inv = new ItemStackHandlerEnchant();
+                inv.deserializeNBT(tag.getCompoundTag("Inventory"));
+                this.inventories.put(owner, inv);
+            }
         }
-        return super.getCapability(capability, facing);
     }
 }

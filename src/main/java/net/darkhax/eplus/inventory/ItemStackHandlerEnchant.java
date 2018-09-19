@@ -15,14 +15,10 @@ public class ItemStackHandlerEnchant implements IItemHandler, IItemHandlerModifi
 
     protected NonNullList<ItemStack> stacks;
 
-    public ItemStackHandlerEnchant (int size) {
 
-        this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
-    }
+    public ItemStackHandlerEnchant () {
 
-    public ItemStackHandlerEnchant (NonNullList<ItemStack> stacks) {
-
-        this.stacks = stacks;
+        this.stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     public void setSize (int size) {
