@@ -15,13 +15,13 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class EnchantingPlusCRT {
 
     @ZenMethod
-    public static void blacklistEnchantment (IItemStack stack) {
+    public static void blacklistItem (IItemStack stack) {
 
         CraftTweakerAPI.apply(new ActionBlacklistItem(stack));
     }
 
     @ZenMethod
-    public static void blacklistItem (IEnchantment enchantment) {
+    public static void blacklistEnchantment (IEnchantment enchantment) {
 
         CraftTweakerAPI.apply(new ActionBlacklist(enchantment));
     }
