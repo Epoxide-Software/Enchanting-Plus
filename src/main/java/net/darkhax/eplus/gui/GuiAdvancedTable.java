@@ -340,7 +340,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
         else if (this.enchantmentListAll.isEmpty()) {
 
-            info.add(I18n.format("gui.eplus.info.neench"));
+            info.add(I18n.format("gui.eplus.info.noench"));
         }
 
         else {
