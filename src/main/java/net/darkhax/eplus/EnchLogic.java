@@ -72,12 +72,18 @@ public final class EnchLogic {
 
     public static void removeExperience (EntityPlayer player, int amount) {
 
-        player.experience -= (float) amount / (float) player.xpBarCap();
+        if (amount == 0) {
 
-        for (player.experienceTotal -= amount; player.experience <= 0.0F; player.experience /= player.xpBarCap()) {
-            player.experience = (player.experience + 1.0F) * player.xpBarCap();
-            player.addExperienceLevel(-1);
+            return;
         }
+
+        final int remaining = Math.max(player.experienceTotal, 0);
+
+        player.experience = 0;
+        player.experienceTotal = 0;
+        player.experienceLevel = 0;
+
+        player.addExperience(remaining);
     }
 
     public static boolean isWikedNight (World world) {
