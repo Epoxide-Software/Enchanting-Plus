@@ -16,8 +16,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -42,26 +40,26 @@ public class BlockAdvancedTable extends BlockTileEntity implements ITileEntityBl
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        
-        TileEntity tileentity = worldIn.getTileEntity(pos);
+    public void breakBlock (World worldIn, BlockPos pos, IBlockState state) {
+
+        final TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityAdvancedTable) {
-            
-            Map<UUID, ItemStackHandlerEnchant> inventories = ((TileEntityAdvancedTable) tileentity).getInveotries();
-            
-            for (ItemStackHandlerEnchant inventory : inventories.values()) {
-                
+
+            final Map<UUID, ItemStackHandlerEnchant> inventories = ((TileEntityAdvancedTable) tileentity).getInveotries();
+
+            for (final ItemStackHandlerEnchant inventory : inventories.values()) {
+
                 StackUtils.dropStackInWorld(worldIn, pos, inventory.getEnchantingStack());
                 inventory.setStackInSlot(0, ItemStack.EMPTY);
             }
-            
+
             inventories.clear();
         }
 
         super.breakBlock(worldIn, pos, state);
     }
-    
+
     @Override
     public TileEntity createNewTileEntity (World worldIn, int meta) {
 

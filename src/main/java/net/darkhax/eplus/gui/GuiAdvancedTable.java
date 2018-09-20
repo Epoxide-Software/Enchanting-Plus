@@ -346,7 +346,7 @@ public class GuiAdvancedTable extends GuiContainer {
         else {
 
             final boolean isCreative = PlayerUtils.getClientPlayerSP().isCreative();
-            final int playerXP = isCreative ? Integer.MAX_VALUE : PlayerUtils.getClientPlayerSP().experienceTotal;
+            final int playerXP = isCreative ? Integer.MAX_VALUE : EnchLogic.getExperience(this.logic.getPlayer());
             final int cost = this.logic.getCost();
 
             info.add(isCreative ? I18n.format("eplus.info.infinity") : I18n.format("eplus.info.playerxp", playerXP));
@@ -375,6 +375,6 @@ public class GuiAdvancedTable extends GuiContainer {
 
     public boolean canClientAfford () {
 
-        return this.logic.getCost() <= PlayerUtils.getClientPlayerSP().experienceTotal || PlayerUtils.getClientPlayerSP().isCreative();
+        return this.logic.getCost() <= EnchLogic.getExperience(this.logic.getPlayer()) || PlayerUtils.getClientPlayerSP().isCreative();
     }
 }
