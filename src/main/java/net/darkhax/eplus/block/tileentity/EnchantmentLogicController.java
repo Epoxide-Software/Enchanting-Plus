@@ -140,8 +140,8 @@ public class EnchantmentLogicController {
 
     public void enchantItem () {
 
-        // If player doesn't have enough exp, ignore them.
-        if (!this.player.isCreative() && this.player.experienceTotal < this.getCost()) {
+        // If there are no changes, or player doesn't have enough exp, ignore them.
+        if (this.getCost() == 0 || (!this.player.isCreative() && this.player.experienceTotal < this.getCost())) {
 
             return;
         }
