@@ -57,7 +57,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
     public GuiButtonScroller scrollbar;
 
-    String[] tips = { "description", "books", "treasure", "curse", "storage", "inventory" };
+    String[] tips = { "description", "books", "treasure", "curse", "storage", "inventory", "armor" };
     private int currentTip = 0;
 
     private final EnchantmentLogicController logic;

@@ -33,7 +33,7 @@ eplus.info.tip.treasure=Treasure Enchantments are not yet available. They will b
 eplus.info.tip.curse=Curses can only be modified near midnight on nights with a full moon.
 eplus.info.tip.storage=The advanced table will store it's inventory like a chest.
 eplus.info.tip.inventory=Every player has their own inventory in the table. Breaking the table will cause the contents of all the inventories to drop.
-eplus.info.tip.armor=The armor slots are the same as your player slots.
+eplus.info.tip.armor=The armor slots on the side are the same as your player inventory.
 eplus.info.tip.birthday=It may be your birthday.
 
 #Tooltips
