@@ -292,7 +292,7 @@ public class GuiAdvancedTable extends GuiContainer {
         super.renderHoveredToolTip(x, y);
 
         // Info Box
-        GuiUtils.drawHoveringText(this.getInfoBox(), -3, this.guiTop + 27, this.xSize, this.ySize, this.guiLeft - 18, this.fontRenderer);
+        GuiUtils.drawHoveringText(this.getInfoBox(), this.guiLeft, this.guiTop + 27, this.xSize, this.guiTop + this.ySize, this.guiLeft - 18, this.fontRenderer);
 
         // Enchant button tooltip
         if (this.enchantButton.isMouseOver()) {
