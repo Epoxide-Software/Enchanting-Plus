@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-@Mod(modid = "eplus", name = "Enchanting Plus", version = "@VERSION@", dependencies = "required-after:bookshelf@[2.3.553,);", certificateFingerprint = "@FINGERPRINT@")
+@Mod(modid = "eplus", name = "Enchanting Plus", version = "@VERSION@", dependencies = "required-after:bookshelf@[2.3.557,);", certificateFingerprint = "@FINGERPRINT@")
 public final class EnchantingPlus {
 
     public static final NetworkHandler NETWORK = new NetworkHandler("eplus");
