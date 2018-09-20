@@ -17,29 +17,29 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
 
     public ItemStackHandlerEnchant getInventory (EntityPlayer player) {
 
-        ItemStackHandlerEnchant inventory = inventories.getOrDefault(player.getPersistentID(), new ItemStackHandlerEnchant());
-        inventories.put(player.getPersistentID(), inventory);
+        final ItemStackHandlerEnchant inventory = this.inventories.getOrDefault(player.getPersistentID(), new ItemStackHandlerEnchant());
+        this.inventories.put(player.getPersistentID(), inventory);
         return inventory;
     }
 
-    public Map<UUID, ItemStackHandlerEnchant> getInveotries() {
-        
+    public Map<UUID, ItemStackHandlerEnchant> getInveotries () {
+
         return this.inventories;
     }
-    
+
     @Override
     public void writeNBT (NBTTagCompound dataTag) {
 
-        NBTTagList list = new NBTTagList();
-        
-        for (Entry<UUID, ItemStackHandlerEnchant> inventory : this.inventories.entrySet()) {
-            
-            NBTTagCompound invTag = new NBTTagCompound();
+        final NBTTagList list = new NBTTagList();
+
+        for (final Entry<UUID, ItemStackHandlerEnchant> inventory : this.inventories.entrySet()) {
+
+            final NBTTagCompound invTag = new NBTTagCompound();
             invTag.setUniqueId("Owner", inventory.getKey());
             invTag.setTag("Inventory", inventory.getValue().serializeNBT());
             list.appendTag(invTag);
         }
-        
+
         dataTag.setTag("InvList", list);
     }
 
@@ -48,16 +48,16 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
 
         this.inventories.clear();
 
-        NBTTagList list = dataTag.getTagList("InvList", NBT.TAG_COMPOUND);
-        
+        final NBTTagList list = dataTag.getTagList("InvList", NBT.TAG_COMPOUND);
+
         for (int i = 0; i < list.tagCount(); i++) {
-            
+
             final NBTTagCompound tag = list.getCompoundTagAt(i);
-            
+
             if (tag != null) {
-                
-                UUID owner = tag.getUniqueId("Owner");
-                ItemStackHandlerEnchant inv = new ItemStackHandlerEnchant();
+
+                final UUID owner = tag.getUniqueId("Owner");
+                final ItemStackHandlerEnchant inv = new ItemStackHandlerEnchant();
                 inv.deserializeNBT(tag.getCompoundTag("Inventory"));
                 this.inventories.put(owner, inv);
             }
