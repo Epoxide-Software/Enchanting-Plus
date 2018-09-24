@@ -71,7 +71,12 @@ public class EnchantmentLogicController {
 
             final int original = this.initialEnchantments.getOrDefault(newEntry.getKey(), 0);
             final int newLevels = newEntry.getValue() - original;
-            this.cost += EnchLogic.calculateNewEnchCost(newEntry.getKey(), newLevels);
+            
+            // If you want to enable giving exp back to the player, this check can be modified.
+            if (newLevels > 0) {
+                
+                this.cost += EnchLogic.calculateNewEnchCost(newEntry.getKey(), newLevels);
+            }
         }
 
         // Calculate cost of removed curses
