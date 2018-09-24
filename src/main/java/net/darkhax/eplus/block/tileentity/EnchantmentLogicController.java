@@ -71,10 +71,10 @@ public class EnchantmentLogicController {
 
             final int original = this.initialEnchantments.getOrDefault(newEntry.getKey(), 0);
             final int newLevels = newEntry.getValue() - original;
-            
+
             // If you want to enable giving exp back to the player, this check can be modified.
             if (newLevels > 0) {
-                
+
                 this.cost += EnchLogic.calculateNewEnchCost(newEntry.getKey(), newLevels);
             }
         }
@@ -146,7 +146,7 @@ public class EnchantmentLogicController {
     public void enchantItem () {
 
         // If player doesn't have enough exp, ignore them.
-        if (!this.player.isCreative() && EnchLogic.getExperience(player) < this.getCost()) {
+        if (!this.player.isCreative() && EnchLogic.getExperience(this.player) < this.getCost()) {
 
             return;
         }
@@ -154,7 +154,7 @@ public class EnchantmentLogicController {
         // Only creative players get charged
         if (!this.player.isCreative() && this.cost > 0) {
 
-            EnchLogic.removeExperience(player, this.getCost());
+            EnchLogic.removeExperience(this.player, this.getCost());
         }
 
         // Clear all existing enchantments

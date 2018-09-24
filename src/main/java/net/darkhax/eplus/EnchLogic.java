@@ -77,7 +77,7 @@ public final class EnchLogic {
 
         return world.provider.getMoonPhase(world.getWorldTime()) == 0 && isNightRange;
     }
-    
+
     // The following code was adapted from OpenModsLib https://github.com/OpenMods/OpenModsLib
     public static int getExperience (EntityPlayer player) {
 
@@ -92,10 +92,10 @@ public final class EnchLogic {
     public static void addExperience (EntityPlayer player, int amount) {
 
         if (amount < 1) {
-            
+
             return;
         }
-        
+
         final int experience = getExperience(player) + amount;
         player.experienceTotal = experience;
         player.experienceLevel = getLevelForExperience(experience);
@@ -106,32 +106,32 @@ public final class EnchLogic {
     public static int getExperienceForLevels (int level) {
 
         if (level == 0) {
-            
+
             return 0;
         }
 
         if (level > 0 && level < 17) {
-            
+
             return level * level + 6 * level;
         }
-        
+
         else if (level > 16 && level < 32) {
-            
+
             return (int) (2.5 * level * level - 40.5 * level + 360);
         }
-        
+
         return (int) (4.5 * level * level - 162.5 * level + 2220);
     }
 
     public static int getLevelForExperience (int experience) {
 
         int level = 0;
-        
+
         while (getExperienceForLevels(level) <= experience) {
-            
+
             level++;
         }
-        
+
         return level - 1;
     }
 }
