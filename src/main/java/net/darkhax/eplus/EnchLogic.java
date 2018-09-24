@@ -18,7 +18,7 @@ public final class EnchLogic {
     public static int calculateNewEnchCost (Enchantment enchantment, int level) {
 
         // Base cost is equal to roughly 2.5 levels of EXP.
-        int cost = 25;
+        int cost = ConfigurationHandler.baseCost;
 
         // Cost is multiplied up to 10, based on rarity of the enchant.
         // Rarer the enchant, higher the cost.

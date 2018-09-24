@@ -18,6 +18,7 @@ public final class ConfigurationHandler {
     public static float costFactor = 1.5f;
     public static float treasureFactor = 4f;
     public static float curseFactor = 3f;
+    public static int baseCost = 45;
 
     public static float floatingBookBonus = 1f;
     private static String[] blacklistedItems = new String[] {};
@@ -27,6 +28,7 @@ public final class ConfigurationHandler {
 
         config = new Configuration(configFile);
 
+        baseCost = config.getInt("baseCost", CATEGORY_GENERAL, 45, 1, 1024, "The base cost to use for the enchantment formula. ");
         costFactor = config.getFloat("costFactor", CATEGORY_GENERAL, 1f, 0f, 1024f, "A number used when calculated enchantment cost. This number is treated as a % based factor. 0.30 = 30% of the original cost. 1.5 = 150% of the original cost.");
         treasureFactor = config.getFloat("treasureFactor", CATEGORY_GENERAL, 4f, 0f, 1024f, "A factor used to make treasure enchantments like mending cost more to apply. By default they cost 4X more.");
         curseFactor = config.getFloat("curseFactor", CATEGORY_GENERAL, 3f, 0f, 1024f, "A factor used to make curse enchantments like vanishing cost more to apply. By default they cost 3X more.");
