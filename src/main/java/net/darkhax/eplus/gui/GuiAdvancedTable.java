@@ -279,7 +279,7 @@ public class GuiAdvancedTable extends GuiContainer {
 
         super.actionPerformed(button);
 
-        if (button.id == 0 && this.canClientAfford() && this.logic.getCost() != 0) {
+        if (button.id == 0 && this.canClientAfford()) {
 
             EnchantingPlus.NETWORK.sendToServer(new MessageEnchant());
             this.logic.enchantItem();
