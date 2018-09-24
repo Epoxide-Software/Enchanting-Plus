@@ -152,7 +152,7 @@ public class EnchantmentLogicController {
         }
 
         // Only creative players get charged
-        if (!this.player.isCreative()) {
+        if (!this.player.isCreative() && this.cost > 0) {
 
             EnchLogic.removeExperience(player, this.getCost());
         }
