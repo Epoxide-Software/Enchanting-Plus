@@ -1,0 +1,94 @@
+#Enchanting Plus Russian Language File
+
+#Blocks
+tile.eplus.advanced.table.name=Расширенный стол зачарований
+tile.eplus.decorative.book.eplus.name=Книга Enchanting Plus
+tile.eplus.decorative.book.vanilla.name=Зачарованная книга
+tile.eplus.decorative.book.prismarine.name=Призмариновая книга
+tile.eplus.decorative.book.nether.name=Книга нижнего мира
+tile.eplus.decorative.book.tartarite.name=Тартарская книга
+tile.eplus.decorative.book.white.name=Бледная книга
+tile.eplus.decorative.book.metal.name=Металлическая книга
+
+#Items
+item.eplus.table.upgrade.name=Стол обновления
+
+#Misc
+itemGroup.eplus=Enchanting Plus
+
+#Info Box
+eplus.info.playerxp=Опыт: %d
+eplus.info.costxp=Стоимость: %d
+eplus.info.infinity=Опыт: ∞
+eplus.info.power=Дисконт: %.2f
+gui.eplus.info.noitem=Поместите предмет, чтобы увидеть доступные чары.
+gui.eplus.info.neench=Для этого предмета не предусмотрено никаких зачарований.
+gui.eplus.info.tooexpensive=Вам нужно больше опыта, чтобы сделать это очарование.
+
+eplus.info.tip.prefix=Совет: 
+eplus.info.tip.bonus=Бонусный совет: 
+eplus.info.tip.description=Удерживайте %s над ползунком зачарования для описания.
+eplus.info.tip.books=Вы можете разместить книжные полки, чтобы уменьшить стоимость зачарований.
+eplus.info.tip.treasure=Зачарования сокровищ еще не доступны.
+eplus.info.tip.curse=Проклятия могут быть изменены только в полночь по ночам с полной луной.
+eplus.info.tip.storage=Продвинутый стол будет хранить его инвентарь, как сундук.
+eplus.info.tip.inventory=Каждый игрок имеет свой собственный инвентарь в столе. Разрушение стола приведет к выпадению содержимого всего инвентаря.
+eplus.info.tip.armor=Слоты брони на стороне те же, что и инвентарь вашего игрока.
+eplus.info.tip.birthday=Это может быть твой день рождения.
+
+#Tooltips
+gui.eplus.tooltip.tooexpensive=Зачарования слишком дорогие!
+gui.eplus.tooltip.enchant=Нажмите, чтобы зачаровать.
+gui.eplus.tooltip.nochange=Никаких изменений сделано не было.
+tooltip.eplus.missing=Описание не найдено. Попробуйте попросить автора %s добавить, или внести свой вклад в Enchanting Plus. Ключ локализации %s
+
+#Vanilla Enchantment Descriptions
+enchantment.minecraft.protection.desc=Снижает урон от всех источников
+enchantment.minecraft.fire_protection.desc=Снижает эффект урона от огня. Также уменьшает время горения при поджоге.
+enchantment.minecraft.feather_falling.desc=Уменьшает урон от падения и урон от телепортации жемчуга края.
+enchantment.minecraft.blast_protection.desc=Защита от взрывов, снижение отдачи от взрывов.
+enchantment.minecraft.projectile_protection.desc=Уменьшает урон от снарядов, таких как стрелы и огненные шары.
+enchantment.minecraft.respiration.desc=Увеличивает время, которое игрок может провести под водой. Также улучшает зрение, находясь под водой.
+enchantment.minecraft.aqua_affinity.desc=Увеличивает скорость добычи во время подводного плавания.
+enchantment.minecraft.thorns.desc=Наносит урон врагам, когда они нападают на вас.
+enchantment.minecraft.sharpness.desc=Увеличивает урон предмета.
+enchantment.minecraft.smite.desc=Увеличивает урон против нежити, таких как зомби и скелеты.
+enchantment.minecraft.bane_of_arthropods.desc=Увеличивает урон против членистоногих, таких как пауки и чешуйница.
+enchantment.minecraft.knockback.desc=Увеличивает силу отбрасывания.
+enchantment.minecraft.fire_aspect.desc=Причиняет дополнительный урон огнем, когда атакует моб.
+enchantment.minecraft.looting.desc=С мобов будет падать больше добычи, при убийстве.
+enchantment.minecraft.efficiency.desc=Увеличивает скорость добычи инструмента.
+enchantment.minecraft.silk_touch.desc=Позволяет собирать хрупкие блоки, такие как стекло.
+enchantment.minecraft.unbreaking.desc=Заставляет инструмент терять прочность более медленными темпами.
+enchantment.minecraft.fortune.desc=В некоторых блоках, таких как уголь и алмазная руда, могут выпадать дополнительные предметы.
+enchantment.minecraft.power.desc=Увеличивает урон от стрел, выпущенных из лука.
+enchantment.minecraft.punch.desc=Увеличивает стрелам силу отбрасывания, выпущенных из лука.
+enchantment.minecraft.flame.desc=Стрелы, выпущенные из лука, наносят дополнительный урон огнем.
+enchantment.minecraft.infinity.desc=Позволяет луку стрелять обычными стрелами бесплатно. У вас должна быть хотя бы одна стрела для этого.
+enchantment.minecraft.luck_of_the_sea.desc=Увеличивает вероятность получения хорошего лута во время рыбалки.
+enchantment.minecraft.lure.desc=Уменьшает время, необходимое рыбам для укуса крюка.
+enchantment.minecraft.depth_strider.desc=Увеличивает скорость передвижения, находясь под водой.
+enchantment.minecraft.frost_walker.desc=Замораживает воду под игроком в треснувший лед.
+enchantment.minecraft.mending.desc=Восстанавливает долговечность брони и инструментов с помощью опыта.
+enchantment.minecraft.binding_curse.desc=Предотвращает удаление зачарованного предмета из слота брони.
+enchantment.minecraft.vanishing_curse.desc=Уничтожает зачарованный предмет, если вы умрете вместе с ним в инвентаре.
+enchantment.minecraft.sweeping.desc=Увеличивает урон, наносимый атаками.
+
+#Ender Core
+enchantment.endercore.xpboost.desc=Мобы дают больше опыта, когда будут убиты.
+enchantment.endercore.autosmelt.desc=Добытые вещи будут автоматически выплавляться.
+
+#Extra Utilities 2
+enchantment.extrautils2.xu.kaboomerang.desc=Бумеранг может ломать/собирать блоки.
+enchantment.extrautils2.xu.zoomerang.desc=Бумеринг движется быстрее.
+enchantment.extrautils2.xu.burnerang.desc=Бумеранг наносит урон огнем.
+enchantment.extrautils2.xu.bladerang.desc=Бумеранг наносит дополнительный урон.
+enchantment.extrautils2.xu.boomereaperang=Бумеранг будет собирать урожай.
+
+#Random Things
+enchantment.randomthings.magnetic.desc=Перемещает добытые предметы немного ближе к Вам.
+
+#JEI
+jei.eplus.advancedtable=Этот стол может быть использован для зачарования предметов с определенными чарами, которые Вы хотите.
+jei.eplus.upgrade=Модернизирует существующий стол зачарований до продвинутого. Требуется Shift+ПКМ на блоке.
+jei.eplus.decorative=Эти книги в первую очередь декоративные. Они считаются книжными полками для зачаровательных столов. Они могут также взаимодействовать с компараторами при соответствующих обстоятельствах.
