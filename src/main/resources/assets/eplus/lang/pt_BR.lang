@@ -1,0 +1,94 @@
+#Enchanting Plus English Language File
+
+#Blocks
+tile.eplus.advanced.table.name=Mesa de Encantamentos Avançada
+tile.eplus.decorative.book.eplus.name=Livro do Enchanting Plus
+tile.eplus.decorative.book.vanilla.name=Livro de Encantamentos
+tile.eplus.decorative.book.prismarine.name=Livro de Prismarinho
+tile.eplus.decorative.book.nether.name=Livro do Nether
+tile.eplus.decorative.book.tartarite.name=Livro de Tartarite
+tile.eplus.decorative.book.white.name=Livro Pálido
+tile.eplus.decorative.book.metal.name=Livro de Metal
+
+#Items
+item.eplus.table.upgrade.name=Melhoria da Mesa
+
+#Misc
+itemGroup.eplus=Enchanting Plus
+
+#Info Box
+eplus.info.playerxp=EXP: %d
+eplus.info.costxp=Custo: %d
+eplus.info.infinity=EXP: ∞
+eplus.info.power=Desconto: %.2f
+gui.eplus.info.noitem=Coloque um item para ver os encantamentos disponíveis
+gui.eplus.info.noench=Nenhum encantamento disponível para esse item
+gui.eplus.info.tooexpensive=Você precisa de mais XP para encantar isso
+
+eplus.info.tip.prefix=Dica: 
+eplus.info.tip.bonus=Dica Bônus: 
+eplus.info.tip.description=Pressione %s sobre o encantamento para ver a descrição
+eplus.info.tip.books=Você pode colocar estantes de livros em volta para diminuir o custo dos encantamentos
+eplus.info.tip.treasure=Encantamentos de Tesouro ainda não estão disponíveis. Eles estarão em breve.
+eplus.info.tip.curse=Maldições só podem ser modificadas perto da meia noite em noites de lua cheia
+eplus.info.tip.storage=A mesa avançada pode guardar itens como um baú
+eplus.info.tip.inventory=Cada jogador tem seu próprio inventário na mesa. Ao quebrá-la, todos os inventários serão dropados.
+eplus.info.tip.armor=Os slots de armadura desse inventário são os mesmos do seu inventário.
+eplus.info.tip.birthday=Pode ser seu aniversário...
+
+#Tooltips
+gui.eplus.tooltip.tooexpensive=Encantamentos muito caros!
+gui.eplus.tooltip.enchant=Clique para encantar!
+gui.eplus.tooltip.nochange=Nenhuma alteração feita
+tooltip.eplus.missing=Sem descrição. Você pode contatar o autor de %s para adicionar uma, ou enviar uma para o Enchanting Plus. A localization key é %s
+
+#Vanilla Enchantment Descriptions
+enchantment.minecraft.protection.desc=Reduz o dano da maioria das origens 
+enchantment.minecraft.fire_protection.desc=Reduz o efeito do dano de fogo. Também reduz o tempo pegando fogo.
+enchantment.minecraft.feather_falling.desc=Reduz o dano de queda e de teleporte via ender pearl
+enchantment.minecraft.blast_protection.desc=Reduz o dano de explosões e o impacto da explosão
+enchantment.minecraft.projectile_protection.desc=Reduz o dano de projéteis como bolas de fogo e flechas
+enchantment.minecraft.respiration.desc=Aumenta o tempo que o jogador pode passar submerso. Também melhora a visão enquanto submerso.
+enchantment.minecraft.aqua_affinity.desc=Aumenta a velocidade de mineração embaixo d'agua.
+enchantment.minecraft.thorns.desc=Causa dano à inimigos quando eles te atacam.
+enchantment.minecraft.sharpness.desc=Aumenta o dano do item.
+enchantment.minecraft.smite.desc=Aumenta o dano contra mortos-vivos como esqueletos e zumbis.
+enchantment.minecraft.bane_of_arthropods.desc=Aumenta o dano contra artrópodes como silverfish e aranhas.
+enchantment.minecraft.knockback.desc=Aumenta a força de repulsão da arma.
+enchantment.minecraft.fire_aspect.desc=Causa um dano adicional de fogo ao atacar monstros
+enchantment.minecraft.looting.desc=Mobs vão dropar mais itens quando mortos
+enchantment.minecraft.efficiency.desc=Aumenta a velocidade de mineração do item
+enchantment.minecraft.silk_touch.desc=Permite blocos frágeis como vidro serem coletados
+enchantment.minecraft.unbreaking.desc=Faz a ferramenta perder menos durabilidade
+enchantment.minecraft.fortune.desc=Blocos como diamante e carvão podem dropar mais itens
+enchantment.minecraft.power.desc=Aumenta o dano de flechas atiradas desse arco
+enchantment.minecraft.punch.desc=Aumenta a repulsão de flechas atiradas desse arco
+enchantment.minecraft.flame.desc=Flechas atiradas desse arco darão dano adicional de fogo
+enchantment.minecraft.infinity.desc=Permite o arco disparar flechas normais infinitamente. Você precisa ter ao menos 1 flecha para isso funcionar.
+enchantment.minecraft.luck_of_the_sea.desc=Aumenta a chance de recompensas a mais ao pescar
+enchantment.minecraft.lure.desc=Diminui o tempo de peixes morderem a isca desse arco
+enchantment.minecraft.depth_strider.desc=Aumenta a velocidade embaixo d'agua
+enchantment.minecraft.frost_walker.desc=Congela a água embaixo do jogador em gelo quebradiço
+enchantment.minecraft.mending.desc=Repara a durabilidade de armas e armaduras usando experiência
+enchantment.minecraft.binding_curse.desc=Previne o item de ser removido do slot de armadura
+enchantment.minecraft.vanishing_curse.desc=Destrói o item encantado ao morrer com ele
+enchantment.minecraft.sweeping.desc=Aumenta o dano de ataques em combo
+
+#Ender Core
+enchantment.endercore.xpboost.desc=Mobs vão dar mais experiência ao morrer
+enchantment.endercore.autosmelt.desc=Itens minerados vão ser automaticamente cozidos
+
+#Extra Utilities 2
+enchantment.extrautils2.xu.kaboomerang.desc=Cria uma explosão quando o boomerang atinge algo
+enchantment.extrautils2.xu.zoomerang.desc=O boomerang se moverá mais rapidamente
+enchantment.extrautils2.xu.burnerang.desc=O boomerang vai tocar fogo nos mobs
+enchantment.extrautils2.xu.bladerang.desc=O boomerang vai dar dano extra
+enchantment.extrautils2.xu.boomereaperang=O boomerang vai colher plantas
+
+#Random Things
+enchantment.randomthings.magnetic.desc=Move os itens minerados um pouco mais pra perto.
+
+#JEI
+jei.eplus.advancedtable=Essa mesa encanta itens com encantamentos que você escolhe.
+jei.eplus.upgrade=Melhora uma mesa de encantamentos existente para uma avançada. Clique no bloco enquanto agachado.
+jei.eplus.decorative=Esses blocos são primáriamente decorativos. Eles contam como estantes de livros para a mesa de encantamentos. Eles também podem interagir com comparadores em certas circunstâncias.
