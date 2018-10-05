@@ -2,13 +2,13 @@
 
 #方块
 tile.eplus.advanced.table.name=高级附魔台
-tile.eplus.decorative.book.eplus.name=更好的附魔书
-tile.eplus.decorative.book.vanilla.name=附魔书
-tile.eplus.decorative.book.prismarine.name=海晶石书
-tile.eplus.decorative.book.nether.name=下界书
-tile.eplus.decorative.book.tartarite.name=鞑靼书
-tile.eplus.decorative.book.white.name=白色的书
-tile.eplus.decorative.book.metal.name=金属书
+tile.eplus.decorative.book.eplus.name=高级附魔用书
+tile.eplus.decorative.book.vanilla.name=附魔用书
+tile.eplus.decorative.book.prismarine.name=海晶石之书
+tile.eplus.decorative.book.nether.name=下界之书
+tile.eplus.decorative.book.tartarite.name=火石之书
+tile.eplus.decorative.book.white.name=苍白之书
+tile.eplus.decorative.book.metal.name=金属之书
 
 #物品
 item.eplus.table.upgrade.name=附魔台升级
@@ -18,22 +18,22 @@ itemGroup.eplus=更好的附魔
 
 #信息
 eplus.info.playerxp=经验：%d
-eplus.info.costxp=花费：%d
+eplus.info.costxp=需要：%d
 eplus.info.infinity=经验：∞
-eplus.info.power=花费减少：%.2f
+eplus.info.power=消耗减少：%.2f
 gui.eplus.info.noitem=放置一个物品查看可用的附魔。
 gui.eplus.info.noench=这个物品没有任何附魔。
 gui.eplus.info.tooexpensive=你需要更多的经验来完成这次附魔。
 
 eplus.info.tip.prefix=提示：
-eplus.info.tip.bonus=详细提示：
-eplus.info.tip.description=按住 %s 显示附魔滚动条的描述。
-eplus.info.tip.books=你可以在周围放置书架来减少附魔花费。
-eplus.info.tip.treasure=宝藏型附魔还不能获得，它们将在未来实现。
-eplus.info.tip.curse=诅咒型附魔只能在午夜或满月时被获得。
-eplus.info.tip.storage=高级附魔台将存储它的物品栏像箱子一样。
-eplus.info.tip.inventory=每个玩家都有自己的物品栏，打破桌子会使所有存货的内容都下降。
-eplus.info.tip.armor=侧面的盔甲栏与玩家的物品栏相同。
+eplus.info.tip.bonus=额外的提示：
+eplus.info.tip.description=当鼠标选定附魔时，按下 %s 可以获得更多信息。
+eplus.info.tip.books=你可以通过在附魔台周围放置书架的方式来减少附魔消耗。
+eplus.info.tip.treasure=附魔宝藏目前还没有添加，他们将在以后的版本出现。
+eplus.info.tip.curse=只有当满月且接近午夜时，你才能修改诅咒附魔。
+eplus.info.tip.storage=高级附魔台可以存储放置其中的物品，就像一个箱子。
+eplus.info.tip.inventory=每一个人在附魔台中的空间都是独立的。破坏附魔台时，里面存储的所有物品都会掉落出来。
+eplus.info.tip.armor=附魔台左侧的装备栏与你的装备栏是相同的。
 eplus.info.tip.birthday=今天可能是你的生日。
 
 #工具提示
@@ -50,15 +50,15 @@ enchantment.minecraft.blast_protection.desc=减少爆炸造成的伤害和爆炸
 enchantment.minecraft.projectile_protection.desc=减少箭和火球等弹射物的伤害。
 enchantment.minecraft.respiration.desc=延长玩家潜水的时间。也改善在水下的视力。
 enchantment.minecraft.aqua_affinity.desc=在水下时提高挖掘速度。
-enchantment.minecraft.thorns.desc=当敌人攻击你会造成伤害。
+enchantment.minecraft.thorns.desc=当敌人攻击你时，反弹伤害。
 enchantment.minecraft.sharpness.desc=增加物品的伤害。
-enchantment.minecraft.smite.desc=增加对亡灵生物（僵尸，骷髅等）的伤害。
+enchantment.minecraft.smite.desc=增加对亡灵生物（如僵尸，骷髅等）的伤害。
 enchantment.minecraft.bane_of_arthropods.desc=增加对节肢生物（蜘蛛，蠹虫等）伤害。
 enchantment.minecraft.knockback.desc=提高武器的击退强度。
 enchantment.minecraft.fire_aspect.desc=在攻击生物时会让生物着火。
 enchantment.minecraft.looting.desc=生物杀死时会掉落更多的物品。
 enchantment.minecraft.efficiency.desc=提高工具的挖掘速度。
-enchantment.minecraft.silk_touch.desc=允许挖掘诸如玻璃之类的易碎方块。
+enchantment.minecraft.silk_touch.desc=允许完整挖掘诸如玻璃之类的易碎方块。
 enchantment.minecraft.unbreaking.desc=降低工具损失耐久度的概率。
 enchantment.minecraft.fortune.desc=破坏特殊的方块会获得额外的物品。
 enchantment.minecraft.power.desc=增加对弓发射的箭的伤害。
@@ -76,7 +76,7 @@ enchantment.minecraft.sweeping.desc=增加横扫攻击伤害。
 
 #末影核心
 enchantment.endercore.xpboost.desc=生物被杀死时能够给予更多经验。
-enchantment.endercore.autosmelt.desc=被挖掘下来的物品能够自动烧炼。
+enchantment.endercore.autosmelt.desc=挖掘的物品将以它们烧制后的状态掉落。
 
 #更多实用设备 2
 enchantment.extrautils2.xu.kaboomerang.desc=回旋镖击中某个物体时会产生爆炸。
@@ -85,10 +85,10 @@ enchantment.extrautils2.xu.burnerang.desc=回旋镖将对生物施加火焰伤�
 enchantment.extrautils2.xu.bladerang.desc=回旋镖将会造成额外伤害。
 enchantment.extrautils2.xu.boomereaperang=回旋镖将会收割作物。
 
-#Random Things
-enchantment.randomthings.magnetic.desc=具有磁性附魔的工具，会吸收周围的掉落物到物品栏中。
+#随机作品
+enchantment.randomthings.magnetic.desc=拥有磁性附魔的工具，挖掘出的掉落物将直接进入你的物品栏，而不是落在地上。
 
 #JEI
 jei.eplus.advancedtable=这张附魔台可以用来对物品施加你想要的特定附魔。
-jei.eplus.upgrade=将现有的附魔台升级为高级附魔台，需要Shift右击方块。
-jei.eplus.decorative=这些书主要是装饰性的，他们算作书架来强化附魔台。在适当的情况下，它们也可以与比较器进行交互。
+jei.eplus.upgrade=将现有的附魔台升级为高级附魔台，需要潜行右击方块。
+jei.eplus.decorative=这些书主要是装饰性的，它们算作书架来强化附魔台。在适当的情况下，它们也可以与比较器进行交互。
