@@ -91,11 +91,6 @@ public final class EnchLogic {
 
     public static void addExperience (EntityPlayer player, int amount) {
 
-        if (amount < 1) {
-
-            return;
-        }
-
         final int experience = getExperience(player) + amount;
         player.experienceTotal = experience;
         player.experienceLevel = getLevelForExperience(experience);
