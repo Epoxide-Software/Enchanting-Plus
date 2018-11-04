@@ -11,6 +11,7 @@ Lclc98 - Previous Developer
 Xkyouchoux - Previous Developer   
 odininon - Previous Developer
 GnRSlash - Previous Developer
+Awware - Developer
 
 Jaredlll08 - Code help
 Shadows-of-Fire - Code help 
