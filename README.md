@@ -12,9 +12,9 @@ Xkyouchoux - Previous Developer
 odininon - Previous Developer
 GnRSlash - Previous Developer
 
-Jaredlll08 - Code help
-Shadows-of-Fire - Code help 
-Awware - Code help
+Jaredlll08 - Code help<BR>
+Shadows-of-Fire - Code help <BR>
+Awware - Code help<BR>
 
 # Translators
 Adaptivity   
