@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
+import net.minecraft.init.Blocks;
 import org.lwjgl.input.Mouse;
 
 import net.darkhax.bookshelf.client.gui.GuiItemButton;
@@ -16,7 +17,6 @@ import net.darkhax.eplus.EnchantingPlus;
 import net.darkhax.eplus.api.event.InfoBoxEvent;
 import net.darkhax.eplus.block.tileentity.EnchantmentLogicController;
 import net.darkhax.eplus.inventory.ContainerAdvancedTable;
-import net.darkhax.eplus.network.messages.MessageEnchant;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -32,6 +32,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.config.GuiUtils;
+import net.darkhax.eplus.network.messages.MessageRepair;
+import net.darkhax.eplus.network.messages.MessageEnchant;
+//import net.darkhax.eplus.network.messages.MessageBroke;
 
 public class GuiAdvancedTable extends GuiContainer {
 
@@ -46,6 +49,8 @@ public class GuiAdvancedTable extends GuiContainer {
     private static final KeyBinding keyBindSneak = Minecraft.getMinecraft().gameSettings.keyBindSneak;
 
     private GuiButton enchantButton;
+    private GuiButton repairButton;
+    private GuiButton brokeItemButton;
 
     public final List<GuiEnchantmentLabel> enchantmentListAll = new ArrayList<>();
     public final List<GuiEnchantmentLabel> enchantmentList = new ArrayList<>();
@@ -80,7 +85,11 @@ public class GuiAdvancedTable extends GuiContainer {
         this.scrollbar = new GuiButtonScroller(this, 1, this.guiLeft + 206, this.guiTop + 16, 12, 15);
 
         this.enchantButton = new GuiItemButton(0, this.guiLeft + 35, this.guiTop + 38, EnchLogic.isWikedNight(this.logic.getWorld()) ? SPOOKY_BONE : new ItemStack(Items.ENCHANTED_BOOK));
+        this.repairButton = new GuiItemButton(1, this.guiLeft + 35, this.guiTop + 62, new ItemStack(Items.PAPER));
+        //this.brokeItemButton = new GuiItemButton(2, this.guiLeft + 10, this.guiTop + 62, new ItemStack(Items.APPLE));
         this.buttonList.add(this.enchantButton);
+        this.buttonList.add(this.repairButton);
+        //this.buttonList.add(this.brokeItemButton);
         this.buttonList.add(this.scrollbar);
     }
 
@@ -209,10 +218,10 @@ public class GuiAdvancedTable extends GuiContainer {
             this.listOffset = 0;
         }
         if (this.listOffset != prevOff) {
-            this.updateLabels();
             this.scrollbar.sliderY = 70 / (this.enchantmentListAll.size() - 4) * this.listOffset - 7;
             this.scrollbar.sliderY = Math.max(1, this.scrollbar.sliderY);
             this.scrollbar.sliderY = Math.min(56, this.scrollbar.sliderY);
+            this.updateLabels();
         }
     }
 
@@ -284,6 +293,16 @@ public class GuiAdvancedTable extends GuiContainer {
             EnchantingPlus.NETWORK.sendToServer(new MessageEnchant());
             this.logic.enchantItem();
         }
+        //AWWARE UPDATE
+        if(button.id == 1 && this.canClientAffordRepair()){
+            EnchantingPlus.NETWORK.sendToServer(new MessageRepair());
+            this.logic.repairItem();
+        }
+        //Debug code.
+        //if(button.id == 2){
+        //    EnchantingPlus.NETWORK.sendToServer(new MessageBroke());
+        //    this.logic.brokeItem();
+        //}
     }
 
     @Override
@@ -317,6 +336,12 @@ public class GuiAdvancedTable extends GuiContainer {
             GuiUtils.drawHoveringText(text, x, y, this.width, this.height, this.width / 4, this.fontRenderer);
         }
 
+        if(this.repairButton.isMouseOver()){
+            final List<String> text = new ArrayList<>();
+            text.add(I18n.format("gui.eplus.repair.button"));
+            GuiUtils.drawHoveringText(text, x, y, this.width, this.height, this.width /4, this.fontRenderer);
+        }
+
         // Descriptions
         if (GameSettings.isKeyDown(keyBindSneak)) {
 
@@ -348,9 +373,11 @@ public class GuiAdvancedTable extends GuiContainer {
             final boolean isCreative = PlayerUtils.getClientPlayerSP().isCreative();
             final int playerXP = isCreative ? Integer.MAX_VALUE : EnchLogic.getExperience(this.logic.getPlayer());
             final int cost = this.logic.getCost();
+            final int repairCost = this.logic.getRepairCost();
 
             info.add(isCreative ? I18n.format("eplus.info.infinity") : I18n.format("eplus.info.playerxp", playerXP));
             info.add(I18n.format("eplus.info.costxp", cost));
+            info.add(I18n.format("eplus.info.repairCost", repairCost));
             info.add(I18n.format("eplus.info.power", this.logic.getEnchantmentPower()) + "%");
 
             if (cost > playerXP) {
@@ -376,5 +403,10 @@ public class GuiAdvancedTable extends GuiContainer {
     public boolean canClientAfford () {
 
         return this.logic.getCost() <= EnchLogic.getExperience(this.logic.getPlayer()) || PlayerUtils.getClientPlayerSP().isCreative();
+    }
+    //XYETA
+    public boolean canClientAffordRepair () {
+
+        return this.logic.getRepairCost() <= EnchLogic.getExperience(this.logic.getPlayer()) || PlayerUtils.getClientPlayerSP().isCreative();
     }
 }

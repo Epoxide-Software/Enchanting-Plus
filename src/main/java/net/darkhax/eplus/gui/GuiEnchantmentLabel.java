@@ -109,15 +109,14 @@ public class GuiEnchantmentLabel extends Gui {
      * the enchantment being represented.
      *
      * @param xPos The xPos of the slider.
-     * @param baseX The previous slider position.
      */
     public void updateSlider (int xPos) {
 
         // If the slider is locked, prevent it from updating.
-        if (this.locked) {
-
-            return;
-        }
+        //.................................................... so strange.
+        //  if (this.locked) {
+        //     return;
+        // }
 
         final int min = this.xPos + 1;
         final int max = min + GuiEnchantmentLabel.WIDTH - 6;

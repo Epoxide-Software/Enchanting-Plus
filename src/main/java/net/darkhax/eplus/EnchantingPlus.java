@@ -14,6 +14,7 @@ import net.darkhax.eplus.creativetab.CreativeTabEPlus;
 import net.darkhax.eplus.item.ItemTableUpgrade;
 import net.darkhax.eplus.network.GuiHandler;
 import net.darkhax.eplus.network.messages.MessageEnchant;
+import net.darkhax.eplus.network.messages.MessageRepair;
 import net.darkhax.eplus.network.messages.MessageSliderUpdate;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+//import net.darkhax.eplus.network.messages.MessageBroke;
 
 @Mod(modid = "eplus", name = "Enchanting Plus", version = "@VERSION@", dependencies = "required-after:bookshelf@[2.3.557,);", certificateFingerprint = "@FINGERPRINT@")
 public final class EnchantingPlus {
@@ -58,6 +60,8 @@ public final class EnchantingPlus {
         ConfigurationHandler.initConfig(event.getSuggestedConfigurationFile());
 
         NETWORK.register(MessageEnchant.class, Side.SERVER);
+        NETWORK.register(MessageRepair.class, Side.SERVER);
+       // NETWORK.register(MessageBroke.class, Side.SERVER);
         NETWORK.register(MessageSliderUpdate.class, Side.SERVER);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());

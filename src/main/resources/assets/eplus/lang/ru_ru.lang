@@ -1,7 +1,7 @@
 #Enchanting Plus Russian Language File
 
 #Blocks
-tile.eplus.advanced.table.name=Расширенный стол зачарований
+tile.eplus.advanced.table.name=Улучшенный стол зачарования
 tile.eplus.decorative.book.eplus.name=Книга Enchanting Plus
 tile.eplus.decorative.book.vanilla.name=Зачарованная книга
 tile.eplus.decorative.book.prismarine.name=Призмариновая книга
@@ -11,7 +11,7 @@ tile.eplus.decorative.book.white.name=Бледная книга
 tile.eplus.decorative.book.metal.name=Металлическая книга
 
 #Items
-item.eplus.table.upgrade.name=Стол обновления
+item.eplus.table.upgrade.name=Улучшения стола зачарования
 
 #Misc
 itemGroup.eplus=Enchanting Plus
@@ -21,6 +21,8 @@ eplus.info.playerxp=Опыт: %d
 eplus.info.costxp=Стоимость: %d
 eplus.info.infinity=Опыт: ∞
 eplus.info.power=Дисконт: %.2f
+eplus.info.repairCost=Стоимость починки: %d
+gui.eplus.repair.button=Починить предмет
 gui.eplus.info.noitem=Поместите предмет, чтобы увидеть доступные чары.
 gui.eplus.info.neench=Для этого предмета не предусмотрено никаких зачарований.
 gui.eplus.info.tooexpensive=Вам нужно больше опыта, чтобы сделать это очарование.

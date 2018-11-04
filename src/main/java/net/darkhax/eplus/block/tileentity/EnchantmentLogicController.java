@@ -7,14 +7,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.darkhax.bookshelf.util.EnchantmentUtils;
+import net.darkhax.eplus.ConfigurationHandler;
 import net.darkhax.eplus.EnchLogic;
 import net.darkhax.eplus.inventory.ItemStackHandlerEnchant;
+import net.minecraft.client.gui.GuiRepair;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.item.Item;
 
 public class EnchantmentLogicController {
 
@@ -171,6 +174,37 @@ public class EnchantmentLogicController {
 
         // Update the logic.
         this.onItemUpdated();
+    }
+    public void repairItem(){
+        if(!this.player.isCreative()){
+            EnchLogic.removeExperience(this.player, getRepairCost());
+        }
+        this.inputStack.setItemDamage(-inputStack.getMaxDamage());
+        this.onItemUpdated();
+    }
+    public void brokeItem(){
+        this.inputStack.setItemDamage(1200);
+    }
+    //So stupid system, i know. :3
+    public int getRepairCost(){
+        if(!inputStack.isItemDamaged())
+            return 0;
+        int rep = ConfigurationHandler.baseCost;
+        rep += inputStack.getItemDamage();
+        rep *= ConfigurationHandler.costFactor;
+        if(inputStack.isItemEnchanted()){
+            if(inputStack.getEnchantmentTagList().tagCount() >= 3){
+                rep += 80;
+            }
+            else if(inputStack.getEnchantmentTagList().tagCount() >= 2){
+                rep += 70;
+            }
+            else if(inputStack.getEnchantmentTagList().tagCount() == 1){
+                rep += 40;
+            }
+        }
+        rep = Math.round(rep / 20);
+        return rep;
     }
 
     public int getCost () {

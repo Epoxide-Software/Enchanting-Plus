@@ -9,7 +9,7 @@
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",
-    "authors": [ "Darkhax", "lclc98", "xkyouchoux", "odininon", "GnR Slash" ],
+    "authors": [ "Darkhax", "lclc98", "xkyouchoux", "odininon", "GnR Slash", "Awware" ],
     "parent":"",
     "screenshots": [],
     "dependencies": [
