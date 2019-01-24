@@ -210,7 +210,7 @@ public class GuiAdvancedTable extends GuiContainer {
         }
         if (this.listOffset != prevOff) {
             this.updateLabels();
-            this.scrollbar.sliderY = 70 / (this.enchantmentListAll.size() - 4) * this.listOffset - 7;
+            this.scrollbar.sliderY = 70 / Math.max(1, (this.enchantmentListAll.size() - 4) * this.listOffset - 7);
             this.scrollbar.sliderY = Math.max(1, this.scrollbar.sliderY);
             this.scrollbar.sliderY = Math.min(56, this.scrollbar.sliderY);
         }
