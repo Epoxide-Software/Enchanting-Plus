@@ -57,7 +57,7 @@ public class EnchantmentLogicController {
 
         this.initialEnchantments = EnchantmentHelper.getEnchantments(this.inputStack);
         this.itemEnchantments = new HashMap<>(this.initialEnchantments);
-        this.validEnchantments = EnchLogic.getValidEnchantments(this.inputStack, this.world);
+        this.validEnchantments = EnchLogic.getValidEnchantments(this.inputStack, this.world, this.getPos());
         this.calculateState();
     }
 

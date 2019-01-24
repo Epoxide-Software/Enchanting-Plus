@@ -5,9 +5,13 @@ import java.util.List;
 
 import net.darkhax.eplus.api.Blacklist;
 import net.darkhax.eplus.api.event.EnchantmentCostEvent;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -47,7 +51,7 @@ public final class EnchLogic {
         return event.getCost();
     }
 
-    public static List<Enchantment> getValidEnchantments (ItemStack stack, World world) {
+    public static List<Enchantment> getValidEnchantments (ItemStack stack, World world, BlockPos pos) {
 
         final List<Enchantment> enchList = new ArrayList<>();
 
@@ -60,7 +64,7 @@ public final class EnchLogic {
                     continue;
                 }
 
-                if (enchantment.isCurse() && EnchLogic.isWikedNight(world) || !enchantment.isTreasureEnchantment()) {
+                if (!enchantment.isTreasureEnchantment() || isCurse(world, enchantment) || isTreasuresAvailable(enchantment, world, pos, pos.down())) {
 
                     enchList.add(enchantment);
                 }
@@ -68,6 +72,35 @@ public final class EnchLogic {
         }
 
         return enchList;
+    }
+    
+    public static boolean isCurse(World world, Enchantment enchantment) {
+        
+        return enchantment.isCurse() && isWikedNight(world);
+    }
+    
+    public static boolean isTreasuresAvailable(Enchantment enchantment, World world, BlockPos pos, BlockPos down) {
+        
+        if (enchantment.isCurse() || !enchantment.isTreasureEnchantment() || !world.isDaytime()) {
+            
+            return false;
+        }
+        
+        for (int x = -1; x <= 1; x++) {
+            
+            for (int z = -1; z <= 1; z++) {
+                
+                final BlockPos currentPos = down.add(x, 0, z);
+                final Block block = world.getBlockState(currentPos).getBlock();
+                
+                if (!block.isBeaconBase(world, currentPos, pos)) {
+                    
+                    return false;
+                }
+            }
+        }
+        
+        return true;
     }
 
     public static boolean isWikedNight (World world) {
