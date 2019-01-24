@@ -17,7 +17,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
 
     public ItemStackHandlerEnchant getInventory (EntityPlayer player) {
 
-        final ItemStackHandlerEnchant inventory = this.inventories.getOrDefault(player.getPersistentID(), new ItemStackHandlerEnchant());
+        final ItemStackHandlerEnchant inventory = this.inventories.getOrDefault(player.getPersistentID(), new ItemStackHandlerEnchant(this));
         this.inventories.put(player.getPersistentID(), inventory);
         return inventory;
     }
@@ -57,7 +57,7 @@ public class TileEntityAdvancedTable extends TileEntityWithBook {
             if (tag != null) {
 
                 final UUID owner = tag.getUniqueId("Owner");
-                final ItemStackHandlerEnchant inv = new ItemStackHandlerEnchant();
+                final ItemStackHandlerEnchant inv = new ItemStackHandlerEnchant(this);
                 inv.deserializeNBT(tag.getCompoundTag("Inventory"));
                 this.inventories.put(owner, inv);
             }
