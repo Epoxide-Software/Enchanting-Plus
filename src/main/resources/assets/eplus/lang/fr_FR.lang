@@ -1,0 +1,94 @@
+ #Enchanting Plus English Language File
+
+#Blocks
+tile.eplus.advanced.table.name=Table d'enchantement améliorée
+tile.eplus.decorative.book.eplus.name=Livre Enchanting Plus
+tile.eplus.decorative.book.vanilla.name=Livre d'enchantement
+tile.eplus.decorative.book.prismarine.name=Livre prismarine
+tile.eplus.decorative.book.nether.name=Livre du Nether
+tile.eplus.decorative.book.tartarite.name=Livre de Tartarite
+tile.eplus.decorative.book.white.name=Livre pâle
+tile.eplus.decorative.book.metal.name=Livre métallique
+
+#Items
+item.eplus.table.upgrade.name=Amélioration de table
+
+#Misc
+itemGroup.eplus=Enchanting Plus
+
+#Info Box
+eplus.info.playerxp=EXP : %d
+eplus.info.costxp=Coût : %d
+eplus.info.infinity=EXP : ∞
+eplus.info.power=Remise : %.2f
+gui.eplus.info.noitem=Placer un objet pour voir les enchantements possibles.
+gui.eplus.info.noench=Aucun enchantement n'est possible pour cet objet.
+gui.eplus.info.tooexpensive=Vous avez besoin de plus d'expérience pour enchanter.
+
+eplus.info.tip.prefix=Astuce : 
+eplus.info.tip.bonus=Astuce bonus : 
+eplus.info.tip.description=Maintenir %s sur l'enchantement pour voir sa description.
+eplus.info.tip.books=Vous pouvez placer des bibliothèques autour pour réduire le coût des enchantements.
+eplus.info.tip.treasure=Les enchantements trésors nécessitent un sol en matériaux précieux, et la lumière du jour.
+eplus.info.tip.curse=Les malédictions ne peuvent être modifiées qu'à environ minuit ou pendant les nuits de pleine lune.
+eplus.info.tip.storage=La table d'enchantement améliorée gardera son inventaire comme un coffre.
+eplus.info.tip.inventory=Chaque joueur a son propre inventaire dans la table. Casser la table fera tomber tous les objets qu'elle contient.
+eplus.info.tip.armor=Les emplacements d'armure sur le côté sont les mêmes que celui de l'inventaire du joueur.
+eplus.info.tip.birthday=C'est peut-être votre anniversaire.
+
+#Tooltips
+gui.eplus.tooltip.tooexpensive=Les enchantements sont trop chers !
+gui.eplus.tooltip.enchant=Cliquer pour enchanter.
+gui.eplus.tooltip.nochange=Aucun changement n'a été fait.
+tooltip.eplus.missing=Aucune description trouvée. Veuillez demander à l'auteur de %s d'en ajouter une, ou de contibuer vous-même pour le mod Enchanting Plus, la clé de localisation est %s
+
+#Vanilla Enchantment Descriptions
+enchantment.minecraft.protection.desc=Réduit les dégâts de la plupart des sources. 
+enchantment.minecraft.fire_protection.desc=Réduit les effets de dégâts de feu. Réduit aussi la durée de brûlure lorsque vous êtes en feu.
+enchantment.minecraft.feather_falling.desc=Réduit les dégâts de chute et de téléportation avec les perles de l'Ender.
+enchantment.minecraft.blast_protection.desc=Réduit les dégâts des explosions et de recul d'explosion.
+enchantment.minecraft.projectile_protection.desc=Réduit les dégâts des projectiles comme les flèches ou boules de feu.
+enchantment.minecraft.respiration.desc=Augmente la durée qu'un joueur pourra passer sous l'eau. Améliore aussi la vision sous l'eau.
+enchantment.minecraft.aqua_affinity.desc=Améliore la vitesse de minage sous l'eau. 
+enchantment.minecraft.thorns.desc=Cause des dégâts aux ennemis lorsqu'ils vous attaquent.
+enchantment.minecraft.sharpness.desc=Augmente les dégâts effectués par une arme.
+enchantment.minecraft.smite.desc=Augmente les dégâts contre les morts-vivants comme les zombies et squelettes.
+enchantment.minecraft.bane_of_arthropods.desc=Augmente les dégâts contre les arthropodes comme les araignées et poissons d'argent.
+enchantment.minecraft.knockback.desc=Augmente la force de recul d'une arme.
+enchantment.minecraft.fire_aspect.desc=Cause des dégâts de feu additionnels lorsqu'utilisé contre un monstre.
+enchantment.minecraft.looting.desc=Les créatures donneront plus d'objets lorsqu'elles sont tuées.
+enchantment.minecraft.efficiency.desc=Augmente la vitesse de minage d'un outil.
+enchantment.minecraft.silk_touch.desc=Les blocs fragiles comme les vitres peuvent être récupérés grâce à cet enchantement.
+enchantment.minecraft.unbreaking.desc=Empêche l'outil de perdre de la durabilité trop rapidement.
+enchantment.minecraft.fortune.desc=Certains blocs comme les minerais de charbon ou diamant peuvent donner plus d'objets lorsque minés.
+enchantment.minecraft.power.desc=Augmente les dégâts causés par les flèches tirées par un arc.
+enchantment.minecraft.punch.desc=Augmente la force de recul des flèches lorsqu'elles sont tirées par un arc.
+enchantment.minecraft.flame.desc=Les flèches tirées par un arc avec cet enchantement causeront des dégâts de feu. 
+enchantment.minecraft.infinity.desc=Permet à l'arc de tirer des flèches sans coût. Vous devez avoir au moins une flèche dans votre inventaire.
+enchantment.minecraft.luck_of_the_sea.desc=Augmente les chances de pêcher de bons objets.
+enchantment.minecraft.lure.desc=Réduit le temps qu'il faut pour un poisson pour mordre à l'hameçon.
+enchantment.minecraft.depth_strider.desc=Augmente la vitesse de déplacement sous l'eau.
+enchantment.minecraft.frost_walker.desc=Transforme l'eau sous les pieds du joueur en glace craquelée.
+enchantment.minecraft.mending.desc=Répare les objets ou armures en échange d'expérience.
+enchantment.minecraft.binding_curse.desc=Empêche les objets enchantés d'être retirés d'un emplacement d'armure.
+enchantment.minecraft.vanishing_curse.desc=Détruit l'objet enchanté si vous mourez avec celui-ci dans votre inventaire.
+enchantment.minecraft.sweeping.desc=Augmente les dégâts d'attaques de zone.
+
+#Ender Core
+enchantment.endercore.xpboost.desc=Les mobs donneront plus d'expérience lorsque tués.
+enchantment.endercore.autosmelt.desc=Les choses minées seront automatiquement cuites.
+
+#Extra Utilities 2
+enchantment.extrautils2.xu.kaboomerang.desc=Crée une explosion quand le boomerang touche quelque chose.
+enchantment.extrautils2.xu.zoomerang.desc=Le boomerang se déplacera plus rapidement, et plus loin.
+enchantment.extrautils2.xu.burnerang.desc=Le boomerang enflammera les entités.
+enchantment.extrautils2.xu.bladerang.desc=Le boomerang fera des dégâts supplémentaires.
+enchantment.extrautils2.xu.boomereaperang=Le boomerang récoltera les plantes.
+
+#Random Things
+enchantment.randomthings.magnetic.desc=Attire les objets minés vers vous.
+
+#JEI
+jei.eplus.advancedtable=Cette table peut être utilisée pour enchanter des objets avec les enchantements que vous souhaitez.
+jei.eplus.upgrade=Améliore une table d'enchantement classique en une améliorée. Maintenir shift et faire un clic-droit sur la table pour l'améliorer.
+jei.eplus.decorative=Ces livres sont surtout décoratifs. Ils sont comptés comme des bibliothèques pour les tables d'enchantement. Ils peuvent aussi interagir avec des comparateurs dans les bonnes conditions.
