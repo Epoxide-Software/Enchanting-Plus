@@ -31,7 +31,7 @@ public abstract class TileEntityWithBook extends TileEntityBasicTickable {
 
         if (this.bookSpreadPrev != this.bookSpread && (this.bookSpread == 0f || this.bookSpread == 1f)) {
 
-            this.getWorld().notifyNeighborsOfStateChange(this.pos, this.blockType, true);
+            this.getWorld().notifyNeighborsOfStateChange(this.pos, this.getBlockType(), true);
         }
 
         this.bookSpreadPrev = this.bookSpread;
