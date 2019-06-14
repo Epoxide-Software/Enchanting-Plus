@@ -1,0 +1,48 @@
+#Enchanting Plus Turkish Language File
+
+#Blocks
+tile.eplus.advanced.table.name=Gelişmiş Büyü Masası
+tile.eplus.decorative.book.eplus.name=Enchanting Plus Kitabı
+tile.eplus.decorative.book.vanilla.name=Büyü Kitabı
+tile.eplus.decorative.book.prismarine.name=Prizmarin Kitabı
+tile.eplus.decorative.book.nether.name=Nether Kitabı
+tile.eplus.decorative.book.tartarite.name=Tartarite Kitabı
+tile.eplus.decorative.book.white.name=Soluk Kitap
+tile.eplus.decorative.book.metal.name=Metal Kitap
+
+#Items
+item.eplus.table.upgrade.name=Masa Yükseltmesi
+
+#Misc
+itemGroup.eplus=Enchanting Plus
+
+#Info Box
+eplus.info.playerxp=EXP: %d
+eplus.info.costxp=Ücret: %d
+eplus.info.infinity=EXP: ∞
+eplus.info.power=İndirim: %.2f
+gui.eplus.info.noitem=Mevcut büyüleri görmek için bir eşyayı koy.
+gui.eplus.info.noench=Bu eşya için mevcut bir büyü yok.
+gui.eplus.info.tooexpensive=Bu büyüyü yapman için daha fazla tecrübe puanına ihtiyacın var.
+
+eplus.info.tip.prefix=İpucu: 
+eplus.info.tip.bonus=Bonus İpucu: 
+eplus.info.tip.description=Büyü kaydırıcısında %s tuşuna basılı tutarak açıklamayı gör.
+eplus.info.tip.books=Büyülerin ücretlerini düşürmek için masanın etrafına kitaplık koyabilirsin.
+eplus.info.tip.treasure=Hazine büyülerinin bir kat dolusu değerli malzemelere ve gün ışığına ihtiyacı var.
+eplus.info.tip.curse=Lanetler sadece gece yarısına doğru veya dolunay olduğunda değiştirilebilir.
+eplus.info.tip.storage=Gelişmiş masa envanterini bir sandık gibi depolar.
+eplus.info.tip.inventory=Masada her oyuncunun kendine özgü envanteri vardır. Masa kırıldığında tüm envanterlerin içeriklerinin düşmesi gerçekleşir.
+eplus.info.tip.armor=Yandaki zırh slotları aynı oyuncu envanterindeki gibidir.
+eplus.info.tip.birthday=Bu senin doğum günün olabilir.
+
+#Tooltips
+gui.eplus.tooltip.tooexpensive=Büyülerin çok pahalı!
+gui.eplus.tooltip.enchant=Tıklayarak büyüyü bas.
+gui.eplus.tooltip.nochange=Hiçbir değişim yapılmadı.
+tooltip.eplus.missing=Açıklama bulunamadı. %s yapımcısından eklemesini isteyebilirsin, veya kendin ekleyebilirsin. Lokalizasyon tuşu %s
+
+#JEI
+jei.eplus.advancedtable=Bu masa istediğin büyülerle eşyaya büyü basmanı sağlar.
+jei.eplus.upgrade=Elinde olan masayı gelişmiş masaya yükseltir. Bloğa sağ tık + shift yapman gerekli.
+jei.eplus.decorative=Bu kitaplar genel olarak süs amaçlıdır. Büyü masaları için kitaplık olarak sayılırlar. Ayrıca doğru şartlarda karşılaştırıcılarla etkileşim içinde bulunurlar.
