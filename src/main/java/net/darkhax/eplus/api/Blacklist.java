@@ -30,7 +30,7 @@ public final class Blacklist {
 
         for (final ItemStack blacklisted : BLACKLIST_ITEMS) {
 
-            if (StackUtils.areStacksSimilarWithPartialNBT(blacklisted, stack)) {
+            if (StackUtils.areStacksSimilar(blacklisted, stack)) {
 
                 return true;
             }
