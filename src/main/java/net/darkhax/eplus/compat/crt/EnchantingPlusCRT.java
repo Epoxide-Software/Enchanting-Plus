@@ -6,6 +6,7 @@ import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.enchantments.IEnchantment;
 import crafttweaker.api.item.IItemStack;
 import net.darkhax.eplus.api.Blacklist;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -38,7 +39,7 @@ public class EnchantingPlusCRT {
         @Override
         public void apply () {
 
-            Blacklist.blacklist((ItemStack) this.item.getDefinition().getInternal());
+            Blacklist.blacklist(new ItemStack((Item) this.item.getDefinition().getInternal()));
         }
 
         @Override
