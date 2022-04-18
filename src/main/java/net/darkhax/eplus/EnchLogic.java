@@ -66,7 +66,7 @@ public final class EnchLogic {
 
                 if (isCurse(world, enchantment) || isTreasuresAvailable(enchantment, world, pos, pos.down())) {
                     enchList.add(enchantment);
-                } else if (!enchantment.isTreasureEnchantment() && !enchantment.isCurse())
+                } else if (!enchantment.isTreasureEnchantment() && !enchantment.isCurse()) {
                     enchList.add(enchantment);
                 }
             }
