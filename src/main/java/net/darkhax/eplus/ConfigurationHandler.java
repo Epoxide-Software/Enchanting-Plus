@@ -10,6 +10,7 @@ import net.darkhax.eplus.api.Blacklist;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
 
 public final class ConfigurationHandler {
 
@@ -44,7 +45,14 @@ public final class ConfigurationHandler {
 
     public static void buildBlacklist () {
 
-        for (final String itemString : blacklistedItems) {
+        for (String origString : blacklistedItems) {
+            
+            String itemString = origString;
+            if (!itemString.contains("#")) {
+                
+                # Default items to all metas
+                itemString = itemString + "#" + OreDictionary.WILDCARD_VALUE;
+            }
 
             final ItemStack stack = StackUtils.createStackFromString(itemString);
 
