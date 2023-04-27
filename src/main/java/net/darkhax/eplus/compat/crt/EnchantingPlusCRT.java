@@ -5,7 +5,10 @@ import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.enchantments.IEnchantment;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.darkhax.eplus.api.Blacklist;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -23,7 +26,7 @@ public class EnchantingPlusCRT {
     @ZenMethod
     public static void blacklistEnchantment (IEnchantment enchantment) {
 
-        CraftTweakerAPI.apply(new ActionBlacklist(enchantment));
+        CraftTweakerAPI.apply(new ActionBlacklistEnch(enchantment));
     }
 
     private static class ActionBlacklistItem implements IAction {
@@ -38,7 +41,7 @@ public class EnchantingPlusCRT {
         @Override
         public void apply () {
 
-            Blacklist.blacklist((ItemStack) this.item.getDefinition().getInternal());
+            Blacklist.blacklist(CraftTweakerMC.getItemStack(this.item));
         }
 
         @Override
@@ -48,11 +51,11 @@ public class EnchantingPlusCRT {
         }
     }
 
-    private static class ActionBlacklist implements IAction {
+    private static class ActionBlacklistEnch implements IAction {
 
         private final IEnchantment enchantment;
 
-        public ActionBlacklist (IEnchantment enchantment) {
+        public ActionBlacklistEnch (IEnchantment enchantment) {
 
             this.enchantment = enchantment;
         }
@@ -60,7 +63,7 @@ public class EnchantingPlusCRT {
         @Override
         public void apply () {
 
-            Blacklist.blacklist((ItemStack) this.enchantment.getDefinition().getInternal());
+            Blacklist.blacklist((Enchantment) this.enchantment.getDefinition().getInternal());
         }
 
         @Override

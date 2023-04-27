@@ -109,7 +109,6 @@ public class GuiEnchantmentLabel extends Gui {
      * the enchantment being represented.
      *
      * @param xPos The xPos of the slider.
-     * @param baseX The previous slider position.
      */
     public void updateSlider (int xPos) {
 
