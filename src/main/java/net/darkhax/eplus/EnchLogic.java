@@ -64,8 +64,9 @@ public final class EnchLogic {
                     continue;
                 }
 
-                if (!enchantment.isTreasureEnchantment() || isCurse(world, enchantment) || isTreasuresAvailable(enchantment, world, pos, pos.down())) {
-
+                if (isCurse(world, enchantment) || isTreasuresAvailable(enchantment, world, pos, pos.down())) {
+                    enchList.add(enchantment);
+                } else if (!enchantment.isTreasureEnchantment() && !enchantment.isCurse()) {
                     enchList.add(enchantment);
                 }
             }
@@ -94,7 +95,6 @@ public final class EnchLogic {
                 final Block block = world.getBlockState(currentPos).getBlock();
                 
                 if (!block.isBeaconBase(world, currentPos, pos)) {
-                    
                     return false;
                 }
             }
