@@ -1,0 +1,94 @@
+#Enchanting Plus German Language File
+
+#Blocks
+tile.eplus.advanced.table.name=Erweiterter Zaubertisch
+tile.eplus.decorative.book.eplus.name=Erweitertes Verzauberungsbuch
+tile.eplus.decorative.book.vanilla.name=Verzauberungsbuch
+tile.eplus.decorative.book.prismarine.name=Prismarinenbuch
+tile.eplus.decorative.book.nether.name=Netherbuch
+tile.eplus.decorative.book.tartarite.name=Tartaritebuch
+tile.eplus.decorative.book.white.name=Helles Buch
+tile.eplus.decorative.book.metal.name=Metallbuch
+
+#Items
+item.eplus.table.upgrade.name=Tisch-Upgrade
+
+#Misc
+itemGroup.eplus=Enchanting Plus
+
+#Info Box
+eplus.info.playerxp=EXP: %d
+eplus.info.costxp=Kosten: %d
+eplus.info.unendlich=EXP: ∞
+eplus.info.power=Rabatt: %.2f
+gui.eplus.info.noitem=Platziere ein Item, um verfügbare Verzauberungen zu sehen.
+gui.eplus.info.noench=Für dieses Item sind keine Verzauberungen verfügbar.
+gui.eplus.info.tooxpensive=Du benötigst mehr EXP für diese Verzauberung.
+
+eplus.info.tip.prefix=Tipp: 
+eplus.info.tip.bonus=Bonus-Tipp: 
+eplus.info.tip.description=Halte %s über dem Verzauberungsslider für eine Beschreibung.
+eplus.info.tip.books=Du kannst Bücherregale in der Nähe plazieren, um die Kosten für Verzauberungen zu reduzieren.
+eplus.info.tip.treasure=Schatz-Verzauberungen erfordern einen Boden aus kostbaren Materialien und Tageslicht.
+eplus.info.tip.curse=Flüche können nur in Vollmondnächten gegen Mitternacht verändert werden.
+eplus.info.tip.storage=Der erweiterte Tisch wird sein Inventar wie eine Truhe aufbewahren.
+eplus.info.tip.inventory=Jeder Spieler hat sein eigenes Inventar im Tisch. Wenn der Tisch zerstört wird, dropt der Tisch den Inhalt aller Inventare.
+eplus.info.tip.armor=Die Rüstungsslots an der Seite sind die gleichen wie in Deinem Spieler-Inventar.
+eplus.info.tip.birthday=Es könnte Dein Geburtstag sein.
+
+#tooltips
+gui.eplus.tooltip.tooxpensive=Verzauberungen sind zu teuer!
+gui.eplus.tooltip.enchant=Klicke, zum Verzaubern.
+gui.eplus.tooltip.nochange=Es wurden keine Änderungen vorgenommen.
+tooltip.eplus.missing=Keine Beschreibung gefunden. Bitte den Autor von %s, eine Beschreibung hinzuzufügen, oder bitte den Autor von %s, eine Beschreibung zu der Modifikation Enchanting Plus beizutragen. Lokalisierungsschlüssel ist %s
+
+#Vanilla Enchantment Descriptions
+enchantment.minecraft.protection.desc=Reduziert Schäden aus den meisten Quellen. 
+enchantment.minecraft.fire_protection.desc=Reduziert die Auswirkungen von Brandschäden. Verringert auch die Brenndauer beim Entzünden.
+enchantment.minecraft.feather_falling.desc=Reduziert Sturzschaden und Enderperlen-Teleportationsschaden.
+enchantment.minecraft.blast_protection.desc=Reduziert Schaden durch Explosionen und Explosionsrückschlägen.
+enchantment.minecraft.projectile_protection.desc=Reduziert Schaden durch Geschosse wie Pfeile und Feuerbälle.
+enchantment.minecraft.respiration.desc=Verlängert die Zeit, die der Spieler unter Wasser verbringen kann. Verbessert auch die Sicht unter Wasser.
+enchantment.minecraft.aqua_affinity.desc=Erhöht die Abbaugeschwindigkeit unter Wasser. 
+enchantment.minecraft.thorns.desc=Verursacht Schaden bei Gegnern, wenn diese Dich angreifen.
+enchantment.minecraft.sharpness.desc=Erhöht den Schaden des Items.
+enchantment.minecraft.smite.desc=Erhöht den Schaden gegen untote Mobs wie Zombies und Skelette.
+enchantment.minecraft.bane_of_arthropods.desc=Erhöht den Schaden gegen Arthropoden wie Spinnen und Silberfische.
+enchantment.minecraft.knockback.desc=Erhöht die Rückstoßstärke der Waffe.
+enchantment.minecraft.fire_aspect.desc=Verursacht zusätzlichen Feuerschaden, wenn es zum Angriff auf einen Mob verwendet wird.
+enchantment.minecraft.looting.desc=Mobs lassen mehr Beute fallen, wenn sie getötet werden.
+enchantment.minecraft.efficiency.desc=Erhöht die Abbaugeschwindigkeit des Werkzeugs.
+enchantment.minecraft.silk_touch.desc=Erlaubt es, zerbrechliche Blöcke wie Glas abzubauen.
+enchantment.minecraft.unbreaking.desc=Das Werkzeug verliert mit einer langsameren Geschwindigkeit an Haltbarkeit.
+enchantment.minecraft.fortune.desc=Einige Blöcke wie Kohle und Diamanterz können zusätzliche Gegenstände fallen lassen.
+enchantment.minecraft.power.desc=Erhöht den Schaden der vom Bogen abgefeuerten Pfeile.
+enchantment.minecraft.punch.desc=Erhöht die Rückschlagkraft von Pfeilen, die vom Bogen abgefeuert werden.
+enchantment.minecraft.flame.desc=Pfeile, die vom Bogen abgefeuert werden, richten zusätzlichen Feuerschaden an. 
+enchantment.minecraft.infinity.desc=Erlaubt dem Bogen, kostenlos normale Pfeile abzufeuern. Du musst mindestens einen Pfeil haben, damit das funktioniert.
+enchantment.minecraft.luck_of_the_sea.desc=Erhöht die Chance, beim Angeln gute Beute zu erhalten.
+enchantment.minecraft.lure.desc=Verringert die Zeit, die ein Fisch braucht, um an den Haken zu beißen.
+enchantment.minecraft.depth_strider.desc=Erhöht die Bewegungsgeschwindigkeit unter Wasser.
+enchantment.minecraft.frost_walker.desc=Friert Wasser unter dem Spieler zu gerissenem Eis ein.
+enchantment.minecraft.mending.desc=Repariert die Haltbarkeit von Rüstungen und Werkzeugen mit EXP.
+enchantment.minecraft.binding_curse.desc=Verhindert, dass das verzauberte Item aus einem Rüstungsslot entfernt wird.
+enchantment.minecraft.vanishing_curse.desc=Zerstört das verzauberte Item, wenn Du mit ihm in Deinem Inventar stirbst.
+enchantment.minecraft.sweeping.desc=Erhöht den Schaden von Schwungschlägen.
+
+#Ender Core
+enchantment.endercore.xpboost.desc=Mobs lassen mehr XP fallen, wenn sie getötet werden.
+enchantment.endercore.autosmelt.desc=Dinge, die abgebaut werden, werden automatisch geschmolzen.
+
+#Extra Utilities 2
+enchantment.extrautils2.xu.kaboomerang.desc=Erzeugt eine Explosion, wenn der Bumerang auf etwas trifft.
+enchantment.extrautils2.xu.zoomerang.desc=Der Bumerang wird sich schneller und weiter bewegen.
+enchantment.extrautils2.xu.burnerang.desc=Der Bumerang wird Mobs in Brand setzen.
+enchantment.extrautils2.xu.bladerang.desc=Der Bumerang wird zusätzlichen Schaden anrichten.
+enchantment.extrautils2.xu.boomereaperang=Der Bumerang wird Ernten einfahren.
+
+#Random Things
+enchantment.randomthings.magnetic.desc=Bewegt abgebaute Items ein wenig näher zu Dir.
+
+#JEI
+jei.eplus.advancedtable=Dieser Tisch kann verwendet werden, um Gegenstände mit bestimmten Sprüchen zu verzaubern, die Du wünschst.
+jei.eplus.upgrade=Upgradet einen vorhandene Zaubertisch zu einem erweiterten Zaubertisch. Erfordert einen Shift-Rechtsklick auf den Block.
+jei.eplus.decorative=Diese Bücher sind in erster Linie dekorativ. Sie zählen als Bücherregale für Zaubertische. Unter den richtigen Umständen können sie auch mit Komparatoren interagieren.
